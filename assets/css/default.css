@@ -1,0 +1,166 @@
+/**
+ * Blox Frontend Default Styles
+ *
+ * This stylesheet supplies default styling for Blox. It can be disabled in the Blox settings.
+ *
+ * @package     Blox
+ * @copyright   Copyright (c) 2015, Nick Diego
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ */
+
+
+/* Caption Defaults
+-------------------------------------------------------------- */
+.blox-theme-default .blox-caption-container {
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	text-align: left;
+	width: 100%;
+}
+.blox-theme-default .blox-caption-wrap {
+	background: rgba(0, 0, 0, .4);
+	color: #fff;
+	padding: 10px 20px;
+}
+
+
+/* Static Image Defaults
+-------------------------------------------------------------- */
+.blox-theme-default .blox-image-container {
+	margin: 0 auto;
+	position: relative;
+	text-align: center;
+}
+.blox-theme-default .blox-image-wrap {
+	display: inline-block;
+	position: relative;
+}
+
+.blox-theme-default .blox-image-container img {
+	vertical-align: top; 
+}
+
+/* Styling for background images */
+.blox-theme-default .blox-image-wrap.blox-image-background {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 400px; /* Adjust as needed */
+	
+	background-repeat: no-repeat;
+	background-position: center center;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+	background-size: cover;
+}
+.blox-theme-default .blox-image-wrap.blox-image-background a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+
+/* Slideshow Defaults
+-------------------------------------------------------------- */
+.blox-theme-default .flexslider {
+	margin: 0 0 0;
+	background: #ffffff;
+	border: none;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+}
+.blox-theme-default .flexslider .slides > li {
+	position: relative;
+}
+.blox-theme-default .flex-direction-nav a {
+	width: 60px;
+	height: 70px;
+	margin: -20px 0 0;
+	top: 48%;
+	color: transparent; /* Used to make default text disappear without ruining default Flexslider theme */
+  	text-shadow: none;
+	line-height: 1;
+}
+.blox-theme-default .flex-direction-nav a:before {
+	content: ''; /* remove default icon font */
+}
+.blox-theme-default .flex-direction-nav a.flex-next:before {
+	content: ''; /* remove default icon font */
+}
+.blox-theme-default .flex-direction-nav .flex-prev {
+	background: url('../images/prev.svg');
+	background-repeat: no-repeat;
+	background-size: 100%;
+	left: 2%;
+}
+.blox-theme-default .flex-direction-nav .flex-next {
+	background: url('../images/next.svg');
+	background-repeat: no-repeat;
+	background-size: 100%;	
+	right: 2%;
+	text-align: right;
+}
+.blox-theme-default .flexslider:hover .flex-direction-nav .flex-prev {
+	opacity: 1;
+	left: 2%;
+}
+.blox-theme-default .flexslider:hover .flex-direction-nav .flex-prev:hover {
+	opacity: 0.7;
+}
+.blox-theme-default .flexslider:hover .flex-direction-nav .flex-next {
+	opacity: 1;
+	right: 2%;
+}
+.blox-theme-default .flexslider:hover .flex-direction-nav .flex-next:hover {
+	opacity: 0.7;
+}
+.blox-theme-default .flex-control-nav {
+	bottom: 3%;
+}
+.blox-theme-default .flex-control-paging li a {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.6);
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+}
+.blox-theme-default .flex-control-paging li a:hover {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+}
+.blox-theme-default .flex-control-paging li a.flex-active {
+	background: #fff;
+	background: rgba(255, 255, 255, 1);
+	cursor: default;
+}
+
+
+/* Dark Slideshow Theme */
+.blox-theme-default .dark .flex-direction-nav .flex-prev {
+	background: url('../images/prev-dark.svg');
+}
+.blox-theme-default .dark .flex-direction-nav .flex-next {
+	background: url('../images/next-dark.svg');
+}
+.blox-theme-default .dark .flex-control-paging li a {
+	background: #000;
+	background: rgba(0, 0, 0, 0.6);
+}
+.blox-theme-default .dark .flex-control-paging li a:hover {
+	background: #000;
+	background: rgba(0, 0, 0, 0.8);
+}
+.blox-theme-default .dark .flex-control-paging li a.flex-active {
+	background: #000;
+	background: rgba(0, 0, 0, 1);
+	cursor: default;
+}
+

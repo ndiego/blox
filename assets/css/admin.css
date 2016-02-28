@@ -1,0 +1,60 @@
+/**
+ * Blox Admin Styles
+ *
+ * This stylesheet supplies critical admin styling. It is loaded on every admin page.
+ *
+ * @package     Blox
+ * @copyright   Copyright (c) 2015, Nick Diego
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ */
+
+
+/* Blox Icons
+-------------------------------------------------------------- */
+@font-face {
+	font-family: 'blox-icons';
+	src:url('fonts/blox-icons.eot?i3uhg4');
+	src:url('fonts/blox-icons.eot?#iefixi3uhg4') format('embedded-opentype'),
+		url('fonts/blox-icons.ttf?i3uhg4') format('truetype'),
+		url('fonts/blox-icons.woff?i3uhg4') format('woff'),
+		url('fonts/blox-icons.svg?i3uhg4#blox-icons') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="blox-icon-"], [class*=" blox-icon-"] {
+	font-family: 'blox-icons';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.blox-icon-main:before {
+	content: "\ea1e";
+}
+#adminmenu #menu-posts-blox .wp-menu-image:before {
+	font-family: 'blox-icons';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	content: "\ea1e";
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: subpixel-antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+
+/* Admin Column Fixes
+-------------------------------------------------------------- */
+.fixed .column-local_blocks {
+    width: 15%;
+}

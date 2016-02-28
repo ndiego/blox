@@ -1,0 +1,144 @@
+/**
+ * Blox Settings Styles
+ *
+ * This stylesheet supplies the styling for Blox admin settings.
+ *
+ * @package     Blox
+ * @copyright   Copyright (c) 2015, Nick Diego
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ */
+
+
+/* Settings Page Styles
+-------------------------------------------------------------- */
+.wrap h2:first-child { 
+	margin-bottom: 5px;
+}
+h2.nav-tab-wrapper { 
+	padding-left: 0;
+	padding-right: 0;
+}
+h2.nav-tab-wrapper a {
+	display: inline-block;
+	margin-right: 10px;
+	padding: 8px 15px;
+}
+#tab_container table.form-table {
+	margin-top: 1em;
+}
+#tab_container td label {
+	display: block;
+	padding-top: 8px;
+}
+#tab_container .title {
+	color: #999;
+	font-style: italic;
+}
+#tab_container hr {
+	border-top: 1px solid #ccc;
+	border-bottom: 0;
+}
+#tab_container .description {
+	color: #666;
+	font-size: 13px;
+	margin-top: 6px;
+}
+#tab_container .status {
+	color: #999;
+	display: inline !important;
+	font-style: italic;
+}
+#tab_container p.submit {
+	float: left;
+	padding: 10px 10px 0 0;
+}
+#tab_container textarea {
+	resize: vertical;
+}
+#tab_container td .button {
+	margin-left: 5px;
+}
+#tab_container .header-container {
+	padding-top: 7px;
+}
+
+#tab_container p.edit-license.description {
+	display: none;
+}
+
+/* Classes for different sized text fields */
+#tab_container .text-small { width: 50px; }
+#tab_container .text-normal { width: 200px; }
+#tab_container .text-large { width: 400px; }
+#tab_container .text-full { width: 100%; }
+
+textarea.blox-textarea-code {
+	font-family: Consolas,Monaco,monospace;
+	padding: 10px;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+}
+
+
+/* Styles for Blox Addons */
+.blox-addon-container p {
+	margin: 25px 0;
+}
+.blox-addon {
+	float: left;
+	background-color: #fff;
+	margin: 0 20px 20px 0;
+	padding: 15px;
+	border: 1px solid #ccc;
+	width: 300px;
+	position: relative;
+	overflow: hidden;
+}
+.blox-addon-title {
+	font-size: 14px;
+	margin: 0 0 8px;
+}
+.blox-addon-image {
+	width: 100%;
+}
+.blox-addon-uc {
+	background-color: #333;
+	color: #fff;
+	font-size: 10px;
+	letter-spacing: 2px;
+	padding: 6px 12px;
+	position: absolute;	
+	right: -45px;
+	text-align: center;
+	text-transform: uppercase;
+	top: 30px;
+	width: 160px;
+	
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+}
+
+@media only screen and (max-width: 599px) {
+	h2.nav-tab-wrapper {
+		box-sizing: border-box;
+	}
+	h2.nav-tab-wrapper a {
+		border: 1px solid #ccc;
+		margin: 0 0 10px 0;
+		padding: 10px 0 !important;
+		text-align: center;
+		width: 48%;
+	}
+	h2.nav-tab-wrapper a:nth-child(even) {
+		margin-right: 0;
+	}
+	h2.nav-tab-wrapper a:nth-child(odd) {
+		margin-right: 2%;
+	}
+	#tab_container .header-container {
+		padding-top: 0;
+	}
+}

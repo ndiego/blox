@@ -1,0 +1,917 @@
+/**
+ * Blox Metabox Styles
+ *
+ * This stylesheet supplies styling for all Blox metaboxes, both local and global.
+ *
+ * @package     Blox
+ * @copyright   Copyright (c) 2015, Nick Diego
+ * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ */
+
+
+/* Blox Defaults
+-------------------------------------------------------------- */
+.blox-checkbox label {
+	margin-bottom: .5em;
+	display: inline-block;
+}
+.blox-checkbox label:last-child {
+	margin-bottom: 0;
+}
+/* Makes checkboxes aligned a bit better in form tables */
+.blox-check-correct {
+	padding-top: 17px !important;
+}
+/* Fixes the positioning of single check boxes (Used on Visibility)*/
+.blox-single-checkbox {
+	display: inline-block;
+	margin-top: 4px;
+}
+.blox-content-title th {
+	color: #999;
+	font-style: italic;
+}
+/* Used on Location */
+.blox-title {
+	display: block;
+	font-weight: bold;
+	margin: 5px 0 12px;
+}
+/* Used on Location */
+.blox-sub-title {
+	display: block;
+	font-style: italic;
+	font-weight: bold;
+	margin: 5px 0 12px;
+}
+/* Used on Location */
+.blox-post-status {
+	color: #aeaeae;
+	font-style: italic;
+	display: inline !important;
+}
+/* Used on Image */
+.blox-subtitle span {
+  display: inline-block;
+  width: 80px;
+  max-width: 15%;
+  text-align: left;
+  padding: 0 5px 0 0;
+}
+.blox-subtitle input[type="text"] {
+	width: 80% !important;
+	display: inline-block !important;
+}
+.blox-hidden {
+	display: none;
+}
+.blox-force-hidden {
+	display: none !important;
+}
+.blox-description {
+	color: #666;
+	font-size: 13px;
+	font-style: italic;
+	line-height: 1.5;
+	margin-top: 5px;
+}
+.blox-error {
+	color: #a00;
+	font-size: 13px;
+	font-style: italic;
+	margin-top: 5px;
+}
+.blox-textarea-code {
+	width: 100%;
+	max-width: 100%;
+	font-family: Consolas, Monaco, monospace;
+	font-size: 13px;
+	background: #f9f9f9;
+	outline: 0;
+	resize: vertical;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+}
+.blox-full-text {
+	display: inline !important; /*correct for mobile styles*/
+	width: 100% !important;
+}
+.blox-half-text {
+	display: inline !important; /*correct for mobile styles*/
+	width: 50% !important;
+}
+.blox-medium-text {
+	display: inline !important; /*correct for mobile styles*/
+	width: 150px !important;
+}
+.blox-small-text {
+	display: inline !important; /*correct for mobile styles*/
+	width: 70px !important;
+}
+.blox-very-small-text {
+	display: inline !important; /*correct for mobile styles*/
+	width: 40px !important;
+}
+
+
+/* Styles for (?) help icon and text styling */
+.blox-help-text {
+	color: #666;
+	display: none;
+	font-size: 13px;
+	font-style: italic;
+	line-height: 1.5;
+	margin-bottom: 1.3em;
+}
+.blox-help-text.top {
+	margin-top: 1em;
+	margin-bottom: 0;
+}
+.blox-help-text-icon {
+	display: inline-block;
+}
+.blox-help-text-icon a {
+	color: #a2a2a2 !important;
+}
+.dashicons-editor-help:before,
+.dashicons-editor-help:focus {
+	outline: 0 !important;
+}
+a.dashicons-editor-help:focus,
+a.dashicons-editor-help:active {
+  box-shadow: none;
+  outline: 0;
+}
+/* Styles for the multiple checkbox containers with columns found on Location and Visibility */
+.blox-checkbox-container {
+	background-color: #ffffff;
+	border: 1px solid #e5e5e5;
+	padding: 5px 15px;
+}
+ul.blox-columns {
+	-webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+   	-webkit-column-width: 150px;
+    -moz-column-width: 150px;
+    column-width: 150px;
+    margin: 10px 0 5px;
+	overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis
+}
+ul.blox-columns ul,
+ul.blox-columns li {
+	margin: 0;
+}
+.blox-columns li {
+	display: block; /* Very Important */
+	padding: 0;
+}
+.blox-columns li label {
+	display: inline-block; 
+	height: 24px;
+	overflow: hidden;
+	white-space: nowrap;
+	margin: 0;
+	padding: 0;
+	text-overflow: ellipsis;
+}
+.blox-columns li input {
+	margin-top: 1px;
+}
+.blox-columns li.child {
+	position: relative;
+}
+.blox-columns .blox-no-break {
+	-webkit-column-break-inside: avoid;
+	page-break-inside: avoid;
+	break-inside: avoid;
+}
+.blox-columns .blox-column-title {
+	font-weight: bold;
+	padding: 8px 0;
+}
+/* Styling the the "Select All" and "Unselect All" links */
+.blox-checkbox-select-tools {
+	height: 20px;
+	padding: 8px 0 0;
+	width: 100%;
+}
+.blox-checkbox-select-tools a {
+	text-decoration: none;
+	font-size: 13px;
+}
+.blox-checkbox-select-none {
+	color: #a00;
+	float: right;
+}
+.blox-checkbox-select-none:hover {
+	color: red;
+}
+/* Styling for alerts */
+.blox-alert {
+	color: #444;
+	padding: 15px;
+	margin: 10px 0px 10px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	background-color: #ffe2da;
+	border-color: #e4a697;
+}
+.blox-alert.narrow {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.blox-alert-warning {
+	background-color: #fffae7;
+	border-color: #ede0a9;
+}
+
+
+
+/* Metabox styles
+-------------------------------------------------------------- */
+
+#blox-metabox .form-table {
+	margin-top: 0;
+}
+.post-type-blox_block .form-table td,
+.post-type-blox_block .form-table td label,
+.post-type-blox_block .form-table th {
+	/*font-size: 13px !important; */
+}
+.post-type-blox_block .form-table th {
+	width: 160px;
+}
+#blox-metabox .form-table td {
+	padding: 10px 10px;
+	vertical-align: top;
+}
+#blox-metabox textarea {
+	width: 100%;
+}
+
+@media screen and (max-width: 782px) {
+	#blox-metabox .form-table td,
+	#blox-metabox .form-table th {
+		padding: 8px 0 5px 0;
+		font-size: 14px;
+	}
+}
+
+
+
+/* Content Block Styles (Local and Global)
+-------------------------------------------------------------- */
+
+
+/* Styling for the Add Content Block container (Local only) */
+
+#blox_add_block_container {
+	margin-top: 12px;
+}
+/* Alignment fix for icon next to button */
+#blox_add_block_container .blox-help-text-icon {
+	padding: 4px 0 0 3px;
+}
+#blox_add_block_container .blox-help-text {
+	font-size: 12px;
+	margin: 10px 0 0;
+}
+
+
+/* Preliminary styling for the content block container */
+
+#blox_content_blocks_container>div:first-child {
+	margin: 15px 0 0 !important;
+}
+/* Sortables placeholder */
+#blox_content_blocks_container div.placeholder {
+	background: transparent;
+	border: 1px dashed #ccc;
+	margin: 10px 0 0;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+.blox-content-block {
+	margin: 10px 0 0;
+}
+.blox-content-block.editing .blox-settings-tabs {
+	display: block !important;
+}
+.blox-content-block-editing {
+	display: none !important;
+}
+
+
+/* Content blocks container header styles (Local Only) */
+
+.blox-content-block-header {
+	background: #fafafa;
+	border: 1px solid #dfdfdf;
+	cursor: move;
+	padding: 10px 12px;
+	position: relative;
+}
+.blox-content-block-title {
+	display: inline-block;
+	font-size: 13px;
+	font-weight: 700;
+	margin-right: 10px;
+	max-width: 50%;
+	overflow: hidden;
+	padding: 0 0 4px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+.blox-content-block-controls {
+	display: inline-block;
+}
+.blox-content-block.editing .blox-content-block-title {
+	display: none;
+}
+.blox-content-block-title-input {
+	display: none;
+}
+.blox-content-block-title-input input {
+	width: 50%;
+}	
+.blox-content-block.editing .blox-content-block-title-input {
+	display: inline;
+	margin-right: 5px;
+}
+.blox-remove-block {
+	color: #a00;
+	font-size: 12px;
+	text-decoration: none;
+}
+.blox-remove-block:hover {
+	color: red;
+}
+.blox-replicate-block { 
+	font-size: 12px;
+	margin-right: 8px;
+	text-decoration: none;
+}
+/* We don't want people to be able to replicate a block with unsaved settings */
+.blox-content-block.new .blox-replicate-block { 
+	display: none;
+}
+.blox-content-block-details {
+	font-size: 12px;
+	position: absolute;
+	right: 20px;
+	top: 0;
+}
+.blox-content-block-details-wrap {
+	padding-right: 12px;
+}
+.blox-content-block-type {
+	color: #888;
+	font-size: 12px;
+	padding: 12px 0px 12px 10px;
+	line-height: 18px;
+	display: inline-block;
+}
+.blox-content-block-meta {
+	color: #888;
+	font-size: 12px;
+	padding: 12px 0 12px 4px;
+	line-height: 18px;
+	display: inline-block;
+}
+.blox-content-block-edit {
+  	text-decoration: none;
+  	position: absolute;
+	top: 0;
+	display: block;
+	width: 30px;
+	height: 40px;
+	margin-right: 0 !important;
+	right: -18px;
+	text-indent: 100%;
+	outline: 0;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.blox-content-block-edit:after {
+	right: 0;
+	color: #aaa;
+	content: '\f140';
+	border: none;
+	background: 0 0;
+	font: 400 20px/1 dashicons;
+	line-height: 2.1;
+	speak: none;
+	display: block;
+	padding: 0;
+	text-indent: 0;
+	text-align: center;
+	position: relative;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.blox-content-block-edit:hover:after {  
+	color: #777;
+}
+.blox-content-block.editing .blox-content-block-edit:after {
+	content: '\f142';
+}
+
+
+/* Settings tabs for content blocks */
+
+.blox-settings-tabs {
+	clear: both;
+	display: none;
+	padding: 12px 10px;
+	position: relative;
+	border: 1px solid #dfdfdf;
+	border-top: none;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+.blox-settings-tabs hr {
+  border-top: 1px solid #dfdfdf;
+  border-bottom: 0;
+
+}
+/* If we are on the Global Blocks page, modify styling and always display */
+.blox-settings-tabs.global {
+	display: block;
+	border: none;
+	padding: 10px 0;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+
+/* Navigation styling for block settings tabs */
+
+.blox-tab-navigation {
+	border-bottom: 1px solid #dfdfdf;
+	margin: 0;
+	padding: 0;
+	font-size: 13px;
+	/*font-weight: 600;*/
+}
+.blox-tab-navigation li {
+	background-color: #fafafa;
+	border: 1px solid #dfdfdf;
+	display: inline-block;
+	margin: 0 8px -1px 0;
+	padding: 0;
+}
+.blox-tab-navigation li:nth-child(1) {
+	margin-left: 0;
+}
+.blox-tab-navigation li a {
+	color: #555;
+	display: inline-block;
+	outline: none;  /* Removed dotted border on select */
+	padding: 8px 15px;
+	text-decoration: none;
+}
+.blox-tab-navigation li a:hover {
+	background-color: #ffffff;
+}
+.blox-tab-navigation li a:focus,
+.blox-tab-navigation li a:active {
+  box-shadow: none;
+  outline: 0;
+}
+.blox-tab-navigation li.current {
+	border-bottom: 1px solid #fff;
+}
+.blox-tab-navigation li.current a {
+	background-color: #fff;
+	color: #000;
+}
+
+
+/* Styling for block settings tabs themselves */
+
+.blox-tabs-container {
+	border-top: 0;
+}
+.blox-tab-content {
+	display: none;
+	padding: 10px 0 0;
+}
+.blox-tab-content:first-child {
+	display:block;
+}
+.blox-tab-content .form-table,
+.blox-tab-content .form-table th,
+.blox-tab-content .form-table td {
+	font-size: 13px;
+	margin: 0;
+}
+.blox-tab-content .form-table th {
+	padding: 15px 10px 15px 10px;
+	width: 160px;
+}
+.blox-tab-content .form-table td {
+	padding: 12px 10px;
+	vertical-align: middle;
+}
+
+
+
+/* Content Options Styling
+-------------------------------------------------------------- */
+
+
+/* Static Image Styles */
+
+.blox-image-preview-wrapper {
+	border: 1px solid #e5e5e5;
+	display: inline-block;
+	margin-top: 1.2em;
+	max-width: 800px;
+	max-height: 600px;
+}
+.blox-image-preview-inner {
+	border: 1px solid #e5e5e5;
+	display: inline-block;
+	margin: 4px;  
+	max-height: 590px;
+	overflow: hidden;
+	vertical-align: top;     
+}
+.blox-image-preview-inner img {
+	max-width: 100%;
+	width: 100%;
+	vertical-align: top;
+}
+.blox-image-atts {
+	padding-top: 0
+}
+.blox-image-link {
+	display: none;
+}
+.blox-image-atts label,
+.blox-image-link label {
+	display: block;
+	margin-top: 15px;
+}
+.blox-image-atts .blox-subtitle span,
+.blox-image-link .blox-subtitle span {
+	width: 30px;
+}
+
+
+/* Editor Styles */
+
+.blox-editor-show-source {
+	margin-left: 10px !important;
+}
+.blox-editor-show-source.button:focus,
+.blox-editor-show-source.button:active {
+  	box-shadow: none;
+  	outline: 0;
+}
+.blox-editor-output-wrapper {
+	padding-top: 20px;
+	display: none;
+}
+#blox_editor_master_ifr {
+	min-height: 300px !important;
+}
+
+
+/* Raw Styles */
+
+.blox-content-raw td label { 
+	display: block;
+	margin-top: 12px;
+}
+.blox-content-raw  label.last { 
+	display: inline-block;
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+
+
+/* Slideshow Styles */
+
+#blox_gallery_container,
+.blox-slider-container {
+	margin-top: 20px;
+	box-sizing: border-box;
+}
+#blox_gallery_container li,
+.blox-slider-container li {
+	background: #fff;
+	display: block;
+	float: left;
+	margin: 0 10px 10px 0;
+	padding: 4px;
+	list-style: none;
+	border: 1px solid #e5e5e5;
+	cursor: move;
+	width: 150px;
+}
+#blox_gallery_container li div.blox-gallery-container,
+.blox-slider-container li div.blox-slide-container {
+	background: #eee;
+	line-height: 0;	
+	width: 100%;
+}
+#blox_gallery_container li img,
+.blox-slide-container img {
+	width: 100%;
+}
+#blox_gallery_container li div.blox-slide-details-container,
+.blox-slider-container li div.blox-slide-details-container,
+.blox-filler .blox-filler-text {
+	padding: 4px 0 0;
+}
+a.blox-slide-remove {
+	float:right;
+	color: #a00;
+	font-size: 13px;
+	text-decoration: none;
+}
+a.blox-slide-remove:hover {
+	color: red;
+}
+a.blox-slide-details {
+	text-decoration: none;
+}
+#blox_gallery_container li.placeholder,
+.blox-slider-container li.placeholder {
+	background: transparent;
+	border: 1px dashed #d5d5d5;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+/* Styles for filler slide when slideshow is empty */
+.blox-filler {
+	cursor: default !important;
+}
+.blox-filler-container {
+	background-color: #eee;	
+	background-image: url('../images/default-square.png') !important;
+	width: 150px;
+	height: 150px;
+	position: relative;
+	top: 0;
+}
+.blox-filler-text span {
+	color: #e5e5e5;
+}
+.blox-filler-text .right {
+	float: right;
+}
+.blox-slide-multiplicity {
+	display: inline-block;
+	text-align: center;
+}
+/* Styles for settings on Slideshow */
+.blox-standard-settings {
+	margin-bottom: 20px;
+}
+.blox-standard-settings select {
+	display: inline !important;
+	margin-right: 4px;
+	width: 70px;
+}
+.blox-standard-settings input {
+	margin: 10px 4px 0 0;
+}
+.blox-advanced-settings label {
+	display: inline-block;
+	margin-bottom: 10px;
+}
+
+
+
+/* Location Options Styles 
+-------------------------------------------------------------- */
+
+#blox_location_selection td {
+	padding-top: 0;
+}
+#blox_location_selection .blox-description {
+	margin-bottom: 10px;
+}
+/* Location Styles */
+.blox-subcontainer {
+	background: #f5f5f5;
+	border: 1px solid #dddddd;
+	padding: 8px 12px 15px;
+	position: relative;
+	margin-top: 25px;
+}
+.blox-singles-container-inner {
+	margin-top: 15px;
+}
+.blox-location-singles-selection .blox-description {
+	margin: 10px 0;
+}
+.blox-singles-taxonomy-container-wrapper .blox-singles-taxonomy-container {
+	margin-top: 20px;
+}
+.blox-singles-taxonomy-container-inner {
+	margin-top: 15px;
+}
+.blox-location-selected-container {
+	margin-top: 15px;
+}
+
+
+
+/* Admin Modal Styles (Used for Slideshow, Editor, etc. )
+-------------------------------------------------------------- */
+
+.blox-modal {
+	display: none;
+	background-color: #ffffff;
+	-webkit-box-shadow: 0 5px 15px rgba(0,0,0,.7);
+	box-shadow: 0 5px 15px rgba(0,0,0,.7);
+}
+.blox-modal .form-table th {
+	width: 120px !important;
+}
+.blox-modal-titlebar {
+	height: 50px;
+	padding: 0 16px;
+	border: 1px solid #dfdfdf;
+	background-color: #fcfcfc;
+	cursor: move;
+  	-webkit-box-shadow: 0 4px 4px -4px rgba(0,0,0,.1);
+  	box-shadow: 0 4px 4px -4px rgba(0,0,0,.1);
+}
+.blox-modal-title {
+	font-size: 22px;
+	line-height: 50px;
+	display: block;
+	font-weight: 600;
+	float: left;
+}
+.blox-modal-close {
+	background-color: inherit;
+	border: 0;
+	float: right;
+	padding: 0;
+	margin: 16px 0 0;
+	outline: none; /*remove blue glow */
+}
+.blox-modal-close-icon:before {
+	content: '\f158';
+	font: 400 20px/1 dashicons;
+	speak: none;
+	vertical-align: middle;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	color: #666;
+	cursor: pointer;
+}
+.blox-modal-close-icon:hover:before {
+	color: #2ea2cc;
+}
+.blox-modal-close .blox-modal-close-text {
+	display: none;
+}
+.blox-modal .blox-form-container {
+	padding: 16px 16px;
+	overflow-y: scroll;
+    -webkit-height: calc(100%  -  142px);
+    -moz-height: calc(100%  -  142px);
+    height: calc(100%  -  142px);
+}
+.blox-modal .form-table td,
+.blox-modal .form-table td label,
+.blox-modal .form-table th {
+	font-size: 13px !important; 
+}
+.blox-modal textarea,
+.blox-modal input[type="text"] {
+	width: 100%;
+}
+.blox-modal-footer {
+	height: 60px;
+	width:100%;
+}
+.blox-modal-buttonpane {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 60px;
+	padding: 0 16px;
+	border: 1px solid #dfdfdf;
+	background-color: #fcfcfc;
+	text-align: right;
+}
+.blox-modal-button {
+	margin: 16px 0 0 !important;
+}
+#blox_overlay {
+    position: fixed;
+    z-index: 99999;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background: #000;
+    display: none;
+}
+
+
+
+/* Media Queries for content block styling
+-------------------------------------------------------------- */
+
+@media only screen and (max-width: 782px) {
+	.blox-tab-content .form-table th {
+		font-size: 14px;
+		padding-bottom: 0;
+	}
+	.blox-columns li label {
+		height: 34px;
+	}
+	
+	/* Make select dropdowns smaller so help icon does not drop to the next line */
+	.blox-has-help {
+		display: inline-block !important;
+		width: 88% !important;
+	}
+	
+	.blox-content-title th {
+		display: block;
+		float: left;
+		margin-bottom: 10px;
+		width: 180px;
+	}
+	.blox-content-title td {
+		display: block;
+		margin-top: 4px !important;
+	}
+}
+
+@media only screen and (max-width: 599px) {
+
+	.blox-content-block-type {
+		display: none;
+	}
+	
+	.blox-tab-navigation li {
+		width: 48%;
+		text-align: center;
+	}
+	.blox-tab-navigation li a {
+		display: block;
+	}
+	.blox-tab-navigation li:nth-child(even) {
+		margin-right: 0;
+	}
+	.blox-tab-navigation li:nth-child(odd) {
+		margin-right: 2%;
+	}
+	.blox-tab-navigation li.current {
+		border-bottom: 1px solid #dfdfdf;
+	}
+}
+
+@media only screen and (max-width: 499px) {
+	.blox-content-block-controls {
+		display: none;
+	}
+	.blox-tab-navigation li {
+		width: 100%;
+		margin: 0 0 -1px 0;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.blox-modal {
+		top: 0 !important;
+		left: 0 !important;
+		right: 0 !important;
+		bottom: 0 !important;
+		width: 100% !important;
+		margin: 0 !important;
+		overflow-y: scroll;
+	}
+	.blox-modal .form-table {
+		margin-bottom: 65px !important; /* So "Apply Settings" button does not overlap content on small screens */
+	}
+	.blox-modal .form-table th {
+		padding-left: 5px !important;
+	}
+	.blox-modal .form-table td {
+		padding-left: 5px !important;
+	}
+	.blox-modal-buttonpane {
+		bottom:0;
+		right:0;
+		left:0;
+		position: fixed;
+	}
+}
