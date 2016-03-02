@@ -139,13 +139,13 @@ class Blox_Position {
 					<th scope="row"><?php echo __( 'Position Type', 'blox' ); ?></th>
 					<td>
 						<select name="<?php echo $name_prefix; ?>[position_type]" id="blox_position_type_<?php echo $id; ?>">
-							<option value="default" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( $get_prefix['position_type'], 'default' ) : 'selected'; ?>><?php _e( 'Default', 'blox' ); ?></option>
-							<option value="custom" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( $get_prefix['position_type'], 'custom' ) : ''; ?>><?php _e( 'Custom', 'blox' ); ?></option>
+							<option value="default" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( esc_attr( $get_prefix['position_type'] ), 'default' ) : 'selected'; ?>><?php _e( 'Default', 'blox' ); ?></option>
+							<option value="custom" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( esc_attr( $get_prefix['position_type'] ), 'custom' ) : ''; ?>><?php _e( 'Custom', 'blox' ); ?></option>
 						</select>
 						<div class="blox-position-default blox-description <?php if ( $get_prefix['position_type'] == 'custom' ) echo ( 'blox-hidden' ); ?>">
 							<?php
-								$default_position = $global ? blox_get_option( 'global_default_position', 'genesis_after_header' ) : blox_get_option( 'local_default_position', 'genesis_after_header' );
-								$default_priority = $global ? blox_get_option( 'global_default_priority', 15 ) : blox_get_option( 'local_default_priority', 15 );
+								$default_position = $global ? esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) ) : esc_attr( blox_get_option( 'local_default_position', 'genesis_after_header' ) );
+								$default_priority = $global ? esc_attr( blox_get_option( 'global_default_priority', 15 ) ) : esc_attr( blox_get_option( 'local_default_priority', 15 ) );
 
 								echo sprintf( __( 'The default position is %1$s and the default priority is %2$s. You can change this default positioning by visiting the %3$sSettings Page%4$s, or use custom positioning to override this default.', 'blox' ), '<strong>' . $default_position . '</strong>', '<strong>' . $default_priority . '</strong>', '<a href="' . admin_url( 'edit.php?post_type=blox_block&page=blox-settings' ) . '">', '</a>' );
 							?>
@@ -160,13 +160,13 @@ class Blox_Position {
 							foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
 								<optgroup label="<?php echo $section['name']; ?>">
 									<?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
-										<option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>" <?php echo ! empty( $get_prefix['custom']['position'] ) ? selected( $get_prefix['custom']['position'], $hooks ) : ''; ?>><?php echo $hook['name']; ?></option>
+										<option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>" <?php echo ! empty( $get_prefix['custom']['position'] ) ? selected( esc_attr( $get_prefix['custom']['position'] ), $hooks ) : ''; ?>><?php echo $hook['name']; ?></option>
 									<?php } ?>
 								</optgroup>
 							<?php } ?>
 						</select>
 						<div class="blox-description">
-							<?php echo sprintf( __( 'Please refer to the %1$sGenesis Visual Hook Guide%2$s for hook reference and position information.', 'blox' ), '<a href="http://genesistutorials.com/visual-hook-guide/" alt="' . __( 'Genesis Visual Hook Guide', 'blox' ) . '" target="_blank">', '</a>' ); ?>
+							<?php echo sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hooks/?utm_source=blox-lite&utm_medium=plugin&utm_content=position-tab-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ); ?>
 						</div>
 					</td>
 				</tr>
@@ -240,9 +240,9 @@ class Blox_Position {
     public function admin_column_data( $post_id, $block_data ) {
 		if ( ! empty( $block_data['position']['position_type'] ) ) {
 			if ( $block_data['position']['position_type'] == 'default' ) {
-				echo blox_get_option( 'global_default_position', 'genesis_after_header' );
+				echo esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
 			} else if ( $block_data['position']['custom'] ) {
-				echo ! empty( $block_data['position']['custom']['position'] ) ? $block_data['position']['custom']['position'] : '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
+				echo ! empty( $block_data['position']['custom']['position'] ) ? esc_attr( $block_data['position']['custom']['position'] ) : '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
 			}
 		} else {
 			echo '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';

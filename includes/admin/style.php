@@ -150,7 +150,7 @@ class Blox_Style {
 					<td>
 						<textarea class="blox-textarea-code" name="<?php echo $name_prefix; ?>[custom_css]" rows="6" placeholder="<?php echo 'e.g. #blox_' . $block_scope . '_' . $id . ' { border: 1px solid green; }'; ?>"><?php echo ! empty( $get_prefix['custom_css'] ) ? esc_html( $get_prefix['custom_css'] ) : ''; ?></textarea>	
 						<div class="blox-description">
-							<?php echo __( 'All custom CSS for this block should begin with ', 'blox' ) . '<code>#blox_' . $block_scope . '_' . $id . '</code>' . __( '. Otherwise the custom CSS could interfere with other content blocks.', 'blox' ); ?>
+							<?php echo __( 'All custom CSS for this block should begin with ', 'blox' ) . '<code>#blox_' . $block_scope . '_' . $id . '</code>. ' . sprintf( __( 'Otherwise the custom CSS could interfere with other content blocks. For reference on content block frontend markup, please refer to the %1$sBlox Documentation%2$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/frontend-markup/?utm_source=blox-lite&utm_medium=plugin&utm_content=style-tab-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank"target="_blank">', '</a>' ); ?>
 						</div>
 					</td>
 				</tr>
@@ -158,7 +158,7 @@ class Blox_Style {
 					<th scope="row"><?php _e( 'Disable Default CSS', 'blox' ); ?></th>
 					<td>
 						<label>
-							<input type="checkbox" name="<?php echo $name_prefix; ?>[disable_default_css]" value="1" <?php ! empty( $get_prefix['disable_default_css'] ) ? checked( $get_prefix['disable_default_css'] ) : ''; ?> />
+							<input type="checkbox" name="<?php echo $name_prefix; ?>[disable_default_css]" value="1" <?php ! empty( $get_prefix['disable_default_css'] ) ? checked( esc_attr( $get_prefix['disable_default_css'] ) ) : ''; ?> />
 							<?php _e( 'Check to disable all default styles on this block', 'blox' ); ?>
 						</label>
 						<span class="blox-help-text-icon">
@@ -173,7 +173,7 @@ class Blox_Style {
 					<th scope="row"><?php _e( 'Enable Wrap', 'blox' ); ?></th>
 					<td>
 						<label>
-							<input type="checkbox" name="<?php echo $name_prefix; ?>[enable_wrap]" value="1" <?php ! empty( $get_prefix['enable_wrap'] ) ? checked( $get_prefix['enable_wrap'] ) : ''; ?> />
+							<input type="checkbox" name="<?php echo $name_prefix; ?>[enable_wrap]" value="1" <?php ! empty( $get_prefix['enable_wrap'] ) ? checked( esc_attr( $get_prefix['enable_wrap'] ) ) : ''; ?> />
 							<?php echo sprintf( __( 'Check to include the %1$swrap%2$s CSS selector in the block markup.', 'blox' ), '<code>', '</code>' ); ?>
 						</label>
 						<span class="blox-help-text-icon">

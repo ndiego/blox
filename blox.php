@@ -257,7 +257,7 @@ class Blox_Main {
 		}
 
 		$docs_link = esc_url( add_query_arg( array(
-				'utm_source'   => 'blox-main',
+				'utm_source'   => 'blox',
 				'utm_medium'   => 'plugin',
 				'utm_campaign' => 'Blox_Plugin_Links',
 				'utm_content'  => 'plugins-page-link'
@@ -265,7 +265,7 @@ class Blox_Main {
 		);
 
 		$new_links = array(
-			'<a href="' . $docs_link . '">' . esc_html__( 'Documentation', 'blox' ) . '</a>',
+			'<a href="' . $docs_link . '" target="_blank">' . esc_html__( 'Documentation', 'blox' ) . '</a>',
 		);
 
 		$links = array_merge( $links, $new_links );

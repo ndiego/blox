@@ -204,7 +204,9 @@ class Blox_Content {
 		
 		// Only display content check error on the content tab
 		if ( $tab == 'content' ) {
-		
+			
+			$data = ! empty( $data ) ? $data : array();
+			
 			// Need to handle $data differently for local blocks
 			if ( $global && isset( $data['content']['content_type'] ) ) {
 				$set_content_type = $data['content']['content_type'];

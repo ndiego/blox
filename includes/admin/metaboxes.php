@@ -188,19 +188,19 @@ class Blox_Metaboxes {
 		global $typenow;
         
         // Check if local blocks are enabled and user has permission to manage local blocks
-		$local_enable      = blox_get_option( 'local_enable', false );
-		$local_permissions = blox_get_option( 'local_permissions', 'manage_options' );		
+		$local_enable      = esc_attr( blox_get_option( 'local_enable', false ) );
+		$local_permissions = esc_attr( blox_get_option( 'local_permissions', 'manage_options' ) );		
        	
         if ( $local_enable && current_user_can( $local_permissions ) ) { 
        		
        		// Get all post types that are allowed to have local blocks
         	$local_enabled_pages = blox_get_option( 'local_enabled_pages', '' );
-        	$local_metabox_title = blox_get_option( 'local_metabox_title', __( 'Local Content Blocks', 'blox' ) );
+        	$local_metabox_title = esc_attr( blox_get_option( 'local_metabox_title', __( 'Local Content Blocks', 'blox' ) ) );
 
 			// Loops through allowed post types and add the local block metabox
 			if ( ! empty( $local_enabled_pages ) ) {
 				foreach ( (array) $local_enabled_pages as $local_enabled_page ) {
-					add_meta_box( 'local_blocks_metabox', $local_metabox_title, array( $this, 'local_blocks_metabox_callback' ), $local_enabled_page, 'normal', 'high' );
+					add_meta_box( 'local_blocks_metabox', $local_metabox_title, array( $this, 'local_blocks_metabox_callback' ), esc_attr( $local_enabled_page ), 'normal', 'high' );
 				}
 			}
         }
@@ -294,7 +294,7 @@ class Blox_Metaboxes {
 					
 					if ( $tab_settings['scope'] == 'all' || $tab_settings['scope'] == 'global' ) { 
 					?> 
-					<li class="<?php echo $tab == 'content' ? 'current' : ''; ?>"><a href="#blox_tab_<?php echo $tab; ?>"><?php echo $tab_settings['title']; ?></a></li>
+					<li class="<?php echo $tab == 'content' ? 'current' : ''; ?>"><a href="#blox_tab_<?php echo esc_attr( $tab ); ?>"><?php echo esc_attr( $tab_settings['title'] ); ?></a></li>
 					<?php
 					}
 					
@@ -428,19 +428,21 @@ class Blox_Metaboxes {
  
 			// Check to see if the submitted nonce matches with the generated nonce we created earlier
 			if ( ! wp_verify_nonce( $_POST['blox_add_block_nonce'], 'blox_add_block_nonce' ) ) {
-				die ( 'Please try refreshing the page and try again...' );
+				die ( __( 'Please try refreshing the page and try again...', 'blox' ) );
 			}
 			
-			if ( $_POST['type'] == 'copy' ) {
+			$type = esc_attr( $_POST['type'] );
+			
+			if ( $type == 'copy' ) {
 							
-				$post_id     = $_POST['post_id'];
-				$data        = get_post_meta( $post_id, '_blox_content_blocks_data', true );
+				$post_id     = is_numeric( $_POST['post_id'] ) ? $_POST['post_id'] : '';
+				$data        = ! empty( $post_id ) ? get_post_meta( $post_id, '_blox_content_blocks_data', true ) : '';
 				$name_id     = $rand_id;
-				$get_id      = $_POST['block_id']; // Used to use (int) $_POST['block_id']; but breaks when ids start with 0
+				$get_id      = is_numeric( $_POST['block_id'] ) ? $_POST['block_id'] : '';
 				$copy_text 	 = __( ' COPY', 'blox' );
-				$block_title = ! empty( $data[$get_id]['title'] ) ? esc_attr( $data[$get_id]['title'] ) : 'nothing';
+				$block_title = ! empty( $data[$get_id]['title'] ) ? esc_attr( $data[$get_id]['title'] ) : __( 'Error', 'blox' );
 				
-			} else if ( $_POST['type'] == 'new' )  {
+			} else if ( $type == 'new' )  {
 			
 			    $name_id     = $rand_id;
 				$get_id      = $rand_id;
@@ -461,7 +463,7 @@ class Blox_Metaboxes {
 			<div class="blox-content-block-header">
 				<div class="blox-content-block-title-container">
 					<div class="blox-content-block-title">
-						<?php echo ! empty( $block_title ) ? $block_title . $copy_text : '<span class="no-title">No Title</span>' . $copy_text; ?>
+						<?php echo ! empty( $block_title ) ? $block_title . $copy_text : '<span class="no-title">' . __( 'No Title', 'blox' ) . '</span>' . $copy_text; ?>
 					</div>
 					<div class="blox-content-block-title-input">
 						<input type="text" name="blox_content_blocks_data[<?php echo $name_id; ?>][title]" placeholder="<?php _e( 'Content Block Title' ); ?>" value="<?php echo $block_title . $copy_text; ?>">
@@ -482,22 +484,11 @@ class Blox_Metaboxes {
 									if ( ! array_key_exists( $data[$name_id]['content']['content_type'], $this->get_content_types() ) ) {
 										echo ' - <span class="blox-error">' . __( 'Error', 'blox' ) . '</span>';
 									}
-									
-									// Add a dot to separate additional meta data
-									echo '&nbsp;&nbsp;&middot;';
 								} else {
 									echo '<span class="blox-error">' . __( 'Error', 'blox' ) . '</span>';
 								}
 							?>
 						</span>
-						<?php 
-							if ( ! empty( $data[$name_id] ) ) {
-								echo '<span class="blox-content-block-meta">';
-									// Hook in additional local block meta data
-									do_action( 'blox_content_block_meta', $data[$name_id] );
-								echo '</span>';
-							}
-						?>
 					</div>
 					<a class="blox-content-block-edit" title="<?php _e( 'Edit Content Block', 'blox' ); ?>" href="#"></a>
 				</div>
