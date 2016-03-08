@@ -179,17 +179,6 @@ class Blox_Common {
 					'genesis_after_entry_content' 	=> array( 'name'  => 'genesis_after_entry_content', 'title' => __( 'This hook executes after the .entry-content container in all loop blocks.', 'blox' ) ),
 					'genesis_entry_footer' 			=> array( 'name'  => 'genesis_entry_footer', 'title' => __( 'This hook executes after the entry content and generates the entry footer content in all loop blocks.', 'blox' ) ),
 					'genesis_after_entry' 			=> array( 'name'  => 'genesis_after_entry', 'title' => __( 'This hook executes after each entry in all loop blocks (outside the post_class() container).', 'blox' ) ),
-					// XHTML Hooks - Deactivated for now, possibly remove completely
-					/*
-					'genesis_before_post' 			=> array( 'name'  => 'genesis_before_post (XHTML)', 'title' => __( 'This hook executes before each post in all loop blocks (outside the post_class() div).', 'blox' ) ),
-					'genesis_before_post_title' 	=> array( 'name'  => 'genesis_before_post_title (XHTML)', 'title' => __( 'This hook executes immediately before each post title for each post within the loop.', 'blox' ) ),
-					'genesis_post_title' 			=> array( 'name'  => 'genesis_post_title (XHTML)', 'title' => __( 'This hook outputs the actual post title, contextually, based on what type of page you are viewing.', 'blox' ) ),
-					'genesis_after_post_title' 		=> array( 'name'  => 'genesis_after_post_title (XHTML)', 'title' => __( 'This hook executes immediately after each post title for each post within the loop.', 'blox' ) ),
-					'genesis_before_post_content' 	=> array( 'name'  => 'genesis_before_post_content (XHTML)', 'title' => __( 'This hook executes immediately before the post/page content is output, outside the .entry-content div.', 'blox' ) ),
-					'genesis_post_content' 			=> array( 'name'  => 'genesis_post_content (XHTML)', 'title' => __( 'This hook outputs the actual post content and if chosen, the post image (inside the #content div).', 'blox' ) ),
-					'genesis_after_post_content' 	=> array( 'name'  => 'genesis_after_post_content (XHTML)', 'title' => __( 'This hook executes immediately after the post/page content is output, outside the .entry-content div.', 'blox' ) )
-					'genesis_after_post' 			=> array( 'name'  => 'genesis_after_post (XHTML)', 'title' => __( 'This hook executes after each post in all loop blocks (outside the post_class() div).', 'blox' ) ),
-					*/
 				)
 			),
 			'comment' => array(
@@ -237,33 +226,6 @@ class Blox_Common {
     	$content_types = array();
 
     	return apply_filters( 'blox_content_type', $content_types );
-    }
-
-    
-    /**
-     * Helper function for determining what content types are active on a page.
-     *
-     * @since 1.0.0
-     *
-     * @return array Array of all active content types.
-     */
-    public function get_active_content_types() {
-			
-    	$active_content_types = array();
-				
-		$content_types = apply_filters( 'blox_active_content_types', $active_content_types );
-		
-		// Flattens and fixes up the multidimensional $content_types array
-		if ( ! empty( $content_types ) ) {
-		
-			// Flatten the $content_types array: http://stackoverflow.com/questions/526556/how-to-flatten-a-multi-dimensional-array-to-simple-one-in-php
-			array_walk_recursive( $content_types, function($v, $k) use ( &$active_content_types ){ $active_content_types[] = $v; } );
-			
-			// Remove any duplicates that might have been generated if we have more than one of the same type of block showing
-			$active_content_types = array_values( array_unique( $active_content_types ) );
-		}
-		
-    	return $active_content_types;
     }
         
     

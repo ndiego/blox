@@ -1,4 +1,4 @@
-=== Blox ===
+=== Blox - Content Blocks for Genesis ===
 
 With this Wordpress plugin, you can easily add content blocks to your Genesis powered website.
 

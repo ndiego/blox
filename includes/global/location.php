@@ -140,9 +140,9 @@ class Blox_Location {
 					<th scope="row"><?php _e( 'Block Location' ); ?></th>
 					<td>
 						<select id="blox_location_type" name="<?php echo $name_prefix; ?>[location_type]" class="blox-has-help">
-							<option value="all" <?php echo ! empty( $get_prefix['location_type'] ) ? selected( $get_prefix['location_type'], 'all' ) : 'selected'; ?>><?php _e( 'All Pages', 'blox' ); ?></option>
-							<option value="show_selected" <?php echo ! empty( $get_prefix['location_type'] ) ? selected( $get_prefix['location_type'], 'show_selected' ) : ''; ?>><?php _e( 'Show on Selected', 'blox' ); ?></option>
-							<option value="hide_selected" <?php echo ! empty( $get_prefix['location_type'] ) ? selected( $get_prefix['location_type'], 'hide_selected' ) : ''; ?>><?php _e( 'Hide on Selected', 'blox' ); ?></option>
+							<option value="all" <?php echo ! empty( $get_prefix['location_type'] ) ? selected( esc_attr( $get_prefix['location_type'] ), 'all' ) : 'selected'; ?>><?php _e( 'All Pages', 'blox' ); ?></option>
+							<option value="show_selected" <?php echo ! empty( $get_prefix['location_type'] ) ? selected( esc_attr( $get_prefix['location_type'] ), 'show_selected' ) : ''; ?>><?php _e( 'Show on Selected', 'blox' ); ?></option>
+							<option value="hide_selected" <?php echo ! empty( $get_prefix['location_type'] ) ? selected( esc_attr( $get_prefix['location_type'] ), 'hide_selected' ) : ''; ?>><?php _e( 'Hide on Selected', 'blox' ); ?></option>
 						</select>
 						<span class="blox-help-text-icon">
 							<a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
@@ -191,8 +191,8 @@ class Blox_Location {
 					<th scope="row"><?php _e( 'Single Pages' ); ?></th>
 					<td>
 						<select class="blox-location-select_type" name="<?php echo $name_prefix; ?>[singles][select_type]" >
-							<option value="all" <?php echo ! empty( $get_prefix['singles']['select_type'] ) ? selected( $get_prefix['singles']['select_type'], 'all' ) : 'selected'; ?>><?php _e( 'All Single Pages', 'blox' ); ?></option>
-							<option value="selected" <?php echo ! empty( $get_prefix['singles']['select_type'] ) ? selected( $get_prefix['singles']['select_type'], 'selected' ) : ''; ?>><?php _e( 'Selected Single Pages', 'blox' ); ?></option>
+							<option value="all" <?php echo ! empty( $get_prefix['singles']['select_type'] ) ? selected( esc_attr( $get_prefix['singles']['select_type'] ), 'all' ) : 'selected'; ?>><?php _e( 'All Single Pages', 'blox' ); ?></option>
+							<option value="selected" <?php echo ! empty( $get_prefix['singles']['select_type'] ) ? selected( esc_attr( $get_prefix['singles']['select_type'] ), 'selected' ) : ''; ?>><?php _e( 'Selected Single Pages', 'blox' ); ?></option>
 						</select>
 
 						<div class="blox-location-selected-container <?php if ( empty( $get_prefix['singles']['select_type'] ) ||  $get_prefix['singles']['select_type'] != 'selected' ) echo ( 'blox-hidden' ); ?>">
@@ -280,13 +280,16 @@ class Blox_Location {
 					<th scope="row"><?php _e( 'Archive Pages' ); ?></th>
 					<td>
 						<select class="blox-location-select_type" name="<?php echo $name_prefix; ?>[archive][select_type]" >
-							<option value="all" <?php echo ! empty( $get_prefix['archive']['select_type'] ) ? selected( $get_prefix['archive']['select_type'], 'all' ) : 'selected'; ?>><?php _e( 'All Archive Pages', 'blox' ); ?></option>
-							<option value="selected" <?php echo ! empty( $get_prefix['archive']['select_type'] ) ? selected( $get_prefix['archive']['select_type'], 'selected' ) : ''; ?>><?php _e( 'Selected Archive Types', 'blox' ); ?></option>
+							<option value="all" <?php echo ! empty( $get_prefix['archive']['select_type'] ) ? selected( esc_attr( $get_prefix['archive']['select_type'] ), 'all' ) : 'selected'; ?>><?php _e( 'All Archive Pages', 'blox' ); ?></option>
+							<option value="selected" <?php echo ! empty( $get_prefix['archive']['select_type'] ) ? selected( esc_attr( $get_prefix['archive']['select_type'] ), 'selected' ) : ''; ?>><?php _e( 'Selected Archive Types', 'blox' ); ?></option>
 						</select>
 
 						<div class="blox-location-selected-container <?php if ( empty( $get_prefix['archive']['select_type'] ) ||  $get_prefix['archive']['select_type'] != 'selected' ) echo ('blox-hidden'); ?>">
 							
 							<div class="blox-location-archive-selection">
+								<div class="blox-description">
+									<?php _e( 'Select an archive type below to view additional options.', 'blox' ); ?>
+								</div>
 								<div class="blox-checkbox-container">
 									<ul class="blox-columns">
 										<li><label><input type="checkbox" name="<?php echo $name_prefix; ?>[archive][selection][]" value="posttypes" <?php echo ! empty( $get_prefix['archive']['selection'] ) && in_array( 'posttypes', $get_prefix['archive']['selection'] ) ? 'checked="checked"' : ''; ?> /> <?php _e( 'Post Type', 'blox' ); ?></label></li>
@@ -319,8 +322,8 @@ class Blox_Location {
 								<span class="blox-title"><?php _e( 'Post Type', 'blox' );?></span>
 
 								<select class="blox-location-select_type" name="<?php echo $name_prefix; ?>[archive][posttypes][select_type]">
-									<option value="all" title="<?php _e( 'Show or hide on all post type archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive']['posttypes']['select_type'] ) ? selected( $get_prefix['archive']['posttypes']['select_type'], 'all' ) : 'selected'; ?>><?php _e( 'All Post Type Archives', 'blox' ); ?></option>
-									<option value="selected" title="<?php _e( 'Show or hide on selected post type archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive']['posttypes']['select_type'] ) ? selected( $get_prefix['archive']['posttypes']['select_type'], 'selected' ) : ''; ?>><?php _e( 'Selected Post Type Archives', 'blox' ); ?></option>
+									<option value="all" title="<?php _e( 'Show or hide on all post type archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive']['posttypes']['select_type'] ) ? selected( esc_attr( $get_prefix['archive']['posttypes']['select_type'] ), 'all' ) : 'selected'; ?>><?php _e( 'All Post Type Archives', 'blox' ); ?></option>
+									<option value="selected" title="<?php _e( 'Show or hide on selected post type archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive']['posttypes']['select_type'] ) ? selected( esc_attr( $get_prefix['archive']['posttypes']['select_type'] ), 'selected' ) : ''; ?>><?php _e( 'Selected Post Type Archives', 'blox' ); ?></option>
 								</select>
 								<div class="blox-description">
 									<?php _e( 'Use this option to show/hide the content block on archive pages of post types. Note: If you are looking to target the "archive" page for Posts, use the Blog Page option in the main Block Location settings panel above.', 'blox' ); ?>
@@ -361,8 +364,8 @@ class Blox_Location {
 								<span class="blox-title"><?php _e( 'Author', 'blox' );?></span>
 
 								<select class="blox-location-select_type" name="<?php echo $name_prefix; ?>[archive][authors][select_type]">
-									<option value="all" title="<?php _e( 'Show or hide on all author archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive']['authors']['select_type'] ) ? selected( $get_prefix['archive']['authors']['select_type'], 'all' ) : 'selected'; ?>><?php _e( 'All Author Archives', 'blox' ); ?></option>
-									<option value="selected" title="<?php _e( 'Show or hide on selected author archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive']['authors']['select_type'] ) ? selected( $get_prefix['archive']['authors']['select_type'], 'selected' ) : ''; ?>><?php _e( 'Selected Author Archives', 'blox' ); ?></option>
+									<option value="all" title="<?php _e( 'Show or hide on all author archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive']['authors']['select_type'] ) ? selected( esc_attr( $get_prefix['archive']['authors']['select_type'] ), 'all' ) : 'selected'; ?>><?php _e( 'All Author Archives', 'blox' ); ?></option>
+									<option value="selected" title="<?php _e( 'Show or hide on selected author archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive']['authors']['select_type'] ) ? selected( esc_attr( $get_prefix['archive']['authors']['select_type'] ), 'selected' ) : ''; ?>><?php _e( 'Selected Author Archives', 'blox' ); ?></option>
 								</select>
 
 								<div class="blox-location-selected-container <?php if ( empty( $get_prefix['archive']['authors']['select_type'] ) || $get_prefix['archive']['authors']['select_type'] == 'all' ) echo ( 'blox-hidden' ); ?>">
@@ -410,8 +413,8 @@ class Blox_Location {
 											<span class="blox-title"><?php echo $taxonomy->labels->name ?> <span class="blox-post-status">(<?php echo $assigned_postypes;?>)</span></span>
 
 											<select class="blox-location-select_type" name="<?php echo $name_prefix; ?>[archive][<?php echo $taxonomy->name; ?>][select_type]">
-												<option value="all" title="<?php _e( 'Show or hide on all taxonomy archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive'][$taxonomy->name]['select_type'] ) ? selected( $get_prefix['archive'][$taxonomy->name]['select_type'], 'all' ) : 'selected'; ?>><?php echo sprintf( __( 'All %1$s Archives', 'blox' ), ucfirst( $taxonomy->labels->singular_name ) ); ?></option>
-												<option value="selected" title="<?php _e( 'Show or hide on selected taxonomy archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive'][$taxonomy->name]['select_type'] ) ? selected( $get_prefix['archive'][$taxonomy->name]['select_type'], 'selected' ) : ''; ?>><?php echo sprintf( __( 'Selected %1$s Archives', 'blox' ), ucfirst( $taxonomy->labels->singular_name ) ); ?></option>
+												<option value="all" title="<?php _e( 'Show or hide on all taxonomy archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive'][$taxonomy->name]['select_type'] ) ? selected( esc_attr( $get_prefix['archive'][$taxonomy->name]['select_type'] ), 'all' ) : 'selected'; ?>><?php echo sprintf( __( 'All %1$s Archives', 'blox' ), ucfirst( $taxonomy->labels->singular_name ) ); ?></option>
+												<option value="selected" title="<?php _e( 'Show or hide on selected taxonomy archives.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['archive'][$taxonomy->name]['select_type'] ) ? selected( esc_attr( $get_prefix['archive'][$taxonomy->name]['select_type'] ), 'selected' ) : ''; ?>><?php echo sprintf( __( 'Selected %1$s Archives', 'blox' ), ucfirst( $taxonomy->labels->singular_name ) ); ?></option>
 											</select>
 
 											<div class="blox-location-selected-container <?php if ( empty( $get_prefix['archive'][$taxonomy->name]['select_type'] ) || $get_prefix['archive'][$taxonomy->name]['select_type'] == 'all' ) echo ( 'blox-hidden' ); ?>">
@@ -499,14 +502,14 @@ class Blox_Location {
 			<span class="blox-title"><?php echo $post_name; ?></span>
 
 			<select name="<?php echo $name_prefix; ?>[singles][<?php echo $post_type; ?>][select_type]" class="blox-singles-select_type">
-				<option value="all" title="<?php _e( 'Show or hide all ' . $post_name . '.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( $get_prefix['singles'][$post_type]['select_type'], 'all' ) : 'selected'; ?>><?php _e( 'All ' . $post_name, 'blox' ); ?></option>
+				<option value="all" title="<?php _e( 'Show or hide all ' . $post_name . '.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( esc_attr( $get_prefix['singles'][$post_type]['select_type'] ), 'all' ) : 'selected'; ?>><?php _e( 'All ' . $post_name, 'blox' ); ?></option>
 				<?php if ( $post_type == 'attachment' ) { ?>
-					<option value="selected_posts" title="<?php _e( 'Show or hide selected ' . $post_name . '.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( $get_prefix['singles'][$post_type]['select_type'], 'selected_posts' ) : ''; ?>><?php _e( 'Selected ' . $post_name . ' IDs', 'blox' ); ?></option>
-					<option value="selected_authors" title="<?php _e( 'Show or hide selected ' . $post_name . ' by Uploader (Author).', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( $get_prefix['singles'][$post_type]['select_type'], 'selected_authors' ) : ''; ?>><?php _e( 'Selected ' . $post_name . ' by Uploader (Author)', 'blox' ); ?></option>
+					<option value="selected_posts" title="<?php _e( 'Show or hide selected ' . $post_name . '.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( esc_attr( $get_prefix['singles'][$post_type]['select_type'] ), 'selected_posts' ) : ''; ?>><?php _e( 'Selected ' . $post_name . ' IDs', 'blox' ); ?></option>
+					<option value="selected_authors" title="<?php _e( 'Show or hide selected ' . $post_name . ' by Uploader (Author).', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( esc_attr( $get_prefix['singles'][$post_type]['select_type'] ), 'selected_authors' ) : ''; ?>><?php _e( 'Selected ' . $post_name . ' by Uploader (Author)', 'blox' ); ?></option>
 				<?php } else { ?>
-					<option value="selected_posts" title="<?php _e( 'Show or hide selected ' . $post_name . '.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( $get_prefix['singles'][$post_type]['select_type'], 'selected_posts' ) : ''; ?>><?php _e( 'Selected ' . $post_name, 'blox' ); ?></option>
-					<option value="selected_taxonomies" title="<?php _e( 'Show or hide selected ' . $post_name . ' by Taxonomies.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( $get_prefix['singles'][$post_type]['select_type'], 'selected_taxonomies' ) : ''; ?>><?php _e( 'Selected ' . $post_name . ' by Taxonomies', 'blox' ); ?></option>
-					<option value="selected_authors" title="<?php _e( 'Show or hide selected ' . $post_name . ' by Authors.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( $get_prefix['singles'][$post_type]['select_type'], 'selected_authors' ) : ''; ?>><?php _e( 'Selected ' . $post_name . ' by Authors', 'blox' ); ?></option>
+					<option value="selected_posts" title="<?php _e( 'Show or hide selected ' . $post_name . '.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( esc_attr( $get_prefix['singles'][$post_type]['select_type'] ), 'selected_posts' ) : ''; ?>><?php _e( 'Selected ' . $post_name, 'blox' ); ?></option>
+					<option value="selected_taxonomies" title="<?php _e( 'Show or hide selected ' . $post_name . ' by Taxonomies.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( esc_attr( $get_prefix['singles'][$post_type]['select_type'] ), 'selected_taxonomies' ) : ''; ?>><?php _e( 'Selected ' . $post_name . ' by Taxonomies', 'blox' ); ?></option>
+					<option value="selected_authors" title="<?php _e( 'Show or hide selected ' . $post_name . ' by Authors.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['select_type'] ) ? selected( esc_attr( $get_prefix['singles'][$post_type]['select_type'] ), 'selected_authors' ) : ''; ?>><?php _e( 'Selected ' . $post_name . ' by Authors', 'blox' ); ?></option>
 				<?php } ?>
 			</select>
 
@@ -632,8 +635,6 @@ class Blox_Location {
      */
     public function blox_location_singles_get_taxonomies( $name_prefix, $get_prefix, $post_type, $post_name_singular ) {
 
-    	//echo print_r( $get_prefix['singles'][$post_type]['taxonomies'] );
-
 		$taxonomy_objects = get_object_taxonomies( $post_type, 'object' );
 
 		if ( ! empty( $taxonomy_objects ) ) {
@@ -644,16 +645,16 @@ class Blox_Location {
 
 
 				<select name="<?php echo $name_prefix; ?>[singles][<?php echo $post_type; ?>][taxonomies][taxonomy_test]" class="blox-taxonomy-test blox-has-help">
-					<option value="loose" title="<?php _e( 'Loose taxonomy test.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'] ) ? selected( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'], 'loose' ) : 'selected'; ?>><?php _e( 'Loose', 'blox' ); ?></option>
-					<option value="strict" title="<?php _e( 'Strict taxonomy test.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'] ) ? selected( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'], 'strict' ) : ''; ?>><?php _e( 'Strict', 'blox' ); ?></option>
-					<option value="binding" title="<?php _e( 'Binding taxonomy test.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'] ) ? selected( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'], 'binding' ) : ''; ?>><?php _e( 'Binding', 'blox' ); ?></option>
+					<option value="loose" title="<?php _e( 'Loose taxonomy test.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'] ) ? selected( esc_attr( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'] ), 'loose' ) : 'selected'; ?>><?php _e( 'Loose', 'blox' ); ?></option>
+					<option value="strict" title="<?php _e( 'Strict taxonomy test.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'] ) ? selected( esc_attr( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'] ), 'strict' ) : ''; ?>><?php _e( 'Strict', 'blox' ); ?></option>
+					<option value="binding" title="<?php _e( 'Binding taxonomy test.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'] ) ? selected( esc_attr( $get_prefix['singles'][$post_type]['taxonomies']['taxonomy_test'] ), 'binding' ) : ''; ?>><?php _e( 'Binding', 'blox' ); ?></option>
 				</select>
 
 				<span class="blox-help-text-icon">
 					<a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
 				</span>
 				<div class="blox-help-text top">
-					<?php echo sprintf( __( 'The taxonomy test strength determines how the selection of different taxonomy terms interact with one another. A "Loose" test means that the block will show/hide so long as it has %1$sany%2$s of the selected taxonomy terms. A "Strict" test will only show/hide the block if it has %1$sall%2$s the selected taxonomy terms. A "Binding" test will only show/hide the block if it has %1$sall and only%2$s the selected taxonomy terms. The taxonomy test takes into account terms across all included taxonomies. Ignored taxonomies are not included in the test. Please see the %3$sBlox Documentation%4$s for further explanation.', 'blox' ), '<strong>', '</strong>', '<a href="http://www.bloxwp.com/documentation" title="Blox Documentation">', '</a>' ); ?>
+					<?php echo sprintf( __( 'The taxonomy test strength determines how the selection of different taxonomy terms interact with one another. A "Loose" test means that the block will show/hide so long as it has %1$sany%2$s of the selected taxonomy terms. A "Strict" test will only show/hide the block if it has %1$sall%2$s the selected taxonomy terms. A "Binding" test will only show/hide the block if it has %1$sall and only%2$s the selected taxonomy terms. The taxonomy test takes into account terms across all included taxonomies. Ignored taxonomies are not included in the test. Please see the %3$sBlox Documentation%4$s for further explanation.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/documentation/location/?utm_source=blox&utm_medium=plugin&utm_content=location-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ); ?>
 				</div>
 
 
@@ -673,8 +674,8 @@ class Blox_Location {
 							<span class="blox-sub-title"><?php echo $taxonomy_name; ?></span>
 
 							<select name="<?php echo $name_prefix; ?>[singles][<?php echo $post_type; ?>][taxonomies][<?php echo $taxonomy_type; ?>][select_type]" class="blox-taxonomy-select_type">
-								<option value="ignore" title="<?php _e( 'Choose to exclude ' . $taxonomy_name . ' from the taxonomy show/hide test.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['select_type'] ) ? selected( $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['select_type'], 'ignore' ) : ''; ?>><?php _e( 'Ignore ' . $taxonomy_name, 'blox' ); ?></option>
-								<option value="selected_taxonomies" title="<?php _e( 'Show or hide only selected ' . $taxonomy_name . '.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['select_type'] ) ? selected( $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['select_type'], 'selected_taxonomies' ) : ''; ?>><?php _e( 'Selected ' . $taxonomy_name, 'blox' ); ?></option>
+								<option value="ignore" title="<?php _e( 'Choose to exclude ' . $taxonomy_name . ' from the taxonomy show/hide test.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['select_type'] ) ? selected( esc_attr( $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['select_type'] ), 'ignore' ) : ''; ?>><?php _e( 'Ignore ' . $taxonomy_name, 'blox' ); ?></option>
+								<option value="selected_taxonomies" title="<?php _e( 'Show or hide only selected ' . $taxonomy_name . '.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['select_type'] ) ? selected( esc_attr( $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['select_type'] ), 'selected_taxonomies' ) : ''; ?>><?php _e( 'Selected ' . $taxonomy_name, 'blox' ); ?></option>
 							</select>
 
 							<div class="<?php if ( empty( $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['select_type'] ) || $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['select_type'] != 'selected_taxonomies' ) echo ( 'blox-hidden' ); ?> blox-singles-taxonomy-container-inner">
@@ -686,7 +687,7 @@ class Blox_Location {
 											<li>
 												<label>
 													<input type="checkbox" name="<?php echo $name_prefix; ?>[singles][<?php echo $post_type; ?>][taxonomies][<?php echo $taxonomy_type; ?>][selection][]" value="<?php echo $term->term_id; ?>"  <?php echo ! empty( $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['selection'] ) && in_array( $term->term_id, $get_prefix['singles'][$post_type]['taxonomies'][$taxonomy_type]['selection'] ) ? 'checked="checked"' : ''; ?> />
-													<?php echo apply_filters( 'the_title', $term->name, $term->term_id ); ?>
+													<?php echo apply_filters( 'the_title', $term->name, $term->term_id ) . ' <span class="blox-post-status">(' . $term->count. ')</span>'; ?>
 												</label>
 											</li>
 											<?php } ?>
@@ -735,8 +736,8 @@ class Blox_Location {
      * @param string $post_name_singular The singular name of the given post type
      */
 	public function blox_location_singles_get_authors( $name_prefix, $get_prefix, $post_type, $post_name_singular ) {
-
 		?>
+		
 		<div class="<?php if ( empty( $get_prefix['singles'][$post_type]['select_type'] ) || $get_prefix['singles'][$post_type]['select_type'] != 'selected_authors' ) echo ( 'blox-hidden' ); ?> blox-singles-authors-container-wrapper" >
 	
 			<?php 
@@ -844,14 +845,14 @@ class Blox_Location {
 
 
 		// Archives
-		$settings['archive']['select_type'] = esc_attr( $name_prefix['archive']['select_type'] );
-		$settings['archive']['selection'] 	= isset( $name_prefix['archive']['selection'] ) ? array_map( 'esc_attr', $name_prefix['archive']['selection'] ) : '';
+		$settings['archive']['select_type']              = esc_attr( $name_prefix['archive']['select_type'] );
+		$settings['archive']['selection'] 				 = isset( $name_prefix['archive']['selection'] ) ? array_map( 'esc_attr', $name_prefix['archive']['selection'] ) : '';
 
 		$settings['archive']['posttypes']['select_type'] = esc_attr( $name_prefix['archive']['posttypes']['select_type'] );
 		$settings['archive']['posttypes']['selection']   = isset( $name_prefix['archive']['posttypes']['selection'] ) ? array_map( 'esc_attr', $name_prefix['archive']['posttypes']['selection'] ) : '';
 
-		$settings['archive']['authors']['select_type'] = esc_attr( $name_prefix['archive']['authors']['select_type'] );
-		$settings['archive']['authors']['selection']   = isset( $name_prefix['archive']['authors']['selection'] ) ? array_map( 'esc_attr', $name_prefix['archive']['authors']['selection'] ) : '';
+		$settings['archive']['authors']['select_type']   = esc_attr( $name_prefix['archive']['authors']['select_type'] );
+		$settings['archive']['authors']['selection']     = isset( $name_prefix['archive']['authors']['selection'] ) ? array_map( 'esc_attr', $name_prefix['archive']['authors']['selection'] ) : '';
 
 		$taxonomies = get_taxonomies( array( 'public' => true ), 'objects', 'and' );
 		foreach ( $taxonomies as $taxonomy ) {
@@ -914,7 +915,7 @@ class Blox_Location {
      * @param array $block_data
      */
     public function admin_column_data( $post_id, $block_data ) {
-		$type = ! empty( $block_data['location']['location_type'] ) ? $block_data['location']['location_type'] : '';	
+		$type = ! empty( $block_data['location']['location_type'] ) ? esc_attr( $block_data['location']['location_type'] ) : '';	
                 
 		// More location information to come...
 		switch ( $type ) {

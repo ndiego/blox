@@ -275,7 +275,7 @@ class Blox_Content_Slideshow {
 		$settings['builtin']['settings']['controlNav']		= isset( $name_prefix['builtin']['settings']['controlNav'] ) ? 1 : 0;
 		$settings['builtin']['settings']['caption']  		= isset( $name_prefix['builtin']['settings']['caption'] ) ? 1 : 0;
 
-		// Save all of the additional slideshow option ids (i.e. Soliloquy, Revolution Slider, etc.)
+		// Save all of the additional slideshow option ids (i.e. Soliloquy, Revolution Slider, Meta Slider, etc.)
 		foreach( $this->get_slideshow_types() as $type => $title ){
 			if ( $type != 'builtin' && $type != 'shortcode' ) {
 				$settings[$type]['id'] = trim( strip_tags( $name_prefix[$type]['id'] ) );
@@ -472,9 +472,10 @@ class Blox_Content_Slideshow {
 								slideshowSpeed: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['slideshowSpeed'] ) ? esc_attr( $content_data['slideshow']['builtin']['settings']['slideshowSpeed'] ) : 7000; ?>,
 								animationSpeed: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['animationSpeed'] ) ? esc_attr( $content_data['slideshow']['builtin']['settings']['animationSpeed'] ) : 600; ?>,
 								smoothHeight: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['smoothHeight'] ) ? 'true' : 'false'; ?>,
-								after: function(){
+								
+								//after: function(){
 									//if ( $( '.flex-active-slide' ).hasClass( 'dark' ) ) { alert('true'); } else { alert( 'false')};
-								}
+								//}
 							});
 						});
 
@@ -498,6 +499,12 @@ class Blox_Content_Slideshow {
 			// If Revolution is active, display the selected slideshow
 			if ( ! empty( $content_data['slideshow']['revolution'] ) ) {
 				$this->display_slideshow_revolution( $content_data['slideshow']['revolution']['id'] ); 
+			}
+		} else if ( is_plugin_active( 'ml-slider/ml-slider.php' ) && $content_data['slideshow']['slideshow_type'] == 'metaslider' ) {
+
+			// If Meta Slider is active, display the selected slideshow
+			if ( ! empty( $content_data['slideshow']['metaslider'] ) ) {
+				$this->display_slideshow_metaslider( $content_data['slideshow']['metaslider']['id'] ); 
 			}
 		}
 	}
@@ -523,6 +530,11 @@ class Blox_Content_Slideshow {
 		// If the Revolution Slideshow plugin is active, add this option
 		if ( is_plugin_active( 'revslider/revslider.php' ) ) {
 			$slideshow_types['revolution'] =  __( 'Revolution Slider', 'blox' );
+		}
+		
+		// If the Meta Slider plugin is active, add this option
+		if ( is_plugin_active( 'ml-slider/ml-slider.php' ) ) { 
+			$slideshow_types['metaslider'] =  __( 'Meta Slider', 'blox' );
 		}
 
     	// Apply filter for any additional slideshow types that need to be added
@@ -588,7 +600,7 @@ class Blox_Content_Slideshow {
      */
 	public function display_slideshow_soliloquy( $slideshow_id ) {
 
-		if ( $slideshow_id != 'none' ) {
+		if ( ! empty( $slideshow_id ) && $slideshow_id != 'none' ) {
 			?>
 			<div class="blox-slideshow-container soliloquy <?php echo implode( ' ', apply_filters( 'blox_content_slideshow_classes', $classes ) ); ?>">
 				<div class="blox-slideshow-wrap">
@@ -655,11 +667,76 @@ class Blox_Content_Slideshow {
      */
 	public function display_slideshow_revolution( $slideshow_id ) {
 
-		if ( $slideshow_id != 'none' ) {
+		if ( ! empty( $slideshow_id ) && $slideshow_id != 'none' ) {
 			?>
 			<div class="blox-slideshow-container revolution <?php echo implode( ' ', apply_filters( 'blox_content_slideshow_classes', $classes ) ); ?>">
 				<div class="blox-slideshow-wrap">
 					<?php putRevSlider( $slideshow_id ); ?>
+				</div>
+			</div>
+			<?php
+		}
+	}
+	
+	
+	
+	// META SLIDER HELPER FUNCTIONS
+
+	/**
+     * Helper function for generating a dropdown of all available Meta sliders in admin area
+     *
+     * @since 1.0.0
+     *
+     * @param string $name_prefix The prefix for saving each setting
+     * @param string $get_prefix  The prefix for retrieving each setting
+     */
+	public function get_slideshow_metaslider( $name_prefix, $get_prefix ) {
+
+		// Grab id and title of all available sliders
+		$posts = get_posts( array( 'post_type' => 'ml-slider', 'posts_per_page' => -1, 'post_status' => 'publish' ) );
+
+		foreach( $posts as $post ) {		
+			$metasliders[] = array(
+				'title' => $post->post_title,
+				'id' => $post->ID
+			);
+		}
+
+		// Display all available sliders by title in dropdown for selection
+		?>
+		<tr class="blox-slideshow-option blox-content-slideshow-metaslider blox-hidden">
+			<th scope="row"><label><strong><?php _e( 'Meta Slider', 'genesis-custom-header' ); ?></strong></label></th>
+			<td>
+				<select name="<?php echo $name_prefix; ?>[slideshow][revolution][id]">
+					<option value="none" <?php ! empty( $get_prefix['slideshow']['metaslider']['id'] ) ? selected( $get_prefix['slideshow']['metaslider']['id'], 'none' ) : ''; ?> ><?php _e( 'Display None', 'blox' ); ?></option>
+					<?php foreach ( (array) $metasliders as $metaslider ) { ?>
+						<option value="<?php echo esc_attr( $metaslider['id'] ); ?>" <?php ! empty( $get_prefix['slideshow']['metaslider']['id'] ) ? selected( $get_prefix['slideshow']['metaslider']['id'], $metaslider['id'] ) : ''; ?>><?php echo esc_html( $metaslider['title'] ); ?></option>
+					<?php } ?>
+				</select>
+
+				<?php if ( empty( $metasliders ) ) { ?>
+					<div class="blox-error"><?php _e( 'You have not created any Meta sliders yet.', 'blox' ); ?></div>
+				<?php } ?>
+			</td>
+		</tr>
+		<?php
+	}
+
+
+	/**
+     * Helper function for displaying the Meta Slider on the frontend
+     *
+     * @since 1.0.0
+     *
+     * @param string $slideshow_id The Meta Slider id
+     */
+	public function display_slideshow_metaslider( $slideshow_id ) {
+
+		if ( ! empty( $slideshow_id ) && $slideshow_id != 'none' ) {
+			?>
+			<div class="blox-slideshow-container metaslider <?php echo implode( ' ', apply_filters( 'blox_content_slideshow_classes', $classes ) ); ?>">
+				<div class="blox-slideshow-wrap">
+					<?php echo do_shortcode( '[metaslider id="' . $slideshow_id . '"]' ); ?>
 				</div>
 			</div>
 			<?php

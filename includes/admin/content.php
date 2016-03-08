@@ -246,7 +246,7 @@ class Blox_Content {
      * @param array $block_data
      */
     public function admin_column_data( $post_id, $block_data ) {
-    	echo ! empty( $block_data['content']['content_type'] ) ? ucfirst( $block_data['content']['content_type'] ) : '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';	
+    	echo ! empty( $block_data['content']['content_type'] ) ? ucfirst( esc_attr( $block_data['content']['content_type'] ) ) : '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';	
 	}
 	
 	

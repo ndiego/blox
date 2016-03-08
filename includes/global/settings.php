@@ -52,7 +52,7 @@ class Blox_Settings {
 
         // Load the base class object.
         $this->base = Blox_Main::get_instance();
-        
+       
         // Set default settings for a new install
         $this->set_default_settings();
         		
@@ -335,7 +335,7 @@ class Blox_Settings {
 					'defaults_position_header' => array(
 						'id' => 'defaults_position_header',
 						'name' => '<span class="title">' . __( 'Default Block Position', 'blox' ) . '</span>',
-						'desc' => sprintf( __( 'Please refer to the %1$sGenesis Visual Hook Guide%2$s for hook reference and position information. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ), '<a href="http://genesistutorials.com/visual-hook-guide/" alt="' . __( 'Genesis Visual Hook Guide', 'blox' ) . '" target="_blank">', '</a>' ),
+						'desc' => sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hooks/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
 						'type' => 'header'
 					),
 					'global_default_position' => array(
@@ -399,7 +399,7 @@ class Blox_Settings {
 					'custom_css' => array(
 						'id'   => 'custom_css',
 						'name' => __( 'Custom CSS', 'blox' ),
-						'desc' => sprintf( __( 'Add custom CSS that can affect all content blocks. For reference on content block frontend markup, please refer to the %1$sBlox Documentation%2$s.', 'blox' ), '<a href="http://www.bloxwp.com/documentation">', '</a>' ),
+						'desc' => sprintf( __( 'Add custom CSS that can affect all content blocks. For reference on content block frontend markup, please refer to the %1$sBlox Documentation%2$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/frontend-markup/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
 						'type' => 'textarea',
 						'class' => 'blox-textarea-code',
 						'size' => 10,
@@ -432,7 +432,7 @@ class Blox_Settings {
 					'uninstall_on_delete' => array(
 						'id'    => 'uninstall_on_delete',
 						'name'  => __( 'Remove Data on Uninstall', 'blox' ),
-						'label' => __( 'Check to completely remove all plugin data when Blox is deleted', 'blox' ),
+						'label' => __( 'Check to completely remove all plugin data when Blox Lite is deleted', 'blox' ),
 						'desc'  => '',
 						'type'  => 'checkbox',
 						'default' => '',
@@ -603,7 +603,7 @@ class Blox_Settings {
 
 		global $blox_options;
 
-		$checked = isset( $blox_options[ $args['id'] ] ) ? checked( 1, $blox_options[ $args['id'] ], false ) : '';
+		$checked = isset( $blox_options[ $args['id'] ] ) ? checked( 1, esc_attr( $blox_options[ $args['id'] ] ), false ) : '';
 		$html = '<label><input type="checkbox" id="blox_settings[' . $args['id'] . ']" name="blox_settings[' . $args['id'] . ']" value="1" ' . $checked . '/> ' . $args['label'] . '</label>';
 		$html .= ! empty( $args['desc'] ) ? ( '<p class="description">' . $args['desc'] . '</p>' ) : '';
 
@@ -688,7 +688,7 @@ class Blox_Settings {
 		$html = '<select id="blox_settings[' . $args['id'] . ']" name="blox_settings[' . $args['id'] . ']" />';
 
 		foreach ( $args['options'] as $option => $name ) {
-			$selected = selected( $option, $value, false );
+			$selected = selected( $option, esc_attr( $value ), false );
 			$html .= '<option value="' . $option . '" ' . $selected . '>' . $name . '</option>';
 		}
 
@@ -726,7 +726,7 @@ class Blox_Settings {
 		foreach ( $hooks as $sections => $section ) {
 			$html .= '<optgroup label="' . $section['name'] . '">';
 			foreach ( $section['hooks'] as $hooks => $hook ) {
-				$selected = selected( $hooks, $value, false );
+				$selected = selected( $hooks, esc_attr( $value ), false );
 				$html .= '<option value="' . $hooks . '" ' . $selected . '>' . $hook['name'] . '</option>';
 			}
 			$html .= '</optgroup>';
@@ -751,7 +751,8 @@ class Blox_Settings {
 	public function enabled_pages_callback( $args ) {
 
 		global $blox_options;
-
+		
+		// Array of all enabled page types
 		$enabled_pages = isset( $blox_options[ $args['id'] ] ) ? $blox_options[ $args['id'] ] : false;
 		
 		?>

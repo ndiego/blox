@@ -101,15 +101,15 @@ class Blox_Content_Raw {
 						</div>
 
 						<label>
-							<input type="checkbox" name="<?php echo $name_prefix; ?>[raw][shortcodes]" value="1" <?php ! empty( $get_prefix['raw']['shortcodes'] ) ? checked( $get_prefix['raw']['shortcodes'] ) : ''; ?> />
+							<input type="checkbox" name="<?php echo $name_prefix; ?>[raw][shortcodes]" value="1" <?php ! empty( $get_prefix['raw']['shortcodes'] ) ? checked( esc_attr( $get_prefix['raw']['shortcodes'] ) ) : ''; ?> />
 							<?php _e( 'Check to enable shortcodes', 'blox' ); ?>
 						</label>
 						<label>
-							<input type="checkbox" name="<?php echo $name_prefix; ?>[raw][php]" value="1" <?php ! empty( $get_prefix['raw']['php'] ) ? checked( $get_prefix['raw']['php'] ) : ''; ?> />
+							<input type="checkbox" name="<?php echo $name_prefix; ?>[raw][php]" value="1" <?php ! empty( $get_prefix['raw']['php'] ) ? checked( esc_attr( $get_prefix['raw']['php'] ) ) : ''; ?> />
 							<?php _e( 'Check to enable PHP code', 'blox' ); ?>
 						</label>
 						<label class="last">
-							<input type="checkbox" name="<?php echo $name_prefix; ?>[raw][disable_markup]" value="1" <?php ! empty( $get_prefix['raw']['disable_markup'] ) ? checked( $get_prefix['raw']['disable_markup'] ) : ''; ?> />
+							<input type="checkbox" name="<?php echo $name_prefix; ?>[raw][disable_markup]" value="1" <?php ! empty( $get_prefix['raw']['disable_markup'] ) ? checked( esc_attr( $get_prefix['raw']['disable_markup'] ) ) : ''; ?> />
 							<?php _e( 'Check to disable all markup', 'blox' ); ?>
 						</label>
 						<span class="blox-help-text-icon">
