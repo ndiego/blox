@@ -185,6 +185,8 @@ class Blox_Content {
 			}
 		}
 		
+		update_post_meta( $post_id, '_blox_content_blocks_type', $settings['content_type'] );
+		
 		return $settings;
 	}
 

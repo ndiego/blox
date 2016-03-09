@@ -362,7 +362,7 @@ class Blox_Metaboxes {
 			}
 			
 			update_post_meta( $post_id, '_blox_content_blocks_data', $settings );
-			
+			//update_post_meta( $post_id, '_blox_content_blocks_position', 'testing' );
 		} else {
 			delete_post_meta( $post_id, '_blox_content_blocks_data' );
 		}
@@ -484,11 +484,22 @@ class Blox_Metaboxes {
 									if ( ! array_key_exists( $data[$name_id]['content']['content_type'], $this->get_content_types() ) ) {
 										echo ' - <span class="blox-error">' . __( 'Error', 'blox' ) . '</span>';
 									}
+									
+									// Add a dot to separate additional meta data
+									echo '&nbsp;&nbsp;&middot;';
 								} else {
 									echo '<span class="blox-error">' . __( 'Error', 'blox' ) . '</span>';
 								}
 							?>
 						</span>
+						<?php 
+							if ( ! empty( $data[$name_id] ) ) {
+								echo '<span class="blox-content-block-meta">';
+									// Hook in additional local block meta data
+									do_action( 'blox_content_block_meta', $data[$name_id] );
+								echo '</span>';
+							}
+						?>
 					</div>
 					<a class="blox-content-block-edit" title="<?php _e( 'Edit Content Block', 'blox' ); ?>" href="#"></a>
 				</div>
@@ -577,11 +588,18 @@ class Blox_Metaboxes {
 				}
 			}
 			
+			// Save all of the settings
 			update_post_meta( $post_id, '_blox_content_blocks_data', $settings );
+			
+			// Save the number of local blocks assigned to the page, post, custom post type
+			update_post_meta( $post_id, '_blox_content_blocks_count', count( $settings ) );
 			
 		} else {
 			// If there are no custom block to add, delete the meta value otherwise an empty block will display after saving
 			delete_post_meta( $post_id, '_blox_content_blocks_data' );
+			
+			// Since there are no local blocks, set the count to zero
+			update_post_meta( $post_id, '_blox_content_blocks_count', 0 );
 		}
 	}
 	

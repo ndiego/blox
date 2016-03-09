@@ -61,6 +61,10 @@ class Blox_Position {
 		// Add the admin column data for global blocks
 		add_filter( 'blox_admin_column_titles', array( $this, 'admin_column_title' ), 2, 1 );
 		add_action( 'blox_admin_column_data_position', array( $this, 'admin_column_data' ), 10, 2 );
+    
+    	// Make admin column sortable
+		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
+        add_filter( 'request', array( $this, 'admin_column_orderby' ) );
     }
 
 
@@ -215,6 +219,14 @@ class Blox_Position {
 		$settings['custom']['position'] = esc_attr( $name_prefix['custom']['position'] );
 		$settings['custom']['priority'] = absint( $name_prefix['custom']['priority'] );
 
+		if ( $settings['position_type'] == 'default' ) {
+		  $position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
+		} else if ( $settings['custom'] ) {
+		  $position = ! empty( $settings['custom']['position'] ) ? esc_attr( $settings['custom']['position'] ) : '';
+		}
+		
+		update_post_meta( $post_id, '_blox_content_blocks_position', 'testing' );
+		
 		return apply_filters( 'blox_save_position_settings', $settings, $post_id, $name_prefix, $global );
 	}
 	
@@ -247,7 +259,43 @@ class Blox_Position {
 		} else {
 			echo '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
 		}
+		
+		//$position = get_post_meta( $post_id, '_blox_content_blocks_position', true );
+		//echo $position;
     }
+    
+    
+    /**
+     * Tell Wordpress that the position column is sortable
+     *
+     * @since 1.0.0
+     *
+     * @param array $vars  Array of query variables
+     */
+	public function admin_column_sortable( $sortable_columns ) {
+	
+		$sortable_columns[ 'position' ] = 'position';
+		return $sortable_columns;
+	}
+	
+	/**
+     * Tell Wordpress how to sort the position column
+     *
+     * @since 1.0.0
+     *
+     * @param array $vars  Array of query variables
+     */
+	public function admin_column_orderby( $vars ) {
+		
+		if ( isset( $vars['orderby'] ) && 'position' == $vars['orderby'] ) {
+			$vars = array_merge( $vars, array(
+				'meta_key' => '_blox_content_blocks_position',
+				'orderby' => 'meta_value'
+			) );
+		}
+ 
+		return $vars;
+	}
 
 
     /**

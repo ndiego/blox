@@ -195,8 +195,14 @@ class Blox_Posttype_Admin {
 			if ( ! empty( $enabled_pages ) && in_array( $typenow, $enabled_pages ) ) {
 				add_filter( 'manage_' . $typenow . '_posts_columns', array( $this, 'local_blocks_column_title' ), 5 );
 				add_action( 'manage_' . $typenow . '_posts_custom_column', array( $this, 'local_blocks_column_data' ), 10, 2);
+				
+				// Tell Wordpress that the Local Blocks column is sortable
+				add_filter( 'manage_edit-' . $typenow . '_sortable_columns', array( $this, 'local_blocks_columns_sortable' ), 5 );
 			}
         }
+        
+        // Tell Wordpress how to sort Local Blocks
+        add_filter( 'request', array( $this, 'local_blocks_columns_orderby' ) );
 	}
 
 
@@ -233,16 +239,49 @@ class Blox_Posttype_Admin {
 	public function local_blocks_column_data( $column_name, $post_ID ) {
 		if ( $column_name == 'local_blocks' ) {
 			
-			// Get all local blocks
-			$local_blocks = get_post_meta( $post_ID, '_blox_content_blocks_data', true );
+			// Get the number of local blocks on the given post
+			$count = get_post_meta( $post_ID, '_blox_content_blocks_count', true );
 
 			if ( ! empty( $local_blocks ) ) {
-				echo count( $local_blocks );
+				echo $count;
 				// Possibly add more than just the number of block in the future...
 			} else {
 			    echo '<span aria-hidden="true">—</span>';
 			}
 		}
+	}
+	
+	
+	/**
+     * Tell Wordpress that the Local Blocks column is sortable
+     *
+     * @since 1.0.0
+     *
+     * @param array $vars  Array of query variables
+     */
+	public function local_blocks_columns_sortable( $sortable_columns ) {
+	
+		$sortable_columns[ 'local_blocks' ] = 'local_blocks';
+		return $sortable_columns;
+	}
+	
+	/**
+     * Tell Wordpress how to sort Local Blocks
+     *
+     * @since 1.0.0
+     *
+     * @param array $vars  Array of query variables
+     */
+	public function local_blocks_columns_orderby( $vars ) {
+		
+		if ( isset( $vars['orderby'] ) && 'local_blocks' == $vars['orderby'] ) {
+			$vars = array_merge( $vars, array(
+				'meta_key' => '_blox_content_blocks_count',
+				'orderby' => 'meta_value_num'
+			) );
+		}
+ 
+		return $vars;
 	}
 
 

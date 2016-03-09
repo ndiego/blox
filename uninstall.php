@@ -36,8 +36,9 @@ if ( $blox_settings['uninstall_on_delete'] == 1 ) {
 		}
 	}
 	
-	// Delete all Local Blocks
+	// Delete all Local Blocks and the blocks count meta
 	delete_metadata( 'post', 0, '_blox_content_blocks_data', '', true );
+	delete_metadata( 'post', 0, '_blox_content_blocks_count', '', true );
 	
 	// Delete all Blox settings
 	delete_option( 'blox_settings' );
