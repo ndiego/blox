@@ -362,7 +362,13 @@ class Blox_Metaboxes {
 			}
 			
 			update_post_meta( $post_id, '_blox_content_blocks_data', $settings );
-			//update_post_meta( $post_id, '_blox_content_blocks_position', 'testing' );
+			
+			if ( $settings['position']['position_type'] == 'default' ) {
+			  $position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
+			} else if ( $settings['position']['custom'] ) {
+			  $position = ! empty( $settings['position']['custom']['position'] ) ? esc_attr( $settings['position']['custom']['position'] ) : '';
+			}
+			
 		} else {
 			delete_post_meta( $post_id, '_blox_content_blocks_data' );
 		}

@@ -64,6 +64,10 @@ class Blox_Content {
 		// Add the admin column data for global blocks
 		add_filter( 'blox_admin_column_titles', array( $this, 'admin_column_title' ), 1, 1 );
 		add_action( 'blox_admin_column_data_content', array( $this, 'admin_column_data' ), 10, 2 );
+		
+		// Make admin column sortable
+		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
+        add_filter( 'request', array( $this, 'admin_column_orderby' ) );
     }
 
 
@@ -248,7 +252,51 @@ class Blox_Content {
      * @param array $block_data
      */
     public function admin_column_data( $post_id, $block_data ) {
-    	echo ! empty( $block_data['content']['content_type'] ) ? ucfirst( esc_attr( $block_data['content']['content_type'] ) ) : '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';	
+    	if (! empty( $block_data['content']['content_type'] ) ) {
+    		$content   = ucfirst( esc_attr( $block_data['content']['content_type'] ) );
+    		$meta_data = esc_attr( $block_data['content']['content_type'] );	
+		} else {
+			$content   = '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
+			$meta_data = '';
+		}
+		
+		echo $content;
+		
+		// Save our content meta values separately for sorting
+		update_post_meta( $post_id, '_blox_content_blocks_content', $meta_data );
+	}
+	
+	
+	/**
+     * Tell Wordpress that the content column is sortable
+     *
+     * @since 1.0.0
+     *
+     * @param array $vars  Array of query variables
+     */
+	public function admin_column_sortable( $sortable_columns ) {
+		$sortable_columns[ 'content' ] = 'content';
+		return $sortable_columns;
+	}
+	
+	
+	/**
+     * Tell Wordpress how to sort the content column
+     *
+     * @since 1.0.0
+     *
+     * @param array $vars  Array of query variables
+     */
+	public function admin_column_orderby( $vars ) {
+		
+		if ( isset( $vars['orderby'] ) && 'content' == $vars['orderby'] ) {
+			$vars = array_merge( $vars, array(
+				'meta_key' => '_blox_content_blocks_content',
+				'orderby' => 'meta_value'
+			) );
+		}
+ 
+		return $vars;
 	}
 	
 	

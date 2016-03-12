@@ -62,7 +62,11 @@ class Blox_Visibility {
 		add_filter( 'blox_admin_column_titles', array( $this, 'admin_column_title' ), 4, 1 );
 		add_action( 'blox_admin_column_data_visibility', array( $this, 'admin_column_data' ), 10, 2 );
 		
-		// Adds visibility meta
+		// Make admin column sortable
+		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
+        add_filter( 'request', array( $this, 'admin_column_orderby' ) );
+		
+		// Adds visibility meta to local blocks
 		add_action( 'blox_content_block_meta', array( $this, 'visibility_content_block_meta' ), 10, 1 );
 		
 		// Run visibilty test on the frontend
@@ -256,8 +260,11 @@ class Blox_Visibility {
 		if ( $global_enable ) {
 			if ( ! empty( $block_data['visibility']['global_disable'] ) && $block_data['visibility']['global_disable'] == 1 ) {
 				$output = '<span style="color:#a00;font-style:italic;">' . __( 'Disabled', 'blox' ) . '</span>';
+				$meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
 			} else {
 				$type = ! empty( $block_data['visibility']['role']['role_type'] ) ? $block_data['visibility']['role']['role_type'] : '';
+				
+				$meta_data = $type;
 				
 				switch ( $type ) {
 					case 'all' :
@@ -284,10 +291,47 @@ class Blox_Visibility {
 			}					
 		} else {
 			$output = '<span style="color:#a00;font-style:italic;">' . __( 'Globally Disabled', 'blox' ) . '</span>';
+			$meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
 		}
 		
 		echo apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
+		
+		// Save our visibility meta values separately for sorting
+		update_post_meta( $post_id, '_blox_content_blocks_visibility', $meta_data );
     }
+    
+    
+    /**
+     * Tell Wordpress that the visibility column is sortable
+     *
+     * @since 1.0.0
+     *
+     * @param array $vars  Array of query variables
+     */
+	public function admin_column_sortable( $sortable_columns ) {
+		$sortable_columns[ 'visibility' ] = 'visibility';
+		return $sortable_columns;
+	}
+	
+	
+	/**
+     * Tell Wordpress how to sort the visibility column
+     *
+     * @since 1.0.0
+     *
+     * @param array $vars  Array of query variables
+     */
+	public function admin_column_orderby( $vars ) {
+		
+		if ( isset( $vars['orderby'] ) && 'visibility' == $vars['orderby'] ) {
+			$vars = array_merge( $vars, array(
+				'meta_key' => '_blox_content_blocks_visibility',
+				'orderby' => 'meta_value'
+			) );
+		}
+ 
+		return $vars;
+	}
     
     
     /**
