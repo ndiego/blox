@@ -54,6 +54,7 @@ class Blox_Content_Shortcodes {
         $this->base = Blox_Main::get_instance();
 
 		add_shortcode( 'blox-page-title', array( $this, 'page_title' ) );
+		add_shortcode( 'blox-archive-title', array( $this, 'archive_title' ) );
 		add_shortcode( 'blox-modified-date', array( $this, 'modified_date' ) );
 		add_shortcode( 'blox-published-date', array( $this, 'published_date' ) );
 		add_shortcode( 'blox-author', array( $this, 'author' ) );
@@ -79,6 +80,26 @@ class Blox_Content_Shortcodes {
 			return;
 		} else {
 			return wp_kses_post( $atts['before'] ) . get_the_title() . wp_kses_post( $atts['after'] );
+		}
+	}
+	
+	
+	/**
+	 * Shortcode: Print the title of an archive page
+     *
+     * @since 1.0.0
+     *
+     * @param array $atts  An array shortcode attributes
+     */
+	public function archive_title( $atts ) {
+		
+		$atts = shortcode_atts( array( 
+			'before' 	  	=> '',
+			'after'	 	  	=> '', 
+		), $atts );
+		
+		if ( is_archive() ) {
+			return wp_kses_post( $atts['before'] ) . get_the_archive_title() . wp_kses_post( $atts['after'] );
 		}
 	}
 	

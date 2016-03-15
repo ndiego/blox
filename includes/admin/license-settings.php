@@ -244,7 +244,7 @@ class Blox_License_Settings {
 	public function get_licenses_tabs() {
 
 		$tabs             = array();
-		$tabs['main'] = __( 'Licenses', 'blox' );
+		$tabs['main']     = __( 'Licenses', 'blox' );
 		$tabs['addons']   = __( 'Addons', 'blox' );
 
 		return apply_filters( 'blox_licenses_tabs', $tabs );

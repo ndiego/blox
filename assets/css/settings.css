@@ -80,6 +80,24 @@ textarea.blox-textarea-code {
 	tab-size: 4;
 }
 
+/* Styling for alerts */
+.blox-alert {
+	color: #444;
+	padding: 15px;
+	margin: 20px 0px 10px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	background-color: #ffe2da;
+	border-color: #e4a697;
+}
+.blox-alert.narrow {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.blox-alert-warning {
+	background-color: #fffae7;
+	border-color: #ede0a9;
+}
 
 /* Styles for Blox Addons */
 .blox-addon-container p {

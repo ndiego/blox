@@ -205,6 +205,9 @@ class Blox_Main {
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/content.php';
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/position.php';
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/style.php';
+			
+			// All plugin notices, primarily license activation reminders
+			require plugin_dir_path( __FILE__ ) . 'includes/admin/notices.php';
         }
 
         // Load frontend only components.

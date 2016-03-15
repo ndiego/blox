@@ -149,12 +149,14 @@ class Blox_Settings {
 			</h2>
 			<div id="tab_container">
 				<form method="post" action="options.php">
+					<?php do_action( 'blox_settings_form_top', $active_tab ); ?>
 					<table class="form-table">
 						<?php
 						settings_fields( 'blox_settings' );
 						do_settings_fields( 'blox_settings_' . $active_tab, 'blox_settings_' . $active_tab );
 						?>
 					</table>
+					<?php do_action( 'blox_settings_form_bottom', $active_tab ); ?>
 					<?php 
 						submit_button( sprintf( __( 'Save %1$s Settings', 'blox' ), ucfirst( $active_tab ) ) ); 
 						submit_button( sprintf( __( 'Reset %1$s Settings', 'blox' ), ucfirst( $active_tab ) ), 'secondary', 'reset', true, array( 'id' => 'reset' ) );

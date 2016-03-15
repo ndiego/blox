@@ -254,7 +254,7 @@ class Blox_Position {
 		if ( ! empty( $block_data['position']['position_type'] ) ) {
 			if ( $block_data['position']['position_type'] == 'default' ) {
 				$default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
-				if ( ! empty( $global_default_position ) ){
+				if ( ! empty( $default_position ) ){
 					$position = $meta_data = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
 				} else {
 					$position  = $error;
