@@ -477,3 +477,19 @@ function blox_get_licenses() {
 
 	return apply_filters( 'blox_get_licenses', $licenses );
 }
+
+
+/**
+ * Get Addons   
+ *
+ * Retrieves all addons that are active on the site
+ *
+ * @since 1.0.0
+ * @return array All Blox Addons
+ */
+function blox_get_active_addons() {
+
+	$addons = array();
+
+	return apply_filters( 'blox_get_active_addons', $addons );
+}

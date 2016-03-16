@@ -89,13 +89,32 @@ class Blox_Notices {
     
     	$disable_notices = blox_get_option( 'disable_license_notices', '' );
     	
-    	global $blox_licenses_array;
+    	$addons   = blox_get_active_addons();
+    	$licenses = array_merge( array( 'blox' => __( 'Blox', 'blox' ) ), $addons );
+    	$licenses_status = array();
+    	
+    	foreach ( $licenses as $key => $title ) {
+    	
+    		$status = get_option( 'blox_' . $key . '_license_status' );
+    		
+    		$licenses_status[$key] = array( 
+    			'title'   => $title,
+				'success' => $status['success'],
+				'license' => $status['license'],
+				'expires' => $status['expires'],
+    		);
+    	}
 		
 		// Step 1: Determine if a license has been saved
-		
-		
+
 		
 		// Step 2: Determine is any of the saved license are active, expired, invalid, etc. 
+		
+		foreach ( $licenses_status as $license ) {
+			if ( $license['success'] != 1 ) {
+			
+			}
+		}
 		
 		
     
@@ -103,8 +122,8 @@ class Blox_Notices {
 			?>
 			<div class="blox-alert">
 				<?php 
-				echo print_r( $blox_licenses_array ) . '<br>';
-				echo sprintf( __( 'Enjoying %1$sBlox Lite%2$s but looking for more content options, visibility settings, priority support, frequent updates and more? Then you should consider %3$supgrading%4$s to %1$sBlox%2$s. Happy with the free version and have no need to upgrade? Then you might as well turn off these notifications in the plugin %5$ssettings%4$s.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/?utm_source=blox-lite&utm_medium=plugin&utm_content=marketing-links&utm_campaign=Blox_Plugin_Links" target="_blank">', '</a>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=misc' ) . '">' ); ?>
+				//echo print_r( $licenses_status ) . '<br>';
+				//echo sprintf( __( 'Enjoying %1$sBlox Lite%2$s but looking for more content options, visibility settings, priority support, frequent updates and more? Then you should consider %3$supgrading%4$s to %1$sBlox%2$s. Happy with the free version and have no need to upgrade? Then you might as well turn off these notifications in the plugin %5$ssettings%4$s.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/?utm_source=blox-lite&utm_medium=plugin&utm_content=marketing-links&utm_campaign=Blox_Plugin_Links" target="_blank">', '</a>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=misc' ) . '">' ); ?>
 			</div>
 			<?php
 		}

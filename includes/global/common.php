@@ -227,21 +227,6 @@ class Blox_Common {
 
     	return apply_filters( 'blox_content_type', $content_types );
     }
-        
-    
-    /**
-     * Helper function for retrieving all active addons.
-     *
-     * @since 1.0.0
-     *
-     * @return array Array of all active addons.
-     */
-    public function get_active_addons() {
-
-    	$addons = array();
-
-    	return apply_filters( 'blox_active_addons', $addons );
-    }
 
 
     /**
