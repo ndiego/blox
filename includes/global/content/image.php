@@ -122,7 +122,7 @@ class Blox_Content_Image {
 						<div class="blox-help-text top">
 							<?php
 							if ( $global ) {
-								_e( 'Choose between the page\'s featured image or select a custom image from the media library. Otherwise, select Featured or Custom Image. This setting will display a custom image in place of the featured image if the page does not support or have a featured image.', 'blox' );
+								echo sprintf( __( 'Choose between the page\'s featured image or select a custom image from the media library. Otherwise, select %1$sFeatured or Custom Image%2$s. This setting will display a custom image in place of the featured image if the page does not support or have a featured image.', 'blox' ), '<strong>', '</strong>' );
 							} else {
 								if ( $thumbnail ) {
 									_e( 'Choose between this page\'s featured image or select a custom image from the media library.', 'blox' );
@@ -132,6 +132,24 @@ class Blox_Content_Image {
 							}
 							?>						
 						</div>
+						
+						<?php if ( $global ) { ?>
+						<div class="blox-featured-singular-only blox-image-atts <?php echo $thumbnail ? '' : 'blox-hidden'; ?>">
+							<label>
+								<input type="checkbox" name="<?php echo $name_prefix; ?>[image][featured_singular_only]" value="1" <?php ! empty( $get_prefix['image']['featured_singular_only'] ) ? checked( esc_attr( $get_prefix['image']['featured_singular_only'] ) ) : ''; ?> />
+								<?php _e( 'Check to only display featured images on singular pages', 'blox' ); ?>
+								<span class="blox-help-text-icon">
+									<a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+								</span>
+								<div class="blox-help-text top">
+									<?php
+										echo sprintf( __( 'Only singular pages can have featured images. Singular pages include posts, pages, and custom post types. When the image type is set to %1$sFeatured Image%2$s or %1$sFeatured or Custom Image%2$s, some unexpected results may occur if the block is placed on a non-singular page such as an archive page. That said, if the block is placed within the loop on archive pages, it can effectively pull featured images if this option is left unchecked. So you the choice is yours. For more information, see the %3$sBlox Documentation%4$s.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/documentation/static-image/?utm_source=blox&utm_medium=plugin&utm_content=content-tab-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation' ) . '" target="_blank">', '</a>' );
+									?>						
+								</div>
+							</label>
+						</div>
+						<?php } ?>
+						
 					</td>
 				</tr>
 				<tr class="blox-content-image-custom <?php if ( $thumbnail ) echo 'blox-hidden'; ?>">
@@ -188,7 +206,7 @@ class Blox_Content_Image {
 							<a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
 						</span>
 						<div class="blox-help-text top">
-							<?php _e( 'If you are using a Custom Image, note that the size selection will not be reflected in the image preview above.', 'blox' ); ?>
+							<?php echo sprintf( __( 'If you are using a %1$sCustom Image%2$s, note that the size selection will not be reflected in the image preview above.', 'blox' ), '<strong>', '</strong>' ); ?>
 						</div>
 					</td>
 				</tr>
@@ -271,6 +289,7 @@ class Blox_Content_Image {
 		$settings = array();
 
 		$settings['image_type'] 				= esc_attr( $name_prefix['image_type'] );
+		$settings['featured_singular_only'] 	= isset( $name_prefix['featured_singular_only'] ) ? 1 : 0;
 		$settings['custom']['id'] 				= trim( strip_tags( $name_prefix['custom']['id'] ) );
 		$settings['custom']['url']				= esc_url( $name_prefix['custom']['url'] );
 		$settings['custom']['title']			= trim( strip_tags( $name_prefix['custom']['title'] ) );
@@ -303,12 +322,13 @@ class Blox_Content_Image {
      */
 	public function print_image_content( $content_data, $block_id, $block, $global ) {
 
-		// Check to see if the current post/page/custom post type has a featured image set
-		// Disable for non-singular pages because has_post_thumbnail can return true on archive pages, search pages, etc.
-		if ( is_singular() ) {
-			$thumbnail = has_post_thumbnail( get_the_ID() );
-		} else {
+		// If we have chosen to only show featured images on singular pages, run the test, otherwise try and see if there is a thumbnail somewhere on the page
+		if ( ! empty( $content_data['image']['featured_singular_only'] ) && $content_data['image']['featured_singular_only'] == 1 && ! is_singular() ) {
+			
+			// Disable for non-singular pages because has_post_thumbnail can return true on archive pages, search pages, etc.
 			$thumbnail = false;
+		} else {
+			$thumbnail = has_post_thumbnail( get_the_ID() );
 		}
 		
 		// Aquire some misc settings

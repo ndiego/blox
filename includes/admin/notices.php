@@ -71,7 +71,7 @@ class Blox_Notices {
 			'id'   => 'disable_license_notices',
 			'name'  => __( 'License Key Notices', 'blox' ),
 			'label' => __( 'Check to disable all license activation reminders', 'blox' ),
-			'desc'  => sprintf( __( 'You are free to use Blox and all Addons without activated licenses, but valid licenses are required for automatic updates and support. It is recommended that you keep notices enabled as they will notify you when your licenses are about to expire or if there is any issues. %1$sLearn More%2$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/licensing/?utm_source=blox&utm_medium=plugin&utm_content=plugin-links&utm_campaign=Blox_Plugin_Links" target="_blank">', '</a>' ),
+			'desc'  => sprintf( __( 'You are free to use Blox and all Addons without activated licenses, but valid licenses are required for automatic updates and support. It is recommended that you keep notices enabled as they will notify you if there is any issues with your license keys. Learn more about Blox %1$slicensing%2$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/licensing/?utm_source=blox&utm_medium=plugin&utm_content=plugin-links&utm_campaign=Blox_Plugin_Links" target="_blank">', '</a>' ),
 			'type'  => 'checkbox',
 			'default' => false
 		);
@@ -91,39 +91,32 @@ class Blox_Notices {
     	
     	$addons   = blox_get_active_addons();
     	$licenses = array_merge( array( 'blox' => __( 'Blox', 'blox' ) ), $addons );
-    	$licenses_status = array();
     	
     	foreach ( $licenses as $key => $title ) {
     	
     		$status = get_option( 'blox_' . $key . '_license_status' );
-    		
-    		$licenses_status[$key] = array( 
-    			'title'   => $title,
-				'success' => $status['success'],
-				'license' => $status['license'],
-				'expires' => $status['expires'],
-    		);
+
+    		if ( $status['success'] != 1 ) {    			
+    			$problems[$key] = array( 
+					'title'   => $title,
+					'license' => empty( $status['license'] ) ? __( 'No License Set', 'blox' ) : ucfirst( $status['license'] ),
+    			); 
+    		}
     	}
 		
-		// Step 1: Determine if a license has been saved
-
-		
-		// Step 2: Determine is any of the saved license are active, expired, invalid, etc. 
-		
-		foreach ( $licenses_status as $license ) {
-			if ( $license['success'] != 1 ) {
-			
-			}
-		}
-		
-		
-    
-    	if ( ! $disable_notices ) {
+    	// Make sure noticed are not disabled and there are issues, then show notices
+    	if ( ! $disable_notices && ! empty( $problems ) ) {
 			?>
 			<div class="blox-alert">
 				<?php 
-				//echo print_r( $licenses_status ) . '<br>';
-				//echo sprintf( __( 'Enjoying %1$sBlox Lite%2$s but looking for more content options, visibility settings, priority support, frequent updates and more? Then you should consider %3$supgrading%4$s to %1$sBlox%2$s. Happy with the free version and have no need to upgrade? Then you might as well turn off these notifications in the plugin %5$ssettings%4$s.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/?utm_source=blox-lite&utm_medium=plugin&utm_content=marketing-links&utm_campaign=Blox_Plugin_Links" target="_blank">', '</a>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=misc' ) . '">' ); ?>
+				echo sprintf( __( 'There seem to be problems with the following Blox license key(s). But don\'t worry, simply head over to the %1$sLicenses & Addons%2$s page to fix these issues.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-licenses' ) . '">', '</a>' );
+				echo '<div style="margin:8px 0;">';
+				foreach ( $problems as $problem ) {
+					echo '<strong>' . $problem['title'] . '</strong>: <em>' . $problem['license'] . '</em><br>';
+				}
+				echo '</div>';
+				echo sprintf( __( 'Note that you can use Blox and all Addons without activated/valid licenses. However in doing so, you will not recieve automatic updates or support. If you are fine with this, then you might as well turn off these notifications in the plugin %5$ssettings%4$s.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/?utm_source=blox&utm_medium=plugin&utm_content=marketing-links&utm_campaign=Blox_Plugin_Links" target="_blank">', '</a>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=misc' ) . '">' ); 
+				?>
 			</div>
 			<?php
 		}

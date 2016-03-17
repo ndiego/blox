@@ -139,7 +139,7 @@ class Blox_License_Settings {
 					'blox_license_header' => array(
 						'id' => 'blox_license_header',
 						'name' => '<span class="title">' . __( 'Primary Blox License', 'blox' ) . '</span>',
-						'desc' => '',
+						'desc' => sprintf( __( 'For information on Blox and Addon licensing, check out the %1$sdocumentation%1$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hooks/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
 						'type' => 'header'
 					),	
 				)

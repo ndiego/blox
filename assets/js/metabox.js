@@ -56,6 +56,12 @@ jQuery(document).ready(function($){
 		} else {
 			$( this ).parents( '.blox-content-image' ).find( '.blox-content-image-custom' ).hide();
 		}
+		
+		if ( image_type == 'custom' ) {
+			$( this ).siblings( '.blox-featured-singular-only' ).hide();
+		} else {
+			$( this ).siblings( '.blox-featured-singular-only' ).show();
+		}
 	});
 	
 	// Shows and hides custom image uploader on selection
@@ -65,9 +71,17 @@ jQuery(document).ready(function($){
 		if ( image_type == 'custom' || image_type == 'featured-custom' ) {
 			// Show the custom image uploader if selected, otherwise hide it
 			$( this ).parents( '.blox-content-image' ).find( '.blox-content-image-custom' ).show();
+			$( this ).siblings().find( '.blox-featured-singular-only' ).hide();
 		} else {
 			$( this ).parents( '.blox-content-image' ).find( '.blox-content-image-custom' ).hide();
 		}
+		
+		if ( image_type == 'custom' ) {
+			$( this ).siblings( '.blox-featured-singular-only' ).hide();
+		} else {
+			$( this ).siblings( '.blox-featured-singular-only' ).show();
+		}
+		
 	});
 
 	// Image Uploader function                  
