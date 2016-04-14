@@ -712,7 +712,8 @@ a.blox-slide-details {
 .blox-singles-container-inner {
 	margin-top: 15px;
 }
-.blox-location-singles-selection .blox-description {
+.blox-location-singles-selection .blox-description,
+.blox-location-archive-selection .blox-description {
 	margin: 10px 0;
 }
 .blox-singles-taxonomy-container-wrapper .blox-singles-taxonomy-container {

@@ -309,7 +309,6 @@ class Blox_Content_Image {
 	}
 
 
-
 	/**
 	 * Prints all of the image content to the frontend
      *
