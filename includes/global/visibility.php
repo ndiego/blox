@@ -168,7 +168,7 @@ class Blox_Visibility {
 						</select>
 			
 						<div class="blox-description">
-							<?php _e( 'Choose who should be able to view the content block.', 'blox' ); ?>
+							<?php _e( 'Choose who should be able to view the content block on the frontend.', 'blox' ); ?>
 						</div>
 					</td>
 				</tr>
@@ -195,7 +195,7 @@ class Blox_Visibility {
 							<a class="blox-checkbox-select-all" href="#"><?php _e( 'Select All', 'blox' ); ?></a> <a class="blox-checkbox-select-none" href="#"><?php _e( 'Unselect All', 'blox' ); ?></a>
 						</div>
 						<div class="blox-description">
-							<?php _e( 'If role restriction is enabled, the content block will only show for the users selected above.', 'blox' ); ?>
+							<?php _e( 'If role restriction is enabled, the content block will only show on the frontend for the users selected above.', 'blox' ); ?>
 						</div>
 					</td>
 				</tr>
