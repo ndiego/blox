@@ -434,7 +434,7 @@ class Blox_Settings {
 					'uninstall_on_delete' => array(
 						'id'    => 'uninstall_on_delete',
 						'name'  => __( 'Remove Data on Uninstall', 'blox' ),
-						'label' => __( 'Check to completely remove all plugin data when Blox Lite is deleted', 'blox' ),
+						'label' => __( 'Check to completely remove all plugin data when Blox is deleted', 'blox' ),
 						'desc'  => '',
 						'type'  => 'checkbox',
 						'default' => '',

@@ -71,7 +71,7 @@ class Blox_Notices {
 			'id'   => 'disable_license_notices',
 			'name'  => __( 'License Key Notices', 'blox' ),
 			'label' => __( 'Check to disable all license activation reminders', 'blox' ),
-			'desc'  => sprintf( __( 'You are free to use Blox and all Addons without activated licenses, but valid licenses are required for automatic updates and support. It is recommended that you keep notices enabled as they will notify you if there is any issues with your license keys. Learn more about Blox %1$slicensing%2$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/licensing/?utm_source=blox&utm_medium=plugin&utm_content=plugin-links&utm_campaign=Blox_Plugin_Links" target="_blank">', '</a>' ),
+			'desc'  => sprintf( __( 'You are free to use Blox and all Addons without activated licenses, but valid licenses are required for automatic updates and support. It is recommended that you keep notices enabled as they will notify you if there are any issues with your license keys. Learn more about Blox %1$slicensing%2$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/licensing/?utm_source=blox&utm_medium=plugin&utm_content=plugin-links&utm_campaign=Blox_Plugin_Links" target="_blank">', '</a>' ),
 			'type'  => 'checkbox',
 			'default' => false
 		);

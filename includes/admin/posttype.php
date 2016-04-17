@@ -241,8 +241,8 @@ class Blox_Posttype_Admin {
 			
 			// Get the number of local blocks on the given post
 			$count = get_post_meta( $post_ID, '_blox_content_blocks_count', true );
-
-			if ( ! empty( $local_blocks ) ) {
+			
+			if ( ! empty( $count ) ) {
 				echo $count;
 				// Possibly add more than just the number of block in the future...
 			} else {
