@@ -35,14 +35,20 @@ class Blox_License {
 	 */
 	function __construct( $_file, $_item, $_version, $_author, $_optname = null, $_api_url = null, $_scope = 'main' ) {
 
+		$licenses = get_option( 'blox_licenses' );
+
 		$this->file           = $_file;
 		$this->item_name      = $_item;
 		$this->item_shortname = 'blox_' . str_replace( ' ', '_', strtolower( $this->item_name ) );
 		$this->version        = $_version;
-		$this->license        = trim( blox_get_option( $this->item_shortname . '_license_key', '' ) );
+		$this->license        = trim( $licenses[$this->item_shortname . '_license_key'] );
 		$this->author         = $_author;
 		$this->api_url        = is_null( $_api_url ) ? $this->api_url : $_api_url;
 		$this->scope          = empty( $_scope ) ? 'main' : $_scope;
+
+		$license_status = get_option( $this->item_shortname . '_license_status' );
+		
+		$this->status         = $license_status['license'];
 
 		$this->hooks();
 	}
@@ -112,16 +118,15 @@ class Blox_License {
 	public function auto_updater() {
 
 		// Don't bother trying to update if license is not valid
-		if ( 'valid' !== get_option( $this->item_shortname . '_license_status' ) ) {
-			//return;
+		if ( 'valid' !== $this->status ) {
+			return;
 		}
-		
-		//echo 'Should be working: ' . $this->item_shortname . '_license_status: ' . print_r( get_option( $this->item_shortname . '_license_status' ) );
-		
+						
 		$args = array(
 			'version'   => $this->version,
 			'license'   => $this->license,
-			'author'    => $this->author
+			'author'    => $this->author,
+			'url'       => home_url()
 		);
 
 		if( ! empty( $this->item_id ) ) {
@@ -173,7 +178,7 @@ class Blox_License {
 		if ( isset( $_POST[ $this->item_shortname . '_license_key_activate'] ) ) {
 			
 			// This is sort of a backup because the Activate button should never show when the status is valid
-			if ( 'valid' === get_option( $this->item_shortname . '_license_status' ) ) {
+			if ( 'valid' === $this->status ) {
 				return;
 			}
 

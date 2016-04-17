@@ -139,7 +139,7 @@ class Blox_License_Settings {
 					'blox_license_header' => array(
 						'id' => 'blox_license_header',
 						'name' => '<span class="title">' . __( 'Primary Blox License', 'blox' ) . '</span>',
-						'desc' => sprintf( __( 'For information on Blox and Addon licensing, check out the %1$sdocumentation%1$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hooks/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
+						'desc' => sprintf( __( 'Enter your license key(s) below. Please note that your "Bundle License" is only used for license renewals. It is not used for plugin activation and should not be added below. For information on Blox and Addon licensing, check out the %1$sdocumentation%1$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/licensing/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
 						'type' => 'header'
 					),	
 				)
@@ -213,14 +213,14 @@ class Blox_License_Settings {
 					$addons = $this->get_addons();
 					?>
 					<div class="blox-addon-container">
-						<p><?php echo sprintf( __( 'Addons enhance Blox and make it more versatile. To download and install addons, you must have purchased a %1$sMultisite Bundle%2$s or %1$sDeveloper Bundle%2$s. Head on over to your bloxwp.com %3$saccount page%4$s to download, or upgrade your license.', 'blox' ), '<strong>', '</strong>', '<a href="" title="' . __( 'Your Account', 'blox' ) . '">', '</a>' );?><p>
+						<p><?php echo sprintf( __( 'Addons enhance Blox and make it more versatile. To download and install addons, you must have purchased a %1$sMultisite Bundle%2$s or %1$sDeveloper Bundle%2$s. Head over to %3$syour account %4$s on bloxwp.com to download, or upgrade your license.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/your-account/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Your Account', 'blox' ) . '" target="_blank">', '</a>' );?><p>
 						<?php foreach ( $addons as $addon ) { ?>
 							<div class="blox-addon">
 								<?php echo $addon['uc'] == 1 ? '<span class="blox-addon-uc">' . __( 'Coming Soon', 'blox' ) . '</span>' : ''; ?>
 								<h3 class="blox-addon-title"><?php echo $addon['name'];?></h3>
 								<img class="blox-addon-image" src="<?php echo $addon['image'];?>" alt="<?php echo $addon['name'];?>" />
 								<p><?php echo $addon['desc'];?></p>
-								<a class="button-secondary" href="<?php echo $addon['link'];?>" title="<?php echo $addon['name'];?>"><?php echo $addon['uc'] == 1 ? __( 'Learn More', 'blox' ) : __( 'Get this Addon', 'blox' ); ?></a>
+								<a class="button-secondary" href="<?php echo $addon['link'];?>" title="<?php echo $addon['name'];?>" target="_blank"><?php echo $addon['uc'] == 1 ? __( 'Learn More', 'blox' ) : __( 'Learn More', 'blox' ); ?></a>
 							</div>					
 						<?php } ?>
 					</div>
@@ -266,24 +266,24 @@ class Blox_License_Settings {
 				'name'  => __( 'Widgets Addon', 'blox' ),
 				'desc'  => __( 'Allows you to add any widget, and any number of widgets, to your content blocks.', 'blox' ),
 				'image' => 'https://www.bloxwp.com/wp-content/uploads/2015/12/Blox-Widgets-2.png',
-				'link'  => '',
-				'uc'    => 1
+				'link'  => 'https://www.bloxwp.com/addons/widgets?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links',
+				'uc'    => 0
 			),	
 			'blox-sandbox' => array(
 				'id'    => 'blox-sandbox',
 				'name'  => __( 'Sandbox Addon', 'blox' ),
 				'desc'  => __( 'Creates a new settings page that acts like your theme\'s functions.php file. Oh the possibilities...', 'blox' ),
 				'image' => 'https://www.bloxwp.com/wp-content/uploads/2015/12/Blox-Sandbox-2.png',
-				'link'  => '',
-				'uc'    => 1
+				'link'  => 'https://www.bloxwp.com/addons/sandbox/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links',
+				'uc'    => 0
 			),
 			'blox-scheduler' => array(
 				'id'    => 'blox-scheduler',
 				'name'  => __( 'Scheduler Addon', 'blox' ),
 				'desc'  => __( 'Schedule blocks to show/hide based on the date and time. Great for promotions!', 'blox' ),
 				'image' => 'https://www.bloxwp.com/wp-content/uploads/2015/12/Blox-Scheduler-2.png',
-				'link'  => '',
-				'uc'    => 1
+				'link'  => 'https://www.bloxwp.com/addons/scheduler/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links',
+				'uc'    => 0
 			),
 		);
 		

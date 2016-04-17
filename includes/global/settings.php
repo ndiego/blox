@@ -337,7 +337,7 @@ class Blox_Settings {
 					'defaults_position_header' => array(
 						'id' => 'defaults_position_header',
 						'name' => '<span class="title">' . __( 'Default Block Position', 'blox' ) . '</span>',
-						'desc' => sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hooks/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
+						'desc' => sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
 						'type' => 'header'
 					),
 					'global_default_position' => array(

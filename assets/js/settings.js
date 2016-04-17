@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
 	
 	// Enable editing of key, but hide activation button until key is re-saved
 	$( 'a.edit-license' ).on( 'click', function(){
-		$( '.no-edit' ).prop( 'readonly', false);
+		$(this).siblings( '.no-edit' ).prop( 'readonly', false);
 		$(this).hide();
 		$(this).siblings( 'input.button-primary' ).hide();
 		$(this).siblings( '.description' ).hide();
