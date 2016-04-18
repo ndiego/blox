@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Blox package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Blox 0.9.0\n"
+"Project-Id-Version: Blox 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/blox\n"
-"POT-Creation-Date: 2016-04-14 01:48:09+00:00\n"
+"POT-Creation-Date: 2016-04-18 01:43:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -40,12 +40,12 @@ msgstr ""
 msgid "The content type of this block is currently set to %1$s, which no longer exists. Therefore, this block is currently not visible on your site. Perhaps you deactivated a Blox Addon by mistake, or switched to Blox Lite. Choose a new content type and publish to get this block displaying again."
 msgstr ""
 
-#: includes/admin/content.php:259 includes/admin/license.php:169
-#: includes/admin/license.php:207 includes/admin/license.php:244
-#: includes/admin/license.php:277 includes/admin/license.php:312
-#: includes/admin/license.php:345 includes/admin/metaboxes.php:449
+#: includes/admin/content.php:259 includes/admin/license.php:174
+#: includes/admin/license.php:212 includes/admin/license.php:249
+#: includes/admin/license.php:282 includes/admin/license.php:317
+#: includes/admin/license.php:350 includes/admin/metaboxes.php:449
 #: includes/admin/metaboxes.php:491 includes/admin/metaboxes.php:497
-#: includes/admin/position.php:252 includes/admin/updater.php:329
+#: includes/admin/position.php:252 includes/admin/updater.php:339
 #: includes/global/location.php:938 includes/global/visibility.php:288
 msgid "Error"
 msgstr ""
@@ -60,7 +60,7 @@ msgid "Primary Blox License"
 msgstr ""
 
 #: includes/admin/license-settings.php:142
-msgid "For information on Blox and Addon licensing, check out the %1$sdocumentation%1$s."
+msgid "Enter your license key(s) below. Please note that your \"Bundle License\" is only used for license renewals. It is not used for plugin activation and should not be added below. For information on Blox and Addon licensing, check out the %1$sdocumentation%1$s."
 msgstr ""
 
 #: includes/admin/license-settings.php:142 includes/admin/position.php:173
@@ -79,7 +79,7 @@ msgid "Save Licenses"
 msgstr ""
 
 #: includes/admin/license-settings.php:216
-msgid "Addons enhance Blox and make it more versatile. To download and install addons, you must have purchased a %1$sMultisite Bundle%2$s or %1$sDeveloper Bundle%2$s. Head on over to your bloxwp.com %3$saccount page%4$s to download, or upgrade your license."
+msgid "Addons enhance Blox and make it more versatile. To download and install addons, you must have purchased a %1$sMultisite Bundle%2$s or %1$sDeveloper Bundle%2$s. Head over to %3$syour account %4$s on bloxwp.com to download, or upgrade your license."
 msgstr ""
 
 #: includes/admin/license-settings.php:216
@@ -92,10 +92,6 @@ msgstr ""
 
 #: includes/admin/license-settings.php:223
 msgid "Learn More"
-msgstr ""
-
-#: includes/admin/license-settings.php:223
-msgid "Get this Addon"
 msgstr ""
 
 #: includes/admin/license-settings.php:247
@@ -170,61 +166,61 @@ msgstr ""
 msgid "Enter your license key and save. Once saved, you will be able to activate and begin receiving automatic updates."
 msgstr ""
 
-#: includes/admin/license.php:94
+#: includes/admin/license.php:100
 msgid "%1$s License Key"
 msgstr ""
 
-#: includes/admin/license.php:96
+#: includes/admin/license.php:102
 msgid "Enter License Key"
 msgstr ""
 
-#: includes/admin/license.php:169 includes/admin/license.php:244
-#: includes/admin/license.php:312
+#: includes/admin/license.php:174 includes/admin/license.php:249
+#: includes/admin/license.php:317
 msgid "Nonce verification failed"
 msgstr ""
 
-#: includes/admin/license.php:207 includes/admin/license.php:277
-#: includes/admin/license.php:345
+#: includes/admin/license.php:212 includes/admin/license.php:282
+#: includes/admin/license.php:350
 msgid "There has been an error retrieving the license information from the server, perhaps you are no longer connected to the internet. Please contact %1$ssupport%2$s for assistance if needed."
 msgstr ""
 
-#: includes/admin/license.php:383 includes/admin/license.php:411
+#: includes/admin/license.php:388 includes/admin/license.php:416
 msgid "This license does not belong to the product you have entered it for."
 msgstr ""
 
-#: includes/admin/license.php:386 includes/admin/license.php:414
+#: includes/admin/license.php:391 includes/admin/license.php:419
 msgid "This license does not have any activations left"
 msgstr ""
 
-#: includes/admin/license.php:389 includes/admin/license.php:417
+#: includes/admin/license.php:394 includes/admin/license.php:422
 msgid "This license key has expired. Please renew it."
 msgstr ""
 
-#: includes/admin/license.php:392
+#: includes/admin/license.php:397
 msgid "There was a problem activating your license key, please try again or contact support. Error code: %s"
 msgstr ""
 
-#: includes/admin/license.php:400
+#: includes/admin/license.php:405
 msgid "The license key was successfully activated."
 msgstr ""
 
-#: includes/admin/license.php:420
+#: includes/admin/license.php:425
 msgid "There was a problem deactivating your license key, please try again or contact support. Error code: %s"
 msgstr ""
 
-#: includes/admin/license.php:428
+#: includes/admin/license.php:433
 msgid "The license key was successfully deactivated."
 msgstr ""
 
-#: includes/admin/license.php:436
+#: includes/admin/license.php:441
 msgid "There was a problem checking your license key, please try again or contact support. Error code: %s"
 msgstr ""
 
-#: includes/admin/license.php:441
+#: includes/admin/license.php:446
 msgid "The license key is valid."
 msgstr ""
 
-#: includes/admin/license.php:444
+#: includes/admin/license.php:449
 msgid "The license key is no longer valid. You will need to edit/update the key and reactivate. For assistance please contact support."
 msgstr ""
 
@@ -336,7 +332,7 @@ msgid "Check to disable all license activation reminders"
 msgstr ""
 
 #: includes/admin/notices.php:74
-msgid "You are free to use Blox and all Addons without activated licenses, but valid licenses are required for automatic updates and support. It is recommended that you keep notices enabled as they will notify you if there is any issues with your license keys. Learn more about Blox %1$slicensing%2$s."
+msgid "You are free to use Blox and all Addons without activated licenses, but valid licenses are required for automatic updates and support. It is recommended that you keep notices enabled as they will notify you if there are any issues with your license keys. Learn more about Blox %1$slicensing%2$s."
 msgstr ""
 
 #: includes/admin/notices.php:93
@@ -501,15 +497,15 @@ msgstr ""
 msgid "Many Genesis child themes use this selector and enabling it can assist with block styling."
 msgstr ""
 
-#: includes/admin/updater.php:184
+#: includes/admin/updater.php:191
 msgid "There is a new version of %1$s available. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
 msgstr ""
 
-#: includes/admin/updater.php:191
+#: includes/admin/updater.php:198
 msgid "There is a new version of %1$s available. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s\">update now</a>."
 msgstr ""
 
-#: includes/admin/updater.php:329
+#: includes/admin/updater.php:339
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
@@ -1558,7 +1554,7 @@ msgid "Remove Data on Uninstall"
 msgstr ""
 
 #: includes/global/settings.php:437
-msgid "Check to completely remove all plugin data when Blox Lite is deleted"
+msgid "Check to completely remove all plugin data when Blox is deleted"
 msgstr ""
 
 #: includes/global/settings.php:509
@@ -1638,7 +1634,7 @@ msgid "Restrict by User Role"
 msgstr ""
 
 #: includes/global/visibility.php:171
-msgid "Choose who should be able to view the content block."
+msgid "Choose who should be able to view the content block on the frontend."
 msgstr ""
 
 #: includes/global/visibility.php:178
@@ -1646,7 +1642,7 @@ msgid "Role Restriction Settings"
 msgstr ""
 
 #: includes/global/visibility.php:198
-msgid "If role restriction is enabled, the content block will only show for the users selected above."
+msgid "If role restriction is enabled, the content block will only show on the frontend for the users selected above."
 msgstr ""
 
 #: includes/global/visibility.php:262 includes/global/visibility.php:345

@@ -36,19 +36,19 @@ class Blox_License {
 	function __construct( $_file, $_item, $_version, $_author, $_optname = null, $_api_url = null, $_scope = 'main' ) {
 
 		$licenses = get_option( 'blox_licenses' );
-
+		
 		$this->file           = $_file;
 		$this->item_name      = $_item;
 		$this->item_shortname = 'blox_' . str_replace( ' ', '_', strtolower( $this->item_name ) );
 		$this->version        = $_version;
-		$this->license        = trim( $licenses[$this->item_shortname . '_license_key'] );
+		$this->license        = ! empty( $licenses[$this->item_shortname . '_license_key'] ) ? trim( $licenses[$this->item_shortname . '_license_key'] ) : '';
 		$this->author         = $_author;
 		$this->api_url        = is_null( $_api_url ) ? $this->api_url : $_api_url;
 		$this->scope          = empty( $_scope ) ? 'main' : $_scope;
 
 		$license_status = get_option( $this->item_shortname . '_license_status' );
 		
-		$this->status         = $license_status['license'];
+		$this->status         = ! empty( $license_status['license'] ) ? $license_status['license'] : '';
 
 		$this->hooks();
 	}

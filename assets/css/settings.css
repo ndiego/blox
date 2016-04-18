@@ -31,7 +31,7 @@ h2.nav-tab-wrapper a {
 	padding-top: 8px;
 }
 #tab_container .title {
-	color: #999;
+	font-size: 15px;
 	font-style: italic;
 }
 #tab_container hr {
