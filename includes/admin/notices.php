@@ -115,7 +115,7 @@ class Blox_Notices {
 					echo '<strong>' . $problem['title'] . '</strong>: <em>' . $problem['license'] . '</em><br>';
 				}
 				echo '</div>';
-				echo sprintf( __( 'Note that you can use Blox and all Addons without activated/valid licenses. However in doing so, you will not recieve automatic updates or support. If you are fine with this, then you might as well turn off these notifications in the plugin %5$ssettings%4$s.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/?utm_source=blox&utm_medium=plugin&utm_content=marketing-links&utm_campaign=Blox_Plugin_Links" target="_blank">', '</a>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=misc' ) . '">' ); 
+				echo sprintf( __( 'Note that you can use Blox and all Addons without activated/valid licenses. However in doing so, you will not receive automatic updates or support. If you are fine with this, then you might as well turn off these notifications in the plugin %5$ssettings%4$s.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/?utm_source=blox&utm_medium=plugin&utm_content=marketing-links&utm_campaign=Blox_Plugin_Links" target="_blank">', '</a>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=misc' ) . '">' ); 
 				?>
 			</div>
 			<?php

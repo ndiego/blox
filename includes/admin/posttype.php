@@ -55,6 +55,11 @@ class Blox_Posttype_Admin {
 
         // Remove quick editing from the global blocks post type row actions.
         add_filter( 'post_row_actions', array( $this, 'row_actions' ), 10, 2 );
+        	
+        // Enable replication for Global blocks
+        add_filter( 'post_row_actions', array( $this, 'replicate_row_link' ), 10, 2 );
+		add_action( 'post_submitbox_start', array( $this, 'replicate_submitbox_link' ) );
+        add_action( 'admin_action_blox_replicate_block', array( $this, 'replicate_block' ) );
 
         // Manage post type columns.
         add_filter( 'manage_edit-blox_columns', array( $this, 'admin_column_titles' ) );
@@ -68,7 +73,98 @@ class Blox_Posttype_Admin {
         add_action( 'current_screen', array( $this, 'local_blocks_columns' ) );
 	}
 	
+
+	/**
+	 * Add the link to action list for post_row_actions
+	 *
+	 * @since 1.1.0
+	 * 
+	 * @param array $actions Existing array of action links
+	 * @param obj $post The original block object (one to be replicated)
+	 */
+	public function replicate_row_link( $actions, $post ) {
 	
+		if ( $post->post_type == 'blox' ){
+	
+			$link  = admin_url( 'admin.php?action=blox_replicate_block&amp;post=' . $post->ID );
+			$title = __( 'Replicate', 'blox' );
+		
+			$actions['replicate'] = '<a href="' . $link . '" title="' . $title . '">' . $title . '</a>';
+		}
+	
+		return $actions;
+	}
+	
+
+	/**
+	 * Add the replicate link to submitbox on all Global blocks
+	 *
+	 * @since 1.1.0
+	 */
+	public function replicate_submitbox_link() {
+		
+		$post  = get_post( $_GET['post'] );
+	
+		if ( isset( $post ) && $post != null && $post->post_type == 'blox' ) {
+
+			$link  = admin_url( 'admin.php?action=blox_replicate_block&amp;post=' . $post->ID );
+			$title = __( 'Replicate', 'blox' );
+			
+			$output =  '<div id="duplicate-action">';
+			$output .= '<a href="' . $link . '" title="' . $title . '">' . $title . '</a>';
+			$output .= '</div>';
+			
+			echo $output;
+		}
+	}
+
+
+	/**
+	 * Replicate the given Global block
+	 *
+	 * @since 1.1.0
+	 */
+	public function replicate_block() {
+	
+		if ( ! ( isset( $_GET['post'] ) || isset( $_POST['post'] )  || ( isset( $_REQUEST['action'] ) && 'blox_replicate_block' == $_REQUEST['action'] ) ) ) {
+			wp_die( __( 'You didn\'t choose a block to replicate...try again.', 'blox' ) );
+		}
+
+		// Get the original post
+		$id   = ( isset($_GET['post'] ) ? $_GET['post'] : $_POST['post']);
+		$post = get_post( $id );
+
+		// Replicate the block 
+		if ( isset( $post ) && $post != null ) {
+			
+			// New block args
+			$args = array(
+				'post_status' => 'draft',
+				'post_title' => $post->post_title . ' ' . __( 'Copy', 'blox' ),
+				'post_type' => $post->post_type,
+			);
+			
+			// Create new block
+			$new_block_id = wp_insert_post( $args );
+			
+			// Get the metadata from the old block
+			$block_meta   = get_post_meta( $post->ID, '_blox_content_blocks_data', true );
+			
+			// Play is safe and remove any existing meta data and then add old block's data to new block
+			delete_post_meta( $new_block_id, '_blox_content_blocks_data' );
+			update_post_meta( $new_block_id, '_blox_content_blocks_data', $block_meta );
+
+			// Redirect to the edit screen for the new draft post
+			wp_redirect( admin_url( 'post.php?action=edit&post=' . $new_block_id ) );
+			
+			exit;
+
+		} else {
+			wp_die( esc_attr( __( 'Replication has failed, the original block could not be located.', 'blox' ) ) );
+		}
+	}
+
+
     /**
      * Customize the post columns for the blox post type.
      *
