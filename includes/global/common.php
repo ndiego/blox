@@ -122,7 +122,7 @@ class Blox_Common {
      *
      * @return array Array of all Genesis hooks.
      */
-    public function get_genesis_hooks() {
+    public function get_genesis_hooks_unfiltered() {
 
     	// All current Genesis Hooks broken into their respective categories - http://my.studiopress.com/docs/hook-reference/
     	$genesis_hooks = array(
@@ -210,7 +210,20 @@ class Blox_Common {
             ),
 		);
 
-    	return apply_filters( 'blox_genesis_hooks', $genesis_hooks );
+    	return $genesis_hooks;
+    }
+    
+    
+    /**
+     * Helper function for retrieving all available Genesis hooks post filtering
+     *
+     * @since 1.1.0
+     *
+     * @return array Array of all Genesis hooks after they have been filtered.
+     */
+    public function get_genesis_hooks() {
+    
+    	return apply_filters( 'blox_genesis_hooks', $this->get_genesis_hooks_unfiltered() );
     }
 
 

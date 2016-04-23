@@ -59,6 +59,8 @@ class Blox_Settings {
 		add_action( 'admin_menu', array( $this, 'add_menu_links' ), 10 );
 		add_action( 'admin_init', array( $this, 'register_settings' ), 10 );
 		
+		add_filter( 'blox_genesis_hooks', array( $this, 'push_genesis_hook_defaults' ), 10 );
+		
 		// Enqueue Setting scripts and styles
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
     }
@@ -372,6 +374,19 @@ class Blox_Settings {
 						'default' => '15',
 						'sanitize' => 'absint',
 					),
+					'hook_defaults_header' => array(
+						'id' => 'hook_defaults_header',
+						'name' => '<span class="title">' . __( 'Hook Defaults', 'blox' ) . '</span>',
+						'desc' => __( 'Toogle the Genesis Hooks you would like to make available to the plugin. You can also rename them so it is easier for clients to choose the correct hook', 'blox' ),
+						'type' => 'header'
+					),
+					'hook_defaults' => array(
+						'id' => 'hook_defaults',
+						'name' => __( 'Genesis Hooks', 'blox' ),
+						'desc' => '',
+						'type' => 'hooks',
+						'sanitize' => 'hook_defaults',
+					),
 				)
 			),
 		
@@ -536,7 +551,6 @@ class Blox_Settings {
 					if ( empty( $output[$key] ) ) {
 						unset( $output[$key] );
 					}
-
 				}
 			}
 			
@@ -788,6 +802,90 @@ class Blox_Settings {
 		$description = ! empty( $args['desc'] ) ? ( '<p class="description" style="margin-top:15px;">' . $args['desc'] . '</p>' ) : '';
 		echo $description;
 	}
+	
+	
+	/**
+	 * Hooks callback
+	 *
+	 * @since 1.0.0
+	 *
+	 * @global $blox_options Array of all the Blox settings
+	 * @return void
+	 */
+	public function hooks_callback( $args ) {
+		
+		global $blox_options;
+		
+
+		
+		if ( isset( $blox_options[ $args['id'] ] ) ) {
+			$value = $blox_options[ $args['id'] ];
+		} else {
+			// Defaults
+			$value = array( 
+				'enable'   		  => '',
+				'available_hooks' => array()
+			);
+		}
+		
+		//echo '<pre>' . print_r( $value ) . '</pre>';
+		//echo print_r( $this->get_genesis_hooks() );
+		
+		
+		
+		?>
+		<div>
+			<input type="checkbox" name="blox_settings[<?php echo $args['id']; ?>][enable]" value="1" <?php echo isset( $value['enable'] ) ? checked( 1, esc_attr( $value['enable'] ), false ) : '';?> /><?php _e( 'Enable Hook Controls', 'blox' );?>
+		</div>
+		<div>
+		<?php
+		foreach ( $this->get_genesis_hooks_unfiltered() as $sections => $section ) { 
+			?>
+			<div class="hook-section-title">
+				<?php 
+				
+				echo $section['name'];
+				
+				$section_name  = 'blox_settings[' . $args['id'] . '][available_hooks][' . $sections . '][name]';
+				$section_value = isset( $value['available_hooks'][$sections]['name'] ) ? esc_attr( $value['available_hooks'][$sections]['name'] ) : $section['name'];
+				?>
+				
+				<input class="hidden" type="text" name="<?php echo $section_name; ?>" placeholder="<?php echo $section['name']; ?>" value="<?php echo $section_value; ?>" />
+
+			</div>
+			<div>
+			<div class="blox-checkbox-container">
+				<ul class="blox-columns">
+				<?php
+				foreach ( $section['hooks'] as $hooks => $hook ) {
+			
+					$enable_name  = 'blox_settings[' . $args['id'] . '][available_hooks][' . $sections . '][hooks][' . $hooks . '][enable]';
+					$enable_value = isset( $value['available_hooks'][$sections]['hooks'][$hooks]['enable'] ) ? checked( 1, esc_attr( $value['available_hooks'][$sections]['hooks'][$hooks]['enable'] ), false ) : '';
+					$name_name    = 'blox_settings[' . $args['id'] . '][available_hooks][' . $sections . '][hooks][' . $hooks . '][name]';
+					$name_value   = isset( $value['available_hooks'][$sections]['hooks'][$hooks]['name'] ) ? esc_attr( $value['available_hooks'][$sections]['hooks'][$hooks]['name'] ) : '';
+					$title_name   = 'blox_settings[' . $args['id'] . '][available_hooks][' . $sections . '][hooks][' . $hooks . '][title]';
+					$title_value  = isset( $hook['title'] ) ? esc_attr( $hook['title'] ) : '';
+					?>
+					<li>
+						<span>
+						<input type="checkbox" name="<?php echo $enable_name; ?>" value="1" <?php echo $enable_value; ?>/>
+						<input style="width:300px" type="text" name="<?php echo $name_name; ?>" placeholder="<?php echo $hooks; ?>" value="<?php echo $name_value; ?>" />
+						<input class="hidden" type="text" name="<?php echo $title_name; ?>" value="<?php echo $title_value; ?>" />
+						</span>
+					</li>
+					<?php
+				}
+				?>
+				</ul>
+			</div>
+			<div class="blox-checkbox-select-tools">
+				<a class="blox-checkbox-select-all" href="#"><?php _e( 'Select All' ); ?></a> <a class="blox-checkbox-select-none" href="#"><?php _e( 'Unselect All' ); ?></a>
+			</div>
+			</div>
+		<?php } ?>
+		</div>
+		<?php
+	}
 
 	
 	/***********************************************
@@ -893,6 +991,99 @@ class Blox_Settings {
 			return $old_value;
 		}
 	}
+	
+	
+	/**
+	 * Removes HTML tags from all custom hook names
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $new_value Array of all custom hook data 
+	 * @return array Array of all custom hook data without tags in it
+	 */
+	function hook_defaults( $new_value ) {
+			
+		$available_hooks = $new_value['available_hooks'];
+		
+		foreach ( $available_hooks as $sections => $section ) {
+		
+			$enabled_hooks = array();
+		
+			foreach ( $section['hooks'] as $hooks => $hook ) {
+				$enabled_hooks[$hooks] = array(
+					'enable' => isset( $hook['enable'] ) ? esc_attr( $hook['enable'] ) : '',
+					'name'  => strip_tags( $hook['name'] ),
+					'title' => esc_attr( $hook['title'] ),
+				);
+			}
+			
+			$filtered_hooks[$sections]['name']  = strip_tags( $section['name'] );
+			$filtered_hooks[$sections]['hooks'] = $enabled_hooks;
+		}
+		
+		$new_value['available_hooks'] = $filtered_hooks;
+		return $new_value;
+	}
+	
+	
+	/**
+     * Helper method for retrieving all Genesis hooks.
+     *
+     * @since 1.1.0
+     *
+     * @return array Array of all Genesis hooks.
+     */
+    public function get_genesis_hooks_unfiltered() {
+
+        $instance = Blox_Common::get_instance();
+        return $instance->get_genesis_hooks_unfiltered();
+
+    }
+	
+	
+	/**
+     * Helper method for retrieving all Genesis hooks.
+     *
+     * @since 1.1.0
+     *
+     * @return array Array of all Genesis hooks.
+     */
+    public function push_genesis_hook_defaults() {
+    
+    	$hook_defaults = blox_get_option( 'hook_defaults', false );
+    	$final_hooks   = array();
+    	
+    	// Make sure custom hooks are enabled
+    	if ( isset( $hook_defaults['enable'] ) && $hook_defaults['enable'] == 1 ) {
+			
+			$available_hooks = $hook_defaults['available_hooks'];
+			
+			foreach ( $available_hooks as $sections => $section ) {
+			
+				$enabled_hooks = array();
+			
+				foreach ( $section['hooks'] as $hooks => $hook ) {
+			
+					if ( isset( $hook['enable'] ) && $hook['enable'] == 1 ) {
+						$enabled_hooks[$hooks] = array(
+							'name'  => ! empty( $hook['name'] ) ? esc_attr( $hook['name'] ) : $hooks,
+							'title' => ! empty( $hook['name'] ) ? '' : $hook['title'], // Don't need a title is using a custom name
+						);
+					}
+				}
+				
+				if ( ! empty( $enabled_hooks ) ) {
+					$final_hooks[$sections]['name']  = $section['name'];
+					$final_hooks[$sections]['hooks'] = $enabled_hooks;
+				}
+			}
+		} else {
+			$final_hooks = $this->get_genesis_hooks_unfiltered();
+		}
+		
+		// Return our modified array of hooks
+		return $final_hooks;
+    }
 	
 	
 	/**

@@ -44,4 +44,23 @@ jQuery(document).ready(function($) {
 			$(this).get(0).selectionEnd = start + 1;
 	  	}
 	});
+	
+	
+	/* Multi Checkbox Select All/None
+	-------------------------------------------------------------- */
+	
+	// Select all options
+	$( '.blox-checkbox-select-all' ).click( function(e) {
+		e.preventDefault();
+		
+		$(this).parent().siblings( '.blox-checkbox-container' ).find( 'input[type=checkbox]' ).prop('checked', true).trigger("change");
+	});
+	
+	// Deselect all options
+	$( '.blox-checkbox-select-none' ).click( function(e) {
+		e.preventDefault();
+		
+		$(this).parent().siblings( '.blox-checkbox-container' ).find( 'input[type=checkbox]' ).prop('checked', false).trigger("change");
+	});
+	
 });

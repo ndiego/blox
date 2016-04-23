@@ -184,6 +184,28 @@ class Blox_Frontend {
 			$priority = ! empty( $position_data['custom']['priority'] ) ? $position_data['custom']['priority'] : 1;
 		}
 		
+		
+		// If hook defaults are enabled we need to make sure the block is set to a position that is one of the defaults
+		$hook_default_enabled = blox_get_option( 'hook_defaults', false );
+		
+		// Make sure hook defaults are enabled, and if so, run test
+    	if ( isset( $hook_default_enabled['enable'] ) && $hook_default_enabled['enable'] == 1 ) {
+    		
+    		$hook_default_test = array();
+    		
+    		foreach ( $this->get_genesis_hooks() as $sections => $section ) {  			
+				if ( isset( $section['hooks'][$position] ) ) {
+					$hook_default_test[] = 'true';
+				}
+    		}
+    		
+    		// If the block is set to a postition that is not apart of the hook defaults, bail out
+    		if ( ! in_array( 'true', $hook_default_test ) ) {
+    			return;
+    		}
+    	}
+		
+		
 		// Action hook for modifying/adding position settings
 		do_action( 'blox_content_block_position', $id, $block, $global );
 		
@@ -235,6 +257,21 @@ class Blox_Frontend {
 			echo '<style type="text/css">'. $custom_css . '</style>';
 		}
 	}
+	
+	
+	/**
+     * Helper method for retrieving all filtered Genesis hooks.
+     *
+     * @since 1.1.0
+     *
+     * @return array Array of all filtered Genesis hooks.
+     */
+    public function get_genesis_hooks() {
+
+        $instance = Blox_Common::get_instance();
+        return $instance->get_genesis_hooks();
+
+    }
 	
 	
     /**

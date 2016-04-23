@@ -80,6 +80,76 @@ textarea.blox-textarea-code {
 	tab-size: 4;
 }
 
+
+/* Styles for the multiple checkbox containers with columns found on Location and Visibility */
+.blox-checkbox-container {
+	background-color: #ffffff;
+	border: 1px solid #e5e5e5;
+	padding: 5px 15px;
+}
+ul.blox-columns {
+	-webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+   	-webkit-column-width: 330px;
+    -moz-column-width: 330px;
+    column-width: 330px;
+    margin: 10px 0 0px;
+	overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis
+}
+ul.blox-columns ul,
+ul.blox-columns li {
+	margin: 0;
+}
+.blox-columns li {
+	display: block; /* Very Important */
+	padding: 0;
+}
+.blox-columns li span {
+	display: inline-block; 
+	height: 28px;
+	overflow: hidden;
+	white-space: nowrap;
+	margin: 0 0 10px;
+	padding: 0;
+	text-overflow: ellipsis;
+}
+.blox-columns li input {
+	margin-top: 1px;
+}
+.blox-columns li.child {
+	position: relative;
+}
+.blox-columns .blox-no-break {
+	-webkit-column-break-inside: avoid;
+	page-break-inside: avoid;
+	break-inside: avoid;
+}
+.blox-columns .blox-column-title {
+	font-weight: bold;
+	padding: 8px 0;
+}
+/* Styling the the "Select All" and "Unselect All" links */
+.blox-checkbox-select-tools {
+	height: 20px;
+	padding: 8px 0 0;
+	width: 100%;
+}
+.blox-checkbox-select-tools a {
+	text-decoration: none;
+	font-size: 13px;
+}
+.blox-checkbox-select-none {
+	color: #a00;
+	float: right;
+}
+.blox-checkbox-select-none:hover {
+	color: red;
+}
+
+
 /* Styling for alerts */
 .blox-alert {
 	color: #444;
@@ -137,6 +207,24 @@ textarea.blox-textarea-code {
 	-moz-transform: rotate(45deg);
 	-ms-transform: rotate(45deg);
 	-o-transform: rotate(45deg);
+}
+
+
+
+/* Custom styles for default hooks settings */
+.hook-section-title {
+	font-weight: 600;
+	margin: 30px 0 10px;
+}
+
+
+@media only screen and (max-width: 782px) {
+	.blox-columns li span {
+		height: 42px;
+	}
+	.blox-columns li span input {
+		display: inline-block !important;
+	}
 }
 
 @media only screen and (max-width: 599px) {
