@@ -103,15 +103,15 @@ class Blox_Posttype_Admin {
 	 */
 	public function replicate_submitbox_link() {
 		
-		$post  = get_post( $_GET['post'] );
+		$post  = isset( $_GET['post'] ) ? get_post( $_GET['post'] ) : false;
 	
 		if ( isset( $post ) && $post != null && $post->post_type == 'blox' ) {
 
 			$link  = admin_url( 'admin.php?action=blox_replicate_block&amp;post=' . $post->ID );
-			$title = __( 'Replicate', 'blox' );
+			$title = __( 'Replicate Block', 'blox' );
 			
-			$output =  '<div id="duplicate-action">';
-			$output .= '<a href="' . $link . '" title="' . $title . '">' . $title . '</a>';
+			$output =  '<div id="replicate-action">';
+			$output .= '<a href="' . $link . '" title="' . $title . '" style="text-decoration:none">' . $title . '</a>';
 			$output .= '</div>';
 			
 			echo $output;
