@@ -427,11 +427,6 @@ jQuery(document).ready(function($){
 		
 	});
     
-    // Makes slide details modal draggable
-    $(function() {
-		$( "#blox_slide_details" ).draggable();
-	});
-    
 	
 
 	/* Content - Editor scripts
@@ -537,10 +532,12 @@ jQuery(document).ready(function($){
 		
 		// Insert the editor content into the source textarea
 		// If the editor is empty is will still return '<p> </p>' occasionally so account for that...
-		if ( editor_content === '<p> </p>' ){
+		if ( editor_content === '<p> </p>' || editor_content == '' ){
 			$( '#' + block_id + ' .blox-editor-output' ).val( '' );
+			$( '#' + block_id + ' .blox-editor-add' ).text( blox_localize_metabox_scripts.editor_add );
 		} else {
 			$( '#' + block_id + ' .blox-editor-output' ).val( editor_content );
+			$( '#' + block_id + ' .blox-editor-add' ).text( blox_localize_metabox_scripts.editor_edit );
 			
 			// If we have actually added some content, show the source textarea and change the name of the button
 			$( '#' + block_id + ' .blox-editor-output-wrapper' ).show();
@@ -865,8 +862,8 @@ jQuery(document).ready(function($){
 
 	});
 	
-	// Script to replicate an existing block when button is clicked
-	$(document).on( 'click', '.blox-replicate-block', function(e) {
+	// Script to duplicate an existing block when button is clicked
+	$(document).on( 'click', '.blox-duplicate-block', function(e) {
 
 		e.preventDefault();
 		

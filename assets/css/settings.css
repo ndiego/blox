@@ -210,6 +210,14 @@ ul.blox-columns li {
 }
 
 
+/* Misc styles */
+.blox-hidden {
+	display: none;
+}
+.blox-force-hidden {
+	display: none !important;
+}
+
 
 /* Custom styles for default hooks settings */
 .hook-section-title {
@@ -217,6 +225,29 @@ ul.blox-columns li {
 	margin: 30px 0 10px;
 }
 
+.custom-hooks {
+	-webkit-column-width: 400px;
+    -moz-column-width: 400px;
+    column-width: 400px;
+}
+.add-custom-button {
+	margin: 20px 0;
+}
+.hook-name {
+	width: 300px;
+}
+.delete-custom-hook {
+	color: #a00;
+	cursor: pointer;
+	display: inline-block;
+	margin-left: 5px;
+	font-size: 13px;
+}
+.no-hooks {
+	margin: 0 0 30px !important;
+	color: #777;
+	line-height: 1em;
+}
 
 @media only screen and (max-width: 782px) {
 	.blox-columns li span {
@@ -224,6 +255,12 @@ ul.blox-columns li {
 	}
 	.blox-columns li span input {
 		display: inline-block !important;
+	}
+	.hook-name {
+		width: 300px !important;
+	}
+	.blox-columns li span input.blox-force-hidden {
+		display: none !important;
 	}
 }
 

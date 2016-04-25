@@ -57,9 +57,9 @@ class Blox_Posttype_Admin {
         add_filter( 'post_row_actions', array( $this, 'row_actions' ), 10, 2 );
         	
         // Enable replication for Global blocks
-        add_filter( 'post_row_actions', array( $this, 'replicate_row_link' ), 10, 2 );
-		add_action( 'post_submitbox_start', array( $this, 'replicate_submitbox_link' ) );
-        add_action( 'admin_action_blox_replicate_block', array( $this, 'replicate_block' ) );
+        add_filter( 'post_row_actions', array( $this, 'duplicate_row_link' ), 10, 2 );
+		add_action( 'post_submitbox_start', array( $this, 'duplicate_submitbox_link' ) );
+        add_action( 'admin_action_blox_duplicate_block', array( $this, 'duplicate_block' ) );
 
         // Manage post type columns.
         add_filter( 'manage_edit-blox_columns', array( $this, 'admin_column_titles' ) );
@@ -75,21 +75,21 @@ class Blox_Posttype_Admin {
 	
 
 	/**
-	 * Add the link to action list for post_row_actions
+	 * Add the duplicate link to action list for post_row_actions
 	 *
 	 * @since 1.1.0
 	 * 
 	 * @param array $actions Existing array of action links
-	 * @param obj $post The original block object (one to be replicated)
+	 * @param obj $post The original block object (one to be duplicated)
 	 */
-	public function replicate_row_link( $actions, $post ) {
+	public function duplicate_row_link( $actions, $post ) {
 	
 		if ( $post->post_type == 'blox' ){
 	
-			$link  = admin_url( 'admin.php?action=blox_replicate_block&amp;post=' . $post->ID );
-			$title = __( 'Replicate', 'blox' );
+			$link  = admin_url( 'admin.php?action=blox_duplicate_block&amp;post=' . $post->ID );
+			$title = __( 'Duplicate', 'blox' );
 		
-			$actions['replicate'] = '<a href="' . $link . '" title="' . $title . '">' . $title . '</a>';
+			$actions['duplicate'] = '<a href="' . $link . '" title="' . $title . '">' . $title . '</a>';
 		}
 	
 		return $actions;
@@ -97,20 +97,20 @@ class Blox_Posttype_Admin {
 	
 
 	/**
-	 * Add the replicate link to submitbox on all Global blocks
+	 * Add the duplicate link to submitbox on all Global blocks
 	 *
 	 * @since 1.1.0
 	 */
-	public function replicate_submitbox_link() {
+	public function duplicate_submitbox_link() {
 		
 		$post  = isset( $_GET['post'] ) ? get_post( $_GET['post'] ) : false;
 	
 		if ( isset( $post ) && $post != null && $post->post_type == 'blox' ) {
 
-			$link  = admin_url( 'admin.php?action=blox_replicate_block&amp;post=' . $post->ID );
-			$title = __( 'Replicate Block', 'blox' );
+			$link  = admin_url( 'admin.php?action=blox_duplicate_block&amp;post=' . $post->ID );
+			$title = __( 'Duplicate Block', 'blox' );
 			
-			$output =  '<div id="replicate-action">';
+			$output =  '<div id="blox-duplicate-action">';
 			$output .= '<a href="' . $link . '" title="' . $title . '" style="text-decoration:none">' . $title . '</a>';
 			$output .= '</div>';
 			
@@ -120,21 +120,21 @@ class Blox_Posttype_Admin {
 
 
 	/**
-	 * Replicate the given Global block
+	 * Duplicate the given Global block
 	 *
 	 * @since 1.1.0
 	 */
-	public function replicate_block() {
+	public function duplicate_block() {
 	
-		if ( ! ( isset( $_GET['post'] ) || isset( $_POST['post'] )  || ( isset( $_REQUEST['action'] ) && 'blox_replicate_block' == $_REQUEST['action'] ) ) ) {
-			wp_die( __( 'You didn\'t choose a block to replicate...try again.', 'blox' ) );
+		if ( ! ( isset( $_GET['post'] ) || isset( $_POST['post'] )  || ( isset( $_REQUEST['action'] ) && 'blox_duplicate_block' == $_REQUEST['action'] ) ) ) {
+			wp_die( __( 'You didn\'t choose a block to duplicate...try again.', 'blox' ) );
 		}
 
 		// Get the original post
 		$id   = ( isset($_GET['post'] ) ? $_GET['post'] : $_POST['post']);
 		$post = get_post( $id );
 
-		// Replicate the block 
+		// Duplicate the block 
 		if ( isset( $post ) && $post != null ) {
 			
 			// New block args
@@ -160,7 +160,7 @@ class Blox_Posttype_Admin {
 			exit;
 
 		} else {
-			wp_die( esc_attr( __( 'Replication has failed, the original block could not be located.', 'blox' ) ) );
+			wp_die( esc_attr( __( 'Duplication has failed, the original block could not be located.', 'blox' ) ) );
 		}
 	}
 

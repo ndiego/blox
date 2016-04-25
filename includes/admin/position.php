@@ -136,6 +136,10 @@ class Blox_Position {
      * @param bool $global	      Determines if the content being loaded for local or global blocks
      */
     public function position_settings( $id, $name_prefix, $get_prefix, $global ) {
+    	
+    	$instance        = Blox_Common::get_instance();
+		$available_hooks = $instance->get_genesis_hooks_flattened();
+	    
 		?>
 		<table class="form-table">
 			<tbody>
@@ -146,12 +150,20 @@ class Blox_Position {
 							<option value="default" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( esc_attr( $get_prefix['position_type'] ), 'default' ) : 'selected'; ?>><?php _e( 'Default', 'blox' ); ?></option>
 							<option value="custom" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( esc_attr( $get_prefix['position_type'] ), 'custom' ) : ''; ?>><?php _e( 'Custom', 'blox' ); ?></option>
 						</select>
-						<div class="blox-position-default blox-description <?php if ( $get_prefix['position_type'] == 'custom' ) echo ( 'blox-hidden' ); ?>">
-							<?php
-								$default_position = $global ? esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) ) : esc_attr( blox_get_option( 'local_default_position', 'genesis_after_header' ) );
-								$default_priority = $global ? esc_attr( blox_get_option( 'global_default_priority', 15 ) ) : esc_attr( blox_get_option( 'local_default_priority', 15 ) );
+						<div class="blox-position-default <?php if ( $get_prefix['position_type'] == 'custom' ) echo ( 'blox-hidden' ); ?>">
+							<div class="blox-description">
+								<?php
+									$default_position = $global ? esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) ) : esc_attr( blox_get_option( 'local_default_position', 'genesis_after_header' ) );
+									$default_priority = $global ? esc_attr( blox_get_option( 'global_default_priority', 15 ) ) : esc_attr( blox_get_option( 'local_default_priority', 15 ) );
 
-								echo sprintf( __( 'The default position is %1$s and the default priority is %2$s. You can change this default positioning by visiting the %3$sSettings Page%4$s, or use custom positioning to override this default.', 'blox' ), '<strong>' . $default_position . '</strong>', '<strong>' . $default_priority . '</strong>', '<a href="' . admin_url( 'edit.php?post_type=blox_block&page=blox-settings' ) . '">', '</a>' );
+									echo sprintf( __( 'The default position is %1$s and the default priority is %2$s. You can change this default positioning by visiting the %3$sDefaults%4$s setting page, or use custom positioning to override this default.', 'blox' ), '<strong>' . $default_position . '</strong>', '<strong>' . $default_priority . '</strong>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=default' ) . '">', '</a>' );
+								?>
+							</div>
+							<?php
+								// Print error if the saved hook is no longer available for some reason
+								if ( ! in_array( $default_position, $available_hooks ) ) {
+									echo '<div class="blox-alert">' . sprintf( __( 'The current saved default hook is no longer available. Choose a new one, or re-enable it, on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox_block&page=blox-settings&tab=default' ) . '">', '</a>' ) . '</div>';
+								}
 							?>
 						</div>
 					</td>
@@ -172,6 +184,13 @@ class Blox_Position {
 						<div class="blox-description">
 							<?php echo sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=position-tab-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ); ?>
 						</div>
+						<?php
+							$custom_postion   = ! empty( $get_prefix['custom']['position'] ) ? $get_prefix['custom']['position'] : '';
+							// Print error if the saved hook is no longer available for some reason
+							if ( ! in_array( $custom_postion, $available_hooks ) ) {
+								echo '<div class="blox-alert">' . sprintf( __( 'The current saved custom hook is no longer available. Choose a new one, or re-enable it, on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox_block&page=blox-settings&tab=default' ) . '">', '</a>' ) . '</div>';
+							}
+						?>
 					</td>
 				</tr>
 
@@ -216,7 +235,7 @@ class Blox_Position {
 		$settings = array();
 
 		$settings['position_type']      = esc_attr( $name_prefix['position_type'] );
-		$settings['custom']['position'] = esc_attr( $name_prefix['custom']['position'] );
+		$settings['custom']['position'] = isset( $name_prefix['custom']['position'] ) ? esc_attr( $name_prefix['custom']['position'] ) : '';
 		$settings['custom']['priority'] = absint( $name_prefix['custom']['priority'] );
 
 		if ( $settings['position_type'] == 'default' ) {
@@ -249,31 +268,42 @@ class Blox_Position {
      */
     public function admin_column_data( $post_id, $block_data ) {
     
-    	$error = '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
-    
+        $instance        = Blox_Common::get_instance();
+		$available_hooks = $instance->get_genesis_hooks_flattened();
+        
 		if ( ! empty( $block_data['position']['position_type'] ) ) {
 			if ( $block_data['position']['position_type'] == 'default' ) {
+			
 				$default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
-				if ( ! empty( $default_position ) ){
-					$position = $meta_data = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
+				$title            = $default_position;
+				
+				if ( ! empty( $default_position ) && in_array( $default_position, $available_hooks ) ){
+					$position = $meta_data = esc_attr( $default_position );
 				} else {
-					$position  = $error;
+					$position  = false;
+					$title = 'Currently set to: ' . $default_position;
 					$meta_data = '';
 				}
 			} else if ( ! empty( $block_data['position']['custom'] ) ) {
-				if( ! empty( $block_data['position']['custom']['position'] ) ) {
-					$position = $meta_data = esc_attr( $block_data['position']['custom']['position'] );
+				
+				$custom_postion = $block_data['position']['custom']['position'];
+				$title          = $custom_postion;
+				
+				if( ! empty( $custom_postion ) && in_array( $block_data['position']['custom']['position'], $available_hooks ) ) {
+					$position = $meta_data = esc_attr( $custom_postion );
 				} else {
-					$position = $error;
+					$position = false;
 					$meta_data = '';
 				}
 			}
 		} else {
-			$position  = $error;
+			$position  = false;
 			$meta_data = '';
 		}
 		
-		echo $position;
+		$error = '<span style="color:#a00;font-style:italic;" title="Currently set to: ' . $title . '">' . __( 'Error', 'blox' ) . '</span>';
+		
+		echo $position ? $position : $error;
 		
 		// Save our position meta values separately for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_position', $meta_data );

@@ -209,8 +209,13 @@ class Blox_Frontend {
 		// Action hook for modifying/adding position settings
 		do_action( 'blox_content_block_position', $id, $block, $global );
 		
-		// Load the final "printing" function
-		add_action( $position, array( new Blox_Action_Storage( array( $id, $block, $global ) ), 'blox_frontend_content' ), $priority, 1 );
+		// Allows you to disable blocks with code if location and visibility settings are not doing it for you
+		$disable = apply_filters( 'blox_disable_content_blocks', false, $position, $id, $block, $global );
+		
+		if ( ! $disable ) {
+			// Load the final "printing" function
+			add_action( $position, array( new Blox_Action_Storage( array( $id, $block, $global ) ), 'blox_frontend_content' ), $priority, 1 );
+		}
 	}
 
 

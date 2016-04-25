@@ -52,6 +52,8 @@ class Blox_Common {
 
         // Load the base class object.
         $this->base = Blox_Main::get_instance();
+        
+        add_filter( 'blox_genesis_hooks', array( $this, 'push_hook_defaults' ), 10 );
     }
 
 
@@ -224,6 +226,101 @@ class Blox_Common {
     public function get_genesis_hooks() {
     
     	return apply_filters( 'blox_genesis_hooks', $this->get_genesis_hooks_unfiltered() );
+    }
+    
+    
+    /**
+     * Helper function for retrieving all available hooks post filtering in flattened, 1-dim, array
+     *
+     * @since 1.1.0
+     *
+     * @return array Array of all available hooks in 1-dimensional array
+     */
+    public function get_genesis_hooks_flattened() {
+    
+    	$unflattened = $this->get_genesis_hooks();
+    	
+    	$flattened = array();
+    	
+    	foreach( $unflattened as $sections => $section ) {
+    		foreach ( $section['hooks'] as $hooks => $hook ) {
+    			$flattened[] = $hooks;
+    		}
+    	}
+    	return $flattened;
+    }
+    
+    
+    /**
+     * Helper method for retrieving all Genesis hooks.
+     *
+     * @since 1.1.0
+     *
+     * @return array Array of all Genesis hooks.
+     */
+    public function push_hook_defaults() {
+    
+    	$default_hooks        = blox_get_option( 'default_hooks', array() );
+    	$default_custom_hooks = blox_get_option( 'default_custom_hooks', array() );
+    	$final_hooks          = array();
+    	
+		// Make sure default hooks are enabled
+		if (  ! empty( $default_hooks ) && isset( $default_hooks['enable'] ) && $default_hooks['enable'] == 1 ) {
+	
+			$available_hooks = $default_hooks['available_hooks'];
+	
+			foreach ( $available_hooks as $sections => $section ) {
+	
+				$enabled_hooks = array();
+	
+				foreach ( $section['hooks'] as $hooks => $hook ) {
+	
+					if ( isset( $hook['enable'] ) && $hook['enable'] == 1 ) {
+						$enabled_hooks[$hooks] = array(
+							'name'  => ! empty( $hook['name'] ) ? esc_attr( $hook['name'] ) : $hooks,
+							'title' => ! empty( $hook['name'] ) ? '' : $hook['title'], // Don't need a title is using a custom name
+						);
+					}
+				}
+		
+				if ( ! empty( $enabled_hooks ) ) {
+					$final_hooks[$sections]['name']  = $section['name'];
+					$final_hooks[$sections]['hooks'] = $enabled_hooks;
+				}
+			}
+		} else {
+			$final_hooks = $this->get_genesis_hooks_unfiltered();
+		}
+		
+				
+		// Run our custom hooks through the same process, but only after the Genesis hooks
+		if ( ! empty( $default_custom_hooks ) && isset( $default_custom_hooks['enable'] ) && $default_custom_hooks['enable'] == 1 ) {
+	
+			$available_hooks = $default_custom_hooks['available_hooks'];
+	
+			foreach ( $available_hooks as $sections => $section ) {
+	
+				$enabled_hooks = array();
+	
+				foreach ( $section['hooks'] as $hooks => $hook ) {
+	
+					if ( isset( $hook['enable'] ) && $hook['enable'] == 1 ) {
+						$enabled_hooks[$hooks] = array(
+							'name'  => ! empty( $hook['name'] ) ? esc_attr( $hook['name'] ) : $hooks,
+							'title' => ! empty( $hook['name'] ) ? '' : $hook['title'], // Don't need a title is using a custom name
+						);
+					}
+				}
+		
+				if ( ! empty( $enabled_hooks ) ) {;
+					$final_hooks[$sections]['name']  = $section['name'];
+					$final_hooks[$sections]['hooks'] = $enabled_hooks;
+				}
+			}
+		}	
+	
+		// Return our modified array of hooks
+		return $final_hooks;
     }
 
 

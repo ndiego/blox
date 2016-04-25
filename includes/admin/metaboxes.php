@@ -159,6 +159,8 @@ class Blox_Metaboxes {
         		'image_media_title'			=> __( 'Choose or Upload an Image', 'blox' ),
         		'image_media_button'		=> __( 'Use Selected Image', 'blox' ),
         		
+        		'editor_add'				=> __( 'Add Content', 'blox' ),
+        		'editor_edit'				=> __( 'Edit Content', 'blox' ),
         		'editor_hide_html'			=> __( 'Hide HTML', 'blox' ),
         		'editor_show_html'			=> __( 'Show HTML', 'blox' ),
         		
@@ -475,7 +477,7 @@ class Blox_Metaboxes {
 						<input type="text" name="blox_content_blocks_data[<?php echo $name_id; ?>][title]" placeholder="<?php _e( 'Content Block Title' ); ?>" value="<?php echo $block_title . $copy_text; ?>">
 					</div>
 					<div class="blox-content-block-controls">
-						<a class="blox-replicate-block" href="#"><?php _e( 'Replicate', 'blox' );?></a>
+						<a class="blox-duplicate-block" href="#"><?php _e( 'Duplicate', 'blox' );?></a>
 						<a class="blox-remove-block" href="#"><?php _e( 'Delete', 'blox' );?></a>
 					</div>
 				</div>

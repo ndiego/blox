@@ -63,4 +63,63 @@ jQuery(document).ready(function($) {
 		$(this).parent().siblings( '.blox-checkbox-container' ).find( 'input[type=checkbox]' ).prop('checked', false).trigger("change");
 	});
 	
+	/* Default Hooks scripts
+	-------------------------------------------------------------- */
+	
+	// Add a custom hook
+	$( '.add-custom-button a' ).click( function(e) {
+		e.preventDefault();
+		
+		hook_slug = $( '.custom-hook-entry' ).val();
+		
+		// Strip out anything that should not be in a custom hook
+		hook_slug = hook_slug.replace(/[^\w\-]/g, '');
+		
+		if ( hook_slug != '' ) {
+		
+			hook_name	  = 'blox_settings[default_custom_hooks][available_hooks][custom][hooks][' + hook_slug + ']';
+			enable_name  = 'blox_settings[default_custom_hooks][available_hooks][custom][hooks][' + hook_slug + '][enable]';
+			name_name    = 'blox_settings[default_custom_hooks][available_hooks][custom][hooks][' + hook_slug + '][name]';
+			title_name   = 'blox_settings[default_custom_hooks][available_hooks][custom][hooks][' + hook_slug + '][title]';
+
+		
+			hook_fields = '<li><span>';
+		
+			hook_fields += '<input class="blox-force-hidden" disabled type="text" name="' + hook_name + '" value="' + hook_slug + '" />';
+			hook_fields += '<input type="checkbox" name="' + enable_name + '" value="1" />';
+			hook_fields += '<input class="hook-name" type="text" name="' + name_name + '" placeholder="' + hook_slug + '" value="' + hook_slug + '" />';
+			hook_fields += '<input class="blox-force-hidden" type="text" name="' + title_name + '" value="" />';
+			hook_fields += '<a class="delete-custom-hook">' + blox_localize_settings_scripts.delete_hook + '</a>';
+
+		
+			hook_fields += '</span></li>';
+			
+			$( '#default_custom_hook_settings' ).removeClass( 'blox-hidden' );
+			$( '.custom-hooks' ).append( hook_fields );
+			
+			$( '.no-hooks' ).remove();
+			$( '.custom-hook-entry' ).val( '' );
+		}
+	});
+	
+	
+	$(document).on( 'click', '.delete-custom-hook', function(){
+		
+		// Need to have the "return" or won't work
+	   	var message = confirm( blox_localize_settings_scripts.confirm_delete_hook );
+		
+		if ( message == true ) {
+			$(this).parents( 'li' ).remove();
+			// If we remove the slide and there are no more, show our filler slide
+			if ( $( '.custom-hooks li').length == 0 ) {
+				$( '.custom-hooks' ).append( '<li class="no-hooks">' + blox_localize_settings_scripts.no_hooks + '</li>' );
+			}
+			
+			return false;
+		} else {
+			// Makes the browser not shoot to the top of the page on "cancel"
+			return false;
+		}
+	});
+
 });

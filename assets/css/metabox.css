@@ -352,13 +352,13 @@ ul.blox-columns li {
 .blox-remove-block:hover {
 	color: red;
 }
-.blox-replicate-block { 
+.blox-duplicate-block { 
 	font-size: 12px;
 	margin-right: 8px;
 	text-decoration: none;
 }
-/* We don't want people to be able to replicate a block with unsaved settings */
-.blox-content-block.new .blox-replicate-block { 
+/* We don't want people to be able to duplicate a block with unsaved settings */
+.blox-content-block.new .blox-duplicate-block { 
 	display: none;
 }
 .blox-content-block-details {
@@ -420,6 +420,12 @@ ul.blox-columns li {
 }
 .blox-content-block.editing .blox-content-block-edit:after {
 	content: '\f142';
+}
+
+
+/* Sumbit box style (Global only) */
+#blox-duplicate-action a {
+	padding: 1px 2px;
 }
 
 

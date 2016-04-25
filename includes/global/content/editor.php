@@ -97,7 +97,7 @@ class Blox_Content_Editor {
 					<th scope="row"><?php _e( 'Editor Content', 'blox' ); ?></th>
 					<td>
 						<?php if ( $global == false ) { ?>
-							<a class="blox-editor-add button-primary button" href="#blox_editor"><?php _e( 'Add Content', 'blox' );?></a><a class="blox-editor-show-source button" href="#"><?php _e( 'Show HTML', 'blox' );?></a>
+							<a class="blox-editor-add button-primary button" href="#blox_editor"><?php ! empty( $get_prefix['editor']['content'] ) ? _e( 'Edit Content', 'blox' ) : _e( 'Add Content', 'blox' ); ?></a><a class="blox-editor-show-source button" href="#"><?php _e( 'Show HTML', 'blox' );?></a>
 							<div class="blox-editor-output-wrapper">
 								<textarea class="blox-editor-output blox-textarea-code" name="<?php echo $name_prefix; ?>[editor][content]"rows="6" placeholder="<?php _e( 'No content yet... Use button above, or type HTML content in manually.', 'blox' ); ?>"><?php echo ! empty( $get_prefix['editor']['content'] ) ? esc_attr( $get_prefix['editor']['content'] ) : ''; ?></textarea>
 								<div class="blox-description">
