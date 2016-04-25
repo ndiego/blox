@@ -162,7 +162,7 @@ class Blox_Position {
 							<?php
 								// Print error if the saved hook is no longer available for some reason
 								if ( ! in_array( $default_position, $available_hooks ) ) {
-									echo '<div class="blox-alert">' . sprintf( __( 'The current saved default hook is no longer available. Choose a new one, or re-enable it, on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox_block&page=blox-settings&tab=default' ) . '">', '</a>' ) . '</div>';
+									echo '<div class="blox-alert">' . sprintf( __( 'The current saved default hook is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox_block&page=blox-settings&tab=default' ) . '">', '</a>' ) . '</div>';
 								}
 							?>
 						</div>
@@ -187,8 +187,8 @@ class Blox_Position {
 						<?php
 							$custom_postion   = ! empty( $get_prefix['custom']['position'] ) ? $get_prefix['custom']['position'] : '';
 							// Print error if the saved hook is no longer available for some reason
-							if ( ! in_array( $custom_postion, $available_hooks ) ) {
-								echo '<div class="blox-alert">' . sprintf( __( 'The current saved custom hook is no longer available. Choose a new one, or re-enable it, on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox_block&page=blox-settings&tab=default' ) . '">', '</a>' ) . '</div>';
+							if ( ! empty( $custom_postion ) && ! in_array( $custom_postion, $available_hooks ) ) {
+								echo '<div class="blox-alert">' . sprintf( __( 'The current saved custom hook, %3$s, is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox_block&page=blox-settings&tab=default' ) . '">', '</a>', '<strong>' . $custom_postion . '</strong>' ) . '</div>';
 							}
 						?>
 					</td>

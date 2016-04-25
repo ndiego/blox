@@ -14,3 +14,16 @@ There are a number of ways you can get help with Blox:
 ### Find a bug or have a feature request?
 
 We would love to hear from you! If you find a bug or have a feature request, please send in a support ticket through [Your Account](https://www.bloxwp.com/your-account/?utm_source=blox&utm_medium=plugin&utm_content=github-readme-links&utm_campaign=Blox_Addon_Links). Or better yet, add it to the [issue tracker](https://github.com/ndiego/blox/issues) here on Github. Either way, please be clear and detailed in you communication. If submitting a bug, be sure to provide instructions on how to replicate the issue you are having. Also provide the theme name and PHP version if possible. 
+
+### Changelog
+
+##### Version 1.1.0
+* Added Hook Control
+* Added ability to duplicate Global blocks
+* Added Categories List shortcode
+* Added Tags List shortcode
+* Fixed editor wpautop bug
+* Tweaked text and links throughout
+
+##### Version 1.0.0
+* Initial Release
