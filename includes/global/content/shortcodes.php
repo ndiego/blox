@@ -58,6 +58,8 @@ class Blox_Content_Shortcodes {
 		add_shortcode( 'blox-modified-date', array( $this, 'modified_date' ) );
 		add_shortcode( 'blox-published-date', array( $this, 'published_date' ) );
 		add_shortcode( 'blox-author', array( $this, 'author' ) );
+		add_shortcode( 'blox-categories-list', array( $this, 'categories_list' ) );
+		add_shortcode( 'blox-tags-list', array( $this, 'tags_list' ) );
     }
 
 
@@ -177,6 +179,58 @@ class Blox_Content_Shortcodes {
 			return;
 		} else {
     		return wp_kses_post( $atts['before'] ) . get_the_author_meta( $atts['meta'], $author_id ) . wp_kses_post( $atts['after'] );
+		}
+	}
+	
+	
+	/**
+	 * Shortcode: Print the post's categories
+     *
+     * @since 1.1.0
+     *
+     * @param array $atts  An array shortcode attributes
+     */
+	public function categories_list( $atts ) {
+		
+		$atts = shortcode_atts( array(
+			'separator' 	=> '',
+			'before' 	  	=> '',
+			'after'	 	  	=> '',
+			'singular_only' => '', 
+		), $atts );
+		
+		$category_list = get_the_category_list( $atts['separator'] );
+		
+		if ( ! is_singular() && $atts['singular_only'] == 'true' ) {
+			return;
+		} else if ( ! empty( $category_list ) ){
+			return wp_kses_post( $atts['before'] ) . $category_list . wp_kses_post( $atts['after'] );
+		}
+	}
+	
+	
+	/**
+	 * Shortcode: Print the post's tags
+     *
+     * @since 1.1.0
+     *
+     * @param array $atts  An array shortcode attributes
+     */
+	public function tags_list( $atts ) {
+		
+		$atts = shortcode_atts( array(
+			'separator' 	=> '',
+			'before' 	  	=> '',
+			'after'	 	  	=> '',
+			'singular_only' => '', 
+		), $atts );
+		
+		$tag_list = get_the_tag_list( '', $atts['separator'], '' );
+		
+		if ( ! is_singular() && $atts['singular_only'] == 'true' ) {
+			return;
+		} else if ( ! empty( $tag_list ) ){
+			return wp_kses_post( $atts['before'] ) . $tag_list . wp_kses_post( $atts['after'] );
 		}
 	}
 	

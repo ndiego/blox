@@ -142,7 +142,7 @@ class Blox_Content_Editor {
 
 		$settings = array();
 
-		$settings['content'] = wp_kses_post( $name_prefix['content'] );
+		$settings['content'] = wpautop( wp_kses_post( $name_prefix['content'] ) );
 
 		return $settings;
 	}
