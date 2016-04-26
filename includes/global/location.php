@@ -1183,7 +1183,7 @@ class Blox_Location {
 							if ( ! empty( $taxonomy_archives ) ) {
 								foreach ( $taxonomy_archives as $taxonomy_archive ) {
 							
-									if ( $location_data['archive'][$taxonomy_archive]['select_type'] == 'all' ) {
+									if ( $location_data['archive'][$taxonomy_archive]['select_type'] == 'all' && is_tax( $taxonomy_archive ) ) {
 
 										// Show the block on any taxonomy's archive pages
 										$location_test = true;

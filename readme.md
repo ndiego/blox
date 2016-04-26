@@ -17,6 +17,9 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 
 ### Changelog
 
+##### Version 1.1.1
+* Fixed location archive taxonomy bug
+
 ##### Version 1.1.0
 * Added Hook Control
 * Added ability to duplicate Global blocks
