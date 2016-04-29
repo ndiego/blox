@@ -330,7 +330,10 @@ function blox_frontend_content( $args, $parameters ) {
 	// Check is default Blox CSS is globally disabled
     $global_disable_default_css = blox_get_option( 'disable_default_css', '' );
 
-	// Should we include our default styles?
+	// Start with no theme
+	$blox_theme = '';
+
+	// Should we include our default styles? If so, add the default theme
 	if ( empty( $global_disable_default_css ) ) {
 		if ( empty( $style_data['disable_default_css'] ) || ! $style_data['disable_default_css'] ) {
 			$blox_theme = 'blox-theme-default';
