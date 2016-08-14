@@ -279,7 +279,7 @@ class Blox_Settings {
 					'global_enable' => array(
 						'id'    => 'global_enable',
 						'name'  => __( 'Enable Global Blocks', 'blox' ),
-						'label' => __( 'Globally enable local content blocks', 'blox' ),
+						'label' => __( 'Globally enable global content blocks', 'blox' ),
 						'desc'  => __( 'Turning off this setting will disable all global content blocks.', 'blox' ),
 						'type'  => 'checkbox',
 						'default' => true

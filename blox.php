@@ -200,6 +200,9 @@ class Blox_Main {
 		    require plugin_dir_path( __FILE__ ) . 'includes/admin/license-settings.php';
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/license.php';
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/updater.php';
+			
+			// Load tools page
+			require plugin_dir_path( __FILE__ ) . 'includes/admin/tools.php';
 
 			// Content block settings classes
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/content.php';
