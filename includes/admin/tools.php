@@ -249,8 +249,6 @@ class Blox_Tools {
 		$plugins   		= get_plugins();
 		$muplugins 		= get_mu_plugins();
 		$active_plugins = get_option( 'active_plugins', array() );
-
-		$blox_data      = $plugins['blox/blox.php'];
 		$blox_settings  = get_option( 'blox_settings' );
 		
 		if ( $this->base->plugin_slug == 'blox' ) {
