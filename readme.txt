@@ -8,6 +8,11 @@ Resources:
 
 Changelog:
 
+Version 1.2.0 (Not officially released yet)
+* Added System Info page to Blox Tools
+* Fixed anonymous function that were causing issues in PHP 5.2
+* More to come...
+
 Version 1.1.1
 * Fixed location archive taxonomy bug
 

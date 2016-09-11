@@ -181,12 +181,10 @@ class Blox_Visibility {
 							<ul class="blox-columns">
 							<?php foreach ( get_editable_roles() as $role_name => $role_info ) { ?>
 								<li>
-									<span>
-										<label>
-											<input type="checkbox" name="<?php echo $name_prefix; ?>[role][restrictions][<?php echo $role_name ?>]" value="1" <?php ! empty( $get_prefix['role']['restrictions'][$role_name] ) ? checked( $get_prefix['role']['restrictions'][$role_name] ) : ''; ?> >
-											<?php echo ucfirst( $role_name ); ?>
-										</label>
-									</span>
+									<label>
+										<input type="checkbox" name="<?php echo $name_prefix; ?>[role][restrictions][<?php echo $role_name ?>]" value="1" <?php ! empty( $get_prefix['role']['restrictions'][$role_name] ) ? checked( $get_prefix['role']['restrictions'][$role_name] ) : ''; ?> >
+										<?php echo ucfirst( $role_name ); ?>
+									</label>
 								</li>
 							<?php } ?>
 							</ul>
@@ -279,7 +277,7 @@ class Blox_Visibility {
 					case 'restrict' :
 						if ( ! empty( $block_data['visibility']['role']['restrictions'] ) ) {
 							// Get all of the selected roles, make the first letter capitalized, then print to page
-							$output = implode( ", ", array_map( function( $role ) { return ucfirst( $role ); }, array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) ); 
+							$output =  implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) ); 
 						} else {
 							$output = __( 'No Roles Selected', 'blox' );
 						}
@@ -360,7 +358,7 @@ class Blox_Visibility {
 				case 'restrict' :
 					if ( ! empty( $block['visibility']['role']['restrictions'] ) ) {
 						// Get all of the selected roles, make the first letter capitalized, then print to page
-						$visibility = implode( ", ", array_map( function( $role ) { return ucfirst( $role ); }, array_keys( $block['visibility']['role']['restrictions'], 1 ) ) ); 
+						$visibility = implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) ); 
 					} else {
 						$visibility = __( 'No Roles Selected', 'blox' );
 					}
@@ -471,6 +469,20 @@ class Blox_Visibility {
 			return true;
 		}
 	}
+	
+	
+	/**
+     * Helper function for making the first letter of a string uppercase
+     *
+     * Added this function so anonymous functions could be removed which were not compatible with PHP 5.2
+     *
+     * @since 1.2.0
+     *
+     * @return string The string with the first letter made uppercase
+     */
+	public function uppercase_first( $string ) {
+    	return ucfirst( $string );
+    }
 
 
     /**

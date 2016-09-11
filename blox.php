@@ -5,7 +5,7 @@
  * Description: Easily customize themes built on the Genesis Framework
  * Author:      Nick Diego
  * Author URI:  http://www.outermostdesign.com
- * Version:     1.1.1
+ * Version:     1.2.0
  * Text Domain: blox
  * Domain Path: languages
  *
@@ -96,7 +96,7 @@ class Blox_Main {
        	register_activation_hook( __FILE__ , array( $this, 'activation_check' ) );
        
        	// Disable the plugin if Genesis is not the active theme
-		add_action('admin_init', array( $this, 'disable_check' ) );
+		add_action( 'admin_init', array( $this, 'disable_check' ) );
 
         // Load the plugin textdomain.
         add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
@@ -194,7 +194,8 @@ class Blox_Main {
 		
 			// Main admin classes
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/posttype.php';
-			require plugin_dir_path( __FILE__ ) . 'includes/admin/metaboxes.php';			
+			require plugin_dir_path( __FILE__ ) . 'includes/admin/metaboxes.php';
+			require plugin_dir_path( __FILE__ ) . 'includes/admin/actions.php';			
 		    
 		    // Licensing and automatic updater classes
 		    require plugin_dir_path( __FILE__ ) . 'includes/admin/license-settings.php';
@@ -256,7 +257,7 @@ class Blox_Main {
 	 * @param string $file   Plugin file path and name being processed
 	 * @return array $links  The new array of meta links
 	 */
-	function plugin_row_meta( $links, $file ) {
+	public function plugin_row_meta( $links, $file ) {
 
 		// If we are not on the correct plugin, abort
 		if ( $file != 'blox/blox.php' ) {

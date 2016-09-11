@@ -17,6 +17,11 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 
 ### Changelog
 
+##### Version 1.2.0 (Not officially released yet)
+* Added System Info page to Blox Tools
+* Fixed anonymous function that were causing issues in PHP 5.2
+* More to come...
+
 ##### Version 1.1.1
 * Fixed location archive taxonomy bug
 
@@ -25,8 +30,8 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 * Added ability to duplicate Global blocks
 * Added Categories List shortcode
 * Added Tags List shortcode
+* Changed text and links throughout
 * Fixed editor wpautop bug
-* Tweaked text and links throughout
 
 ##### Version 1.0.0
 * Initial Release

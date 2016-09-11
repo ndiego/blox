@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Creates all Blox settings
  *
- * @since 	1.0.0
+ * @since 	1.2.0
  *
  * @package	Blox
  * @author 	Nick Diego
@@ -16,7 +16,7 @@ class Blox_Tools {
     /**
      * Holds the class object.
      *
-     * @since 1.0.0
+     * @since 1.2.0
      *
      * @var object
      */
@@ -26,7 +26,7 @@ class Blox_Tools {
     /**
      * Path to the file.
      *
-     * @since 1.0.0
+     * @since 1.2.0
      *
      * @var string
      */
@@ -36,7 +36,7 @@ class Blox_Tools {
     /**
      * Holds the base class object.
      *
-     * @since 1.0.0
+     * @since 1.2.0
      *
      * @var object
      */
@@ -46,7 +46,7 @@ class Blox_Tools {
     /**
      * Primary class constructor.
      *
-     * @since 1.0.0
+     * @since 1.2.0
      */
     public function __construct() {
 
@@ -58,9 +58,15 @@ class Blox_Tools {
 		
 		// Enqueue Setting scripts and styles
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-		
+
+
 		add_action( 'blox_tools_system_info', array( $this, 'print_system_info' ) );
+		//add_action( 'blox_tools_system_info', array( $this, 'download_system_info' ) );
+		
 		add_action( 'blox_tools_import_export', array( $this, 'print_import_export' ) );
+		
+		add_action( 'blox_download_system_info', array( $this, 'download_system_info' ) );
+
     }
     
     
@@ -69,7 +75,7 @@ class Blox_Tools {
     /**
      * Add the Settings menu link.
      *
-     * @since 1.0.0
+     * @since 1.2.0
      */
     public function add_menu_links() {
 		
@@ -81,7 +87,7 @@ class Blox_Tools {
 	/**
      * Print settings page.
      *
-     * @since 1.0.0
+     * @since 1.2.0
      */
 	public function print_tools_page() {
 
@@ -130,7 +136,7 @@ class Blox_Tools {
 	/**
 	 * Retrieve our settings tabs
 	 *
-	 * @since 1.0.0
+	 * @since 1.2.0
 	 *
 	 * @return array $tabs An array of all available tabs
 	 */
@@ -142,7 +148,7 @@ class Blox_Tools {
 
 		$tabs             = array();
 		$tabs['system_info']    = __( 'System Info', 'blox' );
-		$tabs['import_export']  = __( 'Import/Export', 'blox' );
+		//$tabs['import_export']  = __( 'Import/Export', 'blox' );
 
 		return apply_filters( 'blox_tools_tabs', $tabs );
 	}
@@ -151,46 +157,92 @@ class Blox_Tools {
 	public function print_system_info( $active_tab ) {
 		
 		?>
-		<form action="<?php echo esc_url( admin_url( 'edit.php?post_type=download&page=edd-tools&tab=system_info' ) ); ?>" method="post" dir="ltr">
-			<table class="system-info-table" cellspacing="0">
-				<?php
-				foreach ( $this->get_system_info( 'html' ) as $section ) {
-					
-					if ( ! empty( $section ) ) {
-						?>
-						<tr>
-							<th colspan="2"><?php echo $section['title']; ?></th>
-						</tr>
-						<?php
-						foreach ( $section['atts'] as $att ) {
-							?>
+		<form action="<?php echo esc_url( admin_url( 'edit.php?post_type=blox&page=blox-tools&tab=system_info' ) ); ?>" method="post" dir="ltr">
+			
+			<div class="system-info-textarea">
+				<textarea readonly="readonly" onclick="this.focus(); this.select()" name="blox-system-info"><?php 
+					$output = '## Begin System Info ##' . "\n";
+				
+					foreach ( $this->get_system_info( 'text' ) as $section ) {
+						if ( ! empty( $section ) ) { 
+
+							$output .= "\n" . '–– ' . $section['title'] . "\n\n";
+
+							foreach ( $section['atts'] as $att ) {
+								$output .= $att['title'] . ': ' . $att['val'] . "\n"; 
+							}
+						}
+					}
+					$output .= "\n" . '### End System Info ###';
+				
+					echo $output;
+				?></textarea>
+			
+			<p class="description">
+				<?php _e( 'Copy the above system information and include it with your support request.', 'blox' ); ?>
+			</p>
+			</div>
+			
+			<div class="get-system-info">
+				<p class="submit">
+					<a class="button button-primary" onclick="jQuery('.system-info-textarea').toggle();"><?php _e( 'Copy System Info', 'blox' ); ?></a>
+				</p>
+				<p class="submit">
+					<input type="hidden" name="blox-action" value="download_system_info" />
+					<?php submit_button( __( 'Download System Info', 'blox' ), false, 'download-system-info', false ); ?>
+				</p>			
+			</div>	
+		</form>
+			
+		<table class="system-info-table" cellspacing="0">
+			<?php
+			foreach ( $this->get_system_info( 'html' ) as $section ) {
+				if ( ! empty( $section ) ) {
+					?>
+					<thead>
+						<tr><th colspan="2"><?php echo $section['title']; ?></th></tr>
+					</thead>
+					<tbody>
+						<?php foreach ( $section['atts'] as $att ) { ?>
 							<tr>
 								<td><?php echo $att['title']; ?></td>
 								<td><?php echo $att['val']; ?></td>
 							</tr>
-							<?php
-						}
-					}	
-				}			
-				?>
-			</table>
-			
-			
-			<textarea readonly="readonly" id="system-info-textarea" name="blox-system-info"><?php echo $this->get_system_info(); ?></textarea>
-			<p class="submit">
-				<input type="hidden" name="blox-action" value="download_system_info" />
-				<?php submit_button( 'Download System Info', 'primary', 'blox-download-system-info', false ); ?>
-			</p>
-		</form>
+						<?php } ?>
+					</tbody>
+					<?php
+				}	
+			}			
+			?>
+		</table>
 		<?php
 	}
+	
+	
+	
+	/**
+	 * Generates the System Info Download File
+	 *
+	 * @since 1.2.0
+	 * @return void
+	 */
+	public function download_system_info() {
+		nocache_headers();
+
+		header( "Content-type: text/plain" );
+		header( 'Content-Disposition: attachment; filename="blox-system-info.txt"' );
+
+		echo wp_strip_all_tags( $_POST['blox-system-info'] );
+		exit();
+	}
+
 
 	
 	public function get_system_info( $type ) {
 	
 		global $wpdb;
 	
-		$break = $type == 'html' ? '<br>' : '\n';
+		$break = $type == 'html' ? '<br>' : "\n";
 		
 		// Get all plugin info
 		$updates   		= get_plugin_updates();
@@ -198,20 +250,25 @@ class Blox_Tools {
 		$muplugins 		= get_mu_plugins();
 		$active_plugins = get_option( 'active_plugins', array() );
 
-		$blox_data     = $plugins['blox/blox.php'];
-		$blox_settings = get_option( 'blox_settings' );
+		$blox_data      = $plugins['blox/blox.php'];
+		$blox_settings  = get_option( 'blox_settings' );
 		
-		//echo print_r($blox_settings);
+		if ( $this->base->plugin_slug == 'blox' ) {
+			foreach( blox_get_licenses() as $name => $license ) {
+				$licenses[] = $name . ': ' . $license;
+			}
+			$licenses = implode( $break, $licenses );
+		} else {
+			$licenses = '-';
+		}
 		
 		$custom_post_types = get_post_types( array( 'public' => true, '_builtin' => false ), 'names', 'and' );
-		
-		echo print_r($custom_post_types);
 	
 		// Get theme info
 		$theme_data = wp_get_theme();
 		
-		$theme_name = $theme_data->get( 'ThemeURI' ) == '' ? $theme_data->get( 'Name' ) : '<a href="' . $theme_data->get( 'ThemeURI' ) . '" target="_blank">' . $theme_data->get( 'Name' ) . '</a>';
-		$theme_author_name = $theme_data->get( 'AuthorURI' ) == '' ? $theme_data->get( 'Author' ) : '<a href="' . $theme_data->get( 'AuthorURI' ) . '" target="_blank">' . $theme_data->get( 'Author' ) . '</a>';
+		$theme_name = ( $theme_data->get( 'ThemeURI' ) == '' || $type != 'html' ) ? $theme_data->get( 'Name' ) : '<a href="' . $theme_data->get( 'ThemeURI' ) . '" target="_blank">' . $theme_data->get( 'Name' ) . '</a>';
+		$theme_author_name = ( $theme_data->get( 'AuthorURI' ) == '' || $type != 'html' ) ? $theme_data->get( 'Author' ) : '<a href="' . $theme_data->get( 'AuthorURI' ) . '" target="_blank">' . $theme_data->get( 'Author' ) . '</a>';
 		$theme = $theme_name . ' by ' . $theme_author_name . ': ' . __( 'Version', 'blox' ) . ' ' . $theme_data->Version;
 		
 		$front_page_id = get_option( 'page_on_front' );
@@ -307,11 +364,11 @@ class Blox_Tools {
 				'atts'  => array(
 					'type' => array(
 						'title' => __( 'Type', 'blox' ),
-						'val'	=> $blox_data['Name'],
+						'val'	=> $this->base->plugin_name,
 					),
 					'version' => array(
 						'title' => __( 'Version', 'blox' ),
-						'val'	=> $blox_data['Version'],
+						'val'	=> $this->base->version,
 					),
 					'global-enable' => array(
 						'title' => __( 'Global Blocks', 'blox' ),
@@ -325,14 +382,19 @@ class Blox_Tools {
 						'title' => __( 'Local Blocks Enabled On', 'blox' ),
 						'val'	=> ! empty( $blox_settings['local_enabled_pages'] ) ? implode( ', ', $blox_settings['local_enabled_pages'] ) : '-',
 					),
-					'avialable-post-types' => array(
+					'available-post-types' => array(
 						'title' => __( 'Available Post Types', 'blox' ),
 						'val'	=> 'post, page, ' . implode( ', ', get_post_types( array( 'public' => true, '_builtin' => false ), 'names', 'and' ) ),
 					),
-					'active-widgets' => array(
+					'active-addons' => array(
 						'title' => __( 'Active Addons', 'blox' ),
-						'val'	=> '',
+						'val'	=> $this->base->plugin_slug == 'blox-lite' ? '-' : implode( $break, blox_get_active_addons() ),
 					),
+					'licenses' => array(
+						'title' => __( 'Licenses', 'blox' ),
+						'val'	=> $licenses,
+					),
+
 				)
 			),
 			'plugins' => array(
@@ -415,8 +477,8 @@ class Blox_Tools {
 				continue;
 			}
 			
-			$plugin_name = empty( $plugin['PluginURI'] ) ? $plugin['Name'] : '<a href="' . $plugin['PluginURI'] . '" target="_blank">' . $plugin['Name'] . '</a>';
-			$plugin_author_name = empty( $plugin['AuthorURI'] ) ? $plugin['AuthorName'] : '<a href="' . $plugin['AuthorURI'] . '" target="_blank">' . $plugin['AuthorName'] . '</a>';
+			$plugin_name        = ( empty( $plugin['PluginURI'] ) || $type != 'html' ) ? $plugin['Name'] : '<a href="' . $plugin['PluginURI'] . '" target="_blank">' . $plugin['Name'] . '</a>';
+			$plugin_author_name = ( empty( $plugin['AuthorURI'] ) || $type != 'html' ) ? $plugin['AuthorName'] : '<a href="' . $plugin['AuthorURI'] . '" target="_blank">' . $plugin['AuthorName'] . '</a>';
 
 			$update   = ( array_key_exists( $plugin_path, $updates ) ) ? ' (' . __( 'update available', 'blox' ) . ' - ' . $updates[$plugin_path]->update->new_version . ')' : '';
 			$active .= $plugin_name . ' by ' . $plugin_author_name . ': ' . __( 'Version', 'blox' ) . ' ' . $plugin['Version'] . $update . $break;
@@ -437,8 +499,8 @@ class Blox_Tools {
 				continue;
 			}
 			
-			$plugin_name = empty( $plugin['PluginURI'] ) ? $plugin['Name'] : '<a href="' . $plugin['PluginURI'] . '" target="_blank">' . $plugin['Name'] . '</a>';
-			$plugin_author_name = empty( $plugin['AuthorURI'] ) ? $plugin['AuthorName'] : '<a href="' . $plugin['AuthorURI'] . '" target="_blank">' . $plugin['AuthorName'] . '</a>';
+			$plugin_name        = ( empty( $plugin['PluginURI'] ) || $type != 'html' ) ? $plugin['Name'] : '<a href="' . $plugin['PluginURI'] . '" target="_blank">' . $plugin['Name'] . '</a>';
+			$plugin_author_name = ( empty( $plugin['AuthorURI'] ) || $type != 'html' ) ? $plugin['AuthorName'] : '<a href="' . $plugin['AuthorURI'] . '" target="_blank">' . $plugin['AuthorName'] . '</a>';
 
 			$update   = ( array_key_exists( $plugin_path, $updates ) ) ? ' (' . __( 'update available', 'blox' ) . ' - ' . $updates[$plugin_path]->update->new_version . ')' : '';
 			$inactive .= $plugin_name . ' by ' . $plugin_author_name . ': ' . __( 'Version', 'blox' ) . ' ' . $plugin['Version'] . $update . $break;
@@ -468,8 +530,8 @@ class Blox_Tools {
 
 				$update = ( array_key_exists( $plugin_path, $updates ) ) ? ' (' . __( 'update available', 'blox' ) . ' - ' . $updates[$plugin_path]->update->new_version . ')' : '';
 				$plugin = get_plugin_data( $plugin_path );
-				$plugin_name = empty( $plugin['PluginURI'] ) ? $plugin['Name'] : '<a href="' . $plugin['PluginURI'] . '" target="_blank">' . $plugin['Name'] . '</a>';
-				$plugin_author_name = empty( $plugin['AuthorURI'] ) ? $plugin['AuthorName'] : '<a href="' . $plugin['AuthorURI'] . '" target="_blank">' . $plugin['AuthorName'] . '</a>';
+				$plugin_name = ( empty( $plugin['PluginURI'] ) || $type != 'html' ) ? $plugin['Name'] : '<a href="' . $plugin['PluginURI'] . '" target="_blank">' . $plugin['Name'] . '</a>';
+				$plugin_author_name = ( empty( $plugin['AuthorURI'] ) || $type != 'html' ) ? $plugin['AuthorName'] : '<a href="' . $plugin['AuthorURI'] . '" target="_blank">' . $plugin['AuthorName'] . '</a>';
 				$network_active .= $plugin_name . ' by ' . $plugin_author_name . ': ' . __( 'Version', 'blox' ) . ' ' . $plugin['Version'] . $update . $break;
 			}
 	
@@ -490,7 +552,7 @@ class Blox_Tools {
 	/**
 	 * Enqueue scripts and styles
 	 *
-	 * @since 1.0.0
+	 * @since 1.2.0
 	 */
 	function admin_enqueue_scripts() {
 		wp_enqueue_style( $this->base->plugin_slug . '-settings-styles', plugins_url( 'assets/css/settings.css' , dirname( dirname( __FILE__ ) ) ) ); // Need to us dirname twice due to file format of parent plugin
@@ -515,7 +577,7 @@ class Blox_Tools {
     /**
      * Returns the singleton instance of the class.
      *
-     * @since 1.0.0
+     * @since 1.2.0
      *
      * @return object The class object.
      */
