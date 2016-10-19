@@ -55,11 +55,14 @@ class Blox_Posttype_Admin {
 
         // Remove quick editing from the global blocks post type row actions.
         add_filter( 'post_row_actions', array( $this, 'row_actions' ), 10, 2 );
-        	
+
         // Enable replication for Global blocks
         add_filter( 'post_row_actions', array( $this, 'duplicate_row_link' ), 10, 2 );
 		add_action( 'post_submitbox_start', array( $this, 'duplicate_submitbox_link' ) );
         add_action( 'admin_action_blox_duplicate_block', array( $this, 'duplicate_block' ) );
+
+        // Enable Quick Edit for Global blocks
+        add_filter( 'post_row_actions', array( $this, 'quickedit_row_link' ), 10, 2 );
 
         // Manage post type columns.
         add_filter( 'manage_edit-blox_columns', array( $this, 'admin_column_titles' ) );
@@ -67,34 +70,36 @@ class Blox_Posttype_Admin {
 
         // Update post type messages.
         add_filter( 'post_updated_messages', array( $this, 'messages' ) );
-        
+
         // Conditionally add the Local Blocks column to admin pages
         // Note: Need to fire immediately after admin_init, hence current_screen
         add_action( 'current_screen', array( $this, 'local_blocks_columns' ) );
 	}
-	
+
 
 	/**
 	 * Add the duplicate link to action list for post_row_actions
 	 *
 	 * @since 1.1.0
-	 * 
+	 *
 	 * @param array $actions Existing array of action links
 	 * @param obj $post The original block object (one to be duplicated)
 	 */
 	public function duplicate_row_link( $actions, $post ) {
-	
+
 		if ( $post->post_type == 'blox' ){
-	
+
+            //echo print_r( $post );
+
 			$link  = admin_url( 'admin.php?action=blox_duplicate_block&amp;post=' . $post->ID );
 			$title = __( 'Duplicate', 'blox' );
-		
+
 			$actions['duplicate'] = '<a href="' . $link . '" title="' . $title . '">' . $title . '</a>';
 		}
-	
+
 		return $actions;
 	}
-	
+
 
 	/**
 	 * Add the duplicate link to submitbox on all Global blocks
@@ -102,18 +107,18 @@ class Blox_Posttype_Admin {
 	 * @since 1.1.0
 	 */
 	public function duplicate_submitbox_link() {
-		
+
 		$post  = isset( $_GET['post'] ) ? get_post( $_GET['post'] ) : false;
-	
+
 		if ( isset( $post ) && $post != null && $post->post_type == 'blox' ) {
 
 			$link  = admin_url( 'admin.php?action=blox_duplicate_block&amp;post=' . $post->ID );
 			$title = __( 'Duplicate Block', 'blox' );
-			
+
 			$output =  '<div id="blox-duplicate-action">';
 			$output .= '<a href="' . $link . '" title="' . $title . '" style="text-decoration:none">' . $title . '</a>';
 			$output .= '</div>';
-			
+
 			echo $output;
 		}
 	}
@@ -125,7 +130,7 @@ class Blox_Posttype_Admin {
 	 * @since 1.1.0
 	 */
 	public function duplicate_block() {
-	
+
 		if ( ! ( isset( $_GET['post'] ) || isset( $_POST['post'] )  || ( isset( $_REQUEST['action'] ) && 'blox_duplicate_block' == $_REQUEST['action'] ) ) ) {
 			wp_die( __( 'You didn\'t choose a block to duplicate...try again.', 'blox' ) );
 		}
@@ -134,35 +139,57 @@ class Blox_Posttype_Admin {
 		$id   = ( isset($_GET['post'] ) ? $_GET['post'] : $_POST['post']);
 		$post = get_post( $id );
 
-		// Duplicate the block 
+		// Duplicate the block
 		if ( isset( $post ) && $post != null ) {
-			
+
 			// New block args
 			$args = array(
 				'post_status' => 'draft',
 				'post_title' => $post->post_title . ' ' . __( 'Copy', 'blox' ),
 				'post_type' => $post->post_type,
 			);
-			
+
 			// Create new block
 			$new_block_id = wp_insert_post( $args );
-			
+
 			// Get the metadata from the old block
 			$block_meta   = get_post_meta( $post->ID, '_blox_content_blocks_data', true );
-			
+
 			// Play is safe and remove any existing meta data and then add old block's data to new block
 			delete_post_meta( $new_block_id, '_blox_content_blocks_data' );
 			update_post_meta( $new_block_id, '_blox_content_blocks_data', $block_meta );
 
 			// Redirect to the edit screen for the new draft post
 			wp_redirect( admin_url( 'post.php?action=edit&post=' . $new_block_id ) );
-			
+
 			exit;
 
 		} else {
 			wp_die( esc_attr( __( 'Duplication has failed, the original block could not be located.', 'blox' ) ) );
 		}
 	}
+
+
+    /**
+     * Add the Quick Edit to Global Blocks
+     *
+     * @since 1.2.0
+     *
+     * @param array $actions Existing array of action links
+     * @param obj $post The original block object
+     */
+    public function quickedit_row_link( $actions, $post ) {
+
+        if ( $post->post_type == 'blox' ){
+
+            $link = sprintf( '<a href="#" class="editinline" aria-label="%s">%s</a>', esc_attr( sprintf( __( 'Quick edit &#8220;%s&#8221; inline' ), $post->post_title ) ), __( 'Quick&nbsp;Edit' ) );
+
+            //echo print_r( $post );
+            $actions = array_slice( $actions, 0, 1, true) + array( 'inline hide-if-no-js' => $link ) + array_slice( $actions, 1, count( $actions ) - 1, true ) ;
+        }
+
+        return $actions;
+    }
 
 
     /**
@@ -181,10 +208,10 @@ class Blox_Posttype_Admin {
         );
 
         $columns = apply_filters( 'blox_admin_column_titles', $columns );
-        
+
         $columns['modified'] = __( 'Last Modified', 'blox' );
         $columns['date'] = __( 'Date', 'blox' );
-        
+
         return $columns;
     }
 
@@ -202,17 +229,17 @@ class Blox_Posttype_Admin {
 
         global $post;
         $post_id = absint( $post_id );
-        
+
         $block_data = get_post_meta( $post_id, '_blox_content_blocks_data', true );
-        
+
         // Print all additional column data
         do_action( 'blox_admin_column_data_' . $column, $post_id, $block_data );
-        
+
         // Print the date last modified
         if ( $column == 'modified' ) {
         	the_modified_date();
         }
-        
+
         // Hook in additional generic column settings
         do_action( 'blox_admin_column_data', $column, $post_id, $block_data );
     }
@@ -280,23 +307,23 @@ class Blox_Posttype_Admin {
      */
 	public function local_blocks_columns() {
 		global $typenow;
-		
+
 		$local_enable  = blox_get_option( 'local_enable', false );
-		
+
 		if ( $local_enable ) {
-		
+
 			$enabled_pages = blox_get_option( 'local_enabled_pages', '' );
-		
+
 			// Note this does not work on some custom post types in other plugins, need to explore reason...
 			if ( ! empty( $enabled_pages ) && in_array( $typenow, $enabled_pages ) ) {
 				add_filter( 'manage_' . $typenow . '_posts_columns', array( $this, 'local_blocks_column_title' ), 5 );
 				add_action( 'manage_' . $typenow . '_posts_custom_column', array( $this, 'local_blocks_column_data' ), 10, 2);
-				
+
 				// Tell Wordpress that the Local Blocks column is sortable
 				add_filter( 'manage_edit-' . $typenow . '_sortable_columns', array( $this, 'local_blocks_columns_sortable' ), 5 );
 			}
         }
-        
+
         // Tell Wordpress how to sort Local Blocks
         add_filter( 'request', array( $this, 'local_blocks_columns_orderby' ) );
 	}
@@ -312,7 +339,7 @@ class Blox_Posttype_Admin {
      */
 	public function local_blocks_column_title( $columns ) {
 	  	$new_columns = array();
-	  	
+
 	  	// Specify where we want to put our column
   		foreach( $columns as $key => $title ) {
     		$new_columns[$key] = $title;
@@ -322,8 +349,8 @@ class Blox_Posttype_Admin {
   		}
   		return $new_columns;
 	}
-	
-	
+
+
 	/**
      * Add content to the Local Blocks column
      *
@@ -334,10 +361,10 @@ class Blox_Posttype_Admin {
      */
 	public function local_blocks_column_data( $column_name, $post_ID ) {
 		if ( $column_name == 'local_blocks' ) {
-			
+
 			// Get the number of local blocks on the given post
 			$count = get_post_meta( $post_ID, '_blox_content_blocks_count', true );
-			
+
 			if ( ! empty( $count ) ) {
 				echo $count;
 				// Possibly add more than just the number of block in the future...
@@ -346,8 +373,8 @@ class Blox_Posttype_Admin {
 			}
 		}
 	}
-	
-	
+
+
 	/**
      * Tell Wordpress that the Local Blocks column is sortable
      *
@@ -356,11 +383,11 @@ class Blox_Posttype_Admin {
      * @param array $vars  Array of query variables
      */
 	public function local_blocks_columns_sortable( $sortable_columns ) {
-	
+
 		$sortable_columns[ 'local_blocks' ] = 'local_blocks';
 		return $sortable_columns;
 	}
-	
+
 	/**
      * Tell Wordpress how to sort Local Blocks
      *
@@ -369,14 +396,14 @@ class Blox_Posttype_Admin {
      * @param array $vars  Array of query variables
      */
 	public function local_blocks_columns_orderby( $vars ) {
-		
+
 		if ( isset( $vars['orderby'] ) && 'local_blocks' == $vars['orderby'] ) {
 			$vars = array_merge( $vars, array(
 				'meta_key' => '_blox_content_blocks_count',
 				'orderby' => 'meta_value_num'
 			) );
 		}
- 
+
 		return $vars;
 	}
 
