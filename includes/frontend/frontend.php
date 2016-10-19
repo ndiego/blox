@@ -84,9 +84,10 @@ class Blox_Frontend {
 		
 			// Get all of the Global Content Blocks
 			$global_blocks = get_posts( array(
-				'post_type'    => 'blox',
-				'post_status'  => 'publish',
-				'numberposts'  => -1  // We want all global blocks
+				'post_type'        => 'blox',
+				'post_status'  	   => 'publish',
+				'numberposts'      => -1,     // We want all global blocks
+				'suppress_filters' => false   // For WPML compatibility
 			) );
 		
 			// echo print_r( $global_blocks );
