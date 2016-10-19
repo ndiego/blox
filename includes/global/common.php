@@ -244,7 +244,7 @@ class Blox_Common {
     	
     	foreach( $unflattened as $sections => $section ) {
     		foreach ( $section['hooks'] as $hooks => $hook ) {
-    			$flattened[] = $hooks;
+    			$flattened[$hooks] = $hook['name'];
     		}
     	}
     	return $flattened;
@@ -265,7 +265,7 @@ class Blox_Common {
     	$final_hooks          = array();
     	
 		// Make sure default hooks are enabled
-		if (  ! empty( $default_hooks ) && isset( $default_hooks['enable'] ) && $default_hooks['enable'] == 1 ) {
+		if ( ! empty( $default_hooks ) && isset( $default_hooks['enable'] ) && $default_hooks['enable'] == 1 ) {
 	
 			$available_hooks = $default_hooks['available_hooks'];
 	
@@ -336,6 +336,18 @@ class Blox_Common {
     	$content_types = array();
 
     	return apply_filters( 'blox_content_type', $content_types );
+    }
+    
+    
+    /**
+     * Helper method for retrieving the content defaults
+     *
+     * @since 1.2.0
+     *
+     * @return array Array of all enabled content types
+     */
+    public function push_content_defaults() {
+    	
     }
 
 

@@ -260,7 +260,7 @@ class Blox_Visibility {
 				$output = '<span style="color:#a00;font-style:italic;">' . __( 'Disabled', 'blox' ) . '</span>';
 				$meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
 			} else {
-				$type = ! empty( $block_data['visibility']['role']['role_type'] ) ? $block_data['visibility']['role']['role_type'] : '';
+				$type = ! empty( $block_data['visibility']['role']['role_type'] ) ? $block_data['visibility']['role']['role_type'] : 'all';
 				
 				$meta_data = $type;
 				
@@ -343,7 +343,7 @@ class Blox_Visibility {
 			$output = __( 'Disabled', 'blox' ); 
 		} else {
 		
-			$type = ! empty( $block['visibility']['role']['role_type'] ) ? $block['visibility']['role']['role_type'] : '';
+			$type = ! empty( $block['visibility']['role']['role_type'] ) ? $block['visibility']['role']['role_type'] : 'all';
 
 			switch ( $type ) {
 				case 'all' :

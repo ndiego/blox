@@ -77,12 +77,12 @@ class Blox_Posttype {
 			array(
 				'labels'              => $labels,
 				'public'              => false,
-				'exclude_from_search' => false,
+				'exclude_from_search' => true,
 				'show_ui'             => true,
 				'show_in_admin_bar'   => false,
 				'rewrite'             => false,
 				'query_var'           => false,
-				'menu_position'       => apply_filters( 'gcc_post_type_menu_position', 248 ),
+				'menu_position'       => apply_filters( 'blox_post_type_menu_position', 248 ),
 				'supports'            => array( 'title' )
 			)
 		);

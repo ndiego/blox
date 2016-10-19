@@ -162,7 +162,7 @@ class Blox_Position {
 							<?php
 								// Print error if the saved hook is no longer available for some reason
 								if ( ! in_array( $default_position, $available_hooks ) ) {
-									echo '<div class="blox-alert">' . sprintf( __( 'The current saved default hook is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox_block&page=blox-settings&tab=default' ) . '">', '</a>' ) . '</div>';
+									echo '<div class="blox-alert">' . sprintf( __( 'The current saved default hook is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( '/edit.php?post_type=blox&page=blox-settings&tab=hooks' ) . '">', '</a>' ) . '</div>';
 								}
 							?>
 						</div>
@@ -188,7 +188,7 @@ class Blox_Position {
 							$custom_postion   = ! empty( $get_prefix['custom']['position'] ) ? $get_prefix['custom']['position'] : '';
 							// Print error if the saved hook is no longer available for some reason
 							if ( ! empty( $custom_postion ) && ! in_array( $custom_postion, $available_hooks ) ) {
-								echo '<div class="blox-alert">' . sprintf( __( 'The current saved custom hook, %3$s, is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox_block&page=blox-settings&tab=default' ) . '">', '</a>', '<strong>' . $custom_postion . '</strong>' ) . '</div>';
+								echo '<div class="blox-alert">' . sprintf( __( 'The current saved custom hook, %3$s, is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( '/edit.php?post_type=blox&page=blox-settings&tab=hooks' ) . '">', '</a>', '<strong>' . $custom_postion . '</strong>' ) . '</div>';
 							}
 						?>
 					</td>
@@ -270,6 +270,8 @@ class Blox_Position {
     
         $instance        = Blox_Common::get_instance();
 		$available_hooks = $instance->get_genesis_hooks_flattened();
+		
+		//echo print_r( $available_hooks );
         
 		if ( ! empty( $block_data['position']['position_type'] ) ) {
 			if ( $block_data['position']['position_type'] == 'default' ) {
@@ -277,22 +279,24 @@ class Blox_Position {
 				$default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
 				$title            = $default_position;
 				
-				if ( ! empty( $default_position ) && in_array( $default_position, $available_hooks ) ){
-					$position = $meta_data = esc_attr( $default_position );
+				if ( ! empty( $default_position ) && array_key_exists( $default_position, $available_hooks ) ){
+					$position  = esc_attr( $available_hooks[$default_position] );
+					$meta_data = $default_position;
 				} else {
 					$position  = false;
-					$title = 'Currently set to: ' . $default_position;
+					$title     = sprintf( __( 'This block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), $default_position );
 					$meta_data = '';
 				}
 			} else if ( ! empty( $block_data['position']['custom'] ) ) {
 				
-				$custom_postion = $block_data['position']['custom']['position'];
+				$custom_postion = esc_attr( $block_data['position']['custom']['position'] );
 				$title          = $custom_postion;
 				
-				if( ! empty( $custom_postion ) && in_array( $block_data['position']['custom']['position'], $available_hooks ) ) {
-					$position = $meta_data = esc_attr( $custom_postion );
+				if( ! empty( $custom_postion ) && array_key_exists( $block_data['position']['custom']['position'], $available_hooks ) ) {
+					$position  = esc_attr( $available_hooks[$custom_postion] );
+					$meta_data = $custom_postion;
 				} else {
-					$position = false;
+					$position  = false;
 					$meta_data = '';
 				}
 			}
@@ -301,7 +305,7 @@ class Blox_Position {
 			$meta_data = '';
 		}
 		
-		$error = '<span style="color:#a00;font-style:italic;" title="Currently set to: ' . $title . '">' . __( 'Error', 'blox' ) . '</span>';
+		$error = '<span style="color:#a00;font-style:italic;cursor: help" title="' . $title . '">' . __( 'Error', 'blox' ) . '</span>';
 		
 		echo $position ? $position : $error;
 		

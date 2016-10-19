@@ -186,10 +186,10 @@ class Blox_Frontend {
 		
 		
 		// If hook defaults are enabled we need to make sure the block is set to a position that is one of the defaults
-		$hook_default_enabled = blox_get_option( 'hook_defaults', false );
+		$default_hooks_enabled = blox_get_option( 'default_hooks', false );
 		
 		// Make sure hook defaults are enabled, and if so, run test
-    	if ( isset( $hook_default_enabled['enable'] ) && $hook_default_enabled['enable'] == 1 ) {
+    	if ( isset( $default_hooks_enabled['enable'] ) && $default_hooks_enabled['enable'] == 1 ) {
     		
     		$hook_default_test = array();
     		
@@ -204,8 +204,7 @@ class Blox_Frontend {
     			return;
     		}
     	}
-		
-		
+			
 		// Action hook for modifying/adding position settings
 		do_action( 'blox_content_block_position', $id, $block, $global );
 		

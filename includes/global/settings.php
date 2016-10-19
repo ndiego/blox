@@ -335,6 +335,20 @@ class Blox_Settings {
 			/** Default Settings */
 			'default' => apply_filters( 'blox_settings_defaults',
 				array(
+					/*'defaults_content_header' => array(
+						'id' => 'defaults_content_header',
+						'name' => '<span class="title">' . __( 'Default Content Types', 'blox' ) . '</span>',
+						'desc' => '',
+						'type' => 'header'
+					),
+					'enable_content_restrict' => array(
+						'id'    => 'enable_content_restrict',
+						'name'  => __( 'Restrict Content Types', 'blox' ),
+						'label' => __( 'Check to restrict the available content types.', 'blox' ),
+						'desc'  => __( 'Blocks with restricted content types will no longer appear on the frontend of your site.', 'blox' ),
+						'type'  => 'checkbox',
+						'default' => true
+					),*/
 					'defaults_position_header' => array(
 						'id' => 'defaults_position_header',
 						'name' => '<span class="title">' . __( 'Default Block Position', 'blox' ) . '</span>',
@@ -766,8 +780,8 @@ class Blox_Settings {
 		echo $html;
 		
 		// Print error if the saved hook is no longer available for some reason
-		if ( ! in_array( $value, $available_hooks ) ) {
-			echo '<div class="blox-alert">' . sprintf( __( 'The current saved hook is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=hooks' ) . '">', '</a>' ) . '</div>';
+		if ( ! array_key_exists( $value, $available_hooks ) ) {
+			echo '<div class="blox-alert">' . sprintf( __( 'The current saved hook is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( '/edit.php?post_type=blox&page=blox-settings&tab=hooks' ) . '">', '</a>' ) . '</div>';
 		}
 	}
 
@@ -890,7 +904,7 @@ class Blox_Settings {
 				</ul>
 			</div>
 			<div class="blox-checkbox-select-tools">
-				<a class="blox-checkbox-select-all" href="#"><?php _e( 'Select All' ); ?></a> <a class="blox-checkbox-select-none" href="#"><?php _e( 'Unselect All' ); ?></a>
+				<a class="blox-checkbox-select-all" href="#"><?php _e( 'Enable All' ); ?></a> <a class="blox-checkbox-select-none" href="#"><?php _e( 'Disable All' ); ?></a>
 			</div>
 			</div>
 		<?php } ?>
@@ -976,11 +990,12 @@ class Blox_Settings {
 				</ul>
 			</div>
 			<div class="blox-checkbox-select-tools">
-				<a class="blox-checkbox-select-all" href="#"><?php _e( 'Select All' ); ?></a> <a class="blox-checkbox-select-none" href="#"><?php _e( 'Unselect All' ); ?></a>
+				<a class="blox-checkbox-select-all" href="#"><?php _e( 'Enable All' ); ?></a> <a class="blox-checkbox-select-none" href="#"><?php _e( 'Disable All' ); ?></a>
 			</div>
 		</div>
 		<?php
 	}
+	
 	
 	/***********************************************
 	 * Sanitization type callbacks
@@ -1098,9 +1113,7 @@ class Blox_Settings {
 	function default_hooks( $new_value ) {
 			
 		$available_hooks = isset( $new_value['available_hooks'] ) ? $new_value['available_hooks'] : false;
-		
-		//echo print_r( $available_hooks );
-		
+				
 		if ( $available_hooks ) {
 			foreach ( $available_hooks as $sections => $section ) {
 				
@@ -1114,20 +1127,18 @@ class Blox_Settings {
 					
 						$enabled_hooks[$hooks] = array(
 							'enable' => isset( $hook['enable'] ) ? esc_attr( $hook['enable'] ) : '',
-							'name'  => strip_tags( $hook['name'] ),
-							'title' => esc_attr( $hook['title'] ),
+							'name'   => strip_tags( $hook['name'] ),
+							'title'  => esc_attr( $hook['title'] ),
 						);
 					}
 				}
 			
 				$filtered_hooks[$sections]['name']  = strip_tags( $section['name'] );
 				$filtered_hooks[$sections]['hooks'] = $enabled_hooks;
-
 			}
 		
 			$new_value['available_hooks'] = $filtered_hooks;
 		}
-			
 		
 		return $new_value;
 	}
