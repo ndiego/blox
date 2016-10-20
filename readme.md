@@ -25,6 +25,7 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 * Fixed links in hook error messages
 * Fixed error message in position admin columns when the current hook is disabled
 * Tweaked spelling on Add-ons
+* Update EDD Updater to v1.6.5
 
 ##### Version 1.1.1
 * Fixed location archive taxonomy bug

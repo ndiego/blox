@@ -16,6 +16,7 @@ Version 1.2.0 – 2016-10-20
 * Fixed links in hook error messages
 * Fixed error message in position admin columns when the current hook is disabled
 * Tweaked spelling on Add-ons
+* Update EDD Updater to v1.6.5
 
 Version 1.1.1
 * Fixed location archive taxonomy bug
