@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 class Blox_Visibility {
-    
+
     /**
      * Holds the class object.
      *
@@ -52,23 +52,23 @@ class Blox_Visibility {
 
         // Load the base class object.
         $this->base = Blox_Main::get_instance();
-		
+
 		// Setup visibility settings
 		add_filter( 'blox_metabox_tabs', array( $this, 'add_visibility_tab' ), 10 );
 		add_action( 'blox_get_metabox_tab_visibility', array( $this, 'get_metabox_tab_visibility' ), 10, 4 );
 		add_filter( 'blox_save_metabox_tab_visibility', array( $this, 'save_metabox_tab_visibility' ), 10, 3 );
-		
+
 		// Add the admin column data for global blocks
 		add_filter( 'blox_admin_column_titles', array( $this, 'admin_column_title' ), 4, 1 );
 		add_action( 'blox_admin_column_data_visibility', array( $this, 'admin_column_data' ), 10, 2 );
-		
+
 		// Make admin column sortable
 		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
         add_filter( 'request', array( $this, 'admin_column_orderby' ) );
-		
+
 		// Adds visibility meta to local blocks
 		add_action( 'blox_content_block_meta', array( $this, 'visibility_content_block_meta' ), 10, 1 );
-		
+
 		// Run visibilty test on the frontend
 		add_filter( 'blox_display_test', array( $this, 'run_visibility_display_test' ), 5, 4 );
     }
@@ -83,12 +83,12 @@ class Blox_Visibility {
      * @return array $tab The updated tabs array
      */
 	public function add_visibility_tab( $tabs ) {
-				
-		$tabs['visibility'] = array( 
+
+		$tabs['visibility'] = array(
 			'title' => __( 'Visibility', 'blox' ),
 			'scope' => 'all'  // all, local, or global
 		);
-		
+
 		return $tabs;
 	}
 
@@ -104,51 +104,51 @@ class Blox_Visibility {
      * @param bool $global	      The block state
      */
  	public function get_metabox_tab_visibility( $data = null, $name_id, $get_id, $global ) {
-		
+
 		// $data array structure is different for global and local blocks, so we need to treat each case separately
 		if ( $global ) {
 			// Indicates where the visibility settings are saved
 			$name_prefix = "blox_content_blocks_data[visibility]";
 			$get_prefix = ! empty( $data['visibility'] ) ? $data['visibility'] : null;
-			
+
 		} else {
 			// Indicates where the visibility settings are saved
 			$name_prefix = "blox_content_blocks_data[$name_id][visibility]";
-		
+
 			// Used for retrieving the visibility settings
 			// If $data = null, then there are no settings to get
 			if ( $data == null ) {
 				$get_prefix = null;
 			} else {
 				$get_prefix = ! empty( $data[$get_id]['visibility'] ) ? $data[$get_id]['visibility'] : null;
-			}		
+			}
 		}
-	
+
 		// Get the content for the visibility tab
 		$this->visibility_settings( $get_id, $name_prefix, $get_prefix, false );
     }
-    
-    
+
+
     /* Creates the visibility settings fields
      *
      * @since 1.0.0
 	 *
-     * @param int $id             The id of the content block, either global or individual (attached to post/page/cpt) 
+     * @param int $id             The id of the content block, either global or individual (attached to post/page/cpt)
      * @param string $name_prefix The prefix for saving each setting
      * @param string $get_prefix  The prefix for retrieving each setting
      * @param bool $global	      The block state
      */
     public function visibility_settings( $id, $name_prefix, $get_prefix, $global ) {
 		?>
-		
+
 		<table class="form-table">
 			<tbody>
-		
+
 				<tr class="blox-visibility-global-disable">
 					<th scope="row"><?php _e( 'Global Visibility', 'blox' ); ?></th>
 					<td>
 						<label class="blox-single-checkbox">
-							<input type="checkbox" name="<?php echo $name_prefix; ?>[global_disable]" id="blox_visibility_global_disable_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['global_disable'] ) ? checked( $get_prefix['global_disable'] ) : ''; ?> /> 
+							<input type="checkbox" name="<?php echo $name_prefix; ?>[global_disable]" id="blox_visibility_global_disable_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['global_disable'] ) ? checked( $get_prefix['global_disable'] ) : ''; ?> />
 							<?php _e( 'Check to globally disable', 'blox' ); ?>
 						</label>
 						<div class="blox-description">
@@ -156,17 +156,17 @@ class Blox_Visibility {
 						</div>
 					</td>
 				</tr>
-		
+
 				<tr class="blox-visibility-role_type">
 					<th scope="row"><?php _e( 'Visibility by Role', 'blox' ); ?></th>
 					<td>
 						<select name="<?php echo $name_prefix; ?>[role][role_type]">
 							<option value="all" title="<?php _e( 'Visible to everyone.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['role']['role_type'] ) ? selected( $get_prefix['role']['role_type'], 'all' ) : 'selected'; ?>><?php _e( 'Visible to All', 'blox' ); ?></option>
-							<option value="public" title="<?php _e( 'Visible to everyone that is logged out.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['role']['role_type'] ) ? selected( $get_prefix['role']['role_type'], 'public' ) : ''; ?>><?php _e( 'Public Facing', 'blox' ); ?></option>	
+							<option value="public" title="<?php _e( 'Visible to everyone that is logged out.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['role']['role_type'] ) ? selected( $get_prefix['role']['role_type'], 'public' ) : ''; ?>><?php _e( 'Public Facing', 'blox' ); ?></option>
 							<option value="private" title="<?php _e( 'Visible to everyone that is logged in.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['role']['role_type'] ) ? selected( $get_prefix['role']['role_type'], 'private' ) : ''; ?>><?php _e( 'Private Facing', 'blox' ); ?></option>
-							<option value="restrict" title="<?php _e( 'Only visible to user roles that are selected below.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['role']['role_type'] ) ? selected( $get_prefix['role']['role_type'], 'restrict' ) : ''; ?>><?php _e( 'Restrict by User Role', 'blox' ); ?></option>	
+							<option value="restrict" title="<?php _e( 'Only visible to user roles that are selected below.', 'blox' ); ?>" <?php echo ! empty( $get_prefix['role']['role_type'] ) ? selected( $get_prefix['role']['role_type'], 'restrict' ) : ''; ?>><?php _e( 'Restrict by User Role', 'blox' ); ?></option>
 						</select>
-			
+
 						<div class="blox-description">
 							<?php _e( 'Choose who should be able to view the content block on the frontend.', 'blox' ); ?>
 						</div>
@@ -197,42 +197,42 @@ class Blox_Visibility {
 						</div>
 					</td>
 				</tr>
-				
-				<?php do_action( 'blox_visibility_settings', $id, $name_prefix, $get_prefix, $global ); ?>	
-			
+
+				<?php do_action( 'blox_visibility_settings', $id, $name_prefix, $get_prefix, $global ); ?>
+
 			</tbody>
 		</table>
-		
+
 		<?php
     }
-    
-    
-    /** 
+
+
+    /**
 	 * Saves all of the visibility settings
      *
      * @since 1.0.0
      *
-     * @param int $post_id        The global block id or the post/page/custom post-type id corresponding to the local block 
+     * @param int $post_id        The global block id or the post/page/custom post-type id corresponding to the local block
      * @param string $name_prefix The prefix for saving each setting
      * @param bool $global        The block state
      *
      * @return array $settings    Return an array of updated settings
      */
     public function save_metabox_tab_visibility( $post_id, $name_prefix, $global ) {
-		
+
 		$settings = array();
-		
+
 		$settings['global_disable']      = isset( $name_prefix['global_disable'] ) ? 1 : 0;
 		$settings['role']['role_type']   = esc_attr( $name_prefix['role']['role_type'] );
-		
+
 		foreach ( get_editable_roles() as $role_name => $role_info ) {
 			$settings['role']['restrictions'][$role_name] = isset( $name_prefix['role']['restrictions'][$role_name] ) ? 1 : 0;
 		}
 
 		return apply_filters( 'blox_save_visibility_settings', $settings, $post_id, $name_prefix, $global );
 	}
-	
-	
+
+
 	/**
      * Add admin column for global blocks
      *
@@ -241,10 +241,10 @@ class Blox_Visibility {
      */
     public function admin_column_title( $columns ) {
     	$columns['visibility'] = __( 'Visibility', 'blox' );
-    	return $columns; 
+    	return $columns;
     }
-    
-    
+
+
     /**
      * Print the admin column data for global blocks.
      *
@@ -254,16 +254,16 @@ class Blox_Visibility {
     public function admin_column_data( $post_id, $block_data ) {
 		// Check if global blocks are enabled
 		$global_enable = blox_get_option( 'global_enable', false );
-		
+
 		if ( $global_enable ) {
 			if ( ! empty( $block_data['visibility']['global_disable'] ) && $block_data['visibility']['global_disable'] == 1 ) {
 				$output = '<span style="color:#a00;font-style:italic;">' . __( 'Disabled', 'blox' ) . '</span>';
 				$meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
 			} else {
 				$type = ! empty( $block_data['visibility']['role']['role_type'] ) ? $block_data['visibility']['role']['role_type'] : 'all';
-				
+
 				$meta_data = $type;
-				
+
 				switch ( $type ) {
 					case 'all' :
 						$output = __( 'All', 'blox' );
@@ -277,7 +277,7 @@ class Blox_Visibility {
 					case 'restrict' :
 						if ( ! empty( $block_data['visibility']['role']['restrictions'] ) ) {
 							// Get all of the selected roles, make the first letter capitalized, then print to page
-							$output =  implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) ); 
+							$output =  implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) );
 						} else {
 							$output = __( 'No Roles Selected', 'blox' );
 						}
@@ -286,19 +286,19 @@ class Blox_Visibility {
 						$output = '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
 						break;
 				}
-			}					
+			}
 		} else {
 			$output = '<span style="color:#a00;font-style:italic;">' . __( 'Globally Disabled', 'blox' ) . '</span>';
 			$meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
 		}
-		
+
 		echo apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
-		
+
 		// Save our visibility meta values separately for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_visibility', $meta_data );
     }
-    
-    
+
+
     /**
      * Tell Wordpress that the visibility column is sortable
      *
@@ -310,8 +310,8 @@ class Blox_Visibility {
 		$sortable_columns[ 'visibility' ] = 'visibility';
 		return $sortable_columns;
 	}
-	
-	
+
+
 	/**
      * Tell Wordpress how to sort the visibility column
      *
@@ -320,29 +320,29 @@ class Blox_Visibility {
      * @param array $vars  Array of query variables
      */
 	public function admin_column_orderby( $vars ) {
-		
+
 		if ( isset( $vars['orderby'] ) && 'visibility' == $vars['orderby'] ) {
 			$vars = array_merge( $vars, array(
 				'meta_key' => '_blox_content_blocks_visibility',
 				'orderby' => 'meta_value'
 			) );
 		}
- 
+
 		return $vars;
 	}
-    
-    
+
+
     /**
      * Print the visibility meta data for local blocks.
      *
      * @param array $block
      */
      public function visibility_content_block_meta( $block ) {
-		
+
 		if ( ! empty( $block['visibility']['global_disable'] ) && $block['visibility']['global_disable'] == 1 ) {
-			$output = __( 'Disabled', 'blox' ); 
+			$output = __( 'Disabled', 'blox' );
 		} else {
-		
+
 			$type = ! empty( $block['visibility']['role']['role_type'] ) ? $block['visibility']['role']['role_type'] : 'all';
 
 			switch ( $type ) {
@@ -358,7 +358,7 @@ class Blox_Visibility {
 				case 'restrict' :
 					if ( ! empty( $block['visibility']['role']['restrictions'] ) ) {
 						// Get all of the selected roles, make the first letter capitalized, then print to page
-						$visibility = implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) ); 
+						$visibility = implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) );
 					} else {
 						$visibility = __( 'No Roles Selected', 'blox' );
 					}
@@ -367,15 +367,15 @@ class Blox_Visibility {
 					$visibility = __( 'Error, Not Saved', 'blox' );
 					break;
 			}
-		
-			$output = '<span style="cursor:help" title="Visibility: ' . $visibility . '">' . __( 'Active', 'blox' ) . '</span>'; 
+
+			$output = '<span style="cursor:help" title="Visibility: ' . $visibility . '">' . __( 'Active', 'blox' ) . '</span>';
 		}
-		
+
 		// Filter the visibility meta, useful for addons
 		echo apply_filters( 'blox_visibility_meta_data', $output, $block, false );
 	}
-    
-    
+
+
 	/**
 	 * Run the visibility test
 	 *
@@ -387,7 +387,7 @@ class Blox_Visibility {
 	 * @param bool $global       Tells whether our block is global or local
 	 */
 	public function run_visibility_display_test( $display_test, $id, $block, $global ) {
-		
+
 		// If the display test is already false, bail...
 		if ( $display_test == false ) {
 			return $display_test;
@@ -395,10 +395,10 @@ class Blox_Visibility {
 
 		// Get the visibility data
 		$visibility_data = isset( $block['visibility'] ) ? $block['visibility'] : '';
-		
+
 		// If we have visibility data, run the visibility test...
 		if ( ! empty( $visibility_data ) ) {
-		
+
 			// Need to make this "true" to continue
 			$visibility_test = false;
 
@@ -428,7 +428,9 @@ class Blox_Visibility {
 
 						// Fill our restrictions array with the block's restrictions
 						foreach ( $visibility_data['role']['restrictions'] as $restriction => $val ) {
-							$restrictions[] = $restriction;
+                            if ( $val == 1 ) {
+							    $restrictions[] = $restriction;
+                            }
 						}
 
 						// Get info about the current user and bail if it's not an instance of WP_User
@@ -446,31 +448,26 @@ class Blox_Visibility {
 							$visibility_test = true;
 						}
 					}
-				} else {
-				
-					// The role type does not seem to be set, so assume all and move on
-					$visibility_test = true;
 				}
-
 			}
 
 			// Filter for modifying the visibility test. Used by addons.
 			$visibility_test = apply_filters( 'blox_content_block_visibility_test', $visibility_test, $id, $block, $global );
-			
-			// If the block passes the visibility test, continue on. If not, the test fails. 
+
+			// If the block passes the visibility test, continue on. If not, the test fails.
 			if ( $visibility_test == true ) {
 				return true;
 			} else {
 				return false;
 			}
 		} else {
-			
+
 			// The visibility data does not exist, so move on to another test
 			return true;
 		}
 	}
-	
-	
+
+
 	/**
      * Helper function for making the first letter of a string uppercase
      *

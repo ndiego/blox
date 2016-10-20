@@ -61,8 +61,8 @@ class Blox_Posttype_Admin {
 		add_action( 'post_submitbox_start', array( $this, 'duplicate_submitbox_link' ) );
         add_action( 'admin_action_blox_duplicate_block', array( $this, 'duplicate_block' ) );
 
-        // Enable Quick Edit for Global blocks
-        add_filter( 'post_row_actions', array( $this, 'quickedit_row_link' ), 10, 2 );
+        // Enable Quick Edit for Global blocks (coming v1.3.0)
+        // add_filter( 'post_row_actions', array( $this, 'quickedit_row_link' ), 10, 2 );
 
         // Manage post type columns.
         add_filter( 'manage_edit-blox_columns', array( $this, 'admin_column_titles' ) );
@@ -173,7 +173,7 @@ class Blox_Posttype_Admin {
     /**
      * Add the Quick Edit to Global Blocks
      *
-     * @since 1.2.0
+     * @since 1.3.0
      *
      * @param array $actions Existing array of action links
      * @param obj $post The original block object

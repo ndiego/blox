@@ -8,10 +8,14 @@ Resources:
 
 Changelog:
 
-Version 1.2.0 (Not officially released yet)
+Version 1.2.0 – 2016-10-20
 * Added System Info page to Blox Tools
+* Changed suppress_filters to false in global blocks for WPML compatibility
 * Fixed anonymous function that were causing issues in PHP 5.2
-* More to come...
+* Fixed Visibility by Role bug
+* Fixed links in hook error messages
+* Fixed error message in position admin columns when the current hook is disabled
+* Tweaked spelling on Add-ons
 
 Version 1.1.1
 * Fixed location archive taxonomy bug
@@ -27,6 +31,4 @@ Version 1.1.0
 Version 1.0.0
 * Initial Release
 
-Blox is developed by Outermost Design, LLC. All right reserved. 
-
-
+Blox is developed by Outermost Design, LLC. All right reserved.

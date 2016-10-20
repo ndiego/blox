@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 class Blox_License_Settings {
-    
+
     /**
      * Holds the class object.
      *
@@ -49,24 +49,24 @@ class Blox_License_Settings {
      * @since 1.0.0
      */
     public function __construct() {
-    
+
     	add_action( 'admin_menu', array( $this, 'add_menu_links' ), 10 );
     	add_action( 'admin_init', array( $this, 'register_settings' ), 10 );
     }
-    
-    
+
+
     /**
      * Add the Licenses menu link.
      *
      * @since 1.0.0
      */
     public function add_menu_links() {
-		
+
 		// Add our licenses menu link
-		add_submenu_page( 'edit.php?post_type=blox', __( 'Licenses & Addons', 'blox' ), __( 'Licenses & Addons', 'blox' ), 'manage_options', 'blox-licenses', array( $this, 'print_licenses_page' ) );
+		add_submenu_page( 'edit.php?post_type=blox', __( 'Licenses & Add-ons', 'blox' ), __( 'Licenses & Add-ons', 'blox' ), 'manage_options', 'blox-licenses', array( $this, 'print_licenses_page' ) );
 	}
-	
-	
+
+
 	/**
 	 * Add all settings sections and fields
 	 *
@@ -75,12 +75,12 @@ class Blox_License_Settings {
 	 * @return void
 	 */
 	public function register_settings() {
-	
+
 		// If blox_licenses does not exist, create it. It should always exist, so this is just a backup
 		if ( false == get_option( 'blox_licenses' ) ) {
 			add_option( 'blox_licenses' );
 		}
-		
+
 		// Add the main license settings section, we only need one section
 		//add_settings_section( 'blox_licenses_main', __return_null(), '__return_false', 'blox_licenses_main' );
 
@@ -108,7 +108,7 @@ class Blox_License_Settings {
 						'class'       => isset( $option['class'] )       ? $option['class']       : null,
 						'default'     => isset( $option['default'] )     ? $option['default']     : '',
 						'sanitize'	  => isset( $option['sanitize'] )    ? $option['sanitize']    : '',
-					) 
+					)
 				);
 			}
 		}
@@ -116,8 +116,8 @@ class Blox_License_Settings {
 		// Creates our settings in the options table
 		register_setting( 'blox_licenses', 'blox_licenses', array( $this, 'licenses_sanitize' ) );
 	}
-	
-	
+
+
 	/**
 	 * Retrieve the array of all licenses
 	 *
@@ -126,13 +126,13 @@ class Blox_License_Settings {
 	 * @return array
 	*/
 	public function get_registered_licenses() {
-	
+
 		/**
 		 * Blox licenses, filters are provided for each license type
 		 * but the only one that should really be used is the addons one
 		 */
 		$blox_licenses = array(
-			
+
 			// Main Blox license
 			'main' => apply_filters( 'blox_licenses_main',
 				array(
@@ -141,27 +141,27 @@ class Blox_License_Settings {
 						'name' => '<span class="title">' . __( 'Primary Blox License', 'blox' ) . '</span>',
 						'desc' => sprintf( __( 'Enter your license key(s) below. Please note that your "Bundle License" is only used for license renewals. It is not used for plugin activation and should not be added below. For information on Blox and Addon licensing, check out the %1$sdocumentation%1$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/licensing/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
 						'type' => 'header'
-					),	
+					),
 				)
 			),
-		
+
 			// Addon licenses
 			'addons' => apply_filters( 'blox_licenses_addons',
 				array(
 					'addon_license_header' => array(
 						'id' => 'addon_license_header',
-						'name' => '<span class="title">' . __( 'Addon Licensing', 'blox' ) . '</span>',
+						'name' => '<span class="title">' . __( 'Add-on Licensing', 'blox' ) . '</span>',
 						'desc' => '',
 						'type' => 'header'
-					),	
+					),
 				)
 			),
 		);
 
 		return apply_filters( 'blox_registered_licenses', $blox_licenses );
 	}
-    
-    
+
+
     /**
      * Print licenses settings page.
      *
@@ -175,13 +175,13 @@ class Blox_License_Settings {
 		ob_start();
 		?>
 		<div class="wrap">
-			<h2><?php _e( 'Licenses & Addons', 'blox' ); ?></h2>
-		
+			<h2><?php _e( 'Licenses & Add-ons', 'blox' ); ?></h2>
+
 			<?php settings_errors( 'blox-notices' ); // Shouldn't have to use this... ?>
-		
+
 			<h2 class="nav-tab-wrapper">
 				<?php foreach( $this->get_licenses_tabs() as $tab_id => $tab_name ) {
-				
+
 					$tab_url = add_query_arg( array(
 						'settings-updated' => false,
 						'tab' => $tab_id
@@ -197,7 +197,7 @@ class Blox_License_Settings {
 			</h2>
 			<div id="tab_container">
 				<?php if ( $active_tab != 'addons' ) { ?>
-				
+
 					<form method="post" action="options.php">
 						<table class="form-table">
 							<?php
@@ -207,13 +207,13 @@ class Blox_License_Settings {
 						</table>
 						<?php submit_button( __( 'Save Licenses', 'blox' ) ); ?>
 					</form>
-				
-				<?php } else { 
-				
+
+				<?php } else {
+
 					$addons = $this->get_addons();
 					?>
 					<div class="blox-addon-container">
-						<p><?php echo sprintf( __( 'Addons enhance Blox and make it more versatile. To download and install addons, you must have purchased a %1$sMultisite Bundle%2$s or %1$sDeveloper Bundle%2$s. Head over to %3$syour account %4$s on bloxwp.com to download, or upgrade your license.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/your-account/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Your Account', 'blox' ) . '" target="_blank">', '</a>' );?><p>
+						<p><?php echo sprintf( __( 'Add-ons enhance Blox and make it more versatile. To download and install add-ons, you must have purchased a %1$sMultisite Bundle%2$s or %1$sDeveloper Bundle%2$s. Head over to %3$syour account %4$s on bloxwp.com to download, or upgrade your license.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/your-account/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Your Account', 'blox' ) . '" target="_blank">', '</a>' );?><p>
 						<?php foreach ( $addons as $addon ) { ?>
 							<div class="blox-addon">
 								<?php echo $addon['uc'] == 1 ? '<span class="blox-addon-uc">' . __( 'Coming Soon', 'blox' ) . '</span>' : ''; ?>
@@ -221,19 +221,19 @@ class Blox_License_Settings {
 								<img class="blox-addon-image" src="<?php echo $addon['image'];?>" alt="<?php echo $addon['name'];?>" />
 								<p><?php echo $addon['desc'];?></p>
 								<a class="button-secondary" href="<?php echo $addon['link'];?>" title="<?php echo $addon['name'];?>" target="_blank"><?php echo $addon['uc'] == 1 ? __( 'Learn More', 'blox' ) : __( 'Learn More', 'blox' ); ?></a>
-							</div>					
+							</div>
 						<?php } ?>
 					</div>
-					
-				<?php } ?>				
-				
+
+				<?php } ?>
+
 			</div><!-- #tab_container-->
 		</div><!-- .wrap -->
 		<?php
 		echo ob_get_clean();
 	}
-	
-	
+
+
 	/**
 	 * Retrieve our licenses tabs
 	 *
@@ -245,12 +245,12 @@ class Blox_License_Settings {
 
 		$tabs             = array();
 		$tabs['main']     = __( 'Licenses', 'blox' );
-		$tabs['addons']   = __( 'Addons', 'blox' );
+		$tabs['addons']   = __( 'Add-ons', 'blox' );
 
 		return apply_filters( 'blox_licenses_tabs', $tabs );
 	}
-	
-	
+
+
 	/**
 	 * Retrieve all available addons
 	 *
@@ -259,37 +259,37 @@ class Blox_License_Settings {
 	 * @return array $addons An array of all available addons
 	 */
 	public function get_addons() {
-		
+
 		$addons = array(
 			'blox-widgets' => array(
 				'id'    => 'blox-widgets',
-				'name'  => __( 'Widgets Addon', 'blox' ),
+				'name'  => __( 'Widgets Add-on', 'blox' ),
 				'desc'  => __( 'Allows you to add any widget, and any number of widgets, to your content blocks.', 'blox' ),
 				'image' => 'https://www.bloxwp.com/wp-content/uploads/2015/12/Blox-Widgets-2.png',
-				'link'  => 'https://www.bloxwp.com/addons/widgets?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links',
+				'link'  => 'https://www.bloxwp.com/add-ons/widgets?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links',
 				'uc'    => 0
-			),	
+			),
 			'blox-sandbox' => array(
 				'id'    => 'blox-sandbox',
-				'name'  => __( 'Sandbox Addon', 'blox' ),
+				'name'  => __( 'Sandbox Add-on', 'blox' ),
 				'desc'  => __( 'Creates a new settings page that acts like your theme\'s functions.php file. Oh the possibilities...', 'blox' ),
 				'image' => 'https://www.bloxwp.com/wp-content/uploads/2015/12/Blox-Sandbox-2.png',
-				'link'  => 'https://www.bloxwp.com/addons/sandbox/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links',
+				'link'  => 'https://www.bloxwp.com/add-ons/sandbox/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links',
 				'uc'    => 0
 			),
 			'blox-scheduler' => array(
 				'id'    => 'blox-scheduler',
-				'name'  => __( 'Scheduler Addon', 'blox' ),
+				'name'  => __( 'Scheduler Add-on', 'blox' ),
 				'desc'  => __( 'Schedule blocks to show/hide based on the date and time. Great for promotions!', 'blox' ),
 				'image' => 'https://www.bloxwp.com/wp-content/uploads/2015/12/Blox-Scheduler-2.png',
-				'link'  => 'https://www.bloxwp.com/addons/scheduler/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links',
+				'link'  => 'https://www.bloxwp.com/add-ons/scheduler/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links',
 				'uc'    => 0
 			),
 		);
-		
+
 		return apply_filters( 'blox_addons', $addons );
 	}
-	
+
 
 	/**
 	 * License Sanitization
@@ -304,13 +304,13 @@ class Blox_License_Settings {
 	 * @return string $input Sanitizied value
 	 */
 	public function licenses_sanitize( $input = array() ) {
-	
+
 		global $blox_licenses_array;
-		
+
 		if ( empty( $blox_licenses_array ) ) {
 			$blox_licenses_array = array();
 		}
-		
+
 		if ( empty( $_POST['_wp_http_referer'] ) ) {
 			return $input;
 		}
@@ -319,26 +319,26 @@ class Blox_License_Settings {
 
 		// If we are preforming a normal save, proceed
 		if ( isset( $_POST['submit'] ) ) {
-		
+
 			$input = $input ? $input : array();
 
 			// Make sure each license does not include any tags
 			foreach ( $input as $key => $value ) {
 				$output[$key] = strip_tags( $value );
 			}
-		
+
 			add_settings_error( 'blox-notices', '', __( 'Licenses have been saved.', 'blox' ), 'updated' );
-			
+
 			return $output;
-			
+
 		} else {
-			
+
 			// We are not saveing or resetting, so return previously saved licenses, i.e. don't save anything new.
 			return blox_get_licenses();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Missing Callback. If a function is missing for license callbacks alert the user.
 	 *
@@ -351,7 +351,7 @@ class Blox_License_Settings {
 		printf( __( 'The callback function used for the <strong>%s</strong> setting seems to be missing...', 'blox' ), $args['id'] );
 	}
 
-	
+
 	/**
 	 * Header Callback. If a function is missing for settings callbacks alert the user.
 	 *
@@ -361,19 +361,19 @@ class Blox_License_Settings {
 	 * @return void
 	 */
 	public function header_callback( $args ) {
-		
+
 		if ( empty( $args['desc'] ) ) {
 			echo '<hr/>';
 		} else {
 			$html = '<div class="header-container"><hr/>';
 			$html .= '<p class="description" style="padding-top:5px;">' . $args['desc'] . '</p>';
 			$html .= '</div>';
-			
+
 			echo $html;
 		}
 	}
-	
-	
+
+
 	/**
 	 * License Key Callback
 	 *
@@ -383,10 +383,10 @@ class Blox_License_Settings {
 	 * @global $edd_options Array of all the Blox settings
 	 * @return void
 	 */
-	public function license_key_callback( $args ) {		
-		
+	public function license_key_callback( $args ) {
+
 		global $blox_licenses_array;
-		
+
 		//echo print_r( $blox_licenses_array ) . '<br>';
 
 		if ( isset( $blox_licenses_array[ $args['id'] ] ) ) {
@@ -397,24 +397,24 @@ class Blox_License_Settings {
 
 		$name = 'name="blox_licenses[' . $args['id'] . ']"';
 		$size = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
-	
+
 		wp_nonce_field( $args['id'] . '-nonce', $args['id'] . '-nonce' );
-	
+
 		// Get our license data. get_option returns an object so typecast it to an array
 		$license_data = (array) get_option( $args['options']['license_status_option'] );
 
 		//echo print_r($license_data) . '<br>';
-		
-		if ( ! empty( $value ) ) { 
-			
-			if ( ( ! empty( $license_data['license'] ) && 'valid' == $license_data['license'] ) ) { 
+
+		if ( ! empty( $value ) ) {
+
+			if ( ( ! empty( $license_data['license'] ) && 'valid' == $license_data['license'] ) ) {
 				echo '<input type="text" class="no-edit text-' . $size . '" id="blox_licenses[' . $args['id'] . ']"' . $name . ' placeholder="' . $args['placeholder'] . '" value="' . esc_attr( $value ) . '"/>';
 				?>
 				<input type="submit" class="button button-primary" name="<?php echo $args['id']; ?>_check" value="<?php _e( 'Check License',  'blox' ); ?>"/>
 				<input type="submit" class="button button-secondary" name="<?php echo $args['id']; ?>_deactivate" value="<?php _e( 'Deactivate License',  'blox' ); ?>"/>
 				<p class="description"><?php echo sprintf( __( 'This license key is %1$sactive%2$s, and expires on %3$s. Click to deactivate. Once deactivated, you will no longer receive automatic updates for %4$s.', 'blox' ), '<span style="color: green">', '</span>', $license_data['expires'], '<strong>' . $license_data['item_name'] . '</strong>' ); ?></p>
-				<?php 
-			} else { 
+				<?php
+			} else {
 				echo '<input type="text" class="no-edit text-' . $size . '" id="blox_licenses[' . $args['id'] . ']"' . $name . ' placeholder="' . $args['placeholder'] . '" value="' . esc_attr( $value ) . '"/>';
 				?>
 				<input type="submit" class="button button-primary" name="<?php echo $args['id']; ?>_activate" value="<?php _e( 'Activate License',  'blox' ); ?>"/>
@@ -426,8 +426,8 @@ class Blox_License_Settings {
 			?>
 
 			<?php
-		
-		} else { 
+
+		} else {
 			echo '<input type="text" class="text-' . $size . '" id="blox_licenses[' . $args['id'] . ']"' . $name . ' placeholder="' . $args['placeholder'] . '" value="' . esc_attr( $value ) . '"/>';
 
 			?>
@@ -435,7 +435,7 @@ class Blox_License_Settings {
 			<?php
 		}
 	}
-	
+
     /**
      * Returns the singleton instance of the class.
      *
@@ -464,7 +464,7 @@ $blox_licenses_array = blox_get_licenses();
 
 
 /**
- * Get Licenses   
+ * Get Licenses
  *
  * Retrieves all plugin and addon licenses
  *
@@ -480,7 +480,7 @@ function blox_get_licenses() {
 
 
 /**
- * Get Addons   
+ * Get Addons
  *
  * Retrieves all addons that are active on the site
  *

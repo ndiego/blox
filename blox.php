@@ -5,7 +5,7 @@
  * Description: Easily customize themes built on the Genesis Framework
  * Author:      Nick Diego
  * Author URI:  http://www.outermostdesign.com
- * Version:     1.1.1
+ * Version:     1.2.0
  * Text Domain: blox
  * Domain Path: languages
  *
@@ -53,7 +53,7 @@ class Blox_Main {
      *
      * @var string
      */
-    public $version = '1.1.1';
+    public $version = '1.2.0';
 
     /**
      * The name of the plugin.
@@ -63,7 +63,7 @@ class Blox_Main {
      * @var string
      */
     public $plugin_name = 'Blox';
-    
+
     /**
      * The unique slug of the plugin.
      *
@@ -94,7 +94,7 @@ class Blox_Main {
 
         // Make sure that Genesis is active before enabling the plugin
        	register_activation_hook( __FILE__ , array( $this, 'activation_check' ) );
-       
+
        	// Disable the plugin if Genesis is not the active theme
 		add_action( 'admin_init', array( $this, 'disable_check' ) );
 
@@ -108,8 +108,8 @@ class Blox_Main {
         add_filter( 'plugin_action_links', array( $this, 'plugin_action_links' ), 10, 2 );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
     }
-	
-	
+
+
 	/**
 	 * This function runs on plugin activation. It checks to make sure the required
 	 * minimum Genesis version is installed. If not, it deactivates the plugin.
@@ -136,7 +136,7 @@ class Blox_Main {
 	/**
 	 * This function runs on admin_init and checks to make sure Genesis is active, if not, it
 	 * disables the plugin. This is useful for when users switch to non-Genesis themes. It does
-	 * not "deactivate" the plugin, so as soon as you switch to a Genesis theme, the plugin 
+	 * not "deactivate" the plugin, so as soon as you switch to a Genesis theme, the plugin
 	 * works again.
 	 *
 	 * @since 1.0.0
@@ -158,7 +158,7 @@ class Blox_Main {
 
         load_plugin_textdomain( 'blox', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
-    
+
 
     /**
      * Loads the plugin into WordPress.
@@ -177,7 +177,7 @@ class Blox_Main {
 
 		// Settings class
 		require plugin_dir_path( __FILE__ ) . 'includes/global/settings.php';
-		
+
 		// Content block settings classes that need to be global in scope
 		require plugin_dir_path( __FILE__ ) . 'includes/global/visibility.php';
 		require plugin_dir_path( __FILE__ ) . 'includes/global/location.php';
@@ -191,17 +191,17 @@ class Blox_Main {
 
         // Load admin only components.
         if ( is_admin() ) {
-		
+
 			// Main admin classes
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/posttype.php';
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/metaboxes.php';
-			require plugin_dir_path( __FILE__ ) . 'includes/admin/actions.php';			
-		    
+			require plugin_dir_path( __FILE__ ) . 'includes/admin/actions.php';
+
 		    // Licensing and automatic updater classes
 		    require plugin_dir_path( __FILE__ ) . 'includes/admin/license-settings.php';
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/license.php';
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/updater.php';
-			
+
 			// Load tools page
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/tools.php';
 
@@ -209,18 +209,18 @@ class Blox_Main {
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/content.php';
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/position.php';
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/style.php';
-			
+
 			// All plugin notices, primarily license activation reminders
 			require plugin_dir_path( __FILE__ ) . 'includes/admin/notices.php';
         }
 
         // Load frontend only components.
         if ( ! is_admin() ) {
-        
+
         	// Class for generating all frontend markup
 			require plugin_dir_path( __FILE__ ) . 'includes/frontend/frontend.php';
         }
-        
+
         // Setup the Blox license
     	if ( class_exists( 'Blox_License' ) ) {
 			$blox_blox_license = new Blox_License( __FILE__, $this->plugin_name, $this->version, 'Nicholas Diego', 'blox_blox_license_key' );
