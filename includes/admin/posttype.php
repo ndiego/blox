@@ -62,7 +62,9 @@ class Blox_Posttype_Admin {
         add_action( 'admin_action_blox_duplicate_block', array( $this, 'duplicate_block' ) );
 
         // Enable Quick Edit for Global blocks (coming v1.3.0)
-        // add_filter( 'post_row_actions', array( $this, 'quickedit_row_link' ), 10, 2 );
+        add_filter( 'post_row_actions', array( $this, 'quickedit_row_link' ), 10, 2 );
+        add_action( 'quick_edit_custom_box', array( $this, 'display_custom_quickedit' ), 10, 2 );
+        add_action( 'save_post', array( $this, 'save_quickedit_meta' ) );
 
         // Manage post type columns.
         add_filter( 'manage_edit-blox_columns', array( $this, 'admin_column_titles' ) );
@@ -189,6 +191,70 @@ class Blox_Posttype_Admin {
         }
 
         return $actions;
+    }
+
+
+    function display_custom_quickedit( $column_name, $post_type ) {
+
+        // If we are not quick editing a global block, bail
+        if ( $post_type != 'blox' ) {
+            return;
+        }
+
+        static $printNonce = TRUE;
+        if ( $printNonce ) {
+            $printNonce = FALSE;
+            wp_nonce_field( plugin_basename( __FILE__ ), 'blox_edit_nonce' );
+        }
+
+        $wrapper_start = '<fieldset class="inline-edit-col-left inline-edit-blox"><div class="inline-edit-col column-' . $column_name . '"><label class="inline-edit-group">';
+        $wrapper_end   = '</label></div></fieldset>';
+
+        switch ( $column_name ) {
+            case 'visibility':
+                echo $wrapper_start;
+                echo '<span class="title">' . __( 'Disable', 'blox' ) . '</span><input name="global_disable" type="checkbox" />';
+                echo $wrapper_end;
+            break;
+
+            /*case 'position':
+                echo $wrapper_start;
+                ?><span class="title">In Print</span><input name="inprint" type="checkbox" /><?php
+                echo $wrapper_end;
+            break;*/
+        }
+
+    }
+
+
+    function save_quickedit_meta( $post_id ) {
+
+        $slug = 'blox';
+
+        $_POST += array("{$slug}_edit_nonce" => '');
+
+        if ( !wp_verify_nonce( $_POST["{$slug}_edit_nonce"], plugin_basename( __FILE__ ) ) ) {
+            return;
+        }
+
+        if ( $slug !== $_POST['post_type'] ) {
+            return;
+        }
+
+        if ( !current_user_can( 'edit_post', $post_id ) ) {
+            return;
+        }
+
+
+
+        $settings = get_post_meta( $post_id, '_blox_content_blocks_data', true );
+
+        //echo print_r($settings );
+
+        $settings['visibility']['global_disable'] = isset( $_REQUEST['global_disable'] ) ? 1 : 0;
+
+
+        update_post_meta( $post_id, '_blox_content_blocks_data', $settings );
     }
 
 

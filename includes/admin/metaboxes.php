@@ -56,10 +56,10 @@ class Blox_Metaboxes {
         // Load metabox assets.
         add_action( 'admin_enqueue_scripts', array( $this, 'metabox_styles' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'metabox_scripts' ) );
-        
+
         // Add the add block ajax action
 		add_action( 'wp_ajax_blox_add_block', array( $this, 'get_content_blocks' ) );
-        
+
         // Load the metabox hooks and filters.
         add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 100 );
 
@@ -80,26 +80,26 @@ class Blox_Metaboxes {
         if ( isset( get_current_screen()->base ) && 'post' !== get_current_screen()->base ) {
             return;
         }
-        
+
         // Return early if we are not on an approved post-type
         if ( isset( get_current_screen()->post_type ) && in_array( get_current_screen()->post_type, $this->get_skipped_posttypes() ) ) {
             return;
         }
-        
+
         // Load necessary metabox styles
         wp_register_style( $this->base->plugin_slug . '-metabox-styles', plugins_url( 'assets/css/metabox.css', $this->base->file ), array(), $this->base->version );
         wp_enqueue_style( $this->base->plugin_slug . '-metabox-styles' );
-        
+
         // If on an Blox post type, add custom CSS for hiding specific things.
         if ( isset( get_current_screen()->post_type ) && 'blox' == get_current_screen()->post_type ) {
             add_action( 'admin_head', array( $this, 'global_admin_css' ) );
         }
-        
+
         // Fire a hook to load in custom metabox styles.
         do_action( 'blox_metabox_styles' );
     }
-    
-    
+
+
     /**
      * Hides unnecessary data in the Publish metabox on global Blox post type screens.
      *
@@ -132,7 +132,7 @@ class Blox_Metaboxes {
         if ( isset( get_current_screen()->base ) && 'post' !== get_current_screen()->base ) {
             return;
         }
-        
+
         // Return early if we are not on an approved post-type
         if ( isset( get_current_screen()->post_type ) && in_array( get_current_screen()->post_type, $this->get_skipped_posttypes() ) ) {
             return;
@@ -144,26 +144,26 @@ class Blox_Metaboxes {
         // Load necessary metabox scripts
         wp_register_script( $this->base->plugin_slug . '-metabox-scripts', plugins_url( 'assets/js/metabox.js', $this->base->file ), array( 'jquery-ui-sortable' ), $this->base->version );
        	wp_enqueue_script( $this->base->plugin_slug . '-metabox-scripts' );
-       	
-       	// Used for adding local blocks via ajax 
-        wp_localize_script( 
-        	$this->base->plugin_slug . '-metabox-scripts', 
-        	'blox_localize_metabox_scripts', 
-        	array( 
-        		'ajax_url' 		  	   		=> admin_url( 'admin-ajax.php' ), 
+
+       	// Used for adding local blocks via ajax
+        wp_localize_script(
+        	$this->base->plugin_slug . '-metabox-scripts',
+        	'blox_localize_metabox_scripts',
+        	array(
+        		'ajax_url' 		  	   		=> admin_url( 'admin-ajax.php' ),
         		'blox_add_block_nonce' 		=> wp_create_nonce( 'blox_add_block_nonce' ) ,
         		'confirm_remove'			=> __( 'Are you sure you want to remove this content block? This action cannot be undone.', 'blox' ),
         		'location_test_hide'		=> sprintf( __( 'Choose the pages you would like the content block to be %1$shidden%2$s on.', 'blox' ), '<strong>', '</strong>' ),
         		'location_test_show'		=> sprintf( __( 'Choose the pages you would like the content block to be %1$svisible%2$s on.', 'blox' ), '<strong>', '</strong>' ),
-        		
+
         		'image_media_title'			=> __( 'Choose or Upload an Image', 'blox' ),
         		'image_media_button'		=> __( 'Use Selected Image', 'blox' ),
-        		
+
         		'editor_add'				=> __( 'Add Content', 'blox' ),
         		'editor_edit'				=> __( 'Edit Content', 'blox' ),
         		'editor_hide_html'			=> __( 'Hide HTML', 'blox' ),
         		'editor_show_html'			=> __( 'Show HTML', 'blox' ),
-        		
+
         		'slideshow_media_title'		=> __( 'Choose or Upload an Image(s)', 'blox' ),
         		'slideshow_media_button'	=> __( 'Insert Image(s)', 'blox' ),
         		'slideshow_details'			=> __( 'Details', 'blox' ),
@@ -171,10 +171,10 @@ class Blox_Metaboxes {
         		'slideshow_confirm_remove' 	=> __( 'Are you sure you want to remove this image from the slideshow? This action cannot be undone.', 'blox' ),
         	)
         );
-        
+
         // Allow the use of the media uploader on global blocks pages
         wp_enqueue_media( 'blox' );
-        
+
         // Fire a hook to load custom metabox scripts.
         do_action( 'blox_metabox_scripts' );
     }
@@ -186,15 +186,15 @@ class Blox_Metaboxes {
      * @since 1.0.0
      */
     public function add_meta_boxes() {
-		
+
 		global $typenow;
-        
+
         // Check if local blocks are enabled and user has permission to manage local blocks
 		$local_enable      = esc_attr( blox_get_option( 'local_enable', false ) );
-		$local_permissions = esc_attr( blox_get_option( 'local_permissions', 'manage_options' ) );		
-       	
-        if ( $local_enable && current_user_can( $local_permissions ) ) { 
-       		
+		$local_permissions = esc_attr( blox_get_option( 'local_permissions', 'manage_options' ) );
+
+        if ( $local_enable && current_user_can( $local_permissions ) ) {
+
        		// Get all post types that are allowed to have local blocks
         	$local_enabled_pages = blox_get_option( 'local_enabled_pages', '' );
         	$local_metabox_title = esc_attr( blox_get_option( 'local_metabox_title', __( 'Local Content Blocks', 'blox' ) ) );
@@ -206,18 +206,18 @@ class Blox_Metaboxes {
 				}
 			}
         }
-		
+
 		// Add the global block metabox
 		if ( $typenow == 'blox' ) {
-			
+
 			// Remove all unnecessary metaboxes, ones not added by this plugin
         	$this->remove_all_the_metaboxes();
-		
+
             add_meta_box( 'global_block_metabox', __( 'Block Settings', 'blox' ), array( $this, 'global_block_metabox_callback' ), 'blox', 'normal', 'low' );
 		}
     }
-    
-    
+
+
     /**
      * Removes all the metaboxes except the ones needed on the global blox custom post type
      * This function was authored Thomas Griffin, thanks!
@@ -244,12 +244,12 @@ class Blox_Metaboxes {
 
         // Loop through and target each context
         foreach ( $contexts as $context ) {
-            
+
             // Now loop through each priority and start the purging process
             foreach ( $priorities as $priority ) {
                 if ( isset( $wp_meta_boxes[$post_type][$context][$priority] ) ) {
                     foreach ( (array) $wp_meta_boxes[$post_type][$context][$priority] as $id => $metabox_data ) {
-                        
+
                         // If the metabox ID to pass over matches the ID given, remove it from the array and continue.
                         if ( in_array( $id, $pass_over ) ) {
                             unset( $pass_over[$id] );
@@ -270,8 +270,8 @@ class Blox_Metaboxes {
             }
         }
     }
-    
-    
+
+
     /**
      * Callback for displaying content in the registered metabox.
      *
@@ -280,58 +280,58 @@ class Blox_Metaboxes {
      * @param object $post The current post object.
      */
 	public function global_block_metabox_callback( $post ) {
-	
+
 		$block_data = get_post_meta( $post->ID, '_blox_content_blocks_data', true );
-	
+
 		wp_nonce_field( 'blox_global_blocks', 'blox_global_blocks' );
-		
+
 		$data = $block_data;
 		$get_id = $name_id = $post->ID;
 		?>
-		
+
 		<div class="blox-settings-tabs global">
 			<ul class="blox-tab-navigation">
-			<?php 
+			<?php
 				foreach( $this->metabox_tabs() as $tab => $tab_settings ) {
-					
-					if ( $tab_settings['scope'] == 'all' || $tab_settings['scope'] == 'global' ) { 
-					?> 
+
+					if ( $tab_settings['scope'] == 'all' || $tab_settings['scope'] == 'global' ) {
+					?>
 					<li class="<?php echo $tab == 'content' ? 'current' : ''; ?>"><a href="#blox_tab_<?php echo esc_attr( $tab ); ?>"><?php echo esc_attr( $tab_settings['title'] ); ?></a></li>
 					<?php
 					}
-					
+
 				}
 			?>
 			</ul>
 			<div class="blox-tabs-container">
-			
-				<?php foreach( $this->metabox_tabs() as $tab => $tab_settings ) { 
-				
-					if ( $tab_settings['scope'] == 'all' || $tab_settings['scope'] == 'global' ) { 
+
+				<?php foreach( $this->metabox_tabs() as $tab => $tab_settings ) {
+
+					if ( $tab_settings['scope'] == 'all' || $tab_settings['scope'] == 'global' ) {
 					?>
-					
+
 					<div id="blox_tab_<?php echo $tab; ?>" class="blox-tab-content">
-						<?php 
-							do_action( 'blox_tab_container_before', $tab, $data, $name_id, $get_id, true ); 
-							do_action( 'blox_get_metabox_tab_' . $tab, $data, $name_id, $get_id, true ); 
+						<?php
+							do_action( 'blox_tab_container_before', $tab, $data, $name_id, $get_id, true );
+							do_action( 'blox_get_metabox_tab_' . $tab, $data, $name_id, $get_id, true );
 							do_action( 'blox_tab_container_after', $tab, $data, $name_id, $get_id, true );
 						?>
 					</div>
 
-					<?php 
+					<?php
 					}
 				} ?>
-				
+
 			</div>
 		</div>
-		
+
 		<?php
-		
+
 		// A hook to add any content modals that are needed, last parameter indicates if the block is global
 		do_action( 'blox_metabox_modals', true );
 	}
-	
-	
+
+
 	 /**
 	 * Save all global content blocks
 	 *
@@ -344,39 +344,40 @@ class Blox_Metaboxes {
 		if ( ! isset( $_POST['blox_global_blocks'] ) || ! wp_verify_nonce( $_POST['blox_global_blocks'], 'blox_global_blocks' ) ) {
 			return;
 		}
-	
+
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return $post_id;
 		}
 
 		if ( isset( $_POST[ 'blox_content_blocks_data' ] ) ) {
-			
+
 			$settings = array();
-			
+
 			foreach ( $this->metabox_tabs() as $tab => $title ) {
-			
+
 				if ( isset( $_POST['blox_content_blocks_data'][$tab] ) ) {
-				
+
 					$name_prefix = $_POST['blox_content_blocks_data'][$tab];
-									
+
 					$settings[$tab] = apply_filters( 'blox_save_metabox_tab_' . $tab, null, $name_prefix, true );
 				}
 			}
-			
+
 			update_post_meta( $post_id, '_blox_content_blocks_data', $settings );
-			
+
+            // Not currently used, slated for deletion 
 			if ( $settings['position']['position_type'] == 'default' ) {
 			  $position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
 			} else if ( $settings['position']['custom'] ) {
 			  $position = ! empty( $settings['position']['custom']['position'] ) ? esc_attr( $settings['position']['custom']['position'] ) : '';
 			}
-			
+
 		} else {
 			delete_post_meta( $post_id, '_blox_content_blocks_data' );
 		}
 	}
-	
-	
+
+
 	/**
      * Callback for displaying local blocks in the registered metabox.
      *
@@ -385,20 +386,20 @@ class Blox_Metaboxes {
      * @param object $post The current post object.
      */
     public function local_blocks_metabox_callback( $post ) {
-        
+
 		$blocks_data = get_post_meta( $post->ID, '_blox_content_blocks_data', true );
-	
+
 		wp_nonce_field( 'blox_local_blocks', 'blox_local_blocks' );
-		
+
 		?>
 		<div id="blox_add_block_container">
 			<a id="blox_add_block" class="button-primary button" href="#"><?php _e( 'Add Content Block' ); ?></a>
 			<span class="blox-help-text-icon">
 				<a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-			</span>	
-			<div class="blox-help-text">	
+			</span>
+			<div class="blox-help-text">
 				<?php _e( 'Click to add a local content block to this webpage. Local content blocks will only be visible on the page/post/custom post type that they are added to.', 'blox' ); ?>
-			</div>		
+			</div>
 		</div>
 		<div id="blox_content_blocks_container">
 			<?php
@@ -409,16 +410,16 @@ class Blox_Metaboxes {
 			}
 			?>
 		</div> <!-- end #blox_content_blocks_container -->
-		
+
 		<?php
-		
+
 		// A hook to add any content modals that are needed, last parameter indicates if the block is global (here it is not)
 		do_action( 'blox_metabox_modals', false );
     }
-    
-    
+
+
     /**
-     * Loads local content blocks. Also used for creating new local blocks and replicating local block via ajax 
+     * Loads local content blocks. Also used for creating new local blocks and replicating local block via ajax
      *
      * @since 1.0.0
      *
@@ -427,44 +428,44 @@ class Blox_Metaboxes {
      * @param bool $ajax  Equals true if this function was called by ajax
      */
     public function get_content_blocks( $data = null, $id = null, $ajax = true ) {
-		
+
 		$rand_id   = str_pad( rand( 0, pow( 10, 4 ) - 1 ) , 4, '0', STR_PAD_LEFT );
     	$copy_text = '';
-    	
+
     	// If the id is not set (i.e. block was generated via ajax) create an id
 		if ( $ajax == true ) {
- 
+
 			// Check to see if the submitted nonce matches with the generated nonce we created earlier
 			if ( ! wp_verify_nonce( $_POST['blox_add_block_nonce'], 'blox_add_block_nonce' ) ) {
 				die ( __( 'Please try refreshing the page and try again...', 'blox' ) );
 			}
-			
+
 			$type = esc_attr( $_POST['type'] );
-			
+
 			if ( $type == 'copy' ) {
-							
+
 				$post_id     = is_numeric( $_POST['post_id'] ) ? $_POST['post_id'] : '';
 				$data        = ! empty( $post_id ) ? get_post_meta( $post_id, '_blox_content_blocks_data', true ) : '';
 				$name_id     = $rand_id;
 				$get_id      = is_numeric( $_POST['block_id'] ) ? $_POST['block_id'] : '';
 				$copy_text 	 = __( ' COPY', 'blox' );
 				$block_title = ! empty( $data[$get_id]['title'] ) ? esc_attr( $data[$get_id]['title'] ) : __( 'Error', 'blox' );
-				
+
 			} else if ( $type == 'new' )  {
-			
+
 			    $name_id     = $rand_id;
 				$get_id      = $rand_id;
 				$copy_text   = '';
 				$block_title = ! empty( $data[$get_id]['title'] ) ? esc_attr( $data[$get_id]['title'] ) : '';
 			}
 		} else {
-		
+
 		 	$name_id     = $id;
 			$get_id      = $id;
 			$copy_text   = '';
 			$block_title = ! empty( $data[$get_id]['title'] ) ? esc_attr( $data[$get_id]['title'] ) : '';
 		}
-				
+
     	?>
     	<div id="<?php echo $name_id; ?>" class="blox-content-block <?php echo ! empty( $data[$get_id]['editing'] ) ? 'editing' : ''; ?>">
 			<input type="checkbox" class="blox-content-block-editing" name="blox_content_blocks_data[<?php echo $name_id; ?>][editing]"  value="1" <?php ! empty( $data[$get_id]['editing'] ) ? checked( $data[$get_id]['editing'] ) : ''; ?>>
@@ -484,15 +485,15 @@ class Blox_Metaboxes {
 				<div class="blox-content-block-details">
 					<div class="blox-content-block-details-wrap">
 						<span class="blox-content-block-type">
-							<?php 
+							<?php
 								if ( empty( $data[$name_id] ) ) {
 									_e( 'Not Saved', 'blox' );
 								} else if ( ! empty( $data[$name_id]['content']['content_type'] ) ) {
-									echo ucfirst( $data[$name_id]['content']['content_type'] );  
+									echo ucfirst( $data[$name_id]['content']['content_type'] );
 									if ( ! array_key_exists( $data[$name_id]['content']['content_type'], $this->get_content_types() ) ) {
 										echo ' - <span class="blox-error">' . __( 'Error', 'blox' ) . '</span>';
 									}
-									
+
 									// Add a dot to separate additional meta data
 									echo '&nbsp;&nbsp;&middot;';
 								} else {
@@ -500,7 +501,7 @@ class Blox_Metaboxes {
 								}
 							?>
 						</span>
-						<?php 
+						<?php
 							if ( ! empty( $data[$name_id] ) ) {
 								echo '<span class="blox-content-block-meta">';
 									// Hook in additional local block meta data
@@ -514,10 +515,10 @@ class Blox_Metaboxes {
 			</div>
 			<div class="blox-settings-tabs">
 				<ul class="blox-tab-navigation">
-				<?php 
-					foreach( $this->metabox_tabs() as $tab => $tab_settings ) { 
-						if ( $tab_settings['scope'] == 'all' || $tab_settings['scope'] == 'local' ) { 
-							?> 
+				<?php
+					foreach( $this->metabox_tabs() as $tab => $tab_settings ) {
+						if ( $tab_settings['scope'] == 'all' || $tab_settings['scope'] == 'local' ) {
+							?>
 							<li class="<?php echo $tab == 'content' ? 'current' : ''; ?>"><a href="#blox_tab_<?php echo $tab; ?>"><?php echo $tab_settings['title']; ?></a></li>
 							<?php
 						}
@@ -525,37 +526,37 @@ class Blox_Metaboxes {
 				?>
 				</ul>
 				<div class="blox-tabs-container">
-				
-					<?php foreach( $this->metabox_tabs() as $tab => $tab_settings ) { 
-						if ( $tab_settings['scope'] == 'all' || $tab_settings['scope'] == 'local' ) { 
+
+					<?php foreach( $this->metabox_tabs() as $tab => $tab_settings ) {
+						if ( $tab_settings['scope'] == 'all' || $tab_settings['scope'] == 'local' ) {
 						?>
-						
+
 						<div id="blox_tab_<?php echo $tab; ?>" class="blox-tab-content">
-							<?php 
+							<?php
 								do_action( 'blox_tab_container_before', $tab, $data, $name_id, $get_id, false );
 								do_action( 'blox_get_metabox_tab_' . $tab, $data, $name_id, $get_id, false );
 								do_action( 'blox_tab_container_after', $tab, $data, $name_id, $get_id, false );
 							?>
 						</div>
 
-						<?php 
+						<?php
 						}
 					} ?>
-					
+
 				</div>
 			</div>
-		
+
 		</div> <!-- end .blox-content-block -->
-		
+
 		<?php
-    	
+
     	// If we ran this function via ajax we need to call wp_die()
     	if ( $ajax == true ) {
     		wp_die();
     	}
     }
-    
-    
+
+
 	/**
 	 * Save all local content blocks
 	 *
@@ -568,50 +569,50 @@ class Blox_Metaboxes {
 		if ( ! isset( $_POST['blox_local_blocks'] ) || ! wp_verify_nonce( $_POST['blox_local_blocks'], 'blox_local_blocks' ) ) {
 			return;
 		}
-	
+
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return $post_id;
 		}
-		
+
 		if ( isset( $_POST[ 'blox_content_blocks_data' ] ) ) {
-			
+
 			$settings = array();
-			
+
 			foreach ( $_POST['blox_content_blocks_data'] as $id => $data ) {
 
 				$name_prefix = $_POST['blox_content_blocks_data'][$id];
-				
+
 				$settings[$id] 				= array();
 				$settings[$id]['editing'] 	= isset( $name_prefix['editing'] ) ? 1 : 0;
 				$settings[$id]['title']		= trim( strip_tags( $name_prefix['title'] ) );
-				
+
 				foreach ( $this->metabox_tabs() as $tab => $title ) {
-				
+
 					if ( isset( $_POST['blox_content_blocks_data'][$id][$tab] ) ) {
-					
+
 						$name_prefix = $_POST['blox_content_blocks_data'][$id][$tab];
-										
+
 						$settings[$id][$tab] = apply_filters( 'blox_save_metabox_tab_' . $tab, $id, $name_prefix, false );
 					}
 				}
 			}
-			
+
 			// Save all of the settings
 			update_post_meta( $post_id, '_blox_content_blocks_data', $settings );
-			
+
 			// Save the number of local blocks assigned to the page, post, custom post type
 			update_post_meta( $post_id, '_blox_content_blocks_count', count( $settings ) );
-			
+
 		} else {
 			// If there are no custom block to add, delete the meta value otherwise an empty block will display after saving
 			delete_post_meta( $post_id, '_blox_content_blocks_data' );
-			
+
 			// Since there are no local blocks, set the count to zero
 			update_post_meta( $post_id, '_blox_content_blocks_count', 0 );
 		}
 	}
-	
-	
+
+
 	/**
      * Helper function for retrieving the available content types.
      *
@@ -627,22 +628,22 @@ class Blox_Metaboxes {
 
 
     /**
-     * Returns an array of all the blox metabox tabs 
+     * Returns an array of all the blox metabox tabs
      *
      * @since 1.0.0
      *
      * @return array Array of metabox tabs
-     */    
+     */
     public function metabox_tabs() {
-    
+
         $tabs = array();
-        
+
         return apply_filters( 'blox_metabox_tabs', $tabs );
     }
 
 
     /**
-     * Returns the post types to skip for loading Blox metaboxes 
+     * Returns the post types to skip for loading Blox metaboxes
      *
      * @since 1.0.0
      *
@@ -653,19 +654,19 @@ class Blox_Metaboxes {
 
         $post_types = get_post_types();
         $local_enabled_pages = blox_get_option( 'local_enabled_pages', '' );
-        
+
         // Remove the blox post type from the "skipped" array
         if ( ! $blox ) {
             unset( $post_types['blox'] );
         }
-        
-        // Loop through all enabled post types and remove them from the "skipped" array 
+
+        // Loop through all enabled post types and remove them from the "skipped" array
         if ( ! empty( $local_enabled_pages ) ) {
 			foreach ( $local_enabled_pages as $local_enabled_page ) {
 				unset( $post_types[$local_enabled_page] );
 			}
         }
-        
+
         return apply_filters( 'blox_skipped_posttypes', $post_types );
     }
 

@@ -58,3 +58,7 @@
 .fixed .column-local_blocks {
     width: 15%;
 }
+
+.inline-edit-blox {
+	clear: both;
+}

@@ -236,8 +236,11 @@ class Blox_Visibility {
 	/**
      * Add admin column for global blocks
      *
-     * @param string $post_id
-     * @param array $block_data
+     * @since 1.0.0
+     *
+     * @param array $columns  Array of all admin columns for Global Blocks
+     *
+     * @return array $columns Return an updated array of all admin columns
      */
     public function admin_column_title( $columns ) {
     	$columns['visibility'] = __( 'Visibility', 'blox' );
@@ -247,6 +250,8 @@ class Blox_Visibility {
 
     /**
      * Print the admin column data for global blocks.
+     *
+     * @since 1.0.0
      *
      * @param string $post_id
      * @param array $block_data
@@ -292,7 +297,11 @@ class Blox_Visibility {
 			$meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
 		}
 
-		echo apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
+		$output = apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
+
+        $output .= '<input type="hidden" name="global_disable" value="'. $block_data['visibility']['global_disable'] .'">';
+
+        echo $output;
 
 		// Save our visibility meta values separately for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_visibility', $meta_data );
