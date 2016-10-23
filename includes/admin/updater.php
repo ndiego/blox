@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @author Pippin Williamson
  * @version 1.6.5
  */
-class EDD_SL_Plugin_Updater {
+class Blox_EDD_SL_Plugin_Updater {
 
 	private $api_url     = '';
 	private $api_data    = array();
