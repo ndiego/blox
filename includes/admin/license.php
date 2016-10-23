@@ -36,7 +36,7 @@ class Blox_License {
 	function __construct( $_file, $_item, $_version, $_author, $_optname = null, $_api_url = null, $_scope = 'main' ) {
 
 		$licenses = get_option( 'blox_licenses' );
-		
+
 		$this->file           = $_file;
 		$this->item_name      = $_item;
 		$this->item_shortname = 'blox_' . str_replace( ' ', '_', strtolower( $this->item_name ) );
@@ -47,7 +47,7 @@ class Blox_License {
 		$this->scope          = empty( $_scope ) ? 'main' : $_scope;
 
 		$license_status = get_option( $this->item_shortname . '_license_status' );
-		
+
 		$this->status         = ! empty( $license_status['license'] ) ? $license_status['license'] : '';
 
 		$this->hooks();
@@ -61,7 +61,7 @@ class Blox_License {
 	 * @return  void
 	 */
 	private function hooks() {
-	
+
 		// Register settings
 		add_filter( 'blox_licenses_' . $this->scope, array( $this, 'add_license' ), 1 );
 
@@ -70,18 +70,18 @@ class Blox_License {
 
 		// Deactivate license key
 		add_action( 'admin_init', array( $this, 'deactivate_license' ) );
-		
+
 		// Check license key
 		add_action( 'admin_init', array( $this, 'check_license' ) );
 
 		// Updater
 		add_action( 'admin_init', array( $this, 'auto_updater' ), 0 );
-		
+
 		// Notices used during license activities, deactiviation, etc.
 		add_action( 'admin_notices', array( $this, 'notices' ) );
 	}
-	
-	
+
+
 	/**
 	 * Add license field to license settings
 	 *
@@ -91,9 +91,9 @@ class Blox_License {
 	 * @return array of all settings
 	 */
 	public function add_license( $licenses ) {
-		
+
 		$id = $this->item_shortname . '_license_key';
-		
+
 		$license_settings = array(
 			 $id => array(
 				'id'      => $id,
@@ -108,7 +108,7 @@ class Blox_License {
 
 		return array_merge( $licenses, $license_settings );
 	}
-	
+
 
 	/**
 	 * Auto updater
@@ -121,7 +121,7 @@ class Blox_License {
 		if ( 'valid' !== $this->status ) {
 			return;
 		}
-						
+
 		$args = array(
 			'version'   => $this->version,
 			'license'   => $this->license,
@@ -136,7 +136,7 @@ class Blox_License {
 		}
 
 		// Setup the updater
-		$edd_updater = new EDD_SL_Plugin_Updater(
+		$edd_updater = new Blox_EDD_SL_Plugin_Updater(
 			$this->api_url,
 			$this->file,
 			$args
@@ -158,7 +158,7 @@ class Blox_License {
 		if ( ! isset( $_POST['blox_licenses'][ $this->item_shortname . '_license_key'] ) ) {
 			return;
 		}
-		
+
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
@@ -173,17 +173,17 @@ class Blox_License {
 		if( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce'], $this->item_shortname . '_license_key-nonce' ) ) {
 			wp_die( __( 'Nonce verification failed', 'blox' ), __( 'Error', 'blox' ), array( 'response' => 403 ) );
 		}
-		
+
 		// Run on activate button press
 		if ( isset( $_POST[ $this->item_shortname . '_license_key_activate'] ) ) {
-			
+
 			// This is sort of a backup because the Activate button should never show when the status is valid
 			if ( 'valid' === $this->status ) {
 				return;
 			}
 
 			$license = sanitize_text_field( $_POST['blox_licenses'][ $this->item_shortname . '_license_key'] );
-			
+
 			// This is another backup, because the Activate button should never show when there is no license key
 			if ( empty( $license ) ) {
 				return;
@@ -206,12 +206,12 @@ class Blox_License {
 					'body'      => $api_params
 				)
 			);
-			
+
 			// Make sure there are no errors
-			if ( is_wp_error( $response ) ) {				
+			if ( is_wp_error( $response ) ) {
 				wp_die( sprintf( __( 'There has been an error retrieving the license information from the server, perhaps you are no longer connected to the internet. Please contact %1$ssupport%2$s for assistance if needed.', 'blox' ), '<a href="https://www.bloxwp.com/contact">', '</a>' ), __( 'Error', 'blox' ), array( 'response' => 403 ) );
 			}
-			
+
 			// Tell WordPress to look for updates
 			set_site_transient( 'update_plugins', null );
 
@@ -240,20 +240,20 @@ class Blox_License {
 		if ( ! isset( $_POST['blox_licenses'][ $this->item_shortname . '_license_key'] ) ) {
 			return;
 		}
-		
+
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		
+
 		if( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce'], $this->item_shortname . '_license_key-nonce' ) ) {
 			wp_die( __( 'Nonce verification failed', 'blox' ), __( 'Error', 'blox' ), array( 'response' => 403 ) );
 		}
 
 		// Run on deactivate button press
 		if ( isset( $_POST[ $this->item_shortname . '_license_key_deactivate'] ) ) {
-		
+
 			$license = sanitize_text_field( $_POST['blox_licenses'][ $this->item_shortname . '_license_key'] );
-			
+
 			// This is another backup, because the Activate button should never show when there is no license key
 			if ( empty( $license ) ) {
 				return;
@@ -308,20 +308,20 @@ class Blox_License {
 		if ( ! isset( $_POST['blox_licenses'][ $this->item_shortname . '_license_key'] ) ) {
 			return;
 		}
-		
+
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		
+
 		if( ! wp_verify_nonce( $_REQUEST[ $this->item_shortname . '_license_key-nonce'], $this->item_shortname . '_license_key-nonce' ) ) {
 			wp_die( __( 'Nonce verification failed', 'blox' ), __( 'Error', 'blox' ), array( 'response' => 403 ) );
 		}
 
 		// Run on deactivate button press
 		if ( isset( $_POST[ $this->item_shortname . '_license_key_check'] ) ) {
-		
+
 			$license = sanitize_text_field( $_POST['blox_licenses'][ $this->item_shortname . '_license_key'] );
-			
+
 			// This is another backup, because the Activate button should never show when there is no license key
 			if ( empty( $license ) ) {
 				return;
@@ -373,15 +373,15 @@ class Blox_License {
 		}
 
 		$license_notices = get_transient( 'blox_license_notices' );
-		
+
 		if ( $license_notices === false ) {
 			return;
-		} 
-				
+		}
+
 		if ( $license_notices['request_type'] == 'activate' ) {
-		
+
 			if ( ! empty( $license_notices['error'] ) ) {
-				
+
 				// Figure out what the error is and print message
 				switch( $license_notices['error'] ) {
 					case 'item_name_mismatch' :
@@ -399,17 +399,17 @@ class Blox_License {
 				}
 
 				$message_type = 'error';
-				
+
 			} else {
-			
+
 				$message      = __( 'The license key was successfully activated.', 'blox' );
 				$message_type = 'updated';
 			}
-			
+
 		} else if ( $license_notices['request_type'] == 'deactivate' ) {
-		
+
 			if ( ! empty( $license_notices['error'] ) ) {
-				
+
 				// Figure out what the error is and print message
 				switch( $license_notices['error'] ) {
 					case 'item_name_mismatch' :
@@ -427,20 +427,20 @@ class Blox_License {
 				}
 
 				$message_type = 'error';
-				
+
 			} else {
-			
+
 				$message      = __( 'The license key was successfully deactivated.', 'blox' );
 				$message_type = 'updated';
 			}
-			
+
 		} else if ( $license_notices['request_type'] == 'check' ) {
-		
+
 			if ( ! empty( $license_notices['error'] ) ) {
-				
+
 				$message = sprintf( __( 'There was a problem checking your license key, please try again or contact support. Error code: %s', 'blox' ), $license_error->error );
 				$message_type = 'error';
-				
+
 			} else {
 				if ( $license_notices['license'] == 'valid' ) {
 					$message      = __( 'The license key is valid.', 'blox' );
@@ -458,7 +458,7 @@ class Blox_License {
 				echo '<p>' . $message . '</p>';
 			echo '</div>';
 		}
-		
+
 		// Remove the transient, we don't need it anymore...
 		delete_transient( 'blox_license_notices' );
 	}

@@ -17,6 +17,9 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 
 ### Changelog
 
+##### Version 1.2.1 – 2016-10-23
+* Fixed EDD updater conflict with other plugins using EDD by adding a prefix to the updater
+
 ##### Version 1.2.0 – 2016-10-20
 * Added System Info page to Blox Tools
 * Changed suppress_filters to false in global blocks for WPML compatibility
