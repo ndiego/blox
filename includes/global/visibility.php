@@ -257,53 +257,60 @@ class Blox_Visibility {
      * @param array $block_data
      */
     public function admin_column_data( $post_id, $block_data ) {
-		// Check if global blocks are enabled
+
+        // Check if global blocks are enabled
 		$global_enable = blox_get_option( 'global_enable', false );
 
 		if ( $global_enable ) {
-			if ( ! empty( $block_data['visibility']['global_disable'] ) && $block_data['visibility']['global_disable'] == 1 ) {
-				$output = '<span style="color:#a00;font-style:italic;">' . __( 'Disabled', 'blox' ) . '</span>';
-				$meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
-			} else {
-				$type = ! empty( $block_data['visibility']['role']['role_type'] ) ? $block_data['visibility']['role']['role_type'] : 'all';
 
-				$meta_data = $type;
+			if ( ! empty( $block_data['visibility']['global_disable'] ) && $block_data['visibility']['global_disable'] == 1 ) {
+                $hidden    = '<input type="hidden" name="global_disable" value="1">';
+                $content   = '<span style="color:#a00;font-style:italic;">' . __( 'Disabled', 'blox' ) . '</span>';
+                $meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
+			} else {
+
+                $hidden = '<input type="hidden" name="global_disable" value="0">';
+
+				$type = ! empty( $block_data['visibility']['role']['role_type'] ) ? $block_data['visibility']['role']['role_type'] : 'all';
 
 				switch ( $type ) {
 					case 'all' :
-						$output = __( 'All', 'blox' );
+						$content = __( 'All', 'blox' );
 						break;
 					case 'public' :
-						$output = __( 'Public', 'blox' );
+						$content = __( 'Public', 'blox' );
 						break;
 					case 'private' :
-						$output = __( 'Private', 'blox' );
+						$content = __( 'Private', 'blox' );
 						break;
 					case 'restrict' :
 						if ( ! empty( $block_data['visibility']['role']['restrictions'] ) ) {
 							// Get all of the selected roles, make the first letter capitalized, then print to page
-							$output =  implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) );
+							$content =  implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) );
 						} else {
-							$output = __( 'No Roles Selected', 'blox' );
+							$content = __( 'No Roles Selected', 'blox' );
 						}
 						break;
 					default :
-						$output = '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
+						$content = '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
 						break;
 				}
+
+                $meta_data = $type;
 			}
 		} else {
-			$output = '<span style="color:#a00;font-style:italic;">' . __( 'Globally Disabled', 'blox' ) . '</span>';
+            $hidden    = '';
+			$content   = '<span style="color:#a00;font-style:italic;">' . __( 'Globally Disabled', 'blox' ) . '</span>';
 			$meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
 		}
 
-		$output = apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
+        // Build the output, hidden fields + visible content
+        $output = $hidden . $content;
 
-        $output .= '<input type="hidden" name="global_disable" value="'. $block_data['visibility']['global_disable'] .'">';
+        // Print the column output, but first allow add-ons to filter in additional content
+		echo apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
 
-        echo $output;
-
-		// Save our visibility meta values separately for sorting
+		// Save our visibility meta values separately to allow for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_visibility', $meta_data );
     }
 
