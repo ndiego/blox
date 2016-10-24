@@ -229,15 +229,13 @@ class Blox_Posttype_Admin {
 
     function save_quickedit_meta( $post_id ) {
 
-        $slug = 'blox';
+        $_POST += array( 'blox_edit_nonce' => '' );
 
-        $_POST += array("{$slug}_edit_nonce" => '');
-
-        if ( !wp_verify_nonce( $_POST["{$slug}_edit_nonce"], plugin_basename( __FILE__ ) ) ) {
+        if ( !wp_verify_nonce( $_POST['blox_edit_nonce'], plugin_basename( __FILE__ ) ) ) {
             return;
         }
 
-        if ( $slug !== $_POST['post_type'] ) {
+        if ( 'blox' !== $_POST['post_type'] ) {
             return;
         }
 
@@ -246,12 +244,12 @@ class Blox_Posttype_Admin {
         }
 
 
-
         $settings = get_post_meta( $post_id, '_blox_content_blocks_data', true );
 
-        //echo print_r($settings );
-
+        // Visibility Settings
         $settings['visibility']['global_disable'] = isset( $_REQUEST['global_disable'] ) ? 1 : 0;
+
+        // Postition Settings
 
 
         update_post_meta( $post_id, '_blox_content_blocks_data', $settings );
