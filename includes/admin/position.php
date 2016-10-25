@@ -57,11 +57,11 @@ class Blox_Position {
 		add_filter( 'blox_metabox_tabs', array( $this, 'add_position_tab' ), 5 );
 		add_action( 'blox_get_metabox_tab_position', array( $this, 'get_metabox_tab_position' ), 10, 4 );
 		add_filter( 'blox_save_metabox_tab_position', array( $this, 'save_metabox_tab_position' ), 10, 3 );
-		
+
 		// Add the admin column data for global blocks
 		add_filter( 'blox_admin_column_titles', array( $this, 'admin_column_title' ), 2, 1 );
 		add_action( 'blox_admin_column_data_position', array( $this, 'admin_column_data' ), 10, 2 );
-    
+
     	// Make admin column sortable
 		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
         add_filter( 'request', array( $this, 'admin_column_orderby' ) );
@@ -136,10 +136,10 @@ class Blox_Position {
      * @param bool $global	      Determines if the content being loaded for local or global blocks
      */
     public function position_settings( $id, $name_prefix, $get_prefix, $global ) {
-    	
+
     	$instance        = Blox_Common::get_instance();
 		$available_hooks = $instance->get_genesis_hooks_flattened();
-	    
+
 		?>
 		<table class="form-table">
 			<tbody>
@@ -219,12 +219,12 @@ class Blox_Position {
     }
 
 
-    /** 
+    /**
 	 * Saves all of the position settings
      *
      * @since 1.0.0
      *
-     * @param int $post_id        The global block id or the post/page/custom post-type id corresponding to the local block 
+     * @param int $post_id        The global block id or the post/page/custom post-type id corresponding to the local block
      * @param string $name_prefix The prefix for saving each setting
      * @param bool $global        The block state
      *
@@ -243,11 +243,11 @@ class Blox_Position {
 		} else if ( $settings['custom'] ) {
 		  $position = ! empty( $settings['custom']['position'] ) ? esc_attr( $settings['custom']['position'] ) : '';
 		}
-				
+
 		return apply_filters( 'blox_save_position_settings', $settings, $post_id, $name_prefix, $global );
 	}
-	
-	
+
+
 	/**
      * Add admin column for global blocks
      *
@@ -256,10 +256,10 @@ class Blox_Position {
      */
     public function admin_column_title( $columns ) {
     	$columns['position'] = __( 'Position', 'blox' );
-    	return $columns; 
+    	return $columns;
     }
-    
-    
+
+
     /**
      * Print the admin column data for global blocks.
      *
@@ -267,18 +267,22 @@ class Blox_Position {
      * @param array $block_data
      */
     public function admin_column_data( $post_id, $block_data ) {
-    
+
         $instance        = Blox_Common::get_instance();
 		$available_hooks = $instance->get_genesis_hooks_flattened();
-		
+
 		//echo print_r( $available_hooks );
-        
+        $position_type    = esc_attr( $block_data['position']['position_type'] );
+        $default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
+        $custom_postion   = esc_attr( $block_data['position']['custom']['position'] );
+        $custom_priority  = esc_attr( $block_data['position']['custom']['priority'] );
+
 		if ( ! empty( $block_data['position']['position_type'] ) ) {
+
 			if ( $block_data['position']['position_type'] == 'default' ) {
-			
-				$default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
-				$title            = $default_position;
-				
+
+				$title = $default_position;
+
 				if ( ! empty( $default_position ) && array_key_exists( $default_position, $available_hooks ) ){
 					$position  = esc_attr( $available_hooks[$default_position] );
 					$meta_data = $default_position;
@@ -288,14 +292,14 @@ class Blox_Position {
 					$meta_data = '';
 				}
 			} else if ( ! empty( $block_data['position']['custom'] ) ) {
-				
-				$custom_postion = esc_attr( $block_data['position']['custom']['position'] );
-				$title          = $custom_postion;
-				
+
+				$title = $custom_postion;
+
 				if( ! empty( $custom_postion ) && array_key_exists( $block_data['position']['custom']['position'], $available_hooks ) ) {
-					$position  = esc_attr( $available_hooks[$custom_postion] );
+                    $position  = esc_attr( $available_hooks[$custom_postion] );
 					$meta_data = $custom_postion;
 				} else {
+                    $hidden   .= '<input type="hidden" name="custom_position" value="">';
 					$position  = false;
 					$meta_data = '';
 				}
@@ -304,16 +308,21 @@ class Blox_Position {
 			$position  = false;
 			$meta_data = '';
 		}
-		
+
 		$error = '<span style="color:#a00;font-style:italic;cursor: help" title="' . $title . '">' . __( 'Error', 'blox' ) . '</span>';
-		
+
+        $hidden = '<input type="hidden" name="position_type" value="' . $position_type . '">';
+        $hidden .= '<input type="hidden" name="custom_position" value="' . $custom_postion . '">';
+        $hidden .= '<input type="hidden" name="custom_priority" value="' . $custom_priority . '">';
+
+        echo $hidden;
 		echo $position ? $position : $error;
-		
+
 		// Save our position meta values separately for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_position', $meta_data );
     }
-    
-    
+
+
     /**
      * Tell Wordpress that the position column is sortable
      *
@@ -325,8 +334,8 @@ class Blox_Position {
 		$sortable_columns[ 'position' ] = 'position';
 		return $sortable_columns;
 	}
-	
-	
+
+
 	/**
      * Tell Wordpress how to sort the position column
      *
@@ -335,14 +344,14 @@ class Blox_Position {
      * @param array $vars  Array of query variables
      */
 	public function admin_column_orderby( $vars ) {
-		
+
 		if ( isset( $vars['orderby'] ) && 'position' == $vars['orderby'] ) {
 			$vars = array_merge( $vars, array(
 				'meta_key' => '_blox_content_blocks_position',
 				'orderby' => 'meta_value'
 			) );
 		}
- 
+
 		return $vars;
 	}
 

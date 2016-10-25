@@ -217,11 +217,30 @@ class Blox_Posttype_Admin {
                 echo $wrapper_end;
             break;
 
-            /*case 'position':
+            case 'position':
                 echo $wrapper_start;
-                ?><span class="title">In Print</span><input name="inprint" type="checkbox" /><?php
+                echo '<span class="title">' . __( 'Position', 'blox' ) . '</span>';
+                echo '<select name="position_type"><option>' . __( 'Default', 'blox' ) . '</option><option>' . __( 'Custom', 'blox' ) . '</option></select>';
+
+                ?>
+                <div class="quickedit_custom_positioning">
+                <select name="custom_position">
+                    <?php
+                    foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
+                        <optgroup label="<?php echo $section['name']; ?>">
+                            <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
+                                <option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>"><?php echo $hook['name']; ?></option>
+                            <?php } ?>
+                        </optgroup>
+                    <?php } ?>
+                </select>
+                <br>
+                <input type="text" name="custom_priority" value="" />
+                </div>
+                <?php
                 echo $wrapper_end;
-            break;*/
+
+            break;
         }
 
     }
@@ -483,6 +502,21 @@ class Blox_Posttype_Admin {
 
         $instance = Blox_Common::get_instance();
         return $instance->get_content_types();
+    }
+
+
+    /**
+     * Helper method for retrieving all Genesis hooks.
+     *
+     * @since 1.3.0
+     *
+     * @return array Array of all Genesis hooks.
+     */
+    public function get_genesis_hooks() {
+
+        $instance = Blox_Common::get_instance();
+        return $instance->get_genesis_hooks();
+
     }
 
 
