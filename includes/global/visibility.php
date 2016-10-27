@@ -66,6 +66,9 @@ class Blox_Visibility {
 		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
         add_filter( 'request', array( $this, 'admin_column_orderby' ) );
 
+        // Add quickedit settings
+        add_action( 'blox_quickedit_settings_visibility', array( $this, 'quickedit_settings' ), 10, 1 );
+
 		// Adds visibility meta to local blocks
 		add_action( 'blox_content_block_meta', array( $this, 'visibility_content_block_meta' ), 10, 1 );
 
@@ -346,6 +349,30 @@ class Blox_Visibility {
 
 		return $vars;
 	}
+
+
+    /**
+     * Add visibility settings to the quickedit screen for Blox
+     *
+     * @since 1.3.0
+     *
+     * @param string $post_type  Current post type which will always be blox
+     */
+    function quickedit_settings( $post_type ) {
+        ?>
+        <fieldset class="inline-edit-col-right inline-edit-blox">
+            <div class="inline-edit-col column-visibility">
+                <span class="title"><?php _e( 'Visibility', 'blox' ); ?></span>
+                <div class="blox-quickedit-visibility-container">
+                    <label>
+                        <input name="global_disable" type="checkbox" />
+                        <span><?php _e( 'Disable Block', 'blox' ); ?></span>
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+        <?php
+    }
 
 
     /**

@@ -65,6 +65,9 @@ class Blox_Position {
     	// Make admin column sortable
 		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
         add_filter( 'request', array( $this, 'admin_column_orderby' ) );
+
+        // Add quickedit settings
+        add_action( 'blox_quickedit_settings_position', array( $this, 'quickedit_settings' ), 10, 1 );
     }
 
 
@@ -354,6 +357,44 @@ class Blox_Position {
 
 		return $vars;
 	}
+
+
+    /**
+     * Add position settings to the quickedit screen for Blox
+     *
+     * @since 1.3.0
+     *
+     * @param string $post_type  Current post type which will always be blox
+     */
+    function quickedit_settings( $post_type ) {
+        ?>
+        <fieldset class="inline-edit-col-center inline-edit-blox">
+            <div class="inline-edit-col column-position">
+
+                <span class="title"><?php _e( 'Position', 'blox' ); ?></span>
+                <select name="position_type">
+                    <option><?php _e( 'Default', 'blox' ); ?></option>
+                    <option><?php _e( 'Custom', 'blox' ); ?></option>
+                </select>
+
+                <div class="quickedit_custom_positioning">
+                <select name="custom_position">
+                    <?php
+                    foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
+                        <optgroup label="<?php echo $section['name']; ?>">
+                            <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
+                                <option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>"><?php echo $hook['name']; ?></option>
+                            <?php } ?>
+                        </optgroup>
+                    <?php } ?>
+                </select>
+                <br>
+                <input type="text" name="custom_priority" value="" />
+                </div>
+            </div>
+        </fieldset>
+        <?php
+    }
 
 
     /**

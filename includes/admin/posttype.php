@@ -196,6 +196,8 @@ class Blox_Posttype_Admin {
 
     function display_custom_quickedit( $column_name, $post_type ) {
 
+        // Note this function is called for each custom admin column
+
         // If we are not quick editing a global block, bail
         if ( $post_type != 'blox' ) {
             return;
@@ -207,42 +209,7 @@ class Blox_Posttype_Admin {
             wp_nonce_field( plugin_basename( __FILE__ ), 'blox_edit_nonce' );
         }
 
-        $wrapper_start = '<fieldset class="inline-edit-col-left inline-edit-blox"><div class="inline-edit-col column-' . $column_name . '"><label class="inline-edit-group">';
-        $wrapper_end   = '</label></div></fieldset>';
-
-        switch ( $column_name ) {
-            case 'visibility':
-                echo $wrapper_start;
-                echo '<span class="title">' . __( 'Disable', 'blox' ) . '</span><input name="global_disable" type="checkbox" />';
-                echo $wrapper_end;
-            break;
-
-            case 'position':
-                echo $wrapper_start;
-                echo '<span class="title">' . __( 'Position', 'blox' ) . '</span>';
-                echo '<select name="position_type"><option>' . __( 'Default', 'blox' ) . '</option><option>' . __( 'Custom', 'blox' ) . '</option></select>';
-
-                ?>
-                <div class="quickedit_custom_positioning">
-                <select name="custom_position">
-                    <?php
-                    foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
-                        <optgroup label="<?php echo $section['name']; ?>">
-                            <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
-                                <option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>"><?php echo $hook['name']; ?></option>
-                            <?php } ?>
-                        </optgroup>
-                    <?php } ?>
-                </select>
-                <br>
-                <input type="text" name="custom_priority" value="" />
-                </div>
-                <?php
-                echo $wrapper_end;
-
-            break;
-        }
-
+        do_action( 'blox_quickedit_settings_' . $column_name, $post_type );
     }
 
 
