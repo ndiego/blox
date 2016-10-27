@@ -232,6 +232,10 @@ class Blox_Posttype_Admin {
 
         $settings = get_post_meta( $post_id, '_blox_content_blocks_data', true );
 
+        // Need to fix
+        //$request = $_REQUEST;
+        //apply_filters( 'blox_quickedit_save_settings', $settings, $request );
+
         // Visibility Settings
         $settings['visibility']['global_disable'] = isset( $_REQUEST['global_disable'] ) ? 1 : 0;
 

@@ -68,6 +68,7 @@ class Blox_Visibility {
 
         // Add quickedit settings
         add_action( 'blox_quickedit_settings_visibility', array( $this, 'quickedit_settings' ), 10, 1 );
+		add_filter( 'blox_quickedit_save_settings', array( $this, 'quickedit_save_settings' ), 10, 2 );
 
 		// Adds visibility meta to local blocks
 		add_action( 'blox_content_block_meta', array( $this, 'visibility_content_block_meta' ), 10, 1 );
@@ -374,6 +375,19 @@ class Blox_Visibility {
         <?php
     }
 
+    /**
+     * Add visibility settings to the quickedit screen for Blox
+     *
+     * @since 1.3.0
+     *
+     * @param string $post_type  Current post type which will always be blox
+     */
+    function quickedit_save_settings( $settings, $request ) {
+        // Visibility Settings
+        $settings['visibility']['global_disable'] = isset( $_REQUEST['global_disable'] ) ? 1 : 1;
+
+        return $settings;
+    }
 
     /**
      * Print the visibility meta data for local blocks.
