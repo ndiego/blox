@@ -360,10 +360,10 @@ class Blox_Visibility {
      */
     function quickedit_settings( $post_type ) {
         ?>
-        <fieldset class="inline-edit-col-right inline-edit-blox">
+        <fieldset class="inline-edit-col-left inline-edit-blox">
             <div class="inline-edit-col column-visibility">
                 <span class="title"><?php _e( 'Visibility', 'blox' ); ?></span>
-                <div class="blox-quickedit-visibility-container">
+                <div class="quickedit-settings">
                     <label>
                         <input name="global_disable" type="checkbox" />
                         <span><?php _e( 'Disable Block', 'blox' ); ?></span>

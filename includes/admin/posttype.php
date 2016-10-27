@@ -236,7 +236,9 @@ class Blox_Posttype_Admin {
         $settings['visibility']['global_disable'] = isset( $_REQUEST['global_disable'] ) ? 1 : 0;
 
         // Postition Settings
-
+        $settings['position']['position_type']      = esc_attr( $_REQUEST['position_type'] );
+		$settings['position']['custom']['position'] = isset( $_REQUEST['custom_position'] ) ? esc_attr( $_REQUEST['custom_position'] ) : 'genesis_after_header';
+		$settings['position']['custom']['priority'] = isset( $_REQUEST['custom_position'] ) ? absint( $_REQUEST['custom_priority'] ) : 15;
 
         update_post_meta( $post_id, '_blox_content_blocks_data', $settings );
     }

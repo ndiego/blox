@@ -62,3 +62,25 @@
 .inline-edit-blox {
 	clear: both;
 }
+
+.quickedit-settings {
+	display: block;
+	margin-left: 6em;
+}
+
+.column-position span.title,
+.column-visibility span.title {
+	display: block;
+	float: left;
+	margin: .4em 0 !important; /* Find another way */
+	width: 6em;
+}
+
+.quickedit-position-hook-default,
+.quickedit-position-hook-custom {
+	display: none;
+}
+
+.quickedit-position-hook-custom input[name="custom_priority"] {
+	max-width: 70px;
+}

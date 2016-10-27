@@ -367,29 +367,49 @@ class Blox_Position {
      * @param string $post_type  Current post type which will always be blox
      */
     function quickedit_settings( $post_type ) {
+
+        $default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
+        $default_priority = esc_attr( blox_get_option( 'global_default_priority', 15 ) );
+
         ?>
         <fieldset class="inline-edit-col-center inline-edit-blox">
             <div class="inline-edit-col column-position">
 
                 <span class="title"><?php _e( 'Position', 'blox' ); ?></span>
-                <select name="position_type">
-                    <option><?php _e( 'Default', 'blox' ); ?></option>
-                    <option><?php _e( 'Custom', 'blox' ); ?></option>
-                </select>
 
-                <div class="quickedit_custom_positioning">
-                <select name="custom_position">
-                    <?php
-                    foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
-                        <optgroup label="<?php echo $section['name']; ?>">
-                            <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
-                                <option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>"><?php echo $hook['name']; ?></option>
-                            <?php } ?>
-                        </optgroup>
-                    <?php } ?>
-                </select>
-                <br>
-                <input type="text" name="custom_priority" value="" />
+                <div class="quickedit-settings">
+                    <div class="quickedit-position-hook">
+
+                        <label>
+                            <select name="position_type">
+                                <option value="default"><?php _e( 'Default', 'blox' ); ?></option>
+                                <option value="custom"><?php _e( 'Custom', 'blox' ); ?></option>
+                            </select>
+                            <span><?php _e( 'Hook Type', 'blox' ); ?></span>
+                        </label>
+
+                        <div class="quickedit-position-hook-default">
+                            <?php echo sprintf( __( 'The default position is %1$s and the default priority is %2$s. You can change this default positioning by visiting the %3$sDefaults%4$s setting page, or use custom positioning to override this default.', 'blox' ), '<strong>' . $default_position . '</strong>', '<strong>' . $default_priority . '</strong>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=default' ) . '">', '</a>' ); ?>
+                        </div>
+
+                        <div class="quickedit-position-hook-custom">
+                            <select name="custom_position">
+                                <?php
+                                foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
+                                    <optgroup label="<?php echo $section['name']; ?>">
+                                        <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
+                                            <option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>"><?php echo $hook['name']; ?></option>
+                                        <?php } ?>
+                                    </optgroup>
+                                <?php } ?>
+                            </select>
+
+                            <label>
+                                <input type="text" name="custom_priority" value="" />
+                                <span><?php _e( 'Priority', 'blox' ); ?></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </fieldset>
