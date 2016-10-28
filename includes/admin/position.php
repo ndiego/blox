@@ -68,6 +68,7 @@ class Blox_Position {
 
         // Add quickedit settings
         add_action( 'blox_quickedit_settings_position', array( $this, 'quickedit_settings' ), 10, 1 );
+        add_filter( 'blox_quickedit_save_settings', array( $this, 'quickedit_save_settings' ), 10, 2 );
     }
 
 
@@ -414,6 +415,26 @@ class Blox_Position {
             </div>
         </fieldset>
         <?php
+    }
+
+
+    /**
+     * Save quickedit position settings
+     *
+     * @since 1.3.0
+     *
+     * @param array $settings  Array of all current block settings
+     * @param array $request   Array of all requested data ready for saving (uses $_REQUEST)
+     *
+     * @return array $settings Array of updated block settings
+     */
+    function quickedit_save_settings( $settings, $request ) {
+
+        $settings['position']['position_type']      = esc_attr( $request['position_type'] );
+		$settings['position']['custom']['position'] = isset( $request['custom_position'] ) ? esc_attr( $request['custom_position'] ) : 'genesis_after_header';
+		$settings['position']['custom']['priority'] = isset( $request['custom_position'] ) ? absint( $request['custom_priority'] ) : 15;
+
+        return $settings;
     }
 
 
