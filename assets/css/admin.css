@@ -59,28 +59,50 @@
     width: 15%;
 }
 
-.inline-edit-blox {
-	clear: both;
+
+#wpbody-content .inline-edit-blox .inline-edit-col-right {
+	margin: 31px 0 2px;
 }
 
-.quickedit-settings {
+#wpbody-content .inline-edit-blox .custom {
+	margin: 5px 0;
+}
+
+#wpbody-content .inline-edit-blox .quickedit-settings {
 	display: block;
 	margin-left: 6em;
 }
 
-.column-position span.title,
-.column-visibility span.title {
+#wpbody-content .inline-edit-blox .custom span.title {
 	display: block;
 	float: left;
-	margin: .4em 0 !important; /* Find another way */
+	margin: .4em 0;
 	width: 6em;
 }
 
-.quickedit-position-hook-default,
-.quickedit-position-hook-custom {
-	display: none;
+#wpbody-content .inline-edit-blox .custom p.description {
+	margin: 0;
+	font-size: 12px;
 }
 
-.quickedit-position-hook-custom input[name="custom_priority"] {
+#wpbody-content .inline-edit-blox .custom input.small {
 	max-width: 70px;
+}
+
+#wpbody-content .inline-edit-blox .custom select {
+	margin-bottom: 5px;
+}
+
+@media screen and (max-width: 782px) {
+	#wpbody-content .inline-edit-blox .inline-edit-col-right {
+		margin: 0;
+	}
+	#wpbody-content .inline-edit-blox .quickedit-settings {
+		margin-left: 0;
+	}
+	#wpbody-content .inline-edit-blox .custom span.title {
+		display: block;
+		float: none;
+		margin: .4em 0;
+	}
 }

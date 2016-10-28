@@ -203,10 +203,15 @@ class Blox_Posttype_Admin {
             return;
         }
 
-        static $printNonce = TRUE;
-        if ( $printNonce ) {
-            $printNonce = FALSE;
-            wp_nonce_field( plugin_basename( __FILE__ ), 'blox_edit_nonce' );
+        // Since this function is called once for each custom column, this
+        // ensures the nonce field is only printed once, note each time this
+        // function is called.
+        static $print_nonce = TRUE;
+        if ( $print_nonce ) {
+            wp_nonce_field( plugin_basename( __FILE__ ), 'blox_quickedit_nonce' );
+
+            // We already printed the nonce, so don't do it again
+            $print_nonce = FALSE;
         }
 
         do_action( 'blox_quickedit_settings_' . $column_name, $post_type );
@@ -215,9 +220,9 @@ class Blox_Posttype_Admin {
 
     function save_quickedit_meta( $post_id ) {
 
-        $_POST += array( 'blox_edit_nonce' => '' );
+        $_POST += array( 'blox_quickedit_nonce' => '' );
 
-        if ( !wp_verify_nonce( $_POST['blox_edit_nonce'], plugin_basename( __FILE__ ) ) ) {
+        if ( !wp_verify_nonce( $_POST['blox_quickedit_nonce'], plugin_basename( __FILE__ ) ) ) {
             return;
         }
 

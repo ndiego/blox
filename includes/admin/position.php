@@ -373,7 +373,7 @@ class Blox_Position {
         $default_priority = esc_attr( blox_get_option( 'global_default_priority', 15 ) );
 
         ?>
-        <fieldset class="inline-edit-col-center inline-edit-blox">
+        <fieldset class="inline-edit-col-left custom">
             <div class="inline-edit-col column-position">
 
                 <span class="title"><?php _e( 'Position', 'blox' ); ?></span>
@@ -389,11 +389,13 @@ class Blox_Position {
                             <span><?php _e( 'Hook Type', 'blox' ); ?></span>
                         </label>
 
-                        <div class="quickedit-position-hook-default">
-                            <?php echo sprintf( __( 'The default position is %1$s and the default priority is %2$s. You can change this default positioning by visiting the %3$sDefaults%4$s setting page, or use custom positioning to override this default.', 'blox' ), '<strong>' . $default_position . '</strong>', '<strong>' . $default_priority . '</strong>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=default' ) . '">', '</a>' ); ?>
+                        <div class="quickedit-position-hook-default" style="display:none">
+                            <p class="description">
+                                <?php echo sprintf( __( 'The default position is %1$s and the default priority is %2$s. Modify defaults by visiting the %3$sDefaults%4$s setting page.', 'blox' ), '<strong>' . $default_position . '</strong>', '<strong>' . $default_priority . '</strong>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=default' ) . '">', '</a>' ); ?>
+                            </p>    
                         </div>
 
-                        <div class="quickedit-position-hook-custom">
+                        <div class="quickedit-position-hook-custom" style="display:none">
                             <select name="custom_position">
                                 <?php
                                 foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
@@ -406,11 +408,16 @@ class Blox_Position {
                             </select>
 
                             <label>
-                                <input type="text" name="custom_priority" value="" />
+                                <input type="text" name="custom_priority" class="small" value="" />
                                 <span><?php _e( 'Priority', 'blox' ); ?></span>
                             </label>
                         </div>
                     </div>
+
+                    <?php
+                    // Allow add-ons, or developers, to hook in additional settings
+                    do_action( 'blox_quickedit_add_settings_position', $post_type );
+                    ?>
                 </div>
             </div>
         </fieldset>

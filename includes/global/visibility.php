@@ -361,7 +361,7 @@ class Blox_Visibility {
      */
     function quickedit_settings( $post_type ) {
         ?>
-        <fieldset class="inline-edit-col-left inline-edit-blox">
+        <fieldset class="inline-edit-col-right custom">
             <div class="inline-edit-col column-visibility">
                 <span class="title"><?php _e( 'Visibility', 'blox' ); ?></span>
                 <div class="quickedit-settings">
@@ -369,6 +369,10 @@ class Blox_Visibility {
                         <input name="global_disable" type="checkbox" />
                         <span><?php _e( 'Disable Block', 'blox' ); ?></span>
                     </label>
+                    <?php
+                    // Allow add-ons, or developers, to hook in additional settings
+                    do_action( 'blox_quickedit_add_settings_visibility', $post_type );
+                    ?>
                 </div>
             </div>
         </fieldset>
@@ -388,7 +392,7 @@ class Blox_Visibility {
      */
     function quickedit_save_settings( $settings, $request ) {
 
-        $settings['visibility']['global_disable'] = isset( $request['global_disable'] ) ? 1 : 1;
+        $settings['visibility']['global_disable'] = isset( $request['global_disable'] ) ? 1 : 0;
 
         return $settings;
     }
