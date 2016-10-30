@@ -66,9 +66,11 @@ class Blox_Position {
 		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
         add_filter( 'request', array( $this, 'admin_column_orderby' ) );
 
-        // Add quickedit settings
-        add_action( 'blox_quickedit_settings_position', array( $this, 'quickedit_settings' ), 10, 1 );
-        add_filter( 'blox_quickedit_save_settings', array( $this, 'quickedit_save_settings' ), 10, 2 );
+        // Add quick edit & bulk edit settings
+        add_action( 'blox_quickedit_settings_position', array( $this, 'quickedit_bulkedit_settings' ), 10, 2 );
+        add_filter( 'blox_quickedit_save_settings', array( $this, 'quickedit_bulkedit_save_settings' ), 10, 3 );
+        // add_action( 'blox_bulkedit_settings_position', array( $this, 'quickedit_bulkedit_settings' ), 10, 2 );
+        // add_filter( 'blox_bulkedit_save_settings', array( $this, 'quickedit_bulkedit_save_settings' ), 10, 3 );
     }
 
 
@@ -366,8 +368,9 @@ class Blox_Position {
      * @since 1.3.0
      *
      * @param string $post_type  Current post type which will always be blox
+     * @param string $type       Either 'bulk' or 'quick'
      */
-    function quickedit_settings( $post_type ) {
+    function quickedit_bulkedit_settings( $post_type, $type ) {
 
         $default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
         $default_priority = esc_attr( blox_get_option( 'global_default_priority', 15 ) );
@@ -392,7 +395,7 @@ class Blox_Position {
                         <div class="quickedit-position-hook-default" style="display:none">
                             <p class="description">
                                 <?php echo sprintf( __( 'The default position is %1$s and the default priority is %2$s. Modify defaults by visiting the %3$sDefaults%4$s setting page.', 'blox' ), '<strong>' . $default_position . '</strong>', '<strong>' . $default_priority . '</strong>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=default' ) . '">', '</a>' ); ?>
-                            </p>    
+                            </p>
                         </div>
 
                         <div class="quickedit-position-hook-custom" style="display:none">
@@ -432,10 +435,11 @@ class Blox_Position {
      *
      * @param array $settings  Array of all current block settings
      * @param array $request   Array of all requested data ready for saving (uses $_REQUEST)
+     * @param string $type       Either 'bulk' or 'quick'
      *
      * @return array $settings Array of updated block settings
      */
-    function quickedit_save_settings( $settings, $request ) {
+    function quickedit_bulkedit_save_settings( $settings, $request, $type ) {
 
         $settings['position']['position_type']      = esc_attr( $request['position_type'] );
 		$settings['position']['custom']['position'] = isset( $request['custom_position'] ) ? esc_attr( $request['custom_position'] ) : 'genesis_after_header';

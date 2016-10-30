@@ -66,9 +66,11 @@ class Blox_Visibility {
 		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
         add_filter( 'request', array( $this, 'admin_column_orderby' ) );
 
-        // Add quickedit settings
-        add_action( 'blox_quickedit_settings_visibility', array( $this, 'quickedit_settings' ), 10, 1 );
-		add_filter( 'blox_quickedit_save_settings', array( $this, 'quickedit_save_settings' ), 10, 2 );
+        // Add quick edit & bulk edit settings
+        add_action( 'blox_quickedit_settings_visibility', array( $this, 'quickedit_bulkedit_settings' ), 10, 2 );
+		add_filter( 'blox_quickedit_save_settings', array( $this, 'quickedit_bulkedit_save_settings' ), 10, 3 );
+        add_action( 'blox_bulkedit_settings_visibility', array( $this, 'quickedit_bulkedit_settings' ), 10, 2 );
+        add_filter( 'blox_bulkedit_save_settings', array( $this, 'quickedit_bulkedit_save_settings' ), 10, 3 );
 
 		// Adds visibility meta to local blocks
 		add_action( 'blox_content_block_meta', array( $this, 'visibility_content_block_meta' ), 10, 1 );
@@ -353,20 +355,21 @@ class Blox_Visibility {
 
 
     /**
-     * Add visibility settings to the quickedit screen for Blox
+     * Add visibility settings to the quick edit or bulk edit screen for Blox
      *
      * @since 1.3.0
      *
      * @param string $post_type  Current post type which will always be blox
+     * @param string $type       Either 'bulk' or 'quick'
      */
-    function quickedit_settings( $post_type ) {
+    function quickedit_bulkedit_settings( $post_type, $type ) {
         ?>
-        <fieldset class="inline-edit-col-right custom">
+        <fieldset id="blox_edit_visibility" class="inline-edit-col-right custom">
             <div class="inline-edit-col column-visibility">
                 <span class="title"><?php _e( 'Visibility', 'blox' ); ?></span>
                 <div class="quickedit-settings">
                     <label>
-                        <input name="global_disable" type="checkbox" />
+                        <input name="global_disable" type="checkbox" value="1"/>
                         <span><?php _e( 'Disable Block', 'blox' ); ?></span>
                     </label>
                     <?php
@@ -381,18 +384,19 @@ class Blox_Visibility {
 
 
     /**
-     * Save quickedit visibility settings
+     * Save quick edit or bulk edit visibility settings
      *
      * @since 1.3.0
      *
      * @param array $settings  Array of all current block settings
-     * @param array $request   Array of all requested data ready for saving (uses $_REQUEST)
+     * @param array $request   Array of all requested data ready for saving (uses $_REQUEST or $_POST)
+     * @param string $type     Either 'bulk' or 'quick'
      *
      * @return array $settings Array of updated block settings
      */
-    function quickedit_save_settings( $settings, $request ) {
+    function quickedit_bulkedit_save_settings( $settings, $request, $type ) {
 
-        $settings['visibility']['global_disable'] = isset( $request['global_disable'] ) ? 1 : 0;
+        $settings['visibility']['global_disable'] = ( $request['global_disable'] == 1 || $request['global_disable'] == 0 ) ? esc_attr( $request['global_disable'] ) : 0;
 
         return $settings;
     }

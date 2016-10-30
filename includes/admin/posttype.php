@@ -61,10 +61,14 @@ class Blox_Posttype_Admin {
 		add_action( 'post_submitbox_start', array( $this, 'duplicate_submitbox_link' ) );
         add_action( 'admin_action_blox_duplicate_block', array( $this, 'duplicate_block' ) );
 
-        // Enable Quick Edit for Global blocks (coming v1.3.0)
+        // Enable quick edit for Global blocks
         add_filter( 'post_row_actions', array( $this, 'quickedit_row_link' ), 10, 2 );
         add_action( 'quick_edit_custom_box', array( $this, 'display_custom_quickedit' ), 10, 2 );
         add_action( 'save_post', array( $this, 'save_quickedit_meta' ) );
+
+        // Enable bulk edit for Global blocks
+        add_action( 'bulk_edit_custom_box', array( $this, 'display_custom_bulkedit' ), 10, 2 );
+        add_action( 'wp_ajax_blox_save_bulkedit_meta', array( $this, 'save_bulkedit_meta' ) );
 
         // Manage post type columns.
         add_filter( 'manage_edit-blox_columns', array( $this, 'admin_column_titles' ) );
@@ -194,9 +198,77 @@ class Blox_Posttype_Admin {
     }
 
 
-    function display_custom_quickedit( $column_name, $post_type ) {
+    /**
+     * Print all of the bulk edit settings
+     * Note: this function is called for each custom admin column
+     *
+     * @since 1.3.0
+     *
+     * @param string $column_name The current column type
+     * @param string $post_type   The current post type
+     */
+    function display_custom_bulkedit( $column_name, $post_type ) {
 
-        // Note this function is called for each custom admin column
+        // If we are not quick editing a global block, bail
+        if ( $post_type != 'blox' ) {
+            return;
+        }
+
+        // Since this function is called once for each custom column, this
+        // ensures the nonce field is only printed once, note each time this
+        // function is called.
+        static $print_nonce = TRUE;
+        if ( $print_nonce ) {
+            wp_nonce_field( plugin_basename( __FILE__ ), 'blox_bulkedit_nonce' );
+
+            // We already printed the nonce, so don't do it again
+            $print_nonce = FALSE;
+        }
+
+        do_action( 'blox_bulkedit_settings_' . $column_name, $post_type, 'bulk' );
+    }
+
+
+    /**
+     * Save bulk edit settings via AJAX
+     *
+     * @since 1.3.0
+     */
+    public function save_bulkedit_meta() {
+
+        // NEED TO ADD NONCE
+
+        // Get all the selected posts (blocks)
+        $post_ids = ( isset( $_POST['post_ids'] ) && ! empty( $_POST['post_ids'] ) ) ? $_POST['post_ids'] : array();
+
+        if ( ! empty( $post_ids ) && is_array( $post_ids ) ) {
+    		foreach ( $post_ids as $post_id ) {
+
+                // Get existing block settings
+                $settings = get_post_meta( $post_id, '_blox_content_blocks_data', true );
+
+                // Update all our setting via filter
+                $settings = apply_filters( 'blox_bulkedit_save_settings', $settings, $_POST, 'bulk' );
+
+                // Push updates to post meta
+                update_post_meta( $post_id, '_blox_content_blocks_data', $settings );
+    		}
+    	}
+
+        // Since this function is called via ajax we need to call wp_die()
+    	wp_die();
+    }
+
+    /**
+     * Print all of the quickedit settings
+     * Note: this function is called for each custom admin column
+     *
+     * @since 1.3.0
+     *
+     * @param string $column_name The current column type
+     * @param string $post_type   The current post type
+     */
+    function display_custom_quickedit( $column_name, $post_type ) {
 
         // If we are not quick editing a global block, bail
         if ( $post_type != 'blox' ) {
@@ -214,10 +286,17 @@ class Blox_Posttype_Admin {
             $print_nonce = FALSE;
         }
 
-        do_action( 'blox_quickedit_settings_' . $column_name, $post_type );
+        do_action( 'blox_quickedit_settings_' . $column_name, $post_type, 'quick' );
     }
 
 
+    /**
+     * Save quick edit settings
+     *
+     * @since 1.3.0
+     *
+     * @param string $post_id The id of the block we are quick editing
+     */
     function save_quickedit_meta( $post_id ) {
 
         $_POST += array( 'blox_quickedit_nonce' => '' );
@@ -230,7 +309,11 @@ class Blox_Posttype_Admin {
             return;
         }
 
-        if ( !current_user_can( 'edit_post', $post_id ) ) {
+        if ( ! current_user_can( 'edit_post', $post_id ) ) {
+            return;
+        }
+
+        if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
             return;
         }
 
@@ -238,7 +321,7 @@ class Blox_Posttype_Admin {
         $settings = get_post_meta( $post_id, '_blox_content_blocks_data', true );
 
         // Update all our setting via filter
-        $settings = apply_filters( 'blox_quickedit_save_settings', $settings, $_REQUEST );
+        $settings = apply_filters( 'blox_quickedit_save_settings', $settings, $_REQUEST, 'quick' );
 
         // Push updates to post meta
         update_post_meta( $post_id, '_blox_content_blocks_data', $settings );

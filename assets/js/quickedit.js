@@ -1,7 +1,7 @@
 jQuery(document).ready(function($){
 
     // Hide unneeded fields from Blox quickedit menu
-    $( '.inline-edit-blox td fieldset:first-child .inline-edit-col' ).children().not(':first').css( "display" , "none");
+    $( '.quick-edit-row.inline-edit-blox td fieldset:first-child .inline-edit-col' ).children().not(':first').css( "display" , "none");
 
     // we create a copy of the WP inline edit post function
 	var $wp_inline_edit = inlineEditPost.edit;
@@ -26,9 +26,10 @@ jQuery(document).ready(function($){
 			var $edit_row = $( '#edit-' + $post_id ),
                 $post_row = $( '#post-' + $post_id );
 
+
 			// Get visibility data
 			var $global_disable = $( '.column-visibility input[name="global_disable"]', $post_row ).val();
-            $global_disable = ( $global_disable == 1 ) ? true : false;
+            $global_disable = ( $global_disable == 1 ) ? 1 : 0;
 
             // Populate visibility data
             $( ':input[name="global_disable"]', $edit_row ).prop('checked', $global_disable );
@@ -58,11 +59,38 @@ jQuery(document).ready(function($){
         			$( '.quickedit-position-hook-custom', $edit_row ).css( 'display', 'block' );
         		} else {
                     $( '.quickedit-position-hook-default', $edit_row ).css( 'display', 'block' );
-                    $( '.quickedit-position-hook-custom', $edit_row ).css( 'display', 'none' ); 
+                    $( '.quickedit-position-hook-custom', $edit_row ).css( 'display', 'none' );
         		}
         	});
 
 
 		}
 	};
+
+
+    // Bulk edit save
+    $( document.body ).on( 'click', '#bulk_edit', function() {
+
+        // Define the bulk edit row
+        var $bulk_row = $( '#bulk-edit' );
+
+        // Get the selected post ids that are being edited
+        var $post_ids = new Array();
+        $bulk_row.find( '#bulk-titles' ).children().each( function() {
+            $post_ids.push( $( this ).attr( 'id' ).replace( /^(ttle)/i, '' ) );
+        });
+
+        // Get visibility data
+        var $global_disable = $bulk_row.find( 'input[name="global_disable"]' ).is(':checked') ? 1 : 0;
+
+        var data = {
+            action: 'blox_save_bulkedit_meta',
+            post_ids: $post_ids,
+            global_disable: $global_disable,
+            // NEED TO ADD NONCE
+        }
+
+        // Save the data
+        $.post( ajaxurl, data );
+    });
 });
