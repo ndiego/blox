@@ -57,14 +57,20 @@ class Blox_Position {
 		add_filter( 'blox_metabox_tabs', array( $this, 'add_position_tab' ), 5 );
 		add_action( 'blox_get_metabox_tab_position', array( $this, 'get_metabox_tab_position' ), 10, 4 );
 		add_filter( 'blox_save_metabox_tab_position', array( $this, 'save_metabox_tab_position' ), 10, 3 );
-		
+
 		// Add the admin column data for global blocks
 		add_filter( 'blox_admin_column_titles', array( $this, 'admin_column_title' ), 2, 1 );
 		add_action( 'blox_admin_column_data_position', array( $this, 'admin_column_data' ), 10, 2 );
-    
+
     	// Make admin column sortable
 		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
         add_filter( 'request', array( $this, 'admin_column_orderby' ) );
+
+        // Add quick edit & bulk edit settings
+        add_action( 'blox_quickedit_settings_position', array( $this, 'quickedit_bulkedit_settings' ), 10, 2 );
+        add_filter( 'blox_quickedit_save_settings', array( $this, 'quickedit_bulkedit_save_settings' ), 10, 3 );
+        // add_action( 'blox_bulkedit_settings_position', array( $this, 'quickedit_bulkedit_settings' ), 10, 2 );
+        // add_filter( 'blox_bulkedit_save_settings', array( $this, 'quickedit_bulkedit_save_settings' ), 10, 3 );
     }
 
 
@@ -136,10 +142,10 @@ class Blox_Position {
      * @param bool $global	      Determines if the content being loaded for local or global blocks
      */
     public function position_settings( $id, $name_prefix, $get_prefix, $global ) {
-    	
+
     	$instance        = Blox_Common::get_instance();
 		$available_hooks = $instance->get_genesis_hooks_flattened();
-	    
+
 		?>
 		<table class="form-table">
 			<tbody>
@@ -219,12 +225,12 @@ class Blox_Position {
     }
 
 
-    /** 
+    /**
 	 * Saves all of the position settings
      *
      * @since 1.0.0
      *
-     * @param int $post_id        The global block id or the post/page/custom post-type id corresponding to the local block 
+     * @param int $post_id        The global block id or the post/page/custom post-type id corresponding to the local block
      * @param string $name_prefix The prefix for saving each setting
      * @param bool $global        The block state
      *
@@ -243,11 +249,11 @@ class Blox_Position {
 		} else if ( $settings['custom'] ) {
 		  $position = ! empty( $settings['custom']['position'] ) ? esc_attr( $settings['custom']['position'] ) : '';
 		}
-				
+
 		return apply_filters( 'blox_save_position_settings', $settings, $post_id, $name_prefix, $global );
 	}
-	
-	
+
+
 	/**
      * Add admin column for global blocks
      *
@@ -256,10 +262,10 @@ class Blox_Position {
      */
     public function admin_column_title( $columns ) {
     	$columns['position'] = __( 'Position', 'blox' );
-    	return $columns; 
+    	return $columns;
     }
-    
-    
+
+
     /**
      * Print the admin column data for global blocks.
      *
@@ -267,18 +273,22 @@ class Blox_Position {
      * @param array $block_data
      */
     public function admin_column_data( $post_id, $block_data ) {
-    
+
         $instance        = Blox_Common::get_instance();
 		$available_hooks = $instance->get_genesis_hooks_flattened();
-		
+
 		//echo print_r( $available_hooks );
-        
+        $position_type    = esc_attr( $block_data['position']['position_type'] );
+        $default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
+        $custom_postion   = esc_attr( $block_data['position']['custom']['position'] );
+        $custom_priority  = esc_attr( $block_data['position']['custom']['priority'] );
+
 		if ( ! empty( $block_data['position']['position_type'] ) ) {
+
 			if ( $block_data['position']['position_type'] == 'default' ) {
-			
-				$default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
-				$title            = $default_position;
-				
+
+				$title = $default_position;
+
 				if ( ! empty( $default_position ) && array_key_exists( $default_position, $available_hooks ) ){
 					$position  = esc_attr( $available_hooks[$default_position] );
 					$meta_data = $default_position;
@@ -288,14 +298,14 @@ class Blox_Position {
 					$meta_data = '';
 				}
 			} else if ( ! empty( $block_data['position']['custom'] ) ) {
-				
-				$custom_postion = esc_attr( $block_data['position']['custom']['position'] );
-				$title          = $custom_postion;
-				
+
+				$title = $custom_postion;
+
 				if( ! empty( $custom_postion ) && array_key_exists( $block_data['position']['custom']['position'], $available_hooks ) ) {
-					$position  = esc_attr( $available_hooks[$custom_postion] );
+                    $position  = esc_attr( $available_hooks[$custom_postion] );
 					$meta_data = $custom_postion;
 				} else {
+                    $hidden   .= '<input type="hidden" name="custom_position" value="">';
 					$position  = false;
 					$meta_data = '';
 				}
@@ -304,16 +314,21 @@ class Blox_Position {
 			$position  = false;
 			$meta_data = '';
 		}
-		
+
 		$error = '<span style="color:#a00;font-style:italic;cursor: help" title="' . $title . '">' . __( 'Error', 'blox' ) . '</span>';
-		
+
+        $hidden = '<input type="hidden" name="position_type" value="' . $position_type . '">';
+        $hidden .= '<input type="hidden" name="custom_position" value="' . $custom_postion . '">';
+        $hidden .= '<input type="hidden" name="custom_priority" value="' . $custom_priority . '">';
+
+        echo $hidden;
 		echo $position ? $position : $error;
-		
+
 		// Save our position meta values separately for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_position', $meta_data );
     }
-    
-    
+
+
     /**
      * Tell Wordpress that the position column is sortable
      *
@@ -325,8 +340,8 @@ class Blox_Position {
 		$sortable_columns[ 'position' ] = 'position';
 		return $sortable_columns;
 	}
-	
-	
+
+
 	/**
      * Tell Wordpress how to sort the position column
      *
@@ -335,16 +350,103 @@ class Blox_Position {
      * @param array $vars  Array of query variables
      */
 	public function admin_column_orderby( $vars ) {
-		
+
 		if ( isset( $vars['orderby'] ) && 'position' == $vars['orderby'] ) {
 			$vars = array_merge( $vars, array(
 				'meta_key' => '_blox_content_blocks_position',
 				'orderby' => 'meta_value'
 			) );
 		}
- 
+
 		return $vars;
 	}
+
+
+    /**
+     * Add position settings to the quickedit screen for Blox
+     *
+     * @since 1.3.0
+     *
+     * @param string $post_type  Current post type which will always be blox
+     * @param string $type       Either 'bulk' or 'quick'
+     */
+    function quickedit_bulkedit_settings( $post_type, $type ) {
+
+        $default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
+        $default_priority = esc_attr( blox_get_option( 'global_default_priority', 15 ) );
+
+        ?>
+        <fieldset class="inline-edit-col-left custom">
+            <div class="inline-edit-col column-position">
+
+                <span class="title"><?php _e( 'Position', 'blox' ); ?></span>
+
+                <div class="quickedit-settings">
+                    <div class="quickedit-position-hook">
+
+                        <label>
+                            <select name="position_type">
+                                <option value="default"><?php _e( 'Default', 'blox' ); ?></option>
+                                <option value="custom"><?php _e( 'Custom', 'blox' ); ?></option>
+                            </select>
+                            <span><?php _e( 'Hook Type', 'blox' ); ?></span>
+                        </label>
+
+                        <div class="quickedit-position-hook-default" style="display:none">
+                            <p class="description">
+                                <?php echo sprintf( __( 'The default position is %1$s and the default priority is %2$s. Modify defaults by visiting the %3$sDefaults%4$s setting page.', 'blox' ), '<strong>' . $default_position . '</strong>', '<strong>' . $default_priority . '</strong>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=default' ) . '">', '</a>' ); ?>
+                            </p>
+                        </div>
+
+                        <div class="quickedit-position-hook-custom" style="display:none">
+                            <select name="custom_position">
+                                <?php
+                                foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
+                                    <optgroup label="<?php echo $section['name']; ?>">
+                                        <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
+                                            <option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>"><?php echo $hook['name']; ?></option>
+                                        <?php } ?>
+                                    </optgroup>
+                                <?php } ?>
+                            </select>
+
+                            <label>
+                                <input type="text" name="custom_priority" class="small" value="" />
+                                <span><?php _e( 'Priority', 'blox' ); ?></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <?php
+                    // Allow add-ons, or developers, to hook in additional settings
+                    do_action( 'blox_quickedit_add_settings_position', $post_type );
+                    ?>
+                </div>
+            </div>
+        </fieldset>
+        <?php
+    }
+
+
+    /**
+     * Save quickedit position settings
+     *
+     * @since 1.3.0
+     *
+     * @param array $settings  Array of all current block settings
+     * @param array $request   Array of all requested data ready for saving (uses $_REQUEST)
+     * @param string $type       Either 'bulk' or 'quick'
+     *
+     * @return array $settings Array of updated block settings
+     */
+    function quickedit_bulkedit_save_settings( $settings, $request, $type ) {
+
+        $settings['position']['position_type']      = esc_attr( $request['position_type'] );
+		$settings['position']['custom']['position'] = isset( $request['custom_position'] ) ? esc_attr( $request['custom_position'] ) : 'genesis_after_header';
+		$settings['position']['custom']['priority'] = isset( $request['custom_position'] ) ? absint( $request['custom_priority'] ) : 15;
+
+        return $settings;
+    }
 
 
     /**

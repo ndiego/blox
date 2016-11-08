@@ -66,6 +66,12 @@ class Blox_Visibility {
 		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
         add_filter( 'request', array( $this, 'admin_column_orderby' ) );
 
+        // Add quick edit & bulk edit settings
+        add_action( 'blox_quickedit_settings_visibility', array( $this, 'quickedit_bulkedit_settings' ), 10, 2 );
+		add_filter( 'blox_quickedit_save_settings', array( $this, 'quickedit_bulkedit_save_settings' ), 10, 3 );
+        add_action( 'blox_bulkedit_settings_visibility', array( $this, 'quickedit_bulkedit_settings' ), 10, 2 );
+        add_filter( 'blox_bulkedit_save_settings', array( $this, 'quickedit_bulkedit_save_settings' ), 10, 3 );
+
 		// Adds visibility meta to local blocks
 		add_action( 'blox_content_block_meta', array( $this, 'visibility_content_block_meta' ), 10, 1 );
 
@@ -236,8 +242,11 @@ class Blox_Visibility {
 	/**
      * Add admin column for global blocks
      *
-     * @param string $post_id
-     * @param array $block_data
+     * @since 1.0.0
+     *
+     * @param array $columns  Array of all admin columns for Global Blocks
+     *
+     * @return array $columns Return an updated array of all admin columns
      */
     public function admin_column_title( $columns ) {
     	$columns['visibility'] = __( 'Visibility', 'blox' );
@@ -248,53 +257,66 @@ class Blox_Visibility {
     /**
      * Print the admin column data for global blocks.
      *
+     * @since 1.0.0
+     *
      * @param string $post_id
      * @param array $block_data
      */
     public function admin_column_data( $post_id, $block_data ) {
-		// Check if global blocks are enabled
+
+        // Check if global blocks are enabled
 		$global_enable = blox_get_option( 'global_enable', false );
 
 		if ( $global_enable ) {
-			if ( ! empty( $block_data['visibility']['global_disable'] ) && $block_data['visibility']['global_disable'] == 1 ) {
-				$output = '<span style="color:#a00;font-style:italic;">' . __( 'Disabled', 'blox' ) . '</span>';
-				$meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
-			} else {
-				$type = ! empty( $block_data['visibility']['role']['role_type'] ) ? $block_data['visibility']['role']['role_type'] : 'all';
 
-				$meta_data = $type;
+			if ( ! empty( $block_data['visibility']['global_disable'] ) && $block_data['visibility']['global_disable'] == 1 ) {
+                $hidden    = '<input type="hidden" name="global_disable" value="1">';
+                $content   = '<span style="color:#a00;font-style:italic;">' . __( 'Disabled', 'blox' ) . '</span>';
+                $meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
+			} else {
+
+                $hidden = '<input type="hidden" name="global_disable" value="0">';
+
+				$type = ! empty( $block_data['visibility']['role']['role_type'] ) ? $block_data['visibility']['role']['role_type'] : 'all';
 
 				switch ( $type ) {
 					case 'all' :
-						$output = __( 'All', 'blox' );
+						$content = __( 'All', 'blox' );
 						break;
 					case 'public' :
-						$output = __( 'Public', 'blox' );
+						$content = __( 'Public', 'blox' );
 						break;
 					case 'private' :
-						$output = __( 'Private', 'blox' );
+						$content = __( 'Private', 'blox' );
 						break;
 					case 'restrict' :
 						if ( ! empty( $block_data['visibility']['role']['restrictions'] ) ) {
 							// Get all of the selected roles, make the first letter capitalized, then print to page
-							$output =  implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) );
+							$content =  implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) );
 						} else {
-							$output = __( 'No Roles Selected', 'blox' );
+							$content = __( 'No Roles Selected', 'blox' );
 						}
 						break;
 					default :
-						$output = '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
+						$content = '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
 						break;
 				}
+
+                $meta_data = $type;
 			}
 		} else {
-			$output = '<span style="color:#a00;font-style:italic;">' . __( 'Globally Disabled', 'blox' ) . '</span>';
+            $hidden    = '';
+			$content   = '<span style="color:#a00;font-style:italic;">' . __( 'Globally Disabled', 'blox' ) . '</span>';
 			$meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
 		}
 
+        // Build the output, hidden fields + visible content
+        $output = $hidden . $content;
+
+        // Print the column output, but first allow add-ons to filter in additional content
 		echo apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
 
-		// Save our visibility meta values separately for sorting
+		// Save our visibility meta values separately to allow for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_visibility', $meta_data );
     }
 
@@ -330,6 +352,54 @@ class Blox_Visibility {
 
 		return $vars;
 	}
+
+
+    /**
+     * Add visibility settings to the quick edit or bulk edit screen for Blox
+     *
+     * @since 1.3.0
+     *
+     * @param string $post_type  Current post type which will always be blox
+     * @param string $type       Either 'bulk' or 'quick'
+     */
+    function quickedit_bulkedit_settings( $post_type, $type ) {
+        ?>
+        <fieldset id="blox_edit_visibility" class="inline-edit-col-right custom">
+            <div class="inline-edit-col column-visibility">
+                <span class="title"><?php _e( 'Visibility', 'blox' ); ?></span>
+                <div class="quickedit-settings">
+                    <label>
+                        <input name="global_disable" type="checkbox" value="1"/>
+                        <span><?php _e( 'Disable Block', 'blox' ); ?></span>
+                    </label>
+                    <?php
+                    // Allow add-ons, or developers, to hook in additional settings
+                    do_action( 'blox_quickedit_add_settings_visibility', $post_type );
+                    ?>
+                </div>
+            </div>
+        </fieldset>
+        <?php
+    }
+
+
+    /**
+     * Save quick edit or bulk edit visibility settings
+     *
+     * @since 1.3.0
+     *
+     * @param array $settings  Array of all current block settings
+     * @param array $request   Array of all requested data ready for saving (uses $_REQUEST or $_POST)
+     * @param string $type     Either 'bulk' or 'quick'
+     *
+     * @return array $settings Array of updated block settings
+     */
+    function quickedit_bulkedit_save_settings( $settings, $request, $type ) {
+
+        $settings['visibility']['global_disable'] = ( $request['global_disable'] == 1 || $request['global_disable'] == 0 ) ? esc_attr( $request['global_disable'] ) : 0;
+
+        return $settings;
+    }
 
 
     /**

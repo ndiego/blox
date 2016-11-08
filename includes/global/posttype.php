@@ -89,15 +89,16 @@ class Blox_Posttype {
 
 		// Register the post type with WordPress.
 		register_post_type( 'blox', $args );
-		
+
 		// Check if the curent user has permission the manage global blocks, and remove the blocks from the admin if they don't
 		add_action( 'admin_head', array( $this, 'global_permissions' ) );
-				
+
 		// Load global admin css.
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_styles' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
     }
-	
-	
+
+
 	/**
 	 * Global Admin Styles
 	 *
@@ -106,28 +107,49 @@ class Blox_Posttype {
 	 * @since 1.0.0
 	 */
 	public function admin_styles() {
-	
+
 	    // Load necessary admin styles
         wp_register_style( 'blox-admin-styles', plugins_url( 'assets/css/admin.css', $this->base->file ), array(), $this->base->version );
         wp_enqueue_style( 'blox-admin-styles' );
-        
+
         // Fire a hook to load styles to the admin
         do_action( 'blox_admin_styles' );
 	}
-	
-    
+
+
+    /**
+     * Global Admin Scripts
+     *
+     * Loads the JS for the Blox admin styles including quick edit functionality.
+     *
+     * @since 1.3.0
+     */
+    public function admin_scripts( $hook ) {
+
+        // Only load our quickedit js on the edit pages for global blocks
+        if ( 'edit.php' === $hook && isset( $_GET['post_type'] ) && 'blox' === $_GET['post_type'] ) {
+            // Load necessary admin scripts
+            wp_register_script( 'blox-quickedit-scripts', plugins_url( 'assets/js/quickedit.js', $this->base->file ), array(), $this->base->version );
+           	wp_enqueue_script( 'blox-quickedit-scripts' );
+        }
+
+        // Fire a hook to load scripts to the admin
+        do_action( 'blox_admin_scripts' );
+    }
+
+
     /**
      * Removes the global block options if the user does not have the required permissions
      *
      * @since 1.0.0
      */
     public function global_permissions() {
-    
+
 		// Get the global block permissions
 		$global_permissions = blox_get_option( 'global_permissions', 'manage_options' );
 
 		$global_permissions = ! empty( $global_permissions ) ? $global_permissions : 'manage_options';
-		
+
 		if ( ! current_user_can( $global_permissions ) ) {
 			remove_menu_page( 'edit.php?post_type=blox' );
 		}
