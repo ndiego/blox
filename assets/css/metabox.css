@@ -88,10 +88,12 @@
 	font-size: 13px;
 	background: #f9f9f9;
 	outline: 0;
+	overflow: auto;
 	resize: vertical;
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
 	tab-size: 4;
+	white-space: nowrap;
 }
 .blox-full-text {
 	display: inline !important; /*correct for mobile styles*/
@@ -170,7 +172,7 @@ ul.blox-columns li {
 	padding: 0;
 }
 .blox-columns li label {
-	display: inline-block; 
+	display: inline-block;
 	height: 24px;
 	overflow: hidden;
 	white-space: nowrap;
@@ -339,7 +341,7 @@ ul.blox-columns li {
 }
 .blox-content-block-title-input input {
 	width: 50%;
-}	
+}
 .blox-content-block.editing .blox-content-block-title-input {
 	display: inline;
 	margin-right: 5px;
@@ -352,13 +354,13 @@ ul.blox-columns li {
 .blox-remove-block:hover {
 	color: red;
 }
-.blox-duplicate-block { 
+.blox-duplicate-block {
 	font-size: 12px;
 	margin-right: 8px;
 	text-decoration: none;
 }
 /* We don't want people to be able to duplicate a block with unsaved settings */
-.blox-content-block.new .blox-duplicate-block { 
+.blox-content-block.new .blox-duplicate-block {
 	display: none;
 }
 .blox-content-block-details {
@@ -415,7 +417,7 @@ ul.blox-columns li {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-.blox-content-block-edit:hover:after {  
+.blox-content-block-edit:hover:after {
 	color: #777;
 }
 .blox-content-block.editing .blox-content-block-edit:after {
@@ -544,10 +546,10 @@ ul.blox-columns li {
 .blox-image-preview-inner {
 	border: 1px solid #e5e5e5;
 	display: inline-block;
-	margin: 4px;  
+	margin: 4px;
 	max-height: 590px;
 	overflow: hidden;
-	vertical-align: top;     
+	vertical-align: top;
 }
 .blox-image-preview-inner img {
 	max-width: 100%;
@@ -592,11 +594,11 @@ ul.blox-columns li {
 
 /* Raw Styles */
 
-.blox-content-raw td label { 
+.blox-content-raw td label {
 	display: block;
 	margin-top: 12px;
 }
-.blox-content-raw  label.last { 
+.blox-content-raw  label.last {
 	display: inline-block;
 	margin-top: 12px;
 	margin-bottom: 12px;
@@ -625,7 +627,7 @@ ul.blox-columns li {
 #blox_gallery_container li div.blox-gallery-container,
 .blox-slider-container li div.blox-slide-container {
 	background: #eee;
-	line-height: 0;	
+	line-height: 0;
 	width: 100%;
 }
 #blox_gallery_container li img,
@@ -662,7 +664,7 @@ a.blox-slide-details {
 	cursor: default !important;
 }
 .blox-filler-container {
-	background-color: #eee;	
+	background-color: #eee;
 	background-image: url('../images/default-square.png') !important;
 	width: 150px;
 	height: 150px;
@@ -698,7 +700,7 @@ a.blox-slide-details {
 
 
 
-/* Location Options Styles 
+/* Location Options Styles
 -------------------------------------------------------------- */
 
 #blox_location_selection td {
@@ -796,7 +798,7 @@ a.blox-slide-details {
 .blox-modal .form-table td,
 .blox-modal .form-table td label,
 .blox-modal .form-table th {
-	font-size: 13px !important; 
+	font-size: 13px !important;
 }
 .blox-modal textarea,
 .blox-modal input[type="text"] {
@@ -843,13 +845,13 @@ a.blox-slide-details {
 	.blox-columns li label {
 		height: 34px;
 	}
-	
+
 	/* Make select dropdowns smaller so help icon does not drop to the next line */
 	.blox-has-help {
 		display: inline-block !important;
 		width: 88% !important;
 	}
-	
+
 	.blox-content-title th {
 		display: block;
 		float: left;
@@ -867,7 +869,7 @@ a.blox-slide-details {
 	.blox-content-block-type {
 		display: none;
 	}
-	
+
 	.blox-tab-navigation li {
 		width: 48%;
 		text-align: center;

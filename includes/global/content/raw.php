@@ -57,6 +57,9 @@ class Blox_Content_Raw {
 		add_action( 'blox_get_content_raw', array( $this, 'get_raw_content' ), 10, 4 );
 		add_filter( 'blox_save_content_raw', array( $this, 'save_raw_content' ), 10, 3 );
 		add_action( 'blox_print_content_raw', array( $this, 'print_raw_content' ), 10, 4 );
+
+        // Add the fullscreen raw content modal to the admin page
+        add_action( 'blox_metabox_modals', array( $this, 'add_raw_content_modal' ), 10, 1 );
     }
 
 
@@ -84,7 +87,7 @@ class Blox_Content_Raw {
      * @param string $global      The block state
      */
 	public function get_raw_content( $id, $name_prefix, $get_prefix, $global ) {
-	
+
 		// Get the type of block we are working with
 		$block_scope = $global ? 'global' : 'local';
 		?>
@@ -95,6 +98,7 @@ class Blox_Content_Raw {
 				<tr>
 					<th scope="row"><?php _e( 'Raw Content', 'blox' ); ?></th>
 					<td>
+                        <a class="button dashicons dashicons-editor-expand blox-raw-expand" alt="<?php _e( 'Expand View', 'blox' );?>"></a>
 						<textarea class="blox-textarea-code" name="<?php echo $name_prefix; ?>[raw][content]" rows="6" ><?php echo ! empty( $get_prefix['raw']['content'] ) ? esc_html( $get_prefix['raw']['content'] ) : ''; ?></textarea>
 						<div class="blox-description">
 							<?php _e( 'By default, the Raw Content box will accept practically anything except PHP. When PHP is enabled, make sure to use correct syntax and wrap all PHP code in ', 'blox' ); ?><code>&#60;?php</code><?php _e( ' and ', 'blox' ); ?><code>?&#62;</code>
@@ -165,13 +169,13 @@ class Blox_Content_Raw {
 
 		// Decode the content from the database so we can use scripts, php, etc.
 		$content = html_entity_decode( $content_data['raw']['content'], ENT_QUOTES, 'UTF-8' );
-		
+
 		// The final output
 		$output  = $content_data['raw']['shortcodes'] ? do_shortcode( $content ) : $content;
-		
+
 		// Array of additional CSS classes
 		$classes = array();
-		
+
 		// If markup is disabled, not print any...
 		echo $content_data['raw']['disable_markup'] == 1 ? '' : '<div class="blox-raw-container ' . implode( ' ', apply_filters( 'blox_content_raw_classes', $classes ) ) .'"><div class="blox-raw-wrap">';
 
@@ -183,6 +187,56 @@ class Blox_Content_Raw {
 
 		echo $content_data['raw']['disable_markup'] == 1 ? '' : '</div></div>';
 	}
+
+
+    /**
+     * Adds the fullscreen raw content modal to the page
+     *
+     * @since 1.0.0
+     *
+     * @param bool $global The block state
+     */
+    public function add_raw_content_modal() {
+        ?>
+        <!--Raw Content Modal-->
+        <div id="blox_raw" class='blox-hidden blox-modal' title="<?php _e( 'Raw Content', 'blox' );?>">
+
+            <!-- Header -->
+            <div class="blox-modal-titlebar">
+                <span class="blox-modal-title"><?php _e( 'Raw Content', 'blox' ); ?></span>
+                <button type="button" class="blox-modal-close" title="<?php _e( 'Close' );?>">
+                    <span class="blox-modal-close-icon"></span>
+                    <span class="blox-modal-close-text"><?php _e( 'Close', 'blox' ); ?></span>
+                </button>
+            </div>
+
+            <input type="text" class="blox-force-hidden" value="" />
+
+            <input type="text" id="blox_editor_master_id" class="blox-force-hidden" value="" />
+
+            <!-- Body -->
+            <div class="blox-form-container">
+                <div id="blox_editor_master_wrapper">
+                    <textarea>
+                    <div class="blox-description">
+                        <?php _e( 'The editor will not accept any scripts, iframes, unsafe HTML, or PHP. Use the Raw Content option for this type of content.', 'blox' ); ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="blox-modal-footer">
+                <div class="blox-modal-buttonpane">
+                    <button id="blox_raw_insert" type="button" class="button button-primary blox-modal-button">
+                        <?php _e( 'Apply Content', 'blox' );?>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <?php
+    }
+
 
 
     /**
