@@ -61,7 +61,7 @@ class Blox_Content_Raw {
         // Add the fullscreen raw content modal to the admin page
         add_action( 'blox_metabox_modals', array( $this, 'add_raw_content_modal' ), 10, 1 );
 
-        add_action( 'blox_metabox_scripts', array( $this, 'enqueue_raw_admin_scripts_styles' ), 10 );
+        //add_action( 'blox_metabox_scripts', array( $this, 'enqueue_raw_admin_scripts_styles' ), 10 );
     }
 
 
@@ -116,8 +116,15 @@ class Blox_Content_Raw {
 				<tr>
 					<th scope="row"><?php _e( 'Raw Content', 'blox' ); ?></th>
 					<td>
-                        <a class="button dashicons dashicons-editor-expand blox-raw-expand" alt="<?php _e( 'Expand View', 'blox' );?>"></a>
-						<textarea class="blox-textarea-code" name="<?php echo $name_prefix; ?>[raw][content]" rows="6" ><?php echo ! empty( $get_prefix['raw']['content'] ) ? esc_html( $get_prefix['raw']['content'] ) : ''; ?></textarea>
+                        <div class="blox-toolbar">
+                            <div class="blox-toolbar-wrap">
+                                <div class="blox-toolbar-button blox-raw-expand right" tabindex="-1" role="button" aria-label="<?php _e( 'Fullscreen', 'blox' );?>">
+                                    <button role="presentation" type="button" tabindex="-1"><i class="fullscreen"></i></button>
+                                </div>
+                                <div style="clear: both;"></div>
+                            </div>
+                        </div>
+                        <textarea class="blox-raw-output blox-enable-tab" name="<?php echo $name_prefix; ?>[raw][content]" rows="8" ><?php echo ! empty( $get_prefix['raw']['content'] ) ? esc_html( $get_prefix['raw']['content'] ) : ''; ?></textarea>
 						<div class="blox-description">
 							<?php _e( 'By default, the Raw Content box will accept practically anything except PHP. When PHP is enabled, make sure to use correct syntax and wrap all PHP code in ', 'blox' ); ?><code>&#60;?php</code><?php _e( ' and ', 'blox' ); ?><code>?&#62;</code>
 						</div>
@@ -228,9 +235,8 @@ class Blox_Content_Raw {
                 </button>
             </div>
 
-            <input type="text" class="blox-force-hidden" value="" />
-
-            <input type="text" id="blox_raw_master_id" class="blox-force-hidden" value="" />
+            <input type="text" id="blox_raw_block_type" class="blox-force-hidden" value="" />
+            <input type="text" id="blox_raw_block_id" class="blox-force-hidden" value="" />
 
             <!-- Body -->
             <div class="blox-form-container">
@@ -244,7 +250,7 @@ class Blox_Content_Raw {
                             <option>PHP</option>
                         </select>
                     </div>
-                    <textarea class="blox-modal-raw-content blox-textarea-code codemirror"></textarea>
+                    <textarea id="blox_raw_content" class="blox-enable-tab"></textarea>
                     <div class="blox-modal-raw-footer">
                         <div class="blox-description">
                             <?php _e( 'By default, the Raw Content box will accept practically anything except PHP. When PHP is enabled, make sure to use correct syntax and wrap all PHP code in ', 'blox' ); ?><code>&#60;?php</code><?php _e( ' and ', 'blox' ); ?><code>?&#62;</code>

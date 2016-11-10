@@ -593,6 +593,36 @@ ul.blox-columns li {
 
 
 /* Raw Styles */
+#blox_raw_content,
+.blox-raw-output {
+	width: 100%;
+	max-width: 100%;
+	font-family: Consolas, Monaco, monospace;
+	font-size: 13px;
+	background: #fff;
+	border: 0;
+	border-right: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	box-shadow: none;
+	outline: 0;
+	overflow: auto;
+	padding: 10px;
+	resize: vertical;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+	white-space: nowrap;
+}
+#blox_raw_content {
+	border: 1px solid #ddd;
+}
+#blox_raw_content,
+.blox-raw-output:focus {
+    outline: 0;
+    border-color: #ddd;
+    box-shadow: none;
+}
 
 .blox-content-raw td label {
 	display: block;
@@ -620,6 +650,101 @@ ul.blox-columns li {
 .blox-modal-raw-footer {
 	height: 40px;
 }
+
+
+.blox-toolbar {
+	background-color: #f5f5f5;
+	border: 1px solid #ddd;
+}
+.blox-toolbar-wrap {
+	padding: 3px;
+
+}
+
+.blox-toolbar-button {
+	border: 1px solid transparent;
+	display: inline-block;
+	margin: 2px;
+	outline: 0;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	position:relative
+}
+.blox-toolbar-button.right {
+	float: right;
+}
+.blox-toolbar-button:hover {
+	background: #fafafa;
+	border-color: #555d66;
+	color: #23282d;
+	-webkit-box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08);
+	box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08);
+	outline: 0;
+}
+/* Button Tooltip */
+.blox-toolbar-button:hover:after {
+	color: #fff;
+    font-size: 12px;
+    background: #000;
+    content: attr(aria-label);
+    padding: 5px 8px;
+    white-space: nowrap;
+    display: block;
+    position: absolute;
+    left: -72%;
+    left: calc(50% - 37px);
+    bottom: -35px;
+    z-index: 8;
+    border-radius: 4px;
+}
+.blox-toolbar-button:hover:before {
+	border: solid;
+    border-color: #000;
+    border-width: 0 6px 6px 6px;
+    content: "";
+    display: block;
+    position: absolute;
+	left: 34%;
+    left: calc(50% - 6px);
+    bottom: -11px;
+    z-index: 9;
+}
+/* END - Button Tooltip */
+.blox-toolbar-button button {
+	padding: 4px 8px;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+    color: #333;
+    text-align: center;
+    overflow: visible;
+    -webkit-appearance: none;
+	border: none;
+	background-color: transparent;
+	outline: 0;
+}
+.blox-toolbar-button i {
+	color: #555d66;
+	width: 16px;
+    height: 16px;
+	display: inline-block;
+    background: transparent center center;
+    background-size: cover;
+}
+.blox-toolbar-button i {
+	font: 400 20px/1 dashicons;
+	padding: 0 2px 0 0;
+	vertical-align: top;
+	speak: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	margin-left: -2px;
+}
+/* Button specific CSS */
+.blox-toolbar-button i.fullscreen:before {
+	content: "\f211";
+}
+
 
 /* Slideshow Styles */
 

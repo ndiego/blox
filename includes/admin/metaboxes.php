@@ -365,7 +365,7 @@ class Blox_Metaboxes {
 
 			update_post_meta( $post_id, '_blox_content_blocks_data', $settings );
 
-            // Not currently used, slated for deletion 
+            // Not currently used, slated for deletion
 			if ( $settings['position']['position_type'] == 'default' ) {
 			  $position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
 			} else if ( $settings['position']['custom'] ) {
@@ -513,7 +513,7 @@ class Blox_Metaboxes {
 					<a class="blox-content-block-edit" title="<?php _e( 'Edit Content Block', 'blox' ); ?>" href="#"></a>
 				</div>
 			</div>
-			<div class="blox-settings-tabs">
+			<div class="blox-settings-tabs local">
 				<ul class="blox-tab-navigation">
 				<?php
 					foreach( $this->metabox_tabs() as $tab => $tab_settings ) {

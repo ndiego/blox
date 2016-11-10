@@ -42,13 +42,6 @@ jQuery(document).ready(function($){
 	});
 
 
-	/* Content - Editor scripts
-	-------------------------------------------------------------- */
-	var code = $(".codemirror")[0];
-	var editor = CodeMirror.fromTextArea(code, {
-		lineNumbers : true
-	});
-
 
 	/* Content - Image scripts
 	-------------------------------------------------------------- */
@@ -557,24 +550,39 @@ jQuery(document).ready(function($){
 
 
 
+	/* Content - Raw scripts
+	-------------------------------------------------------------- */
+	/*var code = $(".codemirror")[0];
+	var editor = CodeMirror.fromTextArea(code, {
+		lineNumbers : true
+	});*/
+
+
 	// Display the editor modal
 	// Code is a heavily modified version of http://leanmodal.finelysliced.com.au
 	$(document).on( 'click', '.blox-raw-expand', function(e) {
 
 		e.preventDefault();
 
+		var block_type       = '';
+		var block_id         = '';
+		var existing_content = '';
+
 		// Get the block id
-		var block_id = $(this).parents( '.blox-content-block' ).attr( 'id' );
+		if ( $(this).parents( '.blox-settings-tabs' ).hasClass( 'local' ) ) {
+			block_type       = 'local';
+			block_id         = $(this).parents( '.blox-content-block' ).attr( 'id' );
+			existing_content = $( '#' + block_id + ' .blox-raw-output' ).val();
+		} else if ( $(this).parents( '.blox-settings-tabs' ).hasClass( 'global' ) ) {
+			block_type       = 'global';
+			block_id         = $( '#post_ID' ).val();
+			existing_content = $( '.blox-raw-output' ).val();
+		}
 
-		// Set the block id in the modal for future use
-		$( '#blox_editor_master_id' ).val( block_id );
-
-		/* Set the source content in the editor depending on which frame of the editor is active
-		if ( $( '#wp-blox_editor_master-wrap' ).hasClass( 'tmce-active' ) ){
-			tinyMCE.get('blox_editor_master').setContent( $( '#' + block_id + ' .blox-editor-output' ).val() );
-		} else if ( $( '#wp-blox_editor_master-wrap' ).hasClass( 'html-active' ) ){
-			$( '#blox_editor_master' ).val( $( '#' + block_id + ' .blox-editor-output' ).val() );
-		}*/
+		// Set the block id and type in the modal for future use
+		$( '#blox_raw_block_type' ).val( block_type );
+		$( '#blox_raw_block_id' ).val( block_id );
+		$( '#blox_raw_content' ).val( existing_content );
 
 		// Add the overlay to the page and style on click
 		var overlay = $( '<div id="blox_overlay"></div>' );
@@ -596,7 +604,42 @@ jQuery(document).ready(function($){
 		});
 		$( '#blox_raw' ).fadeTo( 200, 1 );
 
+		// Fix bug with resize icon showing through to the modal
+		$( '.blox-raw-output' ).css( 'resize', 'none' );
 	});
+
+
+	// After content has been added to the raw modal, insert it into the source textarea on click
+	$(document).on( 'click', '#blox_raw_insert', function(e) {
+
+		e.preventDefault();
+
+		// Get the block id and type
+		var block_type = $( '#blox_raw_block_type' ).val();
+		var block_id   = $( '#blox_raw_block_id' ).val();
+
+		var raw_content = '';
+
+		// Set our content variable
+		raw_content = $( '#blox_raw_content' ).val();
+
+		// After we have the content, empty the raw content editor for future use
+		$( '#blox_raw_content' ).val( '' );
+
+		// Insert the raw content into the source textarea
+		if ( block_type == 'local' ){
+			$( '#' + block_id + ' .blox-raw-output' ).val( raw_content );
+		} else {
+			$( '.blox-raw-output' ).val( raw_content );
+		}
+
+		// Close modal and remove the overlay
+		$( '#blox_overlay' ).fadeOut(200);
+		$( '#blox_raw' ).css( { 'display' : 'none' } );
+
+		// Reset the resize attribute, see previous function for details
+		$( '.blox-raw-output' ).css( 'resize', 'vertical' );
+    });
 
 
 
