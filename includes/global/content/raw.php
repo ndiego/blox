@@ -60,6 +60,24 @@ class Blox_Content_Raw {
 
         // Add the fullscreen raw content modal to the admin page
         add_action( 'blox_metabox_modals', array( $this, 'add_raw_content_modal' ), 10, 1 );
+
+        add_action( 'blox_metabox_scripts', array( $this, 'enqueue_raw_admin_scripts_styles' ), 10 );
+    }
+
+
+    /**
+     * Add required slideshow scripts to the front-end
+     *
+     * @since 1.3.0
+     */
+    public function enqueue_raw_admin_scripts_styles() {
+
+        // Load flexslider js
+        wp_enqueue_script( $this->base->plugin_slug . '-codemirror-scripts', plugins_url( 'assets/plugins/codemirror/codemirror.js', $this->base->file ), array(), $this->base->version );
+
+        // Load base flexslider styles
+        wp_register_style( $this->base->plugin_slug . '-codemirror-styles', plugins_url( 'assets/plugins/codemirror/codemirror.css', $this->base->file ), array(), $this->base->version );
+        wp_enqueue_style( $this->base->plugin_slug . '-codemirror-styles' );
     }
 
 
@@ -212,14 +230,25 @@ class Blox_Content_Raw {
 
             <input type="text" class="blox-force-hidden" value="" />
 
-            <input type="text" id="blox_editor_master_id" class="blox-force-hidden" value="" />
+            <input type="text" id="blox_raw_master_id" class="blox-force-hidden" value="" />
 
             <!-- Body -->
             <div class="blox-form-container">
-                <div id="blox_editor_master_wrapper">
-                    <textarea>
-                    <div class="blox-description">
-                        <?php _e( 'The editor will not accept any scripts, iframes, unsafe HTML, or PHP. Use the Raw Content option for this type of content.', 'blox' ); ?>
+                <div class="blox-modal-raw-container">
+                    <div class="blox-modal-raw-header">
+                        <?php _e( 'Syntax Highlighting', 'blox' );?>
+                        <select>
+                            <option>None</option>
+                            <option>HTML</option>
+                            <option>Javascript</option>
+                            <option>PHP</option>
+                        </select>
+                    </div>
+                    <textarea class="blox-modal-raw-content blox-textarea-code codemirror"></textarea>
+                    <div class="blox-modal-raw-footer">
+                        <div class="blox-description">
+                            <?php _e( 'By default, the Raw Content box will accept practically anything except PHP. When PHP is enabled, make sure to use correct syntax and wrap all PHP code in ', 'blox' ); ?><code>&#60;?php</code><?php _e( ' and ', 'blox' ); ?><code>?&#62;</code>
+                        </div>
                     </div>
                 </div>
             </div>

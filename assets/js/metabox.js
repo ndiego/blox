@@ -42,6 +42,13 @@ jQuery(document).ready(function($){
 	});
 
 
+	/* Content - Editor scripts
+	-------------------------------------------------------------- */
+	var code = $(".codemirror")[0];
+	var editor = CodeMirror.fromTextArea(code, {
+		lineNumbers : true
+	});
+
 
 	/* Content - Image scripts
 	-------------------------------------------------------------- */

@@ -11,10 +11,10 @@
 
 /* Settings Page Styles
 -------------------------------------------------------------- */
-.wrap h2:first-child { 
+.wrap h2:first-child {
 	margin-bottom: 5px;
 }
-h2.nav-tab-wrapper { 
+h2.nav-tab-wrapper {
 	padding-left: 0;
 	padding-right: 0;
 }
@@ -31,8 +31,9 @@ h2.nav-tab-wrapper a {
 	padding-top: 8px;
 }
 #tab_container .title {
-	font-size: 15px;
-	font-style: italic;
+	font-size: 1.2em;
+	font-weight: 600;
+	margin: 0;
 }
 #tab_container hr {
 	border-top: 1px solid #ccc;
@@ -108,7 +109,7 @@ ul.blox-columns li {
 	padding: 0;
 }
 .blox-columns li span {
-	display: inline-block; 
+	display: inline-block;
 	height: 28px;
 	overflow: hidden;
 	white-space: nowrap;
@@ -196,13 +197,13 @@ ul.blox-columns li {
 	font-size: 10px;
 	letter-spacing: 2px;
 	padding: 6px 12px;
-	position: absolute;	
+	position: absolute;
 	right: -45px;
 	text-align: center;
 	text-transform: uppercase;
 	top: 30px;
 	width: 160px;
-	
+
 	-webkit-transform: rotate(45deg);
 	-moz-transform: rotate(45deg);
 	-ms-transform: rotate(45deg);

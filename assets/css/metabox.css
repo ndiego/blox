@@ -603,7 +603,23 @@ ul.blox-columns li {
 	margin-top: 12px;
 	margin-bottom: 12px;
 }
-
+.blox-modal-raw-container {
+	height: 100%;
+}
+.blox-modal-raw-container textarea {
+	-webkit-height: calc(100%  -  82px);
+	-moz-height: calc(100%  -  82px);
+	height: calc(100%  -  82px);
+}
+.blox-modal-raw-container textarea:focus {
+	border: 1px solid #ddd;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+}
+.blox-modal-raw-header,
+.blox-modal-raw-footer {
+	height: 40px;
+}
 
 /* Slideshow Styles */
 
