@@ -159,6 +159,8 @@ class Blox_Metaboxes {
         		'image_media_title'			=> __( 'Choose or Upload an Image', 'blox' ),
         		'image_media_button'		=> __( 'Use Selected Image', 'blox' ),
 
+                'raw_syntax_highlighting_disable'  => blox_get_option( 'syntax_highlighting_disable', false ),
+
         		'editor_add'				=> __( 'Add Content', 'blox' ),
         		'editor_edit'				=> __( 'Edit Content', 'blox' ),
         		'editor_hide_html'			=> __( 'Hide HTML', 'blox' ),

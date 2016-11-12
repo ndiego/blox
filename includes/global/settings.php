@@ -335,12 +335,13 @@ class Blox_Settings {
 			/** Default Settings */
 			'default' => apply_filters( 'blox_settings_defaults',
 				array(
-					/*'defaults_content_header' => array(
-						'id' => 'defaults_content_header',
-						'name' => '<span class="title">' . __( 'Default Content Types', 'blox' ) . '</span>',
+					'defaults_content_header' => array(
+						'id'   => 'defaults_content_header',
+						'name' => '<span class="title">' . __( 'Content Settings', 'blox' ) . '</span>',
 						'desc' => '',
 						'type' => 'header'
 					),
+                    /*
 					'enable_content_restrict' => array(
 						'id'    => 'enable_content_restrict',
 						'name'  => __( 'Restrict Content Types', 'blox' ),
@@ -349,8 +350,28 @@ class Blox_Settings {
 						'type'  => 'checkbox',
 						'default' => true
 					),*/
+                    'syntax_highlighting_disable' => array(
+                        'id'      => 'syntax_highlighting_disable',
+                        'name'    => __( 'Syntax Highlighting', 'blox' ),
+                        'label'   => __( 'Disable raw content syntax highlighting', 'blox' ),
+                        'desc'    => __( 'Turning on this setting will disable syntax highlighting in the raw content fullscreen modal.', 'blox' ),
+                        'type'    => 'checkbox',
+                        'default' => false
+                    ),
+                    'syntax_highlighting_theme' => array(
+                        'id'   => 'syntax_highlighting_theme',
+                        'name' => __( 'Highlighter Theme', 'blox' ),
+                        'desc' => __( 'Choose the visual theme for when syntax highlighting is eabled.', 'blox' ),
+                        'type' => 'select',
+                        'options' => array(
+                            'default'    => __( 'Default', 'blox' ),
+                            'spacegray'  => __( 'Spacegray (Dark)', 'blox' ),
+                            'monokai'    => __( 'Monokai (Dark)', 'blox' ),
+                        ),
+                        'default' => 'default'
+                    ),
 					'defaults_position_header' => array(
-						'id' => 'defaults_position_header',
+						'id'   => 'defaults_position_header',
 						'name' => '<span class="title">' . __( 'Position Settings', 'blox' ) . '</span>',
 						'desc' => sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
 						'type' => 'header'

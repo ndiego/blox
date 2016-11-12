@@ -84,7 +84,7 @@
 .blox-textarea-code {
 	width: 100%;
 	max-width: 100%;
-	font-family: Consolas, Monaco, monospace;
+	font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 	font-size: 13px;
 	background: #f9f9f9;
 	outline: 0;
@@ -93,7 +93,6 @@
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
 	tab-size: 4;
-	white-space: nowrap;
 }
 .blox-full-text {
 	display: inline !important; /*correct for mobile styles*/
@@ -593,11 +592,12 @@ ul.blox-columns li {
 
 
 /* Raw Styles */
+
 #blox_raw_content,
 .blox-raw-output {
 	width: 100%;
 	max-width: 100%;
-	font-family: Consolas, Monaco, monospace;
+	font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 	font-size: 13px;
 	background: #fff;
 	border: 0;
@@ -605,6 +605,7 @@ ul.blox-columns li {
 	border-left: 1px solid #ddd;
 	border-bottom: 1px solid #ddd;
 	box-shadow: none;
+	margin-top: 0;
 	outline: 0;
 	overflow: auto;
 	padding: 10px;
@@ -612,10 +613,10 @@ ul.blox-columns li {
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
 	tab-size: 4;
-	white-space: nowrap;
 }
 #blox_raw_content {
 	border: 1px solid #ddd;
+	resize: none;
 }
 #blox_raw_content,
 .blox-raw-output:focus {
@@ -628,25 +629,31 @@ ul.blox-columns li {
 	display: block;
 	margin-top: 12px;
 }
-.blox-content-raw  label.last {
+.blox-content-raw td label:first-child {
+	margin-top: 0;
+}
+.blox-content-raw td label.last {
 	display: inline-block;
-	margin-top: 12px;
 	margin-bottom: 12px;
 }
+
 .blox-modal-raw-container {
 	height: 100%;
 }
-.blox-modal-raw-container textarea {
-	-webkit-height: calc(100%  -  82px);
-	-moz-height: calc(100%  -  82px);
-	height: calc(100%  -  82px);
+.blox-modal-raw-container textarea,
+.blox-modal-raw-container .CodeMirror {
+	height: 80px;
+	-webkit-height: calc(100%  -  40px);
+	-moz-height: calc(100%  -  40px);
+	height: calc(100%  -  40px);
 }
 .blox-modal-raw-container textarea:focus {
 	border: 1px solid #ddd;
     -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
     box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
 }
-.blox-modal-raw-header,
+.blox-modal-raw-header {
+}
 .blox-modal-raw-footer {
 	height: 40px;
 }
@@ -699,7 +706,7 @@ ul.blox-columns li {
 }
 .blox-toolbar-button:hover:before {
 	border: solid;
-    border-color: #000;
+    border-color:rgba(0,0,0,1) transparent;
     border-width: 0 6px 6px 6px;
     content: "";
     display: block;

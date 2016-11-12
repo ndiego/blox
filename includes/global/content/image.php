@@ -88,9 +88,9 @@ class Blox_Content_Image {
 		// Check if current post type supports Featured Images (thumbnail), ignore on global blocks
 		// If the block was generated via ajax (local blocks) we need to get the post type using the post_id
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ){
-			
+
 			$post_id   = is_numeric( $_POST['post_id'] ) ? $_POST['post_id'] : '';
-			
+
 			if ( $post_id ) {
 				$thumbnail = post_type_supports( get_post_type( $_POST['post_id'] ), 'thumbnail' ) && ! $global ? true : false;
 			} else {
@@ -104,7 +104,6 @@ class Blox_Content_Image {
 
 		<table class="form-table blox-content-image blox-hidden" id="<?php echo $global ? $id : '';?>" >
 			<tbody>
-				<tr class="blox-content-title"><th scope="row"><?php _e( 'Static Image Settings', 'blox' ); ?></th><td><hr></td></tr>
 				<tr>
 					<th scope="row"><?php _e( 'Image Type', 'blox' ); ?></th>
 					<td>
@@ -115,7 +114,7 @@ class Blox_Content_Image {
 							<?php if ( $global ) { ?>
 								<option value="featured-custom" <?php echo ! empty( $get_prefix['image']['image_type'] ) ? selected( esc_attr( $get_prefix['image']['image_type'] ), 'featured-custom' ) : ''; ?>><?php _e( 'Featured or Custom Image', 'blox' ); ?></option>
 							<?php } ?>
-						</select>						
+						</select>
 						<span class="blox-help-text-icon">
 							<a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
 						</span>
@@ -130,9 +129,9 @@ class Blox_Content_Image {
 									_e( 'This post type does not support featured images, so select a custom image from the media library instead.', 'blox' );
 								}
 							}
-							?>						
+							?>
 						</div>
-						
+
 						<?php if ( $global ) { ?>
 						<div class="blox-featured-singular-only blox-image-atts <?php echo $thumbnail ? '' : 'blox-hidden'; ?>">
 							<label>
@@ -144,12 +143,12 @@ class Blox_Content_Image {
 								<div class="blox-help-text top">
 									<?php
 										echo sprintf( __( 'Only singular pages can have featured images. Singular pages include posts, pages, and custom post types. When the image type is set to %1$sFeatured Image%2$s or %1$sFeatured or Custom Image%2$s, some unexpected results may occur if the block is placed on a non-singular page such as an archive page. That said, if the block is placed within the loop on archive pages, it can effectively pull featured images if this option is left unchecked. So you the choice is yours. For more information, see the %3$sBlox Documentation%4$s.', 'blox' ), '<strong>', '</strong>', '<a href="https://www.bloxwp.com/documentation/static-image/?utm_source=blox&utm_medium=plugin&utm_content=content-tab-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation' ) . '" target="_blank">', '</a>' );
-									?>						
+									?>
 								</div>
 							</label>
 						</div>
 						<?php } ?>
-						
+
 					</td>
 				</tr>
 				<tr class="blox-content-image-custom <?php if ( $thumbnail ) echo 'blox-hidden'; ?>">
@@ -181,7 +180,7 @@ class Blox_Content_Image {
 								<span><?php _e( 'Class', 'blox' ); ?></span>
 								<input type="text" class="blox-custom-image-css" name="<?php echo $name_prefix; ?>[image][custom][css]" value="<?php echo isset( $get_prefix['image']['custom']['css'] ) ? esc_attr( $get_prefix['image']['custom']['css'] ) : ''; ?>" placeholder="<?php _e( 'e.g. class-one class-two', 'blox' );?>"/>
 								<div class="blox-description">
-									<?php  _e( 'Enter a space separated list of custom CSS classes to add to the image.', 'blox' ); ?>						
+									<?php  _e( 'Enter a space separated list of custom CSS classes to add to the image.', 'blox' ); ?>
 								</div>
 							</label>
 						</div>
@@ -192,13 +191,13 @@ class Blox_Content_Image {
 					<th scope="row"><?php _e( 'Image Size', 'blox' ); ?></th>
 					<td>
 						<select class="genesis-image-size-selector blox-has-help" name="<?php echo $name_prefix; ?>[image][size][size_type]">
-							<?php foreach ( (array) $this->get_image_sizes() as $i => $size ) { 
-							
+							<?php foreach ( (array) $this->get_image_sizes() as $i => $size ) {
+
 								// Remove the new Custom option added in WP 4.4 for now. Could cause confusion...
 								if ( $size['value'] != 'custom' ) {
 								?>
 									<option value="<?php echo $size['value']; ?>" <?php ! empty( $get_prefix['image']['size']['size_type'] ) ? selected( $size['value'], esc_attr( $get_prefix['image']['size']['size_type'] ) ) : '';?>><?php echo $size['name']; ?></option>
-								<?php 
+								<?php
 								}
 							} ?>
 						</select>
@@ -238,7 +237,7 @@ class Blox_Content_Image {
 								<span><?php _e( 'Class', 'blox' ); ?></span>
 								<input type="text" name="<?php echo $name_prefix; ?>[image][link][css]" value="<?php echo ! empty( $get_prefix['image']['link']['css'] ) ? esc_attr( $get_prefix['image']['link']['css'] ) : ''; ?>" placeholder="<?php _e( 'e.g. class-one class-two', 'blox' );?>"/>
 								<div class="blox-description">
-									<?php  _e( 'Enter a space separated list of custom CSS classes to add to the image link.', 'blox' ); ?>						
+									<?php  _e( 'Enter a space separated list of custom CSS classes to add to the image link.', 'blox' ); ?>
 								</div>
 							</label>
 						</div>
@@ -264,7 +263,7 @@ class Blox_Content_Image {
 							<a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
 						</span>
 						<div class="blox-help-text top">
-							<?php echo sprintf( __( 'Set image as a background image. When this setting is enabled, the CSS class %1$sblox-image-background%2$s is added to the content block. Additional custom CSS may be required to attain your desired effect.', 'blox' ), '<code>', '</code>' ); ?>						
+							<?php echo sprintf( __( 'Set image as a background image. When this setting is enabled, the CSS class %1$sblox-image-background%2$s is added to the content block. Additional custom CSS may be required to attain your desired effect.', 'blox' ), '<code>', '</code>' ); ?>
 						</div>
 					</td>
 				</tr>
@@ -280,7 +279,7 @@ class Blox_Content_Image {
      *
      * @since 1.0.0
 	 *
-	 * @param string $name_prefix The prefix for saving each setting (this brings ...['image'] with it)	 
+	 * @param string $name_prefix The prefix for saving each setting (this brings ...['image'] with it)
 	 * @param int $id             The block id
 	 * @param bool $global        The block state
 	 */
@@ -323,13 +322,13 @@ class Blox_Content_Image {
 
 		// If we have chosen to only show featured images on singular pages, run the test, otherwise try and see if there is a thumbnail somewhere on the page
 		if ( ! empty( $content_data['image']['featured_singular_only'] ) && $content_data['image']['featured_singular_only'] == 1 && ! is_singular() ) {
-			
+
 			// Disable for non-singular pages because has_post_thumbnail can return true on archive pages, search pages, etc.
 			$thumbnail = false;
 		} else {
 			$thumbnail = has_post_thumbnail( get_the_ID() );
 		}
-		
+
 		// Aquire some misc settings
 		$content_type = $content_data['image']['image_type'] != '' ? $content_data['image']['image_type'] : null;
 		$background   = ! empty( $content_data['image']['background'] ) ? true : false;
@@ -376,7 +375,7 @@ class Blox_Content_Image {
 			$link_start = '';
 			$link_end   = '';
 		}
-		
+
 		// Array of additional CSS classes
 		$classes = array();
 		?>

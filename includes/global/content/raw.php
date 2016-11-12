@@ -61,7 +61,7 @@ class Blox_Content_Raw {
         // Add the fullscreen raw content modal to the admin page
         add_action( 'blox_metabox_modals', array( $this, 'add_raw_content_modal' ), 10, 1 );
 
-        //add_action( 'blox_metabox_scripts', array( $this, 'enqueue_raw_admin_scripts_styles' ), 10 );
+        add_action( 'blox_metabox_scripts', array( $this, 'enqueue_raw_admin_scripts_styles' ), 10 );
     }
 
 
@@ -72,12 +72,32 @@ class Blox_Content_Raw {
      */
     public function enqueue_raw_admin_scripts_styles() {
 
-        // Load flexslider js
-        wp_enqueue_script( $this->base->plugin_slug . '-codemirror-scripts', plugins_url( 'assets/plugins/codemirror/codemirror.js', $this->base->file ), array(), $this->base->version );
+        $syntax_highlighting_disable = blox_get_option( 'syntax_highlighting_disable', false );
+        $syntax_highlighting_theme   = blox_get_option( 'syntax_highlighting_theme', 'default' );
 
-        // Load base flexslider styles
-        wp_register_style( $this->base->plugin_slug . '-codemirror-styles', plugins_url( 'assets/plugins/codemirror/codemirror.css', $this->base->file ), array(), $this->base->version );
-        wp_enqueue_style( $this->base->plugin_slug . '-codemirror-styles' );
+        if ( $syntax_highlighting_disable != true ) {
+
+            // Load codemirror js
+            wp_enqueue_script( $this->base->plugin_slug . '-codemirror-scripts', plugins_url( 'assets/plugins/codemirror/lib/codemirror.js', $this->base->file ), array(), $this->base->version );
+
+            // Load codemirror modes
+            wp_enqueue_script( $this->base->plugin_slug . '-codemirror-scripts-clike', plugins_url( 'assets/plugins/codemirror/mode/clike/clike.js', $this->base->file ), array(), $this->base->version );
+            wp_enqueue_script( $this->base->plugin_slug . '-codemirror-scripts-css', plugins_url( 'assets/plugins/codemirror/mode/css/css.js', $this->base->file ), array(), $this->base->version );
+            wp_enqueue_script( $this->base->plugin_slug . '-codemirror-scripts-htmlmixed', plugins_url( 'assets/plugins/codemirror/mode/htmlmixed/htmlmixed.js', $this->base->file ), array(), $this->base->version );
+            wp_enqueue_script( $this->base->plugin_slug . '-codemirror-scripts-javascript', plugins_url( 'assets/plugins/codemirror/mode/javascript/javascript.js', $this->base->file ), array(), $this->base->version );
+            wp_enqueue_script( $this->base->plugin_slug . '-codemirror-scripts-php', plugins_url( 'assets/plugins/codemirror/mode/php/php.js', $this->base->file ), array(), $this->base->version );
+            wp_enqueue_script( $this->base->plugin_slug . '-codemirror-scripts-xml', plugins_url( 'assets/plugins/codemirror/mode/xml/xml.js', $this->base->file ), array(), $this->base->version );
+
+            // Load base codemirror styles
+            wp_register_style( $this->base->plugin_slug . '-codemirror-styles', plugins_url( 'assets/plugins/codemirror/lib/codemirror.css', $this->base->file ), array(), $this->base->version );
+            wp_enqueue_style( $this->base->plugin_slug . '-codemirror-styles' );
+
+            // Optionally load a codemirror theme
+            if ( $syntax_highlighting_theme != 'default' ) {
+                wp_register_style( $this->base->plugin_slug . '-codemirror-' . $syntax_highlighting_theme . '-styles', plugins_url( 'assets/plugins/codemirror/theme/' . $syntax_highlighting_theme . '.css', $this->base->file ), array(), $this->base->version );
+                wp_enqueue_style( $this->base->plugin_slug . '-codemirror-' . $syntax_highlighting_theme . '-styles' );
+            }
+        }
     }
 
 
@@ -112,7 +132,6 @@ class Blox_Content_Raw {
 
 		<table class="form-table blox-content-raw blox-hidden">
 			<tbody>
-				<tr class="blox-content-title"><th scope="row"><?php _e( 'Raw Content Settings', 'blox' ); ?></th><td><hr></td></tr>
 				<tr>
 					<th scope="row"><?php _e( 'Raw Content', 'blox' ); ?></th>
 					<td>
@@ -124,11 +143,15 @@ class Blox_Content_Raw {
                                 <div style="clear: both;"></div>
                             </div>
                         </div>
-                        <textarea class="blox-raw-output blox-enable-tab" name="<?php echo $name_prefix; ?>[raw][content]" rows="8" ><?php echo ! empty( $get_prefix['raw']['content'] ) ? esc_html( $get_prefix['raw']['content'] ) : ''; ?></textarea>
-						<div class="blox-description">
-							<?php _e( 'By default, the Raw Content box will accept practically anything except PHP. When PHP is enabled, make sure to use correct syntax and wrap all PHP code in ', 'blox' ); ?><code>&#60;?php</code><?php _e( ' and ', 'blox' ); ?><code>?&#62;</code>
-						</div>
-
+                        <textarea class="blox-raw-output blox-enable-tab" name="<?php echo $name_prefix; ?>[raw][content]" rows="8" wrap="off"><?php echo ! empty( $get_prefix['raw']['content'] ) ? esc_html( $get_prefix['raw']['content'] ) : ''; ?></textarea>
+                        <div class="blox-description">
+                            <?php _e( 'By default, the Raw Content box will accept practically anything except PHP. When PHP is enabled, make sure to use correct syntax and wrap all PHP code in ', 'blox' ); ?><code>&#60;?php</code><?php _e( ' and ', 'blox' ); ?><code>?&#62;</code>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+        			<th scope="row"><?php _e( 'Raw Settings', 'blox' ); ?></th>
+        			<td>
 						<label>
 							<input type="checkbox" name="<?php echo $name_prefix; ?>[raw][shortcodes]" value="1" <?php ! empty( $get_prefix['raw']['shortcodes'] ) ? checked( esc_attr( $get_prefix['raw']['shortcodes'] ) ) : ''; ?> />
 							<?php _e( 'Check to enable shortcodes', 'blox' ); ?>
@@ -217,11 +240,16 @@ class Blox_Content_Raw {
     /**
      * Adds the fullscreen raw content modal to the page
      *
-     * @since 1.0.0
+     * @since 1.3.0
      *
      * @param bool $global The block state
      */
     public function add_raw_content_modal() {
+
+        $syntax_highlighting_disable = blox_get_option( 'syntax_highlighting_disable', false );
+        $syntax_highlighting_theme   = blox_get_option( 'syntax_highlighting_theme', 'default' );
+
+
         ?>
         <!--Raw Content Modal-->
         <div id="blox_raw" class='blox-hidden blox-modal' title="<?php _e( 'Raw Content', 'blox' );?>">
@@ -242,20 +270,25 @@ class Blox_Content_Raw {
             <div class="blox-form-container">
                 <div class="blox-modal-raw-container">
                     <div class="blox-modal-raw-header">
-                        <?php _e( 'Syntax Highlighting', 'blox' );?>
-                        <select>
-                            <option>None</option>
-                            <option>HTML</option>
-                            <option>Javascript</option>
-                            <option>PHP</option>
-                        </select>
                     </div>
-                    <textarea id="blox_raw_content" class="blox-enable-tab"></textarea>
+                    <textarea id="blox_raw_content" class="blox-enable-tab codemirror" wrap="off">This is a test </textarea>
                     <div class="blox-modal-raw-footer">
                         <div class="blox-description">
                             <?php _e( 'By default, the Raw Content box will accept practically anything except PHP. When PHP is enabled, make sure to use correct syntax and wrap all PHP code in ', 'blox' ); ?><code>&#60;?php</code><?php _e( ' and ', 'blox' ); ?><code>?&#62;</code>
                         </div>
                     </div>
+                    <?php if ( $syntax_highlighting_disable != true ) { ?>
+                    <script>
+                        var raw_editor = CodeMirror.fromTextArea(document.getElementById("blox_raw_content"), {
+                            lineNumbers: true,
+                            matchBrackets: true,
+                            mode: "application/x-httpd-php",
+                            indentUnit: 4,
+                            indentWithTabs: true,
+                            theme: "<?php echo $syntax_highlighting_theme; ?>",
+                        });
+                    </script>
+                    <?php } ?>
                 </div>
             </div>
 

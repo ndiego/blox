@@ -552,11 +552,6 @@ jQuery(document).ready(function($){
 
 	/* Content - Raw scripts
 	-------------------------------------------------------------- */
-	/*var code = $(".codemirror")[0];
-	var editor = CodeMirror.fromTextArea(code, {
-		lineNumbers : true
-	});*/
-
 
 	// Display the editor modal
 	// Code is a heavily modified version of http://leanmodal.finelysliced.com.au
@@ -604,6 +599,13 @@ jQuery(document).ready(function($){
 		});
 		$( '#blox_raw' ).fadeTo( 200, 1 );
 
+		// If syntax highlighting is enabled, do stuff
+		if( blox_localize_metabox_scripts.raw_syntax_highlighting_disable == false ) {
+			// Need to call after the modal is displayed or else codemirror won't work properly
+			raw_editor.setValue(existing_content);
+			raw_editor.refresh(); // Always refresh codemirror editor after changes are made
+		}
+
 		// Fix bug with resize icon showing through to the modal
 		$( '.blox-raw-output' ).css( 'resize', 'none' );
 	});
@@ -619,6 +621,12 @@ jQuery(document).ready(function($){
 		var block_id   = $( '#blox_raw_block_id' ).val();
 
 		var raw_content = '';
+
+		// If syntax highlighting is enabled, do stuff
+		if( blox_localize_metabox_scripts.raw_syntax_highlighting_disable == false ) {
+			// Fill the default text area with the codemirror editor's content
+			$( '#blox_raw_content' ).val( raw_editor.getValue() );
+		}
 
 		// Set our content variable
 		raw_content = $( '#blox_raw_content' ).val();

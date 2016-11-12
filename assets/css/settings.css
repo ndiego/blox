@@ -74,7 +74,7 @@ h2.nav-tab-wrapper a {
 #tab_container .text-full { width: 100%; }
 
 textarea.blox-textarea-code {
-	font-family: Consolas,Monaco,monospace;
+	font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 	padding: 10px;
 	-moz-tab-size: 4;
 	-o-tab-size: 4;

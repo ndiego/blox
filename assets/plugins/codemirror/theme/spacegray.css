@@ -1,0 +1,47 @@
+
+/* Based on Sublime Text's spacegray theme */
+
+.cm-s-spacegray.CodeMirror { background: #2b303b; color: #f0f1f5; }
+.cm-s-spacegray div.CodeMirror-selected { background: #333f48; }
+.cm-s-spacegray .CodeMirror-line::selection, .cm-s-spacegray .CodeMirror-line > span::selection, .cm-s-spacegray .CodeMirror-line > span > span::selection { background: rgba(73, 72, 62, .99); }
+.cm-s-spacegray .CodeMirror-line::-moz-selection, .cm-s-spacegray .CodeMirror-line > span::-moz-selection, .cm-s-spacegray .CodeMirror-line > span > span::-moz-selection { background: rgba(73, 72, 62, .99); }
+.cm-s-spacegray .CodeMirror-gutters { background: #2b303b; border-right: 0px; }
+.cm-s-spacegray .CodeMirror-guttermarker { color: white; }
+.cm-s-spacegray .CodeMirror-guttermarker-subtle { color: #d0d0d0; }
+.cm-s-spacegray .CodeMirror-linenumber { color: #767676; }
+.cm-s-spacegray .CodeMirror-cursor {
+    border-left: 1px solid #f8f8f0;
+}
+
+.cm-s-spacegray span.cm-comment { color: #576670; }
+.cm-s-spacegray span.cm-atom { color: #9dbe8c; }
+.cm-s-spacegray span.cm-number { color: #d08770; }
+
+.cm-s-spacegray span.cm-property { color: #90b0ae; }
+.cm-s-spacegray span.cm-attribute { color: #d08770; }
+.cm-s-spacegray span.cm-plus {color: #d08770;}
+.cm-s-spacegray span.cm-keyword { color: #b48ead; }
+.cm-s-spacegray span.cm-builtin { color: #e8c884; }
+.cm-s-spacegray span.cm-quote { color: #e8c884; }
+.cm-s-spacegray span.cm-string { color: #9dbe8c; }
+.cm-s-spacegray span.cm-string-2 { color: #9dbe8c; }
+.cm-s-spacegray span.cm-hr { color: #9dbe8c; }
+
+.cm-s-spacegray span.cm-variable { color: #f0f1f5 !important; }
+.cm-s-spacegray span.cm-variable-2 { color: #f0f1f5 !important; }
+.cm-s-spacegray span.cm-variable-3 { color: #d08770; }
+.cm-s-spacegray span.cm-def { color: #f0f1f5; }
+.cm-s-spacegray span.cm-bracket,
+.cm-s-spacegray span.cm-operator,
+.cm-s-spacegray span.cm-meta { color: #f0f1f5 !important; }
+.cm-s-spacegray span.cm-tag { color: #bf616a; }
+.cm-s-spacegray span.cm-header { color: #d85896; }
+.cm-s-spacegray span.cm-link { color: #b77fdb; text-decoration: none; }
+.cm-s-spacegray span.cm-error { background: rgba(207, 59, 60, 0.2); color: #cf3b3c; }
+.cm-s-spacegray span.cm-qualifier { color: #d08770; }
+
+.cm-s-spacegray .CodeMirror-activeline-background { background: #2b303b; }
+.cm-s-spacegray .CodeMirror-matchingbracket {
+    background-color: rgba(240, 241, 245, 0.2);
+    color: #f0f1f5 !important;
+}
