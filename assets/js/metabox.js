@@ -33,12 +33,20 @@ jQuery(document).ready(function($){
 	$(document).on( 'click', '#blox_overlay', function() {
 		$( '#blox_overlay' ).fadeOut(200);
 		$( '.blox-modal' ).css({ 'display' : 'none' });
+
+		// Reset the resize attribute on all textareas, it may have been
+		// set to "none" for a bug fix.
+		$( '.blox-tab-content textarea' ).css( 'resize', 'vertical' );
 	});
 
 	// Close the modal if you click on close button
 	$(document).on( 'click', '.blox-modal-close', function() {
 		$( '#blox_overlay' ).fadeOut(200);
 		$( '.blox-modal' ).css({ 'display' : 'none' });
+
+		// Reset the resize attribute on all textareas, it may have been
+		// set to "none" for a bug fix.
+		$( '.blox-tab-content textarea' ).css( 'resize', 'vertical' );
 	});
 
 
