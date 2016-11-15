@@ -271,7 +271,7 @@ class Blox_Content_Raw {
                 <div class="blox-modal-raw-container">
                     <div class="blox-modal-raw-header">
                     </div>
-                    <textarea id="blox_raw_content" class="blox-enable-tab codemirror" wrap="off">This is a test </textarea>
+                    <textarea id="blox_raw_content" class="blox-enable-tab" wrap="off"></textarea>
                     <div class="blox-modal-raw-footer">
                         <div class="blox-description">
                             <?php _e( 'By default, the Raw Content box will accept practically anything except PHP. When PHP is enabled, make sure to use correct syntax and wrap all PHP code in ', 'blox' ); ?><code>&#60;?php</code><?php _e( ' and ', 'blox' ); ?><code>?&#62;</code>
@@ -279,7 +279,7 @@ class Blox_Content_Raw {
                     </div>
                     <?php if ( $syntax_highlighting_disable != true ) { ?>
                     <script>
-                        var raw_editor = CodeMirror.fromTextArea(document.getElementById("blox_raw_content"), {
+                        var blox_raw_fullscreen_editor = CodeMirror.fromTextArea(document.getElementById("blox_raw_content"), {
                             lineNumbers: true,
                             matchBrackets: true,
                             mode: "application/x-httpd-php",

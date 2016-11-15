@@ -602,8 +602,8 @@ jQuery(document).ready(function($){
 		// If syntax highlighting is enabled, do stuff
 		if( blox_localize_metabox_scripts.raw_syntax_highlighting_disable == false ) {
 			// Need to call after the modal is displayed or else codemirror won't work properly
-			raw_editor.setValue(existing_content);
-			raw_editor.refresh(); // Always refresh codemirror editor after changes are made
+			blox_raw_fullscreen_editor.setValue(existing_content);
+			blox_raw_fullscreen_editor.refresh(); // Always refresh codemirror editor after changes are made
 		}
 
 		// Fix bug with resize icon showing through to the modal
@@ -625,7 +625,7 @@ jQuery(document).ready(function($){
 		// If syntax highlighting is enabled, do stuff
 		if( blox_localize_metabox_scripts.raw_syntax_highlighting_disable == false ) {
 			// Fill the default text area with the codemirror editor's content
-			$( '#blox_raw_content' ).val( raw_editor.getValue() );
+			$( '#blox_raw_content' ).val( blox_raw_fullscreen_editor.getValue() );
 		}
 
 		// Set our content variable

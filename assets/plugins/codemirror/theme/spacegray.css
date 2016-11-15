@@ -1,5 +1,4 @@
-
-/* Based on Sublime Text's spacegray theme */
+/* Based on Atom's spacegray theme */
 
 .cm-s-spacegray.CodeMirror { background: #2b303b; color: #f0f1f5; }
 .cm-s-spacegray div.CodeMirror-selected { background: #333f48; }
@@ -9,9 +8,7 @@
 .cm-s-spacegray .CodeMirror-guttermarker { color: white; }
 .cm-s-spacegray .CodeMirror-guttermarker-subtle { color: #d0d0d0; }
 .cm-s-spacegray .CodeMirror-linenumber { color: #767676; }
-.cm-s-spacegray .CodeMirror-cursor {
-    border-left: 1px solid #f8f8f0;
-}
+.cm-s-spacegray .CodeMirror-cursor { border-left: 1px solid #f8f8f0; }
 
 .cm-s-spacegray span.cm-comment { color: #576670; }
 .cm-s-spacegray span.cm-atom { color: #9dbe8c; }
@@ -37,11 +34,8 @@
 .cm-s-spacegray span.cm-tag { color: #bf616a; }
 .cm-s-spacegray span.cm-header { color: #d85896; }
 .cm-s-spacegray span.cm-link { color: #b77fdb; text-decoration: none; }
-.cm-s-spacegray span.cm-error { background: rgba(207, 59, 60, 0.2); color: #cf3b3c; }
+.cm-s-spacegray span.cm-error { color: #cf3b3c; }
 .cm-s-spacegray span.cm-qualifier { color: #d08770; }
 
 .cm-s-spacegray .CodeMirror-activeline-background { background: #2b303b; }
-.cm-s-spacegray .CodeMirror-matchingbracket {
-    background-color: rgba(240, 241, 245, 0.2);
-    color: #f0f1f5 !important;
-}
+.cm-s-spacegray .CodeMirror-matchingbracket { background-color: rgba(240, 241, 245, 0.2); color: #f0f1f5 !important; }

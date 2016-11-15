@@ -335,13 +335,14 @@ class Blox_Settings {
 			/** Default Settings */
 			'default' => apply_filters( 'blox_settings_defaults',
 				array(
+                    /*
 					'defaults_content_header' => array(
 						'id'   => 'defaults_content_header',
 						'name' => '<span class="title">' . __( 'Content Settings', 'blox' ) . '</span>',
 						'desc' => '',
 						'type' => 'header'
 					),
-                    /*
+
 					'enable_content_restrict' => array(
 						'id'    => 'enable_content_restrict',
 						'name'  => __( 'Restrict Content Types', 'blox' ),
@@ -350,26 +351,6 @@ class Blox_Settings {
 						'type'  => 'checkbox',
 						'default' => true
 					),*/
-                    'syntax_highlighting_disable' => array(
-                        'id'      => 'syntax_highlighting_disable',
-                        'name'    => __( 'Syntax Highlighting', 'blox' ),
-                        'label'   => __( 'Disable raw content syntax highlighting', 'blox' ),
-                        'desc'    => __( 'Turning on this setting will disable syntax highlighting in the raw content fullscreen modal.', 'blox' ),
-                        'type'    => 'checkbox',
-                        'default' => false
-                    ),
-                    'syntax_highlighting_theme' => array(
-                        'id'   => 'syntax_highlighting_theme',
-                        'name' => __( 'Highlighter Theme', 'blox' ),
-                        'desc' => __( 'Choose the visual theme for when syntax highlighting is eabled.', 'blox' ),
-                        'type' => 'select',
-                        'options' => array(
-                            'default'    => __( 'Default', 'blox' ),
-                            'spacegray'  => __( 'Spacegray (Dark)', 'blox' ),
-                            'monokai'    => __( 'Monokai (Dark)', 'blox' ),
-                        ),
-                        'default' => 'default'
-                    ),
 					'defaults_position_header' => array(
 						'id'   => 'defaults_position_header',
 						'name' => '<span class="title">' . __( 'Position Settings', 'blox' ) . '</span>',
@@ -413,7 +394,7 @@ class Blox_Settings {
 
 			'hooks' => apply_filters( 'blox_settings_hooks',
 					array(
-						'hook_control_header' => array(
+					'hook_control_header' => array(
 						'id'   => 'hook_control_header',
 						'name' => '<span class="title">' . __( 'Hook Control', 'blox' ) . '</span>',
 						'desc' => __( 'By default, Blox allows you to choose from over 50 Genesis hooks. Here you can pick and choose the ones you want to use, rename the hooks, or even add your own custom hooks to use with a third-party Genesis theme or plugin.', 'blox' ),
@@ -482,6 +463,38 @@ class Blox_Settings {
 			/** Misc Settings */
 			'misc' => apply_filters('blox_settings_misc',
 				array(
+                    'syntax_highlighting_header' => array(
+                        'id'   => 'syntax_highlighting_header',
+                        'name' => '<span class="title">' . __( 'Syntax Highlighting', 'blox' ) . '</span>',
+                        'desc' => '',
+                        'type' => 'header'
+                    ),
+                    'syntax_highlighting_disable' => array(
+                        'id'      => 'syntax_highlighting_disable',
+                        'name'    => __( 'Disable Highlighting', 'blox' ),
+                        'label'   => __( 'Disable all syntax highlighting', 'blox' ),
+                        'desc'    => __( 'Checking this setting will disable syntax highlighting in the raw content fullscreen modal.', 'blox' ),
+                        'type'    => 'checkbox',
+                        'default' => false
+                    ),
+                    'syntax_highlighting_theme' => array(
+                        'id'   => 'syntax_highlighting_theme',
+                        'name' => __( 'Visual Theme', 'blox' ),
+                        'desc' => __( 'Choose the visual theme for when syntax highlighting is enabled.', 'blox' ),
+                        'type' => 'select',
+                        'options' => array(
+                            'default'    => __( 'Default (Light)', 'blox' ),
+                            'monokai'    => __( 'Monokai (Dark)', 'blox' ),
+                            'spacegray'  => __( 'Spacegray (Dark)', 'blox' ),
+                        ),
+                        'default' => 'default'
+                    ),
+                    'other_header' => array(
+                        'id'   => 'other_header',
+                        'name' => '<span class="title">' . __( 'Additional Settings', 'blox' ) . '</span>',
+                        'desc' => '',
+                        'type' => 'header'
+                    ),
 					'local_metabox_title' => array(
 						'id'   => 'local_metabox_title',
 						'name' => __( 'Local Metabox Title', 'blox' ),
