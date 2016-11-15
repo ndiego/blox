@@ -88,6 +88,9 @@ class Blox_Content_Raw {
             wp_enqueue_script( $this->base->plugin_slug . '-codemirror-scripts-php', plugins_url( 'assets/plugins/codemirror/mode/php/php.js', $this->base->file ), array(), $this->base->version );
             wp_enqueue_script( $this->base->plugin_slug . '-codemirror-scripts-xml', plugins_url( 'assets/plugins/codemirror/mode/xml/xml.js', $this->base->file ), array(), $this->base->version );
 
+            // Load codemirror addons
+            // NONE YET
+
             // Load base codemirror styles
             wp_register_style( $this->base->plugin_slug . '-codemirror-styles', plugins_url( 'assets/plugins/codemirror/lib/codemirror.css', $this->base->file ), array(), $this->base->version );
             wp_enqueue_style( $this->base->plugin_slug . '-codemirror-styles' );
@@ -281,7 +284,6 @@ class Blox_Content_Raw {
                     <script>
                         var blox_raw_fullscreen_editor = CodeMirror.fromTextArea(document.getElementById("blox_raw_content"), {
                             lineNumbers: true,
-                            matchBrackets: true,
                             mode: "application/x-httpd-php",
                             indentUnit: 4,
                             indentWithTabs: true,
