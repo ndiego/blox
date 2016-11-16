@@ -111,7 +111,6 @@ class Blox_Content_Slideshow {
 		<!-- Slideshow Settings -->
 		<table class="form-table blox-content-slideshow blox-hidden">
 			<tbody>
-				<tr class="blox-content-title"><th scope="row"><?php _e( 'Slideshow Settings', 'blox' ); ?></th><td><hr></td></tr>
 				<tr class="blox-slideshow-type-container">
 					<th scope="row"><?php _e( 'Slideshow Type', 'blox' ); ?></th>
 					<td>
@@ -401,10 +400,10 @@ class Blox_Content_Slideshow {
 
 		// Allows us to use is_plugin_active on the frontend
 		include_once ( ABSPATH . 'wp-admin/includes/plugin.php' );
-		
+
 		// Get the type of block we are working with
 		$block_scope = $global ? 'global' : 'local';
-		
+
 		// Array of additional CSS classes
 		$classes = array();
 
@@ -472,7 +471,7 @@ class Blox_Content_Slideshow {
 								slideshowSpeed: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['slideshowSpeed'] ) ? esc_attr( $content_data['slideshow']['builtin']['settings']['slideshowSpeed'] ) : 7000; ?>,
 								animationSpeed: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['animationSpeed'] ) ? esc_attr( $content_data['slideshow']['builtin']['settings']['animationSpeed'] ) : 600; ?>,
 								smoothHeight: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['smoothHeight'] ) ? 'true' : 'false'; ?>,
-								
+
 								//after: function(){
 									//if ( $( '.flex-active-slide' ).hasClass( 'dark' ) ) { alert('true'); } else { alert( 'false')};
 								//}
@@ -491,20 +490,20 @@ class Blox_Content_Slideshow {
 		} else if ( is_plugin_active( 'soliloquy/soliloquy.php' ) && $content_data['slideshow']['slideshow_type'] == 'soliloquy' )  {
 
 			// If Soliloquy is active, display the selected slideshow
-			if ( ! empty( $content_data['slideshow']['soliloquy'] ) ) { 
+			if ( ! empty( $content_data['slideshow']['soliloquy'] ) ) {
 				$this->display_slideshow_soliloquy( $content_data['slideshow']['soliloquy']['id'] );
 			}
 		} else if ( is_plugin_active( 'revslider/revslider.php' ) && $content_data['slideshow']['slideshow_type'] == 'revolution' ) {
 
 			// If Revolution is active, display the selected slideshow
 			if ( ! empty( $content_data['slideshow']['revolution'] ) ) {
-				$this->display_slideshow_revolution( $content_data['slideshow']['revolution']['id'] ); 
+				$this->display_slideshow_revolution( $content_data['slideshow']['revolution']['id'] );
 			}
 		} else if ( is_plugin_active( 'ml-slider/ml-slider.php' ) && $content_data['slideshow']['slideshow_type'] == 'metaslider' ) {
 
 			// If Meta Slider is active, display the selected slideshow
 			if ( ! empty( $content_data['slideshow']['metaslider'] ) ) {
-				$this->display_slideshow_metaslider( $content_data['slideshow']['metaslider']['id'] ); 
+				$this->display_slideshow_metaslider( $content_data['slideshow']['metaslider']['id'] );
 			}
 		}
 	}
@@ -531,9 +530,9 @@ class Blox_Content_Slideshow {
 		if ( is_plugin_active( 'revslider/revslider.php' ) ) {
 			$slideshow_types['revolution'] =  __( 'Revolution Slider', 'blox' );
 		}
-		
+
 		// If the Meta Slider plugin is active, add this option
-		if ( is_plugin_active( 'ml-slider/ml-slider.php' ) ) { 
+		if ( is_plugin_active( 'ml-slider/ml-slider.php' ) ) {
 			$slideshow_types['metaslider'] =  __( 'Meta Slider', 'blox' );
 		}
 
@@ -677,9 +676,9 @@ class Blox_Content_Slideshow {
 			<?php
 		}
 	}
-	
-	
-	
+
+
+
 	// META SLIDER HELPER FUNCTIONS
 
 	/**
@@ -695,7 +694,7 @@ class Blox_Content_Slideshow {
 		// Grab id and title of all available sliders
 		$posts = get_posts( array( 'post_type' => 'ml-slider', 'posts_per_page' => -1, 'post_status' => 'publish' ) );
 
-		foreach( $posts as $post ) {		
+		foreach( $posts as $post ) {
 			$metasliders[] = array(
 				'title' => $post->post_title,
 				'id' => $post->ID

@@ -84,10 +84,11 @@
 .blox-textarea-code {
 	width: 100%;
 	max-width: 100%;
-	font-family: Consolas, Monaco, monospace;
+	font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 	font-size: 13px;
 	background: #f9f9f9;
 	outline: 0;
+	overflow: auto;
 	resize: vertical;
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
@@ -170,7 +171,7 @@ ul.blox-columns li {
 	padding: 0;
 }
 .blox-columns li label {
-	display: inline-block; 
+	display: inline-block;
 	height: 24px;
 	overflow: hidden;
 	white-space: nowrap;
@@ -339,7 +340,7 @@ ul.blox-columns li {
 }
 .blox-content-block-title-input input {
 	width: 50%;
-}	
+}
 .blox-content-block.editing .blox-content-block-title-input {
 	display: inline;
 	margin-right: 5px;
@@ -352,13 +353,13 @@ ul.blox-columns li {
 .blox-remove-block:hover {
 	color: red;
 }
-.blox-duplicate-block { 
+.blox-duplicate-block {
 	font-size: 12px;
 	margin-right: 8px;
 	text-decoration: none;
 }
 /* We don't want people to be able to duplicate a block with unsaved settings */
-.blox-content-block.new .blox-duplicate-block { 
+.blox-content-block.new .blox-duplicate-block {
 	display: none;
 }
 .blox-content-block-details {
@@ -415,7 +416,7 @@ ul.blox-columns li {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-.blox-content-block-edit:hover:after {  
+.blox-content-block-edit:hover:after {
 	color: #777;
 }
 .blox-content-block.editing .blox-content-block-edit:after {
@@ -544,10 +545,10 @@ ul.blox-columns li {
 .blox-image-preview-inner {
 	border: 1px solid #e5e5e5;
 	display: inline-block;
-	margin: 4px;  
+	margin: 4px;
 	max-height: 590px;
 	overflow: hidden;
-	vertical-align: top;     
+	vertical-align: top;
 }
 .blox-image-preview-inner img {
 	max-width: 100%;
@@ -592,14 +593,163 @@ ul.blox-columns li {
 
 /* Raw Styles */
 
-.blox-content-raw td label { 
+#blox_raw_content,
+.blox-raw-output {
+	width: 100%;
+	max-width: 100%;
+	font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+	font-size: 13px;
+	background: #fff;
+	border: 0;
+	border-right: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	box-shadow: none;
+	margin-top: 0;
+	outline: 0;
+	overflow: auto;
+	padding: 10px;
+	resize: vertical;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+}
+#blox_raw_content {
+	border: 1px solid #ddd;
+	resize: none;
+}
+#blox_raw_content,
+.blox-raw-output:focus {
+    outline: 0;
+    border-color: #ddd;
+    box-shadow: none;
+}
+
+.blox-content-raw td label {
 	display: block;
 	margin-top: 12px;
 }
-.blox-content-raw  label.last { 
+.blox-content-raw td label:first-child {
+	margin-top: 0;
+}
+.blox-content-raw td label.last {
 	display: inline-block;
-	margin-top: 12px;
 	margin-bottom: 12px;
+}
+
+.blox-modal-raw-container {
+	height: 100%;
+}
+.blox-modal-raw-container textarea,
+.blox-modal-raw-container .CodeMirror {
+	height: 80px;
+	-webkit-height: calc(100%  -  40px);
+	-moz-height: calc(100%  -  40px);
+	height: calc(100%  -  40px);
+}
+.blox-modal-raw-container textarea:focus {
+	border: 1px solid #ddd;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+}
+.blox-modal-raw-header {
+}
+.blox-modal-raw-footer {
+	height: 40px;
+}
+
+
+.blox-toolbar {
+	background-color: #f5f5f5;
+	border: 1px solid #ddd;
+}
+.blox-toolbar-wrap {
+	padding: 3px;
+
+}
+
+.blox-toolbar-button {
+	border: 1px solid transparent;
+	display: inline-block;
+	margin: 2px;
+	outline: 0;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	position:relative
+}
+.blox-toolbar-button.right {
+	float: right;
+}
+.blox-toolbar-button:hover {
+	background: #fafafa;
+	border-color: #555d66;
+	color: #23282d;
+	-webkit-box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08);
+	box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08);
+	outline: 0;
+}
+/* Button Tooltip */
+.blox-toolbar-button:hover:after {
+	color: #fff;
+    font-size: 12px;
+    background: #000;
+    content: attr(aria-label);
+    padding: 5px 8px;
+    white-space: nowrap;
+    display: block;
+    position: absolute;
+    left: -72%;
+    left: calc(50% - 37px);
+    bottom: -35px;
+    z-index: 8;
+    border-radius: 4px;
+}
+.blox-toolbar-button:hover:before {
+	border: solid;
+    border-color:rgba(0,0,0,1) transparent;
+    border-width: 0 6px 6px 6px;
+    content: "";
+    display: block;
+    position: absolute;
+	left: 34%;
+    left: calc(50% - 6px);
+    bottom: -11px;
+    z-index: 9;
+}
+/* END - Button Tooltip */
+.blox-toolbar-button button {
+	padding: 4px 8px;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+    color: #333;
+    text-align: center;
+    overflow: visible;
+    -webkit-appearance: none;
+	border: none;
+	background-color: transparent;
+	outline: 0;
+}
+.blox-toolbar-button i {
+	color: #555d66;
+	width: 16px;
+    height: 16px;
+	display: inline-block;
+    background: transparent center center;
+    background-size: cover;
+}
+.blox-toolbar-button i {
+	font: 400 20px/1 dashicons;
+	padding: 0 2px 0 0;
+	vertical-align: top;
+	speak: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	margin-left: -2px;
+}
+/* Button specific CSS */
+.blox-toolbar-button i.fullscreen:before {
+	content: "\f211";
 }
 
 
@@ -625,7 +775,7 @@ ul.blox-columns li {
 #blox_gallery_container li div.blox-gallery-container,
 .blox-slider-container li div.blox-slide-container {
 	background: #eee;
-	line-height: 0;	
+	line-height: 0;
 	width: 100%;
 }
 #blox_gallery_container li img,
@@ -662,7 +812,7 @@ a.blox-slide-details {
 	cursor: default !important;
 }
 .blox-filler-container {
-	background-color: #eee;	
+	background-color: #eee;
 	background-image: url('../images/default-square.png') !important;
 	width: 150px;
 	height: 150px;
@@ -698,7 +848,7 @@ a.blox-slide-details {
 
 
 
-/* Location Options Styles 
+/* Location Options Styles
 -------------------------------------------------------------- */
 
 #blox_location_selection td {
@@ -796,7 +946,7 @@ a.blox-slide-details {
 .blox-modal .form-table td,
 .blox-modal .form-table td label,
 .blox-modal .form-table th {
-	font-size: 13px !important; 
+	font-size: 13px !important;
 }
 .blox-modal textarea,
 .blox-modal input[type="text"] {
@@ -843,13 +993,13 @@ a.blox-slide-details {
 	.blox-columns li label {
 		height: 34px;
 	}
-	
+
 	/* Make select dropdowns smaller so help icon does not drop to the next line */
 	.blox-has-help {
 		display: inline-block !important;
 		width: 88% !important;
 	}
-	
+
 	.blox-content-title th {
 		display: block;
 		float: left;
@@ -867,7 +1017,7 @@ a.blox-slide-details {
 	.blox-content-block-type {
 		display: none;
 	}
-	
+
 	.blox-tab-navigation li {
 		width: 48%;
 		text-align: center;

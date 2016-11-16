@@ -92,7 +92,6 @@ class Blox_Content_Editor {
 		<!-- Wordpress Editor Settings -->
 		<table class="form-table blox-content-editor blox-hidden">
 			<tbody>
-				<tr class="blox-content-title"><th scope="row"><?php _e( 'Editor Content Settings', 'blox' ); ?></th><td><hr></td></tr>
 				<tr>
 					<th scope="row"><?php _e( 'Editor Content', 'blox' ); ?></th>
 					<td>
@@ -222,7 +221,7 @@ class Blox_Content_Editor {
      * @param string $global      The block state
      */
 	public function print_editor_content( $content_data, $block_id, $block, $global ) {
-		
+
 		// Array of additional CSS classes
 		$classes = array();
 		?>
