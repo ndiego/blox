@@ -317,6 +317,13 @@ class Blox_Content_Slideshow {
 			<div class="blox-form-container">
 				<table class="form-table">
 					<tbody>
+                        <tr>
+                            <th scope="row"><?php _e( 'Image', 'blox' ); ?></th>
+                            <td>
+                                <input type="text" class="modal-slide-image-id blox-force-hidden" value="" />
+                                <input type="text" class="modal-slide-image-url blox-force-hidden" value="" />
+                            </td>
+                        </tr>
 						<tr>
 							<th scope="row"><?php _e( 'Image Title', 'blox' ); ?></th>
 							<td>
@@ -329,6 +336,25 @@ class Blox_Content_Slideshow {
 								<input type="text" class="modal-slide-image-alt" value="" />
 							</td>
 						</tr>
+                        <tr>
+        					<th scope="row"><?php _e( 'Image Size', 'blox' ); ?></th>
+        					<td>
+        						<select class="modal-slide-image-size">
+        							<?php foreach ( (array) $this->get_image_sizes() as $i => $size ) {
+
+        								// Remove the new Custom option added in WP 4.4 for now. Could cause confusion...
+        								if ( $size['value'] != 'custom' ) {
+        								?>
+        								    <option value="<?php echo $size['value']; ?>"><?php echo $size['name']; ?></option>
+        								<?php
+        								}
+        							} ?>
+        						</select>
+        						<div class="blox-description">
+        							<?php _e( 'Note that the selected image size is not reflected in the preview above.', 'blox' ); ?>
+        						</div>
+        					</td>
+        				</tr>
 						<tr>
 							<th scope="row"><?php _e( 'Image Link', 'blox' ); ?></th>
 							<td>
@@ -741,6 +767,20 @@ class Blox_Content_Slideshow {
 			<?php
 		}
 	}
+
+
+    /**
+     * Helper method for retrieving image sizes.
+     *
+     * @since 1.0.0
+     *
+     * @return array Array of image size data.
+     */
+    public function get_image_sizes() {
+
+        $instance = Blox_Common::get_instance();
+        return $instance->get_image_sizes();
+    }
 
 
     /**
