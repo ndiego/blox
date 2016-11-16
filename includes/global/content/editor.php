@@ -160,7 +160,7 @@ class Blox_Content_Editor {
 		if ( $global == false ) {
 		?>
 			<!--Content Editor Modal-->
-			<div id="blox_editor" class="blox-hidden blox-modal" title="<?php _e( 'Content Editor', 'blox' );?>">
+			<div id="blox_editor" class="blox-hidden blox-modal">
 
 				<!-- Header -->
 				<div class="blox-modal-titlebar">

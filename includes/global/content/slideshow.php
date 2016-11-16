@@ -133,7 +133,7 @@ class Blox_Content_Slideshow {
 							<?php foreach ( $get_prefix['slideshow']['builtin']['slides'] as $key => $slides ) { ?>
 								<li id="<?php echo $key; ?>" class="blox-slideshow-item" >
 									<div class="blox-slide-container">
-										<img src="<?php echo isset( $slides['image']['id'] ) ? wp_get_attachment_thumb_url( esc_attr( $slides['image']['id'] ) ) : ''; ?>" alt="<?php echo esc_attr( $slides['image']['alt'] ); ?>" />
+										<img class="slide-image-thumbnail" src="<?php echo isset( $slides['image']['id'] ) ? wp_get_attachment_thumb_url( esc_attr( $slides['image']['id'] ) ) : ''; ?>" alt="<?php echo esc_attr( $slides['image']['alt'] ); ?>" />
 									</div>
 									<input type="text" class="slide-type blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][slide_type]" value="image" /> <!-- possibly more slide types in the future -->
 
@@ -300,7 +300,7 @@ class Blox_Content_Slideshow {
 	public function add_slideshow_modal( $global ) {
 		?>
 		<!--Slideshow Image Settings Modal-->
-		<div id="blox_slide_details" class='blox-hidden blox-modal' title="<?php _e( 'Image Details', 'blox' );?>">
+		<div id="blox_slide_details" class='blox-hidden blox-modal'>
 
 			<!-- Header -->
 			<div class="blox-modal-titlebar">
@@ -320,24 +320,27 @@ class Blox_Content_Slideshow {
                         <tr>
                             <th scope="row"><?php _e( 'Image', 'blox' ); ?></th>
                             <td>
-                                <a class="button button-primary" name="blox_upload_button" id="blox_upload_button"  onclick="blox_change_slide_Upload.uploader(); return false;"><?php _e( 'Select New Image', 'blox' );?></a>
+                                <a class="button button-primary" name="blox_upload_button" id="blox_upload_button"  onclick="blox_slideshow_change_image.uploader(); return false;"><?php _e( 'Select New Image', 'blox' );?></a>
+                                <div>
+                                    <img class="modal-slide-image-preview" src="" />
+                                </div>
 
                                 <input type="text" class="modal-slide-image-id blox-force-hidden" value="" />
                                 <input type="text" class="modal-slide-image-url blox-force-hidden" value="" />
+                                <input type="text" class="modal-slide-image-thumbnail blox-force-hidden" value="" />
+                                
+                                <div class="blox-slideshow-modal-image-atts">
+                                    <label class="blox-subtitle">
+                                        <span><?php _e( 'Title', 'blox' ); ?></span>
+                                        <input type="text" class="modal-slide-image-title" value="" />
+                                    </label>
+                                    <label class="blox-subtitle">
+                                        <span><?php _e( 'Alt', 'blox' ); ?></span>
+                                        <input type="text" class="modal-slide-image-alt" value="" />
+                                    </label>
+                                </div>
                             </td>
                         </tr>
-						<tr>
-							<th scope="row"><?php _e( 'Image Title', 'blox' ); ?></th>
-							<td>
-								<input type="text" class="modal-slide-image-title" value="" />
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><?php _e( 'Image Alt Text', 'blox' ); ?></th>
-							<td>
-								<input type="text" class="modal-slide-image-alt" value="" />
-							</td>
-						</tr>
                         <tr>
         					<th scope="row"><?php _e( 'Image Size', 'blox' ); ?></th>
         					<td>

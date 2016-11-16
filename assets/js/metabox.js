@@ -348,18 +348,25 @@ jQuery(document).ready(function($){
 		$( modal_id ).fadeTo( 200, 1 );
 
 		// Grab our existing slide details
-		var id 			= $( this ).parents( 'li' ).attr( 'id' );
-		var title 		= $( '#' + id + ' .slide-image-title' ).attr( 'value' );
-		var alt 		= $( '#' + id + ' .slide-image-alt' ).attr( 'value' );
-		var caption 	= $( '#' + id + ' .slide-image-caption' ).attr( 'value' );
-		var link_enable = $( '#' + id + ' .slide-image-link-enable' ).is( ':checked' );
-		var link_url 	= $( '#' + id + ' .slide-image-link-url' ).attr( 'value' );
-		var link_title 	= $( '#' + id + ' .slide-image-link-title' ).attr( 'value' );
-		var link_target = $( '#' + id + ' .slide-image-link-target' ).is( ':checked' );
-		var classes 	= $( '#' + id + ' .slide-image-classes' ).attr( 'value' );
+		var slide_id 		= $( this ).parents( 'li' ).attr( 'id' );
+		var image_id 		= $( '#' + slide_id + ' .slide-image-id' ).attr( 'value' );
+		var image_url 		= $( '#' + slide_id + ' .slide-image-url' ).attr( 'value' );
+		var image_thumbnail = $( '#' + slide_id + ' .slide-image-thumbnail' ).attr( 'src' );
+		var title 			= $( '#' + slide_id + ' .slide-image-title' ).attr( 'value' );
+		var alt 			= $( '#' + slide_id + ' .slide-image-alt' ).attr( 'value' );
+		var caption 		= $( '#' + slide_id + ' .slide-image-caption' ).attr( 'value' );
+		var link_enable 	= $( '#' + slide_id + ' .slide-image-link-enable' ).is( ':checked' );
+		var link_url 		= $( '#' + slide_id + ' .slide-image-link-url' ).attr( 'value' );
+		var link_title 		= $( '#' + slide_id + ' .slide-image-link-title' ).attr( 'value' );
+		var link_target 	= $( '#' + slide_id + ' .slide-image-link-target' ).is( ':checked' );
+		var classes 		= $( '#' + slide_id + ' .slide-image-classes' ).attr( 'value' );
 
 		// Populate the modal with existing details on open
-		$( '.modal-slide-id' ).attr( 'value' , id );
+		$( '.modal-slide-id' ).attr( 'value' , slide_id );
+		$( '.modal-slide-image-preview' ).attr( 'src' , image_url );
+		$( '.modal-slide-image-id' ).attr( 'value' , image_id );
+		$( '.modal-slide-image-url' ).attr( 'value' , image_url );
+		$( '.modal-slide-image-thumbnail' ).attr( 'value' , image_thumbnail );
 		$( '.modal-slide-image-title' ).attr( 'value' , title );
 		$( '.modal-slide-image-alt' ).attr( 'value' , alt );
 		$( '.modal-slide-image-caption' ).attr( 'value' , caption );
@@ -376,15 +383,19 @@ jQuery(document).ready(function($){
 
 		// Add our new details to the slide on button click
 		// Need to use .data() otherwise won't work due to dynamic targeting issue
-		$(document).data( 'slide-metadata', { ids: id }).on( 'click', '#blox-apply-details', function() {
+		$(document).data( 'slide-metadata', { ids: slide_id }).on( 'click', '#blox-apply-details', function() {
+			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-thumbnail' ).attr( 'src', $( '.modal-slide-image-thumbnail' ).val() );
+			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-id' ).val( $( '.modal-slide-image-id' ).val() );
+			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-url' ).val( $( '.modal-slide-image-url' ).val() );
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-title' ).val( $( '.modal-slide-image-title' ).val() );
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-alt' ).val( $( '.modal-slide-image-alt' ).val() );
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-caption' ).val( $( '.modal-slide-image-caption' ).val() );
 
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-link-enable' ).prop( 'checked', $( '.modal-slide-image-link-enable' ).is( ':checked' ) );
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-link-url' ).val( $( '.modal-slide-image-link-url' ).val() );
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-link-title' ).val( $( '.modal-slide-image-link-title' ).val() );
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-link-target' ).prop( 'checked', $( '.modal-slide-image-link-target' ).is( ':checked' ) );
+
+			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-caption' ).val( $( '.modal-slide-image-caption' ).val() );
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-classes' ).val( $( '.modal-slide-image-classes' ).val() );
 
 			$( "#blox_overlay" ).fadeOut(200);
@@ -408,75 +419,32 @@ jQuery(document).ready(function($){
 
 
 	// Slideshow Uploader function
-	blox_change_slide_Upload = {
+	blox_slideshow_change_image = {
 
 		// Call this from the upload button to initiate the upload frame.
 		uploader : function() {
 			var frame = wp.media({
-				id : 'test', // We set the id to be the name_prefix so that we can save our slides
-				title : blox_localize_metabox_scripts.slideshow_media_title,
+				title : blox_localize_metabox_scripts.image_media_title,
 				multiple : false,
-				library : { type : 'image' }, //only can upload images
-				button : { text : blox_localize_metabox_scripts.slideshow_media_button }
+				library : { type : 'image' }, // Only can upload images
+				button : { text : blox_localize_metabox_scripts.image_media_button }
 			});
 
 			// Handle results from media manager
 			frame.on( 'select', function() {
+				var attachments = frame.state().get( 'selection' ).toJSON();
 
-				// Extract the block id from the frame.id (i.e the name prefix)
-				var block_id = frame.id.substring( 25, 29 );
-
-				// If we are on a global block, the retrieved block id will be gibberish and not be a number. But if we are on a global block we don't need to worry about targeting...
-				if ( ! isNaN( block_id ) ) {
-					// We are on local so we need to target using the block id
-					var select_target = '#' + block_id + ' .blox-slider-container';
-				} else {
-					// We are on global so we don't worry about targeting
-					var select_target ='.blox-slider-container';
-				}
-
-				var selection = frame.state().get( 'selection' );
-
-				// Need this to handle multiple images selected
-				selection.map( function( attachment ) {
-					attachment = attachment.toJSON();
-					$( select_target ).append( function() {
-
-						// Generate a unique id for each slide: From http://stackoverflow.com/questions/6248666/how-to-generate-short-uid-like-ax4j9z-in-js
-						var randSlideId = 'slide_' + ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4);
-						var output = '';
-
-						output += '<li id="' + randSlideId + '" class="blox-slideshow-item" >';
-						output += '<div class="blox-slide-container"><image  src="' + attachment.sizes.thumbnail.url + '" alt="' + attachment.alt + '" /></div>';
-						output += '<input type="text" class="slide-image-id blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][slide_type]" value="image" />';
-						output += '<input type="text" class="slide-image-id blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][id]" value="' + attachment.id + '" />';
-						output += '<input type="text" class="slide-image-url blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][url]" value="' + attachment.url + '" />';
-						output += '<input type="text" class="slide-image-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][title]" value="' + attachment.title + '" />';
-						output += '<input type="text" class="slide-image-alt blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][alt]" value="' + attachment.alt + '" />';
-						output += '<input type="checkbox" class="slide-image-link-enable blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][enable]" value="1" />';
-						output += '<input type="text" class="slide-image-link-url blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][url]" value="http://" />';
-						output += '<input type="text" class="slide-image-link-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][title]" value="" />';
-						output += '<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][target]" value="1" />';
-						output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" value="' + attachment.caption + '" />';
-						output += '<input type="text" class="slide-image-classes blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][classes]" value="" />';
-						output += '<div class="blox-slide-details-container"><a class="blox-slide-details" href="#blox_slide_details">' + blox_localize_metabox_scripts.slideshow_details + '</a><a class="blox-slide-remove" href="#">' + blox_localize_metabox_scripts.slideshow_remove + '</a></div>';
-						output += '</li>';
-
-						return output;
-					});
-				});
-
-				// If our filler slide is present, remove it!
-				if ( $('.blox-filler').length > 0 ) {
-					$('.blox-filler').remove();
-				}
-
+				$( '.modal-slide-image-preview' ).attr( 'src', attachments[0].url );
+				$( '.modal-slide-image-id' ).val( attachments[0].id );
+				$( '.modal-slide-image-url' ).val( attachments[0].url );
+				$( '.modal-slide-image-thumbnail' ).val( attachments[0].sizes['thumbnail'].url );
+				$( '.modal-slide-image-title' ).val( attachments[0].title );
+				$( '.modal-slide-image-alt' ).val( attachments[0].alt );
 			});
 
 			frame.open();
 			return false;
 		},
-
 	};
 
 

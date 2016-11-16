@@ -846,6 +846,17 @@ a.blox-slide-details {
 	margin-bottom: 10px;
 }
 
+/* Modal Specific Styles */
+.blox-slideshow-modal-image-atts {
+	padding-top: 0
+}
+.blox-slideshow-modal-image-atts label {
+	display: block;
+	margin-top: 15px;
+}
+.blox-slideshow-modal-image-atts .blox-subtitle span {
+	width: 30px;
+}
 
 
 /* Location Options Styles

@@ -171,7 +171,7 @@ class Blox_Metaboxes {
         		'slideshow_details'			=> __( 'Details', 'blox' ),
         		'slideshow_remove'			=> __( 'Remove', 'blox' ),
         		'slideshow_confirm_remove' 	=> __( 'Are you sure you want to remove this image from the slideshow? This action cannot be undone.', 'blox' ),
-        	)
+            )
         );
 
         // Allow the use of the media uploader on global blocks pages

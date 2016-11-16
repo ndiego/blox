@@ -255,7 +255,7 @@ class Blox_Content_Raw {
 
         ?>
         <!--Raw Content Modal-->
-        <div id="blox_raw" class='blox-hidden blox-modal' title="<?php _e( 'Raw Content', 'blox' );?>">
+        <div id="blox_raw" class='blox-hidden blox-modal'>
 
             <!-- Header -->
             <div class="blox-modal-titlebar">
