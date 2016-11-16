@@ -320,6 +320,8 @@ class Blox_Content_Slideshow {
                         <tr>
                             <th scope="row"><?php _e( 'Image', 'blox' ); ?></th>
                             <td>
+                                <a class="button button-primary" name="blox_upload_button" id="blox_upload_button"  onclick="blox_change_slide_Upload.uploader(); return false;"><?php _e( 'Select New Image', 'blox' );?></a>
+
                                 <input type="text" class="modal-slide-image-id blox-force-hidden" value="" />
                                 <input type="text" class="modal-slide-image-url blox-force-hidden" value="" />
                             </td>

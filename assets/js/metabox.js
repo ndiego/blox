@@ -325,12 +325,6 @@ jQuery(document).ready(function($){
 
 		e.preventDefault();
 
-		var $is_gallery = $( this ).parents( 'li' ).hasClass( 'blox-gallery-item' );
-
-		if ( $is_gallery ) {
-			//alert('this is a gallery');
-		}
-
 		// Add the overlay to the page and style on click
 		var overlay = $( '<div id="blox_overlay"></div>' );
 		$( 'body' ).append(overlay);
@@ -350,12 +344,6 @@ jQuery(document).ready(function($){
 			'bottom' : 30 + 'px',
 			'left' : 30 + 'px',
 			'right' : 30 + 'px'
-
-			// Old Styling
-			//'left' : 50 + '%',
-			//'margin-left' : -(modal_width/2) + "px",
-			//'top' : 40 + "%",
-			//'margin-top' : -(modal_height/2) + "px"
 		});
 		$( modal_id ).fadeTo( 200, 1 );
 
@@ -386,16 +374,6 @@ jQuery(document).ready(function($){
 		  	$( '.modal-slide-image-link-enable' ).parents( '.blox-image-link-enable' ).siblings( '.blox-image-link' ).show();
 		}
 
-		// Gallery specific settings
-		if ( $is_gallery ) {
-			var width = $( '#' + id + ' .slide-width' ).attr( 'value' );
-			var height = $( '#' + id + ' .slide-height' ).attr( 'value' );
-
-			$( '.modal-slide-width' ).attr( 'value' , width );
-			$( '.modal-slide-height' ).attr( 'value' , height );
-		}
-
-
 		// Add our new details to the slide on button click
 		// Need to use .data() otherwise won't work due to dynamic targeting issue
 		$(document).data( 'slide-metadata', { ids: id }).on( 'click', '#blox-apply-details', function() {
@@ -408,12 +386,6 @@ jQuery(document).ready(function($){
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-link-title' ).val( $( '.modal-slide-image-link-title' ).val() );
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-link-target' ).prop( 'checked', $( '.modal-slide-image-link-target' ).is( ':checked' ) );
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-classes' ).val( $( '.modal-slide-image-classes' ).val() );
-
-			// Gallery specific settings
-			if ( $is_gallery ) {
-				$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-width' ).val( $( '.modal-slide-width' ).val() );
-				$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-height' ).val( $( '.modal-slide-height' ).val() );
-			}
 
 			$( "#blox_overlay" ).fadeOut(200);
 			$( modal_id ).css( { 'display' : 'none' } );
@@ -432,6 +404,80 @@ jQuery(document).ready(function($){
 		});
 
 	});
+
+
+
+	// Slideshow Uploader function
+	blox_change_slide_Upload = {
+
+		// Call this from the upload button to initiate the upload frame.
+		uploader : function() {
+			var frame = wp.media({
+				id : 'test', // We set the id to be the name_prefix so that we can save our slides
+				title : blox_localize_metabox_scripts.slideshow_media_title,
+				multiple : false,
+				library : { type : 'image' }, //only can upload images
+				button : { text : blox_localize_metabox_scripts.slideshow_media_button }
+			});
+
+			// Handle results from media manager
+			frame.on( 'select', function() {
+
+				// Extract the block id from the frame.id (i.e the name prefix)
+				var block_id = frame.id.substring( 25, 29 );
+
+				// If we are on a global block, the retrieved block id will be gibberish and not be a number. But if we are on a global block we don't need to worry about targeting...
+				if ( ! isNaN( block_id ) ) {
+					// We are on local so we need to target using the block id
+					var select_target = '#' + block_id + ' .blox-slider-container';
+				} else {
+					// We are on global so we don't worry about targeting
+					var select_target ='.blox-slider-container';
+				}
+
+				var selection = frame.state().get( 'selection' );
+
+				// Need this to handle multiple images selected
+				selection.map( function( attachment ) {
+					attachment = attachment.toJSON();
+					$( select_target ).append( function() {
+
+						// Generate a unique id for each slide: From http://stackoverflow.com/questions/6248666/how-to-generate-short-uid-like-ax4j9z-in-js
+						var randSlideId = 'slide_' + ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4);
+						var output = '';
+
+						output += '<li id="' + randSlideId + '" class="blox-slideshow-item" >';
+						output += '<div class="blox-slide-container"><image  src="' + attachment.sizes.thumbnail.url + '" alt="' + attachment.alt + '" /></div>';
+						output += '<input type="text" class="slide-image-id blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][slide_type]" value="image" />';
+						output += '<input type="text" class="slide-image-id blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][id]" value="' + attachment.id + '" />';
+						output += '<input type="text" class="slide-image-url blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][url]" value="' + attachment.url + '" />';
+						output += '<input type="text" class="slide-image-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][title]" value="' + attachment.title + '" />';
+						output += '<input type="text" class="slide-image-alt blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][alt]" value="' + attachment.alt + '" />';
+						output += '<input type="checkbox" class="slide-image-link-enable blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][enable]" value="1" />';
+						output += '<input type="text" class="slide-image-link-url blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][url]" value="http://" />';
+						output += '<input type="text" class="slide-image-link-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][title]" value="" />';
+						output += '<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][target]" value="1" />';
+						output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" value="' + attachment.caption + '" />';
+						output += '<input type="text" class="slide-image-classes blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][classes]" value="" />';
+						output += '<div class="blox-slide-details-container"><a class="blox-slide-details" href="#blox_slide_details">' + blox_localize_metabox_scripts.slideshow_details + '</a><a class="blox-slide-remove" href="#">' + blox_localize_metabox_scripts.slideshow_remove + '</a></div>';
+						output += '</li>';
+
+						return output;
+					});
+				});
+
+				// If our filler slide is present, remove it!
+				if ( $('.blox-filler').length > 0 ) {
+					$('.blox-filler').remove();
+				}
+
+			});
+
+			frame.open();
+			return false;
+		},
+
+	};
 
 
 
