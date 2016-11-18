@@ -245,8 +245,8 @@ jQuery(document).ready(function($){
 						var output = '';
 
 						output += '<li id="' + randSlideId + '" class="blox-slideshow-item" >';
-						output += '<div class="blox-slide-container"><image  src="' + attachment.sizes.thumbnail.url + '" alt="' + attachment.alt + '" /></div>';
-						output += '<input type="text" class="slide-image-id blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][slide_type]" value="image" />';
+						output += '<div class="blox-slide-container"><image class="slide-image-thumbnail" src="' + attachment.sizes.thumbnail.url + '" alt="' + attachment.alt + '" /></div>';
+						output += '<input type="text" class="slide-type blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][slide_type]" value="image" />';
 						output += '<input type="text" class="slide-image-id blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][id]" value="' + attachment.id + '" />';
 						output += '<input type="text" class="slide-image-url blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][url]" value="' + attachment.url + '" />';
 						output += '<input type="text" class="slide-image-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][title]" value="' + attachment.title + '" />';
@@ -276,6 +276,63 @@ jQuery(document).ready(function($){
 		},
 
 	};
+
+	// Copy Slideshow Items
+	// Need to '.on' because we are working with dynamically generated content
+	$(document).on( 'click', '.blox-slider-container .blox-slide-copy', function() {
+
+		var block_id = $(this).parents( '.blox-content-block' ).attr( 'id' );
+
+		// If we are on a global block, the retrieved block id will be gibberish and not be a number. But if we are on a global block we don't need to worry about targeting...
+		if ( ! isNaN( block_id ) ) {
+			// We are on local so we need to target using the block id
+			var block_id = '#' + block_id;
+		} else {
+			// We are on global so we don't worry about targeting
+			var block_id = '';
+		}
+
+		// Grab our existing slide details
+		var slide_id 		= $( this ).parents( 'li' ).attr( 'id' ),
+			image_id 		= $( '#' + slide_id + ' .slide-image-id' ).attr( 'value' ),
+			image_url 		= $( '#' + slide_id + ' .slide-image-url' ).attr( 'value' ),
+			image_thumbnail = $( '#' + slide_id + ' .slide-image-thumbnail' ).attr( 'src' ),
+			title 			= $( '#' + slide_id + ' .slide-image-title' ).attr( 'value' ),
+			alt 			= $( '#' + slide_id + ' .slide-image-alt' ).attr( 'value' ),
+			link_enable 	= $( '#' + slide_id + ' .slide-image-link-enable' ).is( ':checked' ),
+			link_url 		= $( '#' + slide_id + ' .slide-image-link-url' ).attr( 'value' ),
+			link_title 		= $( '#' + slide_id + ' .slide-image-link-title' ).attr( 'value' ),
+			link_target 	= $( '#' + slide_id + ' .slide-image-link-target' ).is( ':checked' ),
+			caption 		= $( '#' + slide_id + ' .slide-image-caption' ).attr( 'value' ),
+			classes 		= $( '#' + slide_id + ' .slide-image-classes' ).attr( 'value' ),
+
+			// Generate a new slide id
+			new_slide_id    = 'slide_' + ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4),
+			output       	= '';
+
+		$( block_id + ' .blox-slider-container' ).append( function() {
+
+			// Put together the copied slide
+			output += '<li id="' + new_slide_id + '" class="blox-slideshow-item" >';
+			output += '<div class="blox-slide-container"><image class="slide-image-thumbnail" src="' + image_thumbnail + '" alt="' + alt + '" /></div>';
+			output += '<input type="text" class="slide-type blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ new_slide_id +'][slide_type]" value="image" />';
+			output += '<input type="text" class="slide-image-id blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ new_slide_id +'][image][id]" value="' + image_id + '" />';
+			output += '<input type="text" class="slide-image-url blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ new_slide_id +'][image][url]" value="' + image_url + '" />';
+			output += '<input type="text" class="slide-image-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ new_slide_id +'][image][title]" value="' + title + '" />';
+			output += '<input type="text" class="slide-image-alt blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ new_slide_id +'][image][alt]" value="' + alt + '" />';
+			output += '<input type="checkbox" class="slide-image-link-enable blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ new_slide_id +'][image][link][enable]" value="' + link_enable + '" />';
+			output += '<input type="text" class="slide-image-link-url blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ new_slide_id +'][image][link][url]" value="' + link_url + '" />';
+			output += '<input type="text" class="slide-image-link-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ new_slide_id +'][image][link][title]" value="' + link_title + '" />';
+			output += '<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ new_slide_id +'][image][link][target]" value="' + link_target + '" />';
+			output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ new_slide_id +'][image][caption]" value="' + caption + '" />';
+			output += '<input type="text" class="slide-image-classes blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ new_slide_id +'][image][classes]" value="' + classes + '" />';
+			output += '<div class="blox-slide-details-container"><a class="blox-slide-details" href="#blox_slide_details">' + blox_localize_metabox_scripts.slideshow_details + '</a><a class="blox-slide-remove" href="#">' + blox_localize_metabox_scripts.slideshow_remove + '</a></div>';
+			output += '</li>';
+
+			return output;
+		});
+
+	});
 
 	// Remove Slideshow Items
 	// Need to '.on' because we are working with dynamically generated content

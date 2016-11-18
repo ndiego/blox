@@ -149,18 +149,26 @@ class Blox_Content_Slideshow {
 									<input type="text" class="slide-image-classes blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][classes]" value="<?php echo ! empty( $slides['image']['classes'] ) ? esc_attr( $slides['image']['classes'] ) : ''; ?>" />
 
 									<div class="blox-slide-details-container">
-										<a class="blox-slide-details" href="#blox_slide_details"><?php _e( 'Details', 'blox' );?></a><a class="blox-slide-remove" href="#"><?php _e( 'Remove', 'blox' );?></a>
+										<a class="blox-slide-details" href="#blox_slide_details">
+                                            <span class="dashicons dashicons-edit" title="<?php _e( 'Edit Slide', 'blox' );?>"></span>
+                                        </a>
+                                        <a class="blox-slide-copy" href="#" title="<?php _e( 'Copy Slide', 'blox' );?>">
+                                            <span class="dashicons dashicons-admin-page"></span>
+                                        </a>
+                                        <a class="blox-slide-remove" href="#" title="<?php _e( 'Delete Slide', 'blox' );?>">
+                                            <span class="dashicons dashicons-trash"></span>
+                                        </a>
 									</div>
 								</li>
 							<?php } ?>
 
 							<?php } else { ?>
-									<li class="blox-filler" >
-										<div class="blox-filler-container"></div>
-										<div class="blox-filler-text">
-											<span><?php _e( 'Details', 'blox' );?></span><span class="right"><?php _e( 'Remove', 'blox' );?></span>
-										</div>
-									</li>
+								<li class="blox-filler" >
+									<div class="blox-filler-container"></div>
+									<div class="blox-filler-text">
+										<span><?php _e( 'Details', 'blox' );?></span><span class="right"><?php _e( 'Remove', 'blox' );?></span>
+									</div>
+								</li>
 							<?php } ?>
 						</ul>
 
@@ -328,7 +336,7 @@ class Blox_Content_Slideshow {
                                 <input type="text" class="modal-slide-image-id blox-force-hidden" value="" />
                                 <input type="text" class="modal-slide-image-url blox-force-hidden" value="" />
                                 <input type="text" class="modal-slide-image-thumbnail blox-force-hidden" value="" />
-                                
+
                                 <div class="blox-slideshow-modal-image-atts">
                                     <label class="blox-subtitle">
                                         <span><?php _e( 'Title', 'blox' ); ?></span>
