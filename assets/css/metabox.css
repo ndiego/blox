@@ -802,6 +802,7 @@ a.blox-slide-copy,
 a.blox-slide-delete {
 	float:right;
 	padding-left: 0;
+	font-size: 18px;
 }
 a.blox-slide-edit:before { content: "\f464"; }
 a.blox-slide-edit:hover { color: #0073aa; }
