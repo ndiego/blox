@@ -755,14 +755,14 @@ ul.blox-columns li {
 
 /* Slideshow Styles */
 
-#blox_gallery_container,
+
 .blox-slider-container {
 	margin-top: 20px;
 	box-sizing: border-box;
 }
-#blox_gallery_container li,
+
 .blox-slider-container li {
-	background: #fff;
+	background: #fafafa;
 	display: block;
 	float: left;
 	margin: 0 10px 10px 0;
@@ -772,34 +772,44 @@ ul.blox-columns li {
 	cursor: move;
 	width: 150px;
 }
-#blox_gallery_container li div.blox-gallery-container,
+
 .blox-slider-container li div.blox-slide-container {
 	background: #eee;
 	line-height: 0;
 	width: 100%;
 }
-#blox_gallery_container li img,
+
 .blox-slide-container img {
+	border: 1px solid #e5e5e5;
+	box-sizing: border-box;
 	width: 100%;
 }
-#blox_gallery_container li div.blox-slide-details-container,
-.blox-slider-container li div.blox-slide-details-container,
+
+.blox-slider-container li div.blox-slide-tools-container,
 .blox-filler .blox-filler-text {
 	padding: 4px 0 0;
 }
-a.blox-slide-remove {
+.blox-slide-tools-container a {
+	color: #82878c;
+	cursor: pointer;
+	padding: 2px;
+	text-decoration: none;
+}
+.blox-slide-tools-container a:focus {
+	box-shadow: none;
+}
+a.blox-slide-copy,
+a.blox-slide-delete {
 	float:right;
-	color: #a00;
-	font-size: 13px;
-	text-decoration: none;
+	padding-left: 0;
 }
-a.blox-slide-remove:hover {
-	color: red;
-}
-a.blox-slide-details {
-	text-decoration: none;
-}
-#blox_gallery_container li.placeholder,
+a.blox-slide-edit:before { content: "\f464"; }
+a.blox-slide-edit:hover { color: #0073aa; }
+a.blox-slide-copy:before { content: "\f105"; }
+a.blox-slide-copy:hover { color: #ffb900; }
+a.blox-slide-delete:before { content: "\f182"; }
+a.blox-slide-delete:hover { color: #a00a00; }
+
 .blox-slider-container li.placeholder {
 	background: transparent;
 	border: 1px dashed #d5d5d5;
@@ -847,15 +857,27 @@ a.blox-slide-details {
 }
 
 /* Modal Specific Styles */
-.blox-slideshow-modal-image-atts {
-	padding-top: 0
-}
 .blox-slideshow-modal-image-atts label {
 	display: block;
 	margin-top: 15px;
 }
-.blox-slideshow-modal-image-atts .blox-subtitle span {
+.blox-modal .blox-subtitle span {
 	width: 30px;
+}
+.blox-modal .blox-subtitle input[type="text"] {
+	max-width: 570px;
+}
+.modal-slide-image-preview-container {
+	border: 1px solid #e5e5e5;
+	line-height: 0;
+	margin: 15px 0 5px;
+	max-width: 600px;
+	padding: 4px;
+}
+.modal-slide-image-preview-container img {
+	border: 1px solid #e5e5e5;
+	box-sizing: border-box;
+	width: 100%;
 }
 
 

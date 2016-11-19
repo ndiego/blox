@@ -168,8 +168,9 @@ class Blox_Metaboxes {
 
         		'slideshow_media_title'		=> __( 'Choose or Upload an Image(s)', 'blox' ),
         		'slideshow_media_button'	=> __( 'Insert Image(s)', 'blox' ),
-        		'slideshow_details'			=> __( 'Details', 'blox' ),
-        		'slideshow_remove'			=> __( 'Remove', 'blox' ),
+        		'slideshow_edit'			=> __( 'Edit Slide', 'blox' ),
+        		'slideshow_delete'			=> __( 'Delete Slide', 'blox' ),
+                'slideshow_copy'			=> __( 'Copy Slide', 'blox' ),
         		'slideshow_confirm_remove' 	=> __( 'Are you sure you want to remove this image from the slideshow? This action cannot be undone.', 'blox' ),
             )
         );

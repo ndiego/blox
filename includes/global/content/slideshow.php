@@ -141,23 +141,18 @@ class Blox_Content_Slideshow {
 									<input type="text" class="slide-image-url blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][url]" value="<?php echo esc_attr( $slides['image']['url'] ); ?>" />
 									<input type="text" class="slide-image-title blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][title]" value="<?php echo isset( $slides['image']['title'] ) ? esc_attr( $slides['image']['title'] ) : ''; ?>" />
 									<input type="text" class="slide-image-alt blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][alt]" value="<?php echo isset( $slides['image']['alt'] ) ? esc_attr( $slides['image']['alt'] ) : ''; ?>" />
-									<input type="checkbox" class="slide-image-link-enable blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][enable]" value="1" <?php ! empty( $slides['image']['link']['enable'] ) ? checked( $slides['image']['link']['enable'] ) : ''; ?> />
+                                    <input type="text" class="slide-image-size blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][size]" value="<?php echo isset( $slides['image']['size'] ) ? esc_attr( $slides['image']['size'] ) : ''; ?>" />
+                                    <input type="checkbox" class="slide-image-link-enable blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][enable]" value="1" <?php ! empty( $slides['image']['link']['enable'] ) ? checked( $slides['image']['link']['enable'] ) : ''; ?> />
 									<input type="text" class="slide-image-link-url blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][url]" value="<?php echo ! empty( $slides['image']['link']['url'] ) ? esc_attr( $slides['image']['link']['url'] ) : 'http://'; ?>" />
 									<input type="text" class="slide-image-link-title blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][title]" value="<?php echo ! empty( $slides['image']['link']['title'] ) ? esc_attr( $slides['image']['link']['title'] ) : ''; ?>" />
 									<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][target]" value="1" <?php ! empty( $slides['image']['link']['target'] ) ? checked( $slides['image']['link']['target'] ) : ''; ?> />
 									<input type="text" class="slide-image-caption blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][caption]" value="<?php echo isset( $slides['image']['caption'] ) ? esc_attr( $slides['image']['caption'] ) : ''; ?>" />
 									<input type="text" class="slide-image-classes blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][classes]" value="<?php echo ! empty( $slides['image']['classes'] ) ? esc_attr( $slides['image']['classes'] ) : ''; ?>" />
 
-									<div class="blox-slide-details-container">
-										<a class="blox-slide-details" href="#blox_slide_details">
-                                            <span class="dashicons dashicons-edit" title="<?php _e( 'Edit Slide', 'blox' );?>"></span>
-                                        </a>
-                                        <a class="blox-slide-copy" href="#" title="<?php _e( 'Copy Slide', 'blox' );?>">
-                                            <span class="dashicons dashicons-admin-page"></span>
-                                        </a>
-                                        <a class="blox-slide-remove" href="#" title="<?php _e( 'Delete Slide', 'blox' );?>">
-                                            <span class="dashicons dashicons-trash"></span>
-                                        </a>
+									<div class="blox-slide-tools-container">
+										<a class="blox-slide-edit dashicons" href="#blox_slide_details" title="<?php _e( 'Edit Slide', 'blox' );?>"></a>
+                                        <a class="blox-slide-delete dashicons" href="#" title="<?php _e( 'Delete Slide', 'blox' );?>"></a>
+                                        <a class="blox-slide-copy dashicons" href="#" title="<?php _e( 'Copy Slide', 'blox' );?>" data-name-prefix="<?php echo $name_prefix; ?>"></a>
 									</div>
 								</li>
 							<?php } ?>
@@ -259,12 +254,15 @@ class Blox_Content_Slideshow {
 				$settings['builtin']['slides'][$key]['image']['url']    		= esc_url( $name_prefix['builtin']['slides'][$key]['image']['url'] );
 				$settings['builtin']['slides'][$key]['image']['title']    		= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['title'] ) );
 				$settings['builtin']['slides'][$key]['image']['alt'] 	   		= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['alt'] ) );
-				$settings['builtin']['slides'][$key]['image']['caption']  		= wp_kses_post( $name_prefix['builtin']['slides'][$key]['image']['caption'] );
+                $settings['builtin']['slides'][$key]['image']['size'] 	   		= esc_attr( $name_prefix['builtin']['slides'][$key]['image']['size'] );
+
 				$settings['builtin']['slides'][$key]['image']['link']['enable']	= isset( $name_prefix['builtin']['slides'][$key]['image']['link']['enable'] ) ? 1 : 0;
 				$settings['builtin']['slides'][$key]['image']['link']['url']	= isset( $name_prefix['builtin']['slides'][$key]['image']['link']['url'] ) ? ( $name_prefix['builtin']['slides'][$key]['image']['link']['url'] == 'http://' ? '' : esc_url( $name_prefix['builtin']['slides'][$key]['image']['link']['url'] ) ) : '';
 				$settings['builtin']['slides'][$key]['image']['link']['title']	= isset( $name_prefix['builtin']['slides'][$key]['image']['link']['title'] ) ? trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['link']['title'] ) ) : '';
 				$settings['builtin']['slides'][$key]['image']['link']['target']	= isset( $name_prefix['builtin']['slides'][$key]['image']['link']['target'] ) ? 1 : 0;
-				$settings['builtin']['slides'][$key]['image']['classes'] 	 	= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['classes'] ) );
+
+                $settings['builtin']['slides'][$key]['image']['caption']  		= wp_kses_post( $name_prefix['builtin']['slides'][$key]['image']['caption'] );
+                $settings['builtin']['slides'][$key]['image']['classes'] 	 	= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['classes'] ) );
 			}
 		} else {
 			$settings['builtin']['slides'] = '';
@@ -329,7 +327,7 @@ class Blox_Content_Slideshow {
                             <th scope="row"><?php _e( 'Image', 'blox' ); ?></th>
                             <td>
                                 <a class="button button-primary" name="blox_upload_button" id="blox_upload_button"  onclick="blox_slideshow_change_image.uploader(); return false;"><?php _e( 'Select New Image', 'blox' );?></a>
-                                <div>
+                                <div class="modal-slide-image-preview-container">
                                     <img class="modal-slide-image-preview" src="" />
                                 </div>
 
@@ -401,7 +399,7 @@ class Blox_Content_Slideshow {
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><?php _e( 'Slide CSS Classes', 'blox' ); ?></th>
+							<th scope="row"><?php _e( 'Slide Classes', 'blox' ); ?></th>
 							<td>
 								<input type="text" class="modal-slide-image-classes" value="" />
 								<div class="blox-description">
