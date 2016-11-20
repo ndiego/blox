@@ -124,18 +124,24 @@ class Blox_Content_Slideshow {
 				<tr class="blox-slideshow-option blox-content-slideshow-builtin">
 					<th scope="row"><?php _e( 'Builtin Slides' ); ?></th>
 					<td>
-						<input type="submit" class="button button-primary" name="blox_slideshow_upload_button" id="blox_slideshow_upload_button" value="<?php _e( 'Select Image(s)'); ?>" onclick="blox_builtinSlideshowUpload.uploader('<?php echo $name_prefix; ?>'); return false;" /> &nbsp;
+						<input type="submit" class="button button-primary" name="blox_slideshow_upload_button" id="blox_slideshow_upload_button" value="<?php _e( 'Select Image(s)'); ?>" onclick="blox_builtinSlideshowUpload.uploader('<?php echo $name_prefix; ?>'); return false;" />
 
 						<ul class="blox-slider-container">
 
 						<?php if ( ! empty( $get_prefix['slideshow']['builtin']['slides'] ) ) { ?>
 
-							<?php foreach ( $get_prefix['slideshow']['builtin']['slides'] as $key => $slides ) { ?>
-								<li id="<?php echo $key; ?>" class="blox-slideshow-item" >
+							<?php foreach ( $get_prefix['slideshow']['builtin']['slides'] as $key => $slides ) {
+
+                                // Set the disabled flag if needed
+                                $disabled = ! empty( $slides['visibility']['disable'] ) ? 'disabled' : '';
+
+                                ?>
+                                <li id="<?php echo $key; ?>" class="blox-slideshow-item <?php echo $disabled; ?>" >
 									<div class="blox-slide-container">
 										<img class="slide-image-thumbnail" src="<?php echo isset( $slides['image']['id'] ) ? wp_get_attachment_thumb_url( esc_attr( $slides['image']['id'] ) ) : ''; ?>" alt="<?php echo esc_attr( $slides['image']['alt'] ); ?>" />
 									</div>
 									<input type="text" class="slide-type blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][slide_type]" value="image" /> <!-- possibly more slide types in the future -->
+                                    <input type="checkbox" class="slide-visibility-disable blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][visibility][disable]" value="1" <?php ! empty( $slides['visibility']['disable'] ) ? checked( $slides['visibility']['disable'] ) : ''; ?> />
 
 									<input type="text" class="slide-image-id blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][id]" value="<?php echo isset( $slides['image']['id'] ) ? esc_attr( $slides['image']['id'] ) : ''; ?>" />
 									<input type="text" class="slide-image-url blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][url]" value="<?php echo esc_attr( $slides['image']['url'] ); ?>" />
@@ -151,6 +157,7 @@ class Blox_Content_Slideshow {
 
 									<div class="blox-slide-tools-container">
 										<a class="blox-slide-edit dashicons" href="#blox_slide_details" title="<?php _e( 'Edit Slide', 'blox' );?>"></a>
+                                        <a class="blox-slide-visibility dashicons" href="#" title="<?php _e( 'Toggle Slide Visibility', 'blox' );?>"></a>
                                         <a class="blox-slide-delete dashicons" href="#" title="<?php _e( 'Delete Slide', 'blox' );?>"></a>
                                         <a class="blox-slide-copy dashicons" href="#" title="<?php _e( 'Copy Slide', 'blox' );?>" data-name-prefix="<?php echo $name_prefix; ?>"></a>
 									</div>
@@ -249,6 +256,8 @@ class Blox_Content_Slideshow {
 
 				// Only slide type currently (v1.0.0) is "image"
 				$settings['builtin']['slides'][$key]['slide_type'] 				= 'image';
+
+                $settings['builtin']['slides'][$key]['visibility']['disable'] 	= isset( $name_prefix['builtin']['slides'][$key]['visibility']['disable'] ) ? 1 : 0;
 
 				$settings['builtin']['slides'][$key]['image']['id'] 			= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['id'] ) );
 				$settings['builtin']['slides'][$key]['image']['url']    		= esc_url( $name_prefix['builtin']['slides'][$key]['image']['url'] );
@@ -398,6 +407,18 @@ class Blox_Content_Slideshow {
 								</div>
 							</td>
 						</tr>
+                        <tr>
+							<th scope="row"><?php _e( 'Visibility', 'blox' ); ?></th>
+							<td>
+                                <label class="blox-visibility-disable">
+									<input type="checkbox" class="modal-slide-visibility-disable" value="1" />
+									<?php _e( 'Check to disable this slide', 'blox' ); ?>
+								</label>
+                                <div class="blox-description">
+									<?php _e( 'Disabled slides will not show up in the slideshow. Simply uncheck to begin displaying again.', 'blox' ); ?>
+								</div>
+							</td>
+						</tr>
 						<tr>
 							<th scope="row"><?php _e( 'Slide Classes', 'blox' ); ?></th>
 							<td>
@@ -544,6 +565,68 @@ class Blox_Content_Slideshow {
 			}
 		}
 	}
+
+
+    public function print_slick_js( $block_id, $block_content, $block_scope ) {
+
+
+
+        ?>
+        <script type="text/javascript">
+        jQuery(document).ready(function($){
+            $('#blox_<?php echo $block_scope . "_" . $block_id;?> .blox-slideshow-container.builtin').slick({
+                //accessibility: true,
+                adaptiveHeight: false,
+                autoplay: true,
+                autoplaySpeed: 4000,
+                arrows: true,
+                asNavFor: '',
+                //appendArrows: '',
+                //appendDots: '',
+                prevArrow: '<button type="button" class="slick-prev">Previous</button>',
+                nextArrow: '<button type="button" class="slick-next">Next</button>',
+                centerMode: false,
+                centerPadding: '50px',
+                cssEase: 'ease',
+                customPaging: '',
+                dots: false,
+                dotsClass: 'slick-dots',
+                draggable: true,
+                fade: false,
+                focusOnSelect: false,
+                easing: 'linear',
+                //edgeFriction: 0.15,
+                infinite: true,
+                initialSlide: 0,
+                lazyLoad: 'ondemand', // Accepts 'ondemand' or 'progressive'
+                mobileFirst: false,
+                pauseOnFocus: true,
+                pauseOnHover: true,
+                pauseOnDotsHover: false,
+                respondTo: 'window', // Can be 'window', 'slider' or 'min' (the smaller of the two)
+                responsive: '',
+                rows: 1,
+                slide: '',
+                slidesPerRow: 1,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                speed: 300,
+                swipe: true,
+                swipeToSlide: false,
+                touchMove: true,
+                touchThreshold: 5,
+                useCSS: true,
+                useTransform: true,
+                variableWidth: false,
+                vertical: false,
+                //rtl: false,
+                //waitForAnimate: true,
+                //zIndex: 1000,
+            });
+        });
+        </script>
+        <?php
+    }
 
 
 	/**

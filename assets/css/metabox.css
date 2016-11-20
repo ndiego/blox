@@ -792,7 +792,7 @@ ul.blox-columns li {
 .blox-slide-tools-container a {
 	color: #82878c;
 	cursor: pointer;
-	padding: 2px;
+	padding: 2px 0 2px 2px;
 	text-decoration: none;
 }
 .blox-slide-tools-container a:focus {
@@ -801,15 +801,22 @@ ul.blox-columns li {
 a.blox-slide-copy,
 a.blox-slide-delete {
 	float:right;
-	padding-left: 0;
+	padding: 2px 2px 2px 0;
 	font-size: 18px;
 }
-a.blox-slide-edit:before { content: "\f464"; }
-a.blox-slide-edit:hover { color: #0073aa; }
-a.blox-slide-copy:before { content: "\f105"; }
-a.blox-slide-copy:hover { color: #ffb900; }
-a.blox-slide-delete:before { content: "\f182"; }
-a.blox-slide-delete:hover { color: #a00a00; }
+.blox-slide-edit:before { content: "\f464"; }
+.blox-slide-edit:hover { color: #0073aa; }
+.blox-slide-copy:before { content: "\f105"; }
+.blox-slide-copy:hover { color: #ffb900; }
+.blox-slide-delete:before { content: "\f182"; }
+.blox-slide-delete:hover { color: #a00a00; }
+
+.blox-slide-visibility:before { content: "\f177"; }
+.blox-slide-visibility:hover { color: #46b450; }
+.disabled .blox-slide-visibility:before { content: "\f530"; }
+.disabled a.blox-slide-visibility { color: #a00a00; }
+.disabled a.blox-slide-visibility:hover { color: red; }
+
 
 .blox-slider-container li.placeholder {
 	background: transparent;

@@ -202,7 +202,6 @@ jQuery(document).ready(function($){
 
 		$(this).parents( '.blox-slideshow-type-container' ).siblings( '.blox-slideshow-option' ).addClass( 'blox-hidden' );
 		$(this).parents( '.blox-slideshow-type-container' ).siblings( '.blox-content-slideshow-' + slideshow_type ).removeClass( 'blox-hidden' );
-
 	});
 
 	// Slideshow Uploader function
@@ -247,15 +246,19 @@ jQuery(document).ready(function($){
 						output += '<li id="' + randSlideId + '" class="blox-slideshow-item" >';
 						output += '<div class="blox-slide-container"><image class="slide-image-thumbnail" src="' + attachment.sizes.thumbnail.url + '" alt="' + attachment.alt + '" /></div>';
 						output += '<input type="text" class="slide-type blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][slide_type]" value="image" />';
+						output += '<input type="checkbox" class="slide-visibility-disable blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][visibility][disable]" value="1" />';
+
 						output += '<input type="text" class="slide-image-id blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][id]" value="' + attachment.id + '" />';
 						output += '<input type="text" class="slide-image-url blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][url]" value="' + attachment.url + '" />';
 						output += '<input type="text" class="slide-image-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][title]" value="' + attachment.title + '" />';
 						output += '<input type="text" class="slide-image-alt blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][alt]" value="' + attachment.alt + '" />';
 						output += '<input type="text" class="slide-image-size blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][size]" value="full" />';
+
 						output += '<input type="checkbox" class="slide-image-link-enable blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][enable]" value="1" />';
 						output += '<input type="text" class="slide-image-link-url blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][url]" value="http://" />';
 						output += '<input type="text" class="slide-image-link-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][title]" value="" />';
 						output += '<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][target]" value="1" />';
+
 						output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" value="' + attachment.caption + '" />';
 						output += '<input type="text" class="slide-image-classes blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][classes]" value="" />';
 						output += blox_slide_tools( frame.id );
@@ -291,22 +294,26 @@ jQuery(document).ready(function($){
 		block_id = ! isNaN( block_id ) ? ( '#' + block_id ) : '';
 
 		// Grab our existing slide details
-		var slide_id 		= $( this ).parents( 'li' ).attr( 'id' ),
-			image_id 		= $( '#' + slide_id + ' .slide-image-id' ).attr( 'value' ),
-			image_url 		= $( '#' + slide_id + ' .slide-image-url' ).attr( 'value' ),
-			image_thumbnail = $( '#' + slide_id + ' .slide-image-thumbnail' ).attr( 'src' ),
-			title 			= $( '#' + slide_id + ' .slide-image-title' ).attr( 'value' ),
-			alt 			= $( '#' + slide_id + ' .slide-image-alt' ).attr( 'value' ),
-			size 			= $( '#' + slide_id + ' .slide-image-size' ).attr( 'value' ),
-			link_enable 	= $( '#' + slide_id + ' .slide-image-link-enable' ).is( ':checked' ),
-			link_url 		= $( '#' + slide_id + ' .slide-image-link-url' ).attr( 'value' ),
-			link_title 		= $( '#' + slide_id + ' .slide-image-link-title' ).attr( 'value' ),
-			link_target 	= $( '#' + slide_id + ' .slide-image-link-target' ).is( ':checked' ),
-			caption 		= $( '#' + slide_id + ' .slide-image-caption' ).attr( 'value' ),
-			classes 		= $( '#' + slide_id + ' .slide-image-classes' ).attr( 'value' ),
+		var slide_id 			= $( this ).parents( 'li' ).attr( 'id' ),
+			slide_type			= $( '#' + slide_id + ' .slide-type' ).attr( 'value' ),
+			visibility_disable 	= $( '#' + slide_id + ' .slide-visibility-disable' ).is( ':checked' ),
+			image_id 			= $( '#' + slide_id + ' .slide-image-id' ).attr( 'value' ),
+			image_url 			= $( '#' + slide_id + ' .slide-image-url' ).attr( 'value' ),
+			image_thumbnail 	= $( '#' + slide_id + ' .slide-image-thumbnail' ).attr( 'src' ),
+			image_title 		= $( '#' + slide_id + ' .slide-image-title' ).attr( 'value' ),
+			image_alt 			= $( '#' + slide_id + ' .slide-image-alt' ).attr( 'value' ),
+			image_size 			= $( '#' + slide_id + ' .slide-image-size' ).attr( 'value' ),
+			link_enable 		= $( '#' + slide_id + ' .slide-image-link-enable' ).is( ':checked' ),
+			link_url 			= $( '#' + slide_id + ' .slide-image-link-url' ).attr( 'value' ),
+			link_title 			= $( '#' + slide_id + ' .slide-image-link-title' ).attr( 'value' ),
+			link_target 		= $( '#' + slide_id + ' .slide-image-link-target' ).is( ':checked' ),
+			caption 			= $( '#' + slide_id + ' .slide-image-caption' ).attr( 'value' ),
+			classes 			= $( '#' + slide_id + ' .slide-image-classes' ).attr( 'value' );
 
-		link_enable = link_enable ? 'checked' : '';
-		link_target = link_target ? 'checked' : '';
+		visibility_flag	   = visibility_disable ? 'disabled' : '';
+		visibility_disable = visibility_disable ? 'checked' : '';
+		link_enable 	   = link_enable ? 'checked' : '';
+		link_target 	   = link_target ? 'checked' : '';
 
 			// Generate a new slide id
 			new_slide_id    = 'slide_' + ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4),
@@ -315,18 +322,22 @@ jQuery(document).ready(function($){
 		$( block_id + ' .blox-slider-container' ).append( function() {
 
 			// Put together the copied slide
-			output += '<li id="' + new_slide_id + '" class="blox-slideshow-item" >';
-			output += '<div class="blox-slide-container"><image class="slide-image-thumbnail" src="' + image_thumbnail + '" alt="' + alt + '" /></div>';
-			output += '<input type="text" class="slide-type blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][slide_type]" value="image" />';
+			output += '<li id="' + new_slide_id + '" class="blox-slideshow-item ' + visibility_flag + '" >';
+			output += '<div class="blox-slide-container"><image class="slide-image-thumbnail" src="' + image_thumbnail + '" alt="' + image_alt + '" /></div>';
+			output += '<input type="text" class="slide-type blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][slide_type]" value="' + slide_type + '" />';
+			output += '<input type="checkbox" class="slide-visibility-disable blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][visibility][disable]" value="1" ' + visibility_disable + '/>';
+
 			output += '<input type="text" class="slide-image-id blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][id]" value="' + image_id + '" />';
 			output += '<input type="text" class="slide-image-url blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][url]" value="' + image_url + '" />';
-			output += '<input type="text" class="slide-image-title blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][title]" value="' + title + '" />';
-			output += '<input type="text" class="slide-image-alt blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][alt]" value="' + alt + '" />';
-			output += '<input type="text" class="slide-image-size blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][size]" value="' + size + '" />';
+			output += '<input type="text" class="slide-image-title blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][title]" value="' + image_title + '" />';
+			output += '<input type="text" class="slide-image-alt blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][alt]" value="' + image_alt + '" />';
+			output += '<input type="text" class="slide-image-size blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][size]" value="' + image_size + '" />';
+
 			output += '<input type="checkbox" class="slide-image-link-enable blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][link][enable]" value="1" ' + link_enable + '/>';
 			output += '<input type="text" class="slide-image-link-url blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][link][url]" value="' + link_url + '" />';
 			output += '<input type="text" class="slide-image-link-title blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][link][title]" value="' + link_title + '" />';
 			output += '<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][link][target]" value="1" ' + link_target + '/>';
+
 			output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][caption]" value="' + caption + '" />';
 			output += '<input type="text" class="slide-image-classes blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][classes]" value="' + classes + '" />';
 			output += blox_slide_tools( name_prefix );
@@ -370,6 +381,23 @@ jQuery(document).ready(function($){
 		}
 	});
 
+	// Toggle slide visibility on icon check
+	$(document).on( 'click', '.blox-slider-container .blox-slide-visibility', function(e) {
+
+		e.preventDefault();
+
+		var slide_id  			= $( this ).parents( 'li' ).attr( 'id' ),
+			visibility_disable 	= $( '#' + slide_id + ' .slide-visibility-disable' ).is( ':checked' );
+
+		if ( visibility_disable ) {
+			$( '#' + slide_id ).removeClass( 'disabled' );
+			$( '#' + slide_id + ' .slide-visibility-disable' ).prop( 'checked', false );
+		} else {
+			$( '#' + slide_id ).addClass( 'disabled' );
+			$( '#' + slide_id + ' .slide-visibility-disable' ).prop( 'checked', true );
+		}
+
+	});
 
 	// Display the slide details modal (need .on because new slides are dynamically added to the page)
 	// Code is a heavily modified version of http://leanmodal.finelysliced.com.au
@@ -400,34 +428,38 @@ jQuery(document).ready(function($){
 		$( modal_id ).fadeTo( 200, 1 );
 
 		// Grab our existing slide details
-		var slide_id 		= $( this ).parents( 'li' ).attr( 'id' );
-		var image_id 		= $( '#' + slide_id + ' .slide-image-id' ).attr( 'value' );
-		var image_url 		= $( '#' + slide_id + ' .slide-image-url' ).attr( 'value' );
-		var image_thumbnail = $( '#' + slide_id + ' .slide-image-thumbnail' ).attr( 'src' );
-		var title 			= $( '#' + slide_id + ' .slide-image-title' ).attr( 'value' );
-		var alt 			= $( '#' + slide_id + ' .slide-image-alt' ).attr( 'value' );
-		var size 			= $( '#' + slide_id + ' .slide-image-size' ).attr( 'value' );
-		var caption 		= $( '#' + slide_id + ' .slide-image-caption' ).attr( 'value' );
-		var link_enable 	= $( '#' + slide_id + ' .slide-image-link-enable' ).is( ':checked' );
-		var link_url 		= $( '#' + slide_id + ' .slide-image-link-url' ).attr( 'value' );
-		var link_title 		= $( '#' + slide_id + ' .slide-image-link-title' ).attr( 'value' );
-		var link_target 	= $( '#' + slide_id + ' .slide-image-link-target' ).is( ':checked' );
-		var classes 		= $( '#' + slide_id + ' .slide-image-classes' ).attr( 'value' );
+		var slide_id 			= $( this ).parents( 'li' ).attr( 'id' ),
+			slide_type			= $( '#' + slide_id + ' .slide-type' ).attr( 'value' ),
+			visibility_disable 	= $( '#' + slide_id + ' .slide-visibility-disable' ).is( ':checked' ),
+			image_id 			= $( '#' + slide_id + ' .slide-image-id' ).attr( 'value' ),
+			image_url 			= $( '#' + slide_id + ' .slide-image-url' ).attr( 'value' ),
+			image_thumbnail 	= $( '#' + slide_id + ' .slide-image-thumbnail' ).attr( 'src' ),
+			image_title 		= $( '#' + slide_id + ' .slide-image-title' ).attr( 'value' ),
+			image_alt 			= $( '#' + slide_id + ' .slide-image-alt' ).attr( 'value' ),
+			image_size 			= $( '#' + slide_id + ' .slide-image-size' ).attr( 'value' ),
+			link_enable 		= $( '#' + slide_id + ' .slide-image-link-enable' ).is( ':checked' ),
+			link_url 			= $( '#' + slide_id + ' .slide-image-link-url' ).attr( 'value' ),
+			link_title 			= $( '#' + slide_id + ' .slide-image-link-title' ).attr( 'value' ),
+			link_target 		= $( '#' + slide_id + ' .slide-image-link-target' ).is( ':checked' ),
+			caption 			= $( '#' + slide_id + ' .slide-image-caption' ).attr( 'value' ),
+			classes 			= $( '#' + slide_id + ' .slide-image-classes' ).attr( 'value' );
 
 		// Populate the modal with existing details on open
 		$( '.modal-slide-id' ).attr( 'value' , slide_id );
+		$( '.modal-slide-type' ).attr( 'value' , slide_type );
+		$( '.modal-slide-visibility-disable' ).prop( 'checked', visibility_disable );
 		$( '.modal-slide-image-preview' ).attr( 'src' , image_url );
 		$( '.modal-slide-image-id' ).attr( 'value' , image_id );
 		$( '.modal-slide-image-url' ).attr( 'value' , image_url );
 		$( '.modal-slide-image-thumbnail' ).attr( 'value' , image_thumbnail );
-		$( '.modal-slide-image-title' ).attr( 'value' , title );
-		$( '.modal-slide-image-alt' ).attr( 'value' , alt );
-		$( '.modal-slide-image-size' ).attr( 'value' , size );
-		$( '.modal-slide-image-caption' ).attr( 'value' , caption );
+		$( '.modal-slide-image-title' ).attr( 'value' , image_title );
+		$( '.modal-slide-image-alt' ).attr( 'value' , image_alt );
+		$( '.modal-slide-image-size' ).attr( 'value' , image_size );
 		$( '.modal-slide-image-link-enable' ).prop( 'checked', link_enable );
 		$( '.modal-slide-image-link-url' ).attr( 'value' , link_url );
 		$( '.modal-slide-image-link-title' ).attr( 'value' , link_title );
 		$( '.modal-slide-image-link-target' ).prop( 'checked', link_target );
+		$( '.modal-slide-image-caption' ).attr( 'value' , caption );
 		$( '.modal-slide-image-classes' ).attr( 'value' , classes );
 
 		// If the image link is enabled, show the additional options
@@ -438,6 +470,15 @@ jQuery(document).ready(function($){
 		// Add our new details to the slide on button click
 		// Need to use .data() otherwise won't work due to dynamic targeting issue
 		$(document).data( 'slide-metadata', { ids: slide_id }).on( 'click', '#blox-apply-details', function() {
+
+			// Add the disable flag to the slide container
+			if ( $( '.modal-slide-visibility-disable' ).is( ':checked' ) ) {
+				$( '#' + $( document ).data( "slide-metadata" ).ids ).addClass( 'disabled' );
+			}
+
+			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-type' ).val( $( '.modal-slide-type' ).val() );
+			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-visibility-disable' ).prop( 'checked', $( '.modal-slide-visibility-disable' ).is( ':checked' ) );
+
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-thumbnail' ).attr( 'src', $( '.modal-slide-image-thumbnail' ).val() );
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-id' ).val( $( '.modal-slide-image-id' ).val() );
 			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-url' ).val( $( '.modal-slide-image-url' ).val() );
@@ -510,10 +551,10 @@ jQuery(document).ready(function($){
 
 		output += '<div class="blox-slide-tools-container">';
 		output += '<a class="blox-slide-edit dashicons" href="#blox_slide_details" title="' + blox_localize_metabox_scripts.slideshow_edit + '"></a>';
+		output += '<a class="blox-slide-visibility dashicons" href="#" title="' + blox_localize_metabox_scripts.slideshow_visibility + '"></a>';
 		output += '<a class="blox-slide-delete dashicons" href="#" title="' + blox_localize_metabox_scripts.slideshow_delete + '"></a>';
 		output += '<a class="blox-slide-copy dashicons" href="#" title="' + blox_localize_metabox_scripts.slideshow_copy + '" data-name-prefix="' + name_prefix + '"></a>';
 		output += '</div>';
-
 		return output;
 
 	}
