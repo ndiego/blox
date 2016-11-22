@@ -39,7 +39,7 @@
 	width: 100%;
 }
 .blox-theme-default .blox-image-container img {
-	vertical-align: top; 
+	vertical-align: top;
 }
 
 /* Styling for background images */
@@ -48,7 +48,7 @@
 	position: relative;
 	width: 100%;
 	height: 400px; /* Adjust as needed */
-	
+
 	background-repeat: no-repeat;
 	background-position: center center;
 	-webkit-background-size: cover;
@@ -65,6 +65,118 @@
 
 /* Slideshow Defaults
 -------------------------------------------------------------- */
+.blox-theme-default .slick-slider {
+	background: #fff;
+}
+.blox-theme-default .slick-slider *:focus {
+	outline: none;
+}
+.blox-theme-default .slick-slider img {
+	width: 100%;
+	max-width: 100%;
+	line-height: 0;
+}
+
+/* Styling for background images */
+.blox-theme-default .blox-slideshow-item .blox-image-background {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 500px; /* Adjust as needed */
+
+	background-repeat: no-repeat;
+	background-position: center center;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+	background-size: cover;
+}
+.blox-theme-default .blox-slideshow-item .blox-image-background a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+
+/* Arrows */
+.blox-theme-default .slick-prev,
+.blox-theme-default .slick-next {
+    font-size: 0;
+    line-height: 0;
+
+    position: absolute;
+
+    top: 50%;
+	-webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+
+    display: block;
+
+	width: 60px;
+	height: 60px;
+	color: transparent;
+	text-shadow: none;
+	line-height: 1;
+	background-repeat: no-repeat;
+	background-size: 100%;
+	text-align: right;
+	/*Custom added above*/
+
+    padding: 0;
+
+
+    cursor: pointer;
+
+    color: transparent;
+    border: none;
+    outline: none;
+    background: initial;
+
+    z-index:1;
+}
+.blox-theme-default .slick-prev:hover,
+.blox-theme-default .slick-prev:focus,
+.blox-theme-default .slick-next:hover,
+.blox-theme-default .slick-next:focus {
+    color: transparent;
+    outline: none;
+	background: initial;
+    background-color: transparent;
+}
+
+.blox-theme-default .slick-prev {
+	background-image: url(../images/prev.svg);
+    left: 2%;
+    background-repeat: no-repeat;
+	background-size: 100%;
+}
+[dir='rtl'] .blox-theme-default .slick-prev {
+	background-image: url(../images/next.svg);
+    right: 2%;
+    left: auto;
+}
+
+.blox-theme-default .slick-next {
+	background-image: url(../images/next.svg);
+    right: 2%;
+    background-repeat: no-repeat;
+	background-size: 100%;
+}
+[dir='rtl'] .blox-theme-default .slick-next {
+	background-image: url(../images/prev.svg);
+    right: auto;
+    left: 2%;
+}
+.blox-theme-default .slick-prev:before,
+.blox-theme-default .slick-next:before {
+	content: '';
+}
+
+
+
+
+/* Flexslider Styling */
 .blox-theme-default .flexslider {
 	margin: 0 0 0;
 	background: #ffffff;
@@ -104,7 +216,7 @@
 .blox-theme-default .flex-direction-nav .flex-next {
 	background-image: url('../images/next.svg');
 	background-repeat: no-repeat;
-	background-size: 100%;	
+	background-size: 100%;
 	right: 2%;
 	text-align: right;
 }
@@ -164,4 +276,3 @@
 	background: rgba(0, 0, 0, 1);
 	cursor: default;
 }
-

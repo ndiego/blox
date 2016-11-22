@@ -79,6 +79,17 @@ class Blox_Content_Slideshow {
 		// Load base flexslider styles
         wp_register_style( $this->base->plugin_slug . '-flexslider-styles', plugins_url( 'assets/plugins/flexslider/flexslider.css', $this->base->file ), array(), $this->base->version );
         wp_enqueue_style( $this->base->plugin_slug . '-flexslider-styles' );
+
+        // Load slick js
+        wp_enqueue_script( $this->base->plugin_slug . '-slick-scripts', plugins_url( 'assets/plugins/slick/slick.min.js', $this->base->file ), array( 'jquery' ), $this->base->version );
+
+        // Load base slick styles
+        wp_register_style( $this->base->plugin_slug . '-slick-styles', plugins_url( 'assets/plugins/slick/slick.css', $this->base->file ), array(), $this->base->version );
+        wp_enqueue_style( $this->base->plugin_slug . '-slick-styles' );
+
+        // Load default slick theme
+        wp_register_style( $this->base->plugin_slug . '-slick-default-theme', plugins_url( 'assets/plugins/slick/slick-theme.css', $this->base->file ), array(), $this->base->version );
+        wp_enqueue_style( $this->base->plugin_slug . '-slick-default-theme' );
 	}
 
 
@@ -177,7 +188,7 @@ class Blox_Content_Slideshow {
 					</td>
 				</tr>
 				<tr class="blox-slideshow-option blox-content-slideshow-builtin">
-					<th scope="row"><?php _e( 'Builtin Settings' ); ?></th>
+					<th scope="row"><?php _e( 'Control Settings' ); ?></th>
 					<td>
 						<div class="blox-standard-settings">
 							<select name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animation]" id="blox_builtin_settings_animation">
@@ -191,15 +202,30 @@ class Blox_Content_Slideshow {
 							<label for="blox_builtin_settings_animationSpeed"><?php _e( 'Animation Speed (milliseconds)', 'blox' ); ?></label>
 						</div>
 						<div class="blox-advanced-settings">
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][slideshow]" id="blox_builtin_settings_slideshow" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['slideshow'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['slideshow'] ) : ''; ?>> <?php _e( 'Start Slideshow Automatically', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animationLoop]" id="blox_builtin_settings_animationLoop" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['animationLoop'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['animationLoop'] ) : ''; ?>> <?php _e( 'Loop Slideshow', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][pauseOnHover]" id="blox_builtin_settings_pauseOnHover" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['pauseOnHover'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['pauseOnHover'] ) : ''; ?>> <?php _e( 'Enable Pause On Hover', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][smoothHeight]" id="blox_builtin_settings_smoothHeight" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['smoothHeight'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['smoothHeight'] ) : 'checked'; ?>> <?php _e( 'Enable Slideshow Height Resizing', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][directionNav]" id="blox_builtin_settings_directionNav" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['directionNav'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['directionNav'] ) : ''; ?>> <?php _e( 'Disable Directional Navigation (i.e. arrows)', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][controlNav]" id="blox_builtin_settings_controlNav" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['controlNav'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['controlNav'] ) : ''; ?>> <?php _e( 'Disable Control Navigation (i.e. dots)', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][caption]" id="blox_builtin_settings_caption" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['caption'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['caption'] ) : ''; ?>> <?php _e( 'Disable Captions ', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][slideshow]" id="blox_builtin_settings_slideshow" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['slideshow'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['slideshow'] ) : ''; ?> /> <?php _e( 'Start Slideshow Automatically', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animationLoop]" id="blox_builtin_settings_animationLoop" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['animationLoop'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['animationLoop'] ) : ''; ?> /> <?php _e( 'Loop Slideshow', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][pauseOnHover]" id="blox_builtin_settings_pauseOnHover" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['pauseOnHover'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['pauseOnHover'] ) : ''; ?> /> <?php _e( 'Enable Pause On Hover', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][smoothHeight]" id="blox_builtin_settings_smoothHeight" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['smoothHeight'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['smoothHeight'] ) : 'checked'; ?> /> <?php _e( 'Enable Slideshow Height Resizing', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][directionNav]" id="blox_builtin_settings_directionNav" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['directionNav'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['directionNav'] ) : ''; ?> /> <?php _e( 'Disable Directional Navigation (i.e. arrows)', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][controlNav]" id="blox_builtin_settings_controlNav" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['controlNav'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['controlNav'] ) : ''; ?> /> <?php _e( 'Disable Control Navigation (i.e. dots)', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][caption]" id="blox_builtin_settings_caption" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['caption'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['caption'] ) : ''; ?> /> <?php _e( 'Disable Captions ', 'blox' ); ?></label><br>
 						</div>
 					</td>
+				</tr>
+                <tr class="blox-slideshow-option blox-content-slideshow-builtin">
+					<th scope="row"><?php _e( 'Display Settings' ); ?></th>
+					<td>
+						<label>
+                            <input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][background]" id="blox_builtin_settings_slideshow" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['background'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['background'] ) : ''; ?> />
+                            <?php _e( 'Set images as background images', 'blox' ); ?>
+                        </label>
+                        <span class="blox-help-text-icon">
+                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                        </span>
+                        <div class="blox-help-text top">
+                            <?php echo sprintf( __( 'When this setting is enabled, the CSS class %1$sblox-image-background%2$s is added to the content block. Additional custom CSS may be required to attain your desired effect.', 'blox' ), '<code>', '</code>' ); ?>
+                        </div>
+                    </td>
 				</tr>
 
 				<?php
@@ -277,7 +303,7 @@ class Blox_Content_Slideshow {
 			$settings['builtin']['slides'] = '';
 		}
 
-		// Save the builtin settings
+		// Save the control settings
 		$settings['builtin']['settings']['animation']      	= esc_attr( $name_prefix['builtin']['settings']['animation'] );
 		$settings['builtin']['settings']['slideshowSpeed'] 	= absint( $name_prefix['builtin']['settings']['slideshowSpeed'] );
 		$settings['builtin']['settings']['animationSpeed'] 	= absint( $name_prefix['builtin']['settings']['animationSpeed'] );
@@ -288,6 +314,10 @@ class Blox_Content_Slideshow {
 		$settings['builtin']['settings']['directionNav'] 	= isset( $name_prefix['builtin']['settings']['directionNav'] ) ? 1 : 0;
 		$settings['builtin']['settings']['controlNav']		= isset( $name_prefix['builtin']['settings']['controlNav'] ) ? 1 : 0;
 		$settings['builtin']['settings']['caption']  		= isset( $name_prefix['builtin']['settings']['caption'] ) ? 1 : 0;
+
+        // Save the display settings
+        $settings['builtin']['settings']['background']  	= isset( $name_prefix['builtin']['settings']['background'] ) ? 1 : 0;
+
 
 		// Save all of the additional slideshow option ids (i.e. Soliloquy, Revolution Slider, Meta Slider, etc.)
 		foreach( $this->get_slideshow_types() as $type => $title ){
@@ -479,7 +509,7 @@ class Blox_Content_Slideshow {
 			}
 		} else if ( $content_data['slideshow']['slideshow_type'] == 'builtin' ) {
 
-            $this->print_slideshow_builtin( $content_data, $block_id, $block_scope );
+            $this->print_slideshow_builtin_new( $content_data, $block_id, $block_scope );
 
 		} else if ( is_plugin_active( 'soliloquy/soliloquy.php' ) && $content_data['slideshow']['slideshow_type'] == 'soliloquy' )  {
 
@@ -595,20 +625,32 @@ class Blox_Content_Slideshow {
 
             foreach ( $content_data['slideshow']['builtin']['slides'] as $key => $slides ) {
 
+                // Are we using background images?
+                $background_images  = ! empty( $content_data['slideshow']['builtin']['settings']['background'] ) ? true : false;
+
                 // Setup the image
                 $image_id    = esc_attr( $slides['image']['id'] );
                 $image_size  = ! empty( $slides['image']['size'] ) ? esc_attr( $slides['image']['size'] ) : 'full';
                 $image_alt   = ! empty( $slides['image']['alt'] ) ? esc_attr( $slides['image']['alt'] ) : '';
                 $image_title = ! empty( $slides['image']['title'] ) ? esc_attr( $slides['image']['title'] ) : '';
 
-                $image_atts = array (
-                    'class' => '',
-                    'title' => $image_alt,
-                    'alt'   => $image_title,
-                );
+                // Get the image
+                if ( $background_images ) {
 
-                // The 3rd param is used to determine is image should be an icon, and thus is not used
-                $image = wp_get_attachment_image( $image_id, $image_size, '', $image_atts );
+                    // We only need the src for background images
+                    $image = wp_get_attachment_image_src( $image_id, $image_size. '' );
+                    $image = $image[0];
+
+                } else {
+                    $image_atts = array (
+                        'class' => '',
+                        'title' => $image_title,
+                        'alt'   => $image_alt,
+                    );
+
+                    // The 3rd param is used to determine is image should be an icon, and thus is not used
+                    $image = wp_get_attachment_image( $image_id, $image_size, '', $image_atts );
+                }
 
                 // Setup the slide link if there is one
                 $link_start = '';
@@ -632,17 +674,34 @@ class Blox_Content_Slideshow {
                     $caption .= '</div>';
                 }
 
-                // Final markup
-                $html .= '<div id="' . $key . '" class="blox-slideshow-item ' . $slides['slide_type'] . ' ' . $slides['image']['classes'] . '">';
-                $html .= $link_start . $image . $link_end;
-                $html .= $caption;
-                $html .= '</div>';
+                // Get visbility settings
+                $disabled = ! empty( $slides['visibility']['disable'] ) ? esc_attr( $slides['visibility']['disable'] ) : 0;
 
+                // Maybe show the slide
+                if ( ! $disabled ) {
+
+                    // Final markup
+                    $html .= '<div id="' . $key . '" class="blox-slideshow-item ' . $slides['slide_type'] . ' ' . $slides['image']['classes'] . '">';
+
+                    if ( $background_images ) {
+                        $html .= '<div class="blox-image-background" style="background-image: url(' . $image . ')">';
+                        $html .= $link_start . $link_end;
+                        $html .= $caption;
+                        $html .= '</div>';
+                    } else {
+                        $html .= $link_start . $image . $link_end;
+                        $html .= $caption;
+                    }
+
+                    $html .= '</div>';
+                }
             }
 
             $html .= '</div>';
 
             echo $html;
+
+            $this->print_slideshow_js( $content_data, $block_id, $block_scope );
 
          } else {
             ?>
@@ -654,60 +713,33 @@ class Blox_Content_Slideshow {
     }
 
 
-    public function print_slick_js( $block_id, $block_content, $block_scope ) {
+    public function print_slideshow_js( $content_data, $block_id, $block_scope ) {
 
+        $settings = $content_data['slideshow']['builtin']['settings'];
+
+        $fade           = $content_data['slideshow']['builtin']['settings']['animation'] == 'fade' ? 'true' : 'false';
+        $infinite       = ! empty( $settings['animationLoop'] ) ? 'true' : 'false';
+        $autoplay       = ! empty( $settings['slideshow'] ) ? 'true' : 'false';
+        $pauseOnHover   = ! empty( $settings['pauseOnHover'] ) ? 'true' : 'false';
+        $arrows         = ! empty( $settings['directionNav'] ) ? 'false' : 'true';
+        $dots           = ! empty( $settings['controlNav'] ) ? 'false' : 'true';
+        $autoplaySpeed  = ! empty( $settings['slideshowSpeed'] ) ? esc_attr( $settings['slideshowSpeed'] ) : 7000;
+        $speed          = ! empty( $settings['animationSpeed'] ) ? esc_attr( $settings['animationSpeed'] ) : 600;
+        $adaptiveHeight = ! empty( $settings['smoothHeight'] ) ? 'true' : 'false';
 
         ?>
         <script type="text/javascript">
         jQuery(document).ready(function($){
-            $('#blox_<?php echo $block_scope . "_" . $block_id;?> .blox-slideshow-container.builtin').slick({
-                //accessibility: true,
-                adaptiveHeight: false,
-                autoplay: true,
-                autoplaySpeed: 4000,
-                arrows: true,
-                asNavFor: '',
-                //appendArrows: '',
-                //appendDots: '',
-                prevArrow: '<button type="button" class="slick-prev">Previous</button>',
-                nextArrow: '<button type="button" class="slick-next">Next</button>',
-                centerMode: false,
-                centerPadding: '50px',
-                cssEase: 'ease',
-                customPaging: '',
-                dots: false,
-                dotsClass: 'slick-dots',
-                draggable: true,
-                fade: false,
-                focusOnSelect: false,
-                easing: 'linear',
-                //edgeFriction: 0.15,
-                infinite: true,
-                initialSlide: 0,
-                lazyLoad: 'ondemand', // Accepts 'ondemand' or 'progressive'
-                mobileFirst: false,
-                pauseOnFocus: true,
-                pauseOnHover: true,
-                pauseOnDotsHover: false,
-                respondTo: 'window', // Can be 'window', 'slider' or 'min' (the smaller of the two)
-                responsive: '',
-                rows: 1,
-                slide: '',
-                slidesPerRow: 1,
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                speed: 300,
-                swipe: true,
-                swipeToSlide: false,
-                touchMove: true,
-                touchThreshold: 5,
-                useCSS: true,
-                useTransform: true,
-                variableWidth: false,
-                vertical: false,
-                //rtl: false,
-                //waitForAnimate: true,
-                //zIndex: 1000,
+            $( '#blox_<?php echo $block_scope . "_" . $block_id;?> .blox-slideshow-container.builtin').slick({
+                adaptiveHeight: <?php echo $adaptiveHeight;?>,
+                autoplay: <?php echo $autoplay;?>,
+                autoplaySpeed: <?php echo $autoplaySpeed;?>,
+                arrows: <?php echo $arrows;?>,
+                dots: <?php echo $dots;?>,
+                fade: <?php echo $fade;?>,
+                infinite: <?php echo $infinite;?>,
+                pauseOnHover: <?php echo $pauseOnHover;?>,
+                speed: <?php echo $speed;?>,
             });
         });
         </script>
