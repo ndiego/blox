@@ -600,10 +600,10 @@ ul.blox-columns li {
 	font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 	font-size: 13px;
 	background: #fff;
-	border: 0;
+	border-top: 0;
 	border-right: 1px solid #ddd;
-	border-left: 1px solid #ddd;
 	border-bottom: 1px solid #ddd;
+	border-left: 1px solid #ddd;
 	box-shadow: none;
 	margin-top: 0;
 	outline: 0;
@@ -798,12 +798,12 @@ ul.blox-columns li {
 .blox-slide-tools-container a:focus {
 	box-shadow: none;
 }
-a.blox-slide-copy,
-a.blox-slide-delete {
+.blox-slide-tools-container a.right {
 	float:right;
 	padding: 2px 2px 2px 0;
 	font-size: 18px;
 }
+
 .blox-slide-edit:before { content: "\f464"; }
 .blox-slide-edit:hover { color: #0073aa; }
 .blox-slide-copy:before { content: "\f105"; }
@@ -825,6 +825,7 @@ a.blox-slide-delete {
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
+
 /* Styles for filler slide when slideshow is empty */
 .blox-filler {
 	cursor: default !important;
@@ -832,21 +833,34 @@ a.blox-slide-delete {
 .blox-filler-container {
 	background-color: #eee;
 	background-image: url('../images/default-square.png') !important;
+	border: 1px solid #e5e5e5;
+	box-sizing: border-box;
 	width: 150px;
 	height: 150px;
 	position: relative;
 	top: 0;
 }
 .blox-filler-text span {
-	color: #e5e5e5;
+	color: #ccc;
+	padding: 2px 0 2px 2px;
 }
-.blox-filler-text .right {
+.blox-filler-text span.right {
 	float: right;
+	padding: 2px 2px 2px 0;
+	font-size: 18px;
 }
+.blox-filler-text span.edit:before { content: "\f464"; }
+.blox-filler-text span.visibility:before { content: "\f177"; }
+.blox-filler-text span.copy:before { content: "\f105"; }
+.blox-filler-text span.delete:before { content: "\f182"; }
+
 .blox-slide-multiplicity {
 	display: inline-block;
 	text-align: center;
 }
+
+
+
 /* Styles for settings on Slideshow */
 .blox-standard-settings {
 	margin-bottom: 20px;
@@ -945,38 +959,75 @@ a.blox-slide-delete {
 	cursor: move;
   	-webkit-box-shadow: 0 4px 4px -4px rgba(0,0,0,.1);
   	box-shadow: 0 4px 4px -4px rgba(0,0,0,.1);
+	box-sizing: border-box;
 }
 .blox-modal-title {
 	font-size: 22px;
-	line-height: 50px;
+	line-height: 48px;
 	display: block;
 	font-weight: 600;
 	float: left;
 }
+
+.blox-modal-prev,
+.blox-modal-next,
 .blox-modal-close {
-	background-color: inherit;
+    background-color: transparent;
 	border: 0;
-	float: right;
-	padding: 0;
-	margin: 16px 0 0;
+    border-left: 1px solid #ddd;
+    color: #72777c;
+	cursor: pointer;
+    height: 50px;
+    width: 50px;
+	margin: 0;
+    padding: 0;
+    position: absolute;
+    text-align: center;
+	top: 0;
+	right: 0;
+    -webkit-transition: color .1s ease-in-out,background .1s ease-in-out;
+    transition: color .1s ease-in-out,background .1s ease-in-out;
 	outline: none; /*remove blue glow */
 }
-.blox-modal-close-icon:before {
-	content: '\f158';
-	font: 400 20px/1 dashicons;
+.blox-modal-prev {
+	right: 100px;
+}
+.blox-modal-next {
+	right: 50px;
+}
+.blox-modal-prev:hover,
+.blox-modal-next:hover,
+.blox-modal-close:hover {
+	background: #ddd;
+    border-color: #ccc;
+    color: #000;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.blox-modal-icon:before {
+	font: 400 22px/1 dashicons;
 	speak: none;
 	vertical-align: middle;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	color: #666;
 	cursor: pointer;
 }
-.blox-modal-close-icon:hover:before {
-	color: #2ea2cc;
+.blox-modal-prev .blox-modal-icon:before {
+	content: "\f341";
 }
-.blox-modal-close .blox-modal-close-text {
+.blox-modal-next .blox-modal-icon:before {
+	content: "\f345";
+}
+.blox-modal-close .blox-modal-icon:before {
+	content: "\f335";
+	font-size: 22px;
+}
+.blox-modal-close-text {
 	display: none;
 }
+
+
 .blox-modal .blox-form-container {
 	padding: 16px 16px;
 	overflow-y: scroll;

@@ -372,7 +372,7 @@ jQuery(document).ready(function($){
 
 			// If we remove the slide and there are no more, show our filler slide
 			if ( $( block_id + ' .blox-filler').length == 0 && $( block_id + ' .blox-slideshow-item' ).length == 0 ) {
-				$( block_id + ' .blox-slider-container' ).append( '<li class="blox-filler" ><div class="blox-filler-container"></div><div class="blox-filler-text"><span>' + blox_localize_metabox_scripts.slideshow_edit + '</span><span class="right">' + blox_localize_metabox_scripts.slideshow_delete + '</span></div></li>' );
+				$( block_id + ' .blox-slider-container' ).append( blox_filler_slide() );
 			}
 			return false;
 		} else {
@@ -543,7 +543,6 @@ jQuery(document).ready(function($){
 		},
 	};
 
-
 	// Print the standard tools output
 	// The name_prefix is needed for the copy function
 	function blox_slide_tools( name_prefix ) {
@@ -552,11 +551,28 @@ jQuery(document).ready(function($){
 		output += '<div class="blox-slide-tools-container">';
 		output += '<a class="blox-slide-edit dashicons" href="#blox_slide_details" title="' + blox_localize_metabox_scripts.slideshow_edit + '"></a>';
 		output += '<a class="blox-slide-visibility dashicons" href="#" title="' + blox_localize_metabox_scripts.slideshow_visibility + '"></a>';
-		output += '<a class="blox-slide-delete dashicons" href="#" title="' + blox_localize_metabox_scripts.slideshow_delete + '"></a>';
-		output += '<a class="blox-slide-copy dashicons" href="#" title="' + blox_localize_metabox_scripts.slideshow_copy + '" data-name-prefix="' + name_prefix + '"></a>';
+		output += '<a class="blox-slide-delete dashicons right" href="#" title="' + blox_localize_metabox_scripts.slideshow_delete + '"></a>';
+		output += '<a class="blox-slide-copy dashicons right" href="#" title="' + blox_localize_metabox_scripts.slideshow_copy + '" data-name-prefix="' + name_prefix + '"></a>';
 		output += '</div>';
-		return output;
 
+		return output;
+	}
+
+	// Print empty "filler" slide
+	function blox_filler_slide() {
+		var output = '';
+
+		output += '<li class="blox-filler">';
+		output += '<div class="blox-filler-container"></div>';
+		output += '<div class="blox-filler-text">';
+		output += '<span class="edit dashicons"></span>';
+		output += '<span class="visibility dashicons"></span>';
+		output += '<span class="delete dashicons right"></span>';
+		output += '<span class="copy dashicons right"></span>';
+		output += '</div>';
+		output += '</li>';
+
+		return output;
 	}
 
 	// Make Slideshow Items sortable

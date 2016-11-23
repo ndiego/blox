@@ -169,17 +169,20 @@ class Blox_Content_Slideshow {
 									<div class="blox-slide-tools-container">
 										<a class="blox-slide-edit dashicons" href="#blox_slide_details" title="<?php _e( 'Edit Slide', 'blox' );?>"></a>
                                         <a class="blox-slide-visibility dashicons" href="#" title="<?php _e( 'Toggle Slide Visibility', 'blox' );?>"></a>
-                                        <a class="blox-slide-delete dashicons" href="#" title="<?php _e( 'Delete Slide', 'blox' );?>"></a>
-                                        <a class="blox-slide-copy dashicons" href="#" title="<?php _e( 'Copy Slide', 'blox' );?>" data-name-prefix="<?php echo $name_prefix; ?>"></a>
+                                        <a class="blox-slide-delete dashicons right" href="#" title="<?php _e( 'Delete Slide', 'blox' );?>"></a>
+                                        <a class="blox-slide-copy dashicons right" href="#" title="<?php _e( 'Copy Slide', 'blox' );?>" data-name-prefix="<?php echo $name_prefix; ?>"></a>
 									</div>
 								</li>
 							<?php } ?>
 
 							<?php } else { ?>
-								<li class="blox-filler" >
+								<li class="blox-filler">
 									<div class="blox-filler-container"></div>
 									<div class="blox-filler-text">
-										<span><?php _e( 'Details', 'blox' );?></span><span class="right"><?php _e( 'Remove', 'blox' );?></span>
+										<span class="edit dashicons"></span>
+                                        <span class="visibility dashicons"></span>
+                                        <span class="delete dashicons right"></span>
+                                        <span class="copy dashicons right"></span>
 									</div>
 								</li>
 							<?php } ?>
@@ -345,14 +348,25 @@ class Blox_Content_Slideshow {
 	public function add_slideshow_modal( $global ) {
 		?>
 		<!--Slideshow Image Settings Modal-->
-		<div id="blox_slide_details" class='blox-hidden blox-modal'>
+		<div id="blox_slide_details" class='blox-hidden blox-modal prev-next'>
 
 			<!-- Header -->
 			<div class="blox-modal-titlebar">
-				<span class="blox-modal-title"><?php _e( 'Slide Details', 'blox' ); ?></span>
-				<button type="button" class="blox-modal-close" title="<?php _e( 'Close' );?>">
-					<span class="blox-modal-close-icon"></span>
-					<span class="blox-modal-close-text"><?php _e( 'Close', 'blox' ); ?></span>
+				<span class="blox-modal-title"><?php _e( 'Edit Slide', 'blox' ); ?></span>
+                <button type="button" class="blox-modal-prev">
+                    <span class="blox-modal-icon">
+                        <span class="screen-reader-text"><?php _e( 'Previous', 'blox' ); ?></span>
+                    </span>
+                </button>
+                <button type="button" class="blox-modal-next">
+                    <span class="blox-modal-icon">
+                        <span class="screen-reader-text"><?php _e( 'Next', 'blox' ); ?></span>
+                    </span>
+                </button>
+				<button type="button" class="blox-modal-close">
+					<span class="blox-modal-icon">
+                        <span class="screen-reader-text"><?php _e( 'Close', 'blox' ); ?></span>
+                    </span>
 				</button>
 			</div>
 
