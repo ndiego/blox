@@ -226,10 +226,10 @@ jQuery(document).ready(function($){
 				// If we are on a global block, the retrieved block id will be gibberish and not be a number. But if we are on a global block we don't need to worry about targeting...
 				if ( ! isNaN( block_id ) ) {
 					// We are on local so we need to target using the block id
-					var select_target = '#' + block_id + ' .blox-slider-container';
+					var select_target = '#' + block_id + ' .blox-slides-container';
 				} else {
 					// We are on global so we don't worry about targeting
-					var select_target ='.blox-slider-container';
+					var select_target ='.blox-slides-container';
 				}
 
 				var selection = frame.state().get( 'selection' );
@@ -283,7 +283,7 @@ jQuery(document).ready(function($){
 
 	// Copy Slideshow Items
 	// Need to '.on' because we are working with dynamically generated content
-	$(document).on( 'click', '.blox-slider-container .blox-slide-copy', function(e) {
+	$(document).on( 'click', '.blox-slides-container .blox-slide-copy', function(e) {
 
 		e.preventDefault();
 
@@ -319,7 +319,7 @@ jQuery(document).ready(function($){
 			new_slide_id    = 'slide_' + ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4),
 			output       	= '';
 
-		$( block_id + ' .blox-slider-container' ).append( function() {
+		$( block_id + ' .blox-slides-container' ).append( function() {
 
 			// Put together the copied slide
 			output += '<li id="' + new_slide_id + '" class="blox-slideshow-item ' + visibility_flag + '" >';
@@ -350,7 +350,7 @@ jQuery(document).ready(function($){
 
 	// Remove Slideshow Items
 	// Need to '.on' because we are working with dynamically generated content
-	$(document).on( 'click', '.blox-slider-container .blox-slide-delete', function() {
+	$(document).on( 'click', '.blox-slides-container .blox-slide-delete', function() {
 
 		var message = confirm( blox_localize_metabox_scripts.slideshow_confirm_remove );
 
@@ -372,7 +372,7 @@ jQuery(document).ready(function($){
 
 			// If we remove the slide and there are no more, show our filler slide
 			if ( $( block_id + ' .blox-filler').length == 0 && $( block_id + ' .blox-slideshow-item' ).length == 0 ) {
-				$( block_id + ' .blox-slider-container' ).append( blox_filler_slide() );
+				$( block_id + ' .blox-slides-container' ).append( blox_filler_slide() );
 			}
 			return false;
 		} else {
@@ -382,7 +382,7 @@ jQuery(document).ready(function($){
 	});
 
 	// Toggle slide visibility on icon check
-	$(document).on( 'click', '.blox-slider-container .blox-slide-visibility', function(e) {
+	$(document).on( 'click', '.blox-slides-container .blox-slide-visibility', function(e) {
 
 		e.preventDefault();
 
@@ -405,30 +405,169 @@ jQuery(document).ready(function($){
 
 		e.preventDefault();
 
-		// Add the overlay to the page and style on click
-		var overlay = $( '<div id="blox_overlay"></div>' );
-		$( 'body' ).append(overlay);
-		$( '#blox_overlay' ).css( { 'display' : 'block', 'opacity' : 0 } );
-		$( '#blox_overlay' ).fadeTo( 200, 0.7 );
+		// Set the modal id and set the selected slide id
+		var modal_id = "#blox_slide_details",
+			slide_id = $( this ).parents( 'li' ).attr( 'id' );
 
-		// Add the modal to the page and style on click
-		var modal_id = "#blox_slide_details";
-		var modal_height = $( modal_id ).outerHeight();
-		var modal_width = $( modal_id ).outerWidth();
-		$( modal_id ).css({
-			'display' : 'block',
-			'position' : 'fixed',
-			'opacity' : 0,
-			'z-index': 110000,
-			'top' : 30 + 'px',
-			'bottom' : 30 + 'px',
-			'left' : 30 + 'px',
-			'right' : 30 + 'px'
+		// Open the modal
+		blox_open_modal( modal_id );
+
+		// Determine whether the prev/next buttons should be enabled or not
+		blox_set_prev_next_buttons( modal_id, slide_id );
+
+		// Import all slide settings
+		blox_import_slide_details( slide_id );
+
+		// If the image link is enabled, show the additional options
+		if ( $( '.modal-slide-image-link-enable' ).is( ':checked' ) ) {
+		  	$( '.modal-slide-image-link-enable' ).parents( '.blox-image-link-enable' ).siblings( '.blox-image-link' ).show();
+		}
+
+		// Close the modal if you click on the overlay
+		$(document).on( 'click', '#blox_overlay', function() {
+			blox_close_modal( modal_id );
 		});
-		$( modal_id ).fadeTo( 200, 1 );
+
+		// Close the modal if you click on close button
+		$(document).on( 'click', '.blox-modal-close', function() {
+			blox_close_modal( modal_id );
+		});
+
+	});
+
+
+	$(document).on( 'click', '#blox-apply-slide-settings', function() {
+
+		var slide_id = $( '.modal-slide-id' ).val();
+
+		// Add the disable flag to the slide container
+		if ( $( '.modal-slide-visibility-disable' ).is( ':checked' ) ) {
+			$( '#' + slide_id ).addClass( 'disabled' );
+		}
+
+		$( '#' + slide_id + ' .slide-type' ).val( $( '.modal-slide-type' ).val() );
+		$( '#' + slide_id + ' .slide-visibility-disable' ).prop( 'checked', $( '.modal-slide-visibility-disable' ).is( ':checked' ) );
+
+		$( '#' + slide_id + ' .slide-image-thumbnail' ).attr( 'src', $( '.modal-slide-image-thumbnail' ).val() );
+		$( '#' + slide_id + ' .slide-image-id' ).val( $( '.modal-slide-image-id' ).val() );
+		$( '#' + slide_id + ' .slide-image-url' ).val( $( '.modal-slide-image-url' ).val() );
+		$( '#' + slide_id + ' .slide-image-title' ).val( $( '.modal-slide-image-title' ).val() );
+		$( '#' + slide_id + ' .slide-image-alt' ).val( $( '.modal-slide-image-alt' ).val() );
+		$( '#' + slide_id + ' .slide-image-size' ).val( $( '.modal-slide-image-size' ).val() );
+
+		$( '#' + slide_id + ' .slide-image-link-enable' ).prop( 'checked', $( '.modal-slide-image-link-enable' ).is( ':checked' ) );
+		$( '#' + slide_id + ' .slide-image-link-url' ).val( $( '.modal-slide-image-link-url' ).val() );
+		$( '#' + slide_id + ' .slide-image-link-title' ).val( $( '.modal-slide-image-link-title' ).val() );
+		$( '#' + slide_id + ' .slide-image-link-target' ).prop( 'checked', $( '.modal-slide-image-link-target' ).is( ':checked' ) );
+
+		$( '#' + slide_id + ' .slide-image-caption' ).val( $( '.modal-slide-image-caption' ).val() );
+		$( '#' + slide_id + ' .slide-image-classes' ).val( $( '.modal-slide-image-classes' ).val() );
+
+	});
+
+	// Slideshow Uploader function
+	blox_slideshow_change_image = {
+
+		// Call this from the upload button to initiate the upload frame.
+		uploader : function() {
+			var frame = wp.media({
+				title : blox_localize_metabox_scripts.image_media_title,
+				multiple : false,
+				library : { type : 'image' }, // Only can upload images
+				button : { text : blox_localize_metabox_scripts.image_media_button }
+			});
+
+			// Handle results from media manager
+			frame.on( 'select', function() {
+				var attachments = frame.state().get( 'selection' ).toJSON();
+
+				$( '.modal-slide-image-preview' ).attr( 'src', attachments[0].url );
+				$( '.modal-slide-image-id' ).val( attachments[0].id );
+				$( '.modal-slide-image-url' ).val( attachments[0].url );
+				$( '.modal-slide-image-thumbnail' ).val( attachments[0].sizes['thumbnail'].url );
+				//$( '.modal-slide-image-title' ).val( attachments[0].title );
+				//$( '.modal-slide-image-alt' ).val( attachments[0].alt );
+			});
+
+			frame.open();
+			return false;
+		},
+	};
+
+	// Switch to the next slide in the slideshow
+	$(document).on( 'click', '.blox-modal-next', function(e) {
+
+		e.preventDefault();
+
+		// Bail early if the button is disabled
+		if ( $( this ).hasClass( 'disabled' ) ) {
+			return;
+		}
+
+		// Get the required ids and indices
+		var current_slide_id    = $( '.modal-slide-id' ).val(),
+			next_slide_id       = '',
+			current_slide_index = $( '#' + current_slide_id ).index() + 1,
+			num_slides          = $( '#' + current_slide_id ).parent().children().length;
+
+		// Only run if this is not the last slide
+		if ( current_slide_index < num_slides ) {
+			next_slide_id = $( '#' + current_slide_id ).next( 'li').attr( 'id' );
+
+			blox_import_slide_details( next_slide_id );
+
+			// Remove the disabled flag from the "prev" button if it exists
+			$( this ).siblings( 'button' ).removeClass( 'disabled' );
+
+			// Disable the button if the current slide is next to last
+			if ( current_slide_index == ( num_slides - 1 ) ) {
+				$( this ).addClass( 'disabled' );
+			} else {
+				$( this ).removeClass( 'disabled' );
+			}
+		}
+	});
+
+	// Switch to the previous slide in the slideshow
+	$(document).on( 'click', '.blox-modal-prev', function(e) {
+
+		e.preventDefault();
+
+		// Bail early if the button is disabled
+		if ( $( this ).hasClass( 'disabled' ) ) {
+			return;
+		}
+
+		// Get the required ids and indices
+		var current_slide_id    = $( '.modal-slide-id' ).val(),
+			prev_slide_id       = '',
+			current_slide_index = $( '#' + current_slide_id ).index() + 1,
+			num_slides          = $( '#' + current_slide_id ).parent().children().length;
+
+		// Only run if this is not the first slide
+		if ( current_slide_index > 1 ) {
+			prev_slide_id = $( '#' + current_slide_id ).prev( 'li').attr( 'id' );
+
+			blox_import_slide_details( prev_slide_id );
+
+			// Remove the disabled flag from the "next" button if it exists
+			$( this ).siblings( 'button' ).removeClass( 'disabled' );
+
+			// Disable the button if the current slide is 2nd in the list
+			if ( current_slide_index == 2 ) {
+				$( this ).addClass( 'disabled' );
+			} else {
+				$( this ).removeClass( 'disabled' );
+			}
+		}
+	});
+
+	// Import slide details into the Edit Slide modal
+	// The slide_id is the unique id string for the given slide
+	function blox_import_slide_details( slide_id ) {
 
 		// Grab our existing slide details
-		var slide_id 			= $( this ).parents( 'li' ).attr( 'id' ),
+		var slide_id 			= slide_id,
 			slide_type			= $( '#' + slide_id + ' .slide-type' ).attr( 'value' ),
 			visibility_disable 	= $( '#' + slide_id + ' .slide-visibility-disable' ).is( ':checked' ),
 			image_id 			= $( '#' + slide_id + ' .slide-image-id' ).attr( 'value' ),
@@ -464,84 +603,9 @@ jQuery(document).ready(function($){
 
 		// If the image link is enabled, show the additional options
 		if ( $( '.modal-slide-image-link-enable' ).is( ':checked' ) ) {
-		  	$( '.modal-slide-image-link-enable' ).parents( '.blox-image-link-enable' ).siblings( '.blox-image-link' ).show();
+			$( '.modal-slide-image-link-enable' ).parents( '.blox-image-link-enable' ).siblings( '.blox-image-link' ).show();
 		}
-
-		// Add our new details to the slide on button click
-		// Need to use .data() otherwise won't work due to dynamic targeting issue
-		$(document).data( 'slide-metadata', { ids: slide_id }).on( 'click', '#blox-apply-details', function() {
-
-			// Add the disable flag to the slide container
-			if ( $( '.modal-slide-visibility-disable' ).is( ':checked' ) ) {
-				$( '#' + $( document ).data( "slide-metadata" ).ids ).addClass( 'disabled' );
-			}
-
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-type' ).val( $( '.modal-slide-type' ).val() );
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-visibility-disable' ).prop( 'checked', $( '.modal-slide-visibility-disable' ).is( ':checked' ) );
-
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-thumbnail' ).attr( 'src', $( '.modal-slide-image-thumbnail' ).val() );
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-id' ).val( $( '.modal-slide-image-id' ).val() );
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-url' ).val( $( '.modal-slide-image-url' ).val() );
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-title' ).val( $( '.modal-slide-image-title' ).val() );
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-alt' ).val( $( '.modal-slide-image-alt' ).val() );
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-size' ).val( $( '.modal-slide-image-size' ).val() );
-
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-link-enable' ).prop( 'checked', $( '.modal-slide-image-link-enable' ).is( ':checked' ) );
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-link-url' ).val( $( '.modal-slide-image-link-url' ).val() );
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-link-title' ).val( $( '.modal-slide-image-link-title' ).val() );
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-link-target' ).prop( 'checked', $( '.modal-slide-image-link-target' ).is( ':checked' ) );
-
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-caption' ).val( $( '.modal-slide-image-caption' ).val() );
-			$( '#' + $( document ).data( "slide-metadata" ).ids + ' .slide-image-classes' ).val( $( '.modal-slide-image-classes' ).val() );
-
-			$( "#blox_overlay" ).fadeOut(200);
-			$( modal_id ).css( { 'display' : 'none' } );
-		});
-
-		// Close the modal if you click on the overlay
-		$(document).on( 'click', '#blox_overlay', function() {
-			$( "#blox_overlay" ).fadeOut(200);
-			$( modal_id ).css( { 'display' : 'none' } );
-		});
-
-		// Close the modal if you click on close button
-		$(document).on( 'click', '.blox-modal-close', function() {
-			$( "#blox_overlay" ).fadeOut(200);
-			$( modal_id ).css( { 'display' : 'none' } );
-		});
-
-	});
-
-
-
-	// Slideshow Uploader function
-	blox_slideshow_change_image = {
-
-		// Call this from the upload button to initiate the upload frame.
-		uploader : function() {
-			var frame = wp.media({
-				title : blox_localize_metabox_scripts.image_media_title,
-				multiple : false,
-				library : { type : 'image' }, // Only can upload images
-				button : { text : blox_localize_metabox_scripts.image_media_button }
-			});
-
-			// Handle results from media manager
-			frame.on( 'select', function() {
-				var attachments = frame.state().get( 'selection' ).toJSON();
-
-				$( '.modal-slide-image-preview' ).attr( 'src', attachments[0].url );
-				$( '.modal-slide-image-id' ).val( attachments[0].id );
-				$( '.modal-slide-image-url' ).val( attachments[0].url );
-				$( '.modal-slide-image-thumbnail' ).val( attachments[0].sizes['thumbnail'].url );
-				$( '.modal-slide-image-title' ).val( attachments[0].title );
-				$( '.modal-slide-image-alt' ).val( attachments[0].alt );
-			});
-
-			frame.open();
-			return false;
-		},
-	};
+	}
 
 	// Print the standard tools output
 	// The name_prefix is needed for the copy function
@@ -575,8 +639,60 @@ jQuery(document).ready(function($){
 		return output;
 	}
 
+	// Open the modal
+	function blox_open_modal( modal_id ) {
+		// Add the overlay to the page and style on click
+		var overlay = $( '<div id="blox_overlay"></div>' );
+
+		$( 'body' ).append( overlay );
+		$( '#blox_overlay' ).css( { 'display' : 'block', 'opacity' : 0 } );
+		$( '#blox_overlay' ).fadeTo( 100, 0.7 );
+
+		// Add the modal to the page and style on click
+		var modal_height = $( modal_id ).outerHeight(),
+			modal_width  = $( modal_id ).outerWidth();
+
+		$( modal_id ).css({
+			'display' : 'block',
+			'position' : 'fixed',
+			'opacity' : 0,
+			'z-index': 110000,
+			'top' : 30 + 'px',
+			'bottom' : 30 + 'px',
+			'left' : 30 + 'px',
+			'right' : 30 + 'px'
+		});
+
+		$( modal_id ).fadeTo( 100, 1 );
+	}
+
+	// Close the modal
+	function blox_close_modal( modal_id ) {
+		$( "#blox_overlay" ).fadeOut(100);
+		$( modal_id ).css( { 'display' : 'none' } );
+	}
+
+	// Set prev/next buttons
+	function blox_set_prev_next_buttons( modal_id, slide_id ) {
+		var slide_index = $( '#' + slide_id ).index() + 1,
+			num_slides  = $( '#' + slide_id ).parent().children().length;
+
+		// Reset prev/next buttons
+		$( modal_id + ' .blox-modal-prev' ).removeClass( 'disabled' );
+		$( modal_id + ' .blox-modal-next' ).removeClass( 'disabled' );
+
+		if ( slide_index == num_slides && num_slides == 1 ) {
+			$( modal_id + ' .blox-modal-prev' ).addClass( 'disabled' );
+			$( modal_id + ' .blox-modal-next' ).addClass( 'disabled' );
+		} else if ( slide_index == num_slides ) {
+			$( modal_id + ' .blox-modal-next' ).addClass( 'disabled' );
+		} else if ( slide_index == 1 ) {
+			$( modal_id + ' .blox-modal-prev' ).addClass( 'disabled' );
+		}
+	}
+
 	// Make Slideshow Items sortable
-	$( '.blox-slider-container' ).sortable({
+	$( '.blox-slides-container' ).sortable({
 		items: '.blox-slideshow-item',
 		cursor: 'move',
 		forcePlaceholderSize: true,

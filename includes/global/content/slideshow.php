@@ -137,7 +137,7 @@ class Blox_Content_Slideshow {
 					<td>
 						<input type="submit" class="button button-primary" name="blox_slideshow_upload_button" id="blox_slideshow_upload_button" value="<?php _e( 'Select Image(s)'); ?>" onclick="blox_builtinSlideshowUpload.uploader('<?php echo $name_prefix; ?>'); return false;" />
 
-						<ul class="blox-slider-container">
+						<ul class="blox-slides-container">
 
 						<?php if ( ! empty( $get_prefix['slideshow']['builtin']['slides'] ) ) { ?>
 
@@ -372,22 +372,26 @@ class Blox_Content_Slideshow {
 
 			<input type="text" class="modal-slide-id blox-force-hidden" value="" />
 
+            <input type="text" class="modal-slide-image-id blox-force-hidden" value="" />
+            <input type="text" class="modal-slide-image-url blox-force-hidden" value="" />
+            <input type="text" class="modal-slide-image-thumbnail blox-force-hidden" value="" />
+
 			<!-- Body -->
-			<div class="blox-form-container">
+
+            <div class="modal-slide-image-details">
+
+                <div class="modal-slide-image-view">
+                    <img class="modal-slide-image-preview" src="" />
+                    <a class="button" name="blox_upload_button" id="blox_upload_button"  onclick="blox_slideshow_change_image.uploader(); return false;"><?php _e( 'Select New Image', 'blox' );?></a>
+                </div>
+
+                <div class="modal-slide-image-settings">
+
 				<table class="form-table">
 					<tbody>
                         <tr>
                             <th scope="row"><?php _e( 'Image', 'blox' ); ?></th>
                             <td>
-                                <a class="button button-primary" name="blox_upload_button" id="blox_upload_button"  onclick="blox_slideshow_change_image.uploader(); return false;"><?php _e( 'Select New Image', 'blox' );?></a>
-                                <div class="modal-slide-image-preview-container">
-                                    <img class="modal-slide-image-preview" src="" />
-                                </div>
-
-                                <input type="text" class="modal-slide-image-id blox-force-hidden" value="" />
-                                <input type="text" class="modal-slide-image-url blox-force-hidden" value="" />
-                                <input type="text" class="modal-slide-image-thumbnail blox-force-hidden" value="" />
-
                                 <div class="blox-slideshow-modal-image-atts">
                                     <label class="blox-subtitle">
                                         <span><?php _e( 'Title', 'blox' ); ?></span>
@@ -474,14 +478,16 @@ class Blox_Content_Slideshow {
 						</tr>
 					</tbody>
 				</table>
-			</div>
 
-			<!-- Footer -->
-			<div class="blox-modal-buttonpane">
-				<button id="blox-apply-details" type="button" class="button button-primary blox-modal-button">
-					<?php _e( 'Apply Settings', 'blox' ); ?>
-				</button>
-			</div>
+                    <button id="blox-apply-details" type="button" class="button button-primary blox-modal-button">
+                        <?php _e( 'Apply Settings Old', 'blox' ); ?>
+                    </button>
+                    <button id="blox-apply-slide-settings" type="button" class="button button-primary blox-modal-button">
+                        <?php _e( 'Apply Settings', 'blox' ); ?>
+                    </button>
+                </div>
+
+            </div>
 
 		</div> <!-- end blox_slide_details -->
 		<?php
