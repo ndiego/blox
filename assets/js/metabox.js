@@ -648,6 +648,9 @@ jQuery(document).ready(function($){
 		$( '#blox_overlay' ).css( { 'display' : 'block', 'opacity' : 0 } );
 		$( '#blox_overlay' ).fadeTo( 100, 0.7 );
 
+		// Add modal open flag so we can disable body scrolling
+  		$( 'body' ).addClass( 'blox-modal-open' );
+
 		// Add the modal to the page and style on click
 		var modal_height = $( modal_id ).outerHeight(),
 			modal_width  = $( modal_id ).outerWidth();
@@ -670,6 +673,9 @@ jQuery(document).ready(function($){
 	function blox_close_modal( modal_id ) {
 		$( "#blox_overlay" ).fadeOut(100);
 		$( modal_id ).css( { 'display' : 'none' } );
+
+		// Remove modal open flag to return body scrolling back to normal
+		$( 'body' ).removeClass( 'blox-modal-open' );
 	}
 
 	// Set prev/next buttons

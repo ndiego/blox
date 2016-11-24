@@ -879,16 +879,8 @@ ul.blox-columns li {
 }
 
 /* Modal Specific Styles */
-.blox-slideshow-modal-image-atts label {
-	display: block;
-	margin-top: 15px;
-}
-.blox-modal .blox-subtitle span {
-	width: 30px;
-}
-.blox-modal .blox-subtitle input[type="text"] {
-	max-width: 570px;
-}
+
+
 
 .modal-slide-image-preview {
 	display: block;
@@ -923,7 +915,7 @@ ul.blox-columns li {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     margin-bottom: 0;
-    padding: 12px 16px 0;
+    padding: 12px 16px 30px;
     width: 35%;
     height: 100%;
     -webkit-box-shadow: inset 0 4px 4px -4px rgba(0,0,0,.1);
@@ -934,6 +926,43 @@ ul.blox-columns li {
 	line-height: 18px;
     color: #666;
 }
+
+.modal-slide-image-settings .name {
+	color: #23282d;
+	line-height: 18px;
+    font-size: 14px;
+	display: block;
+	font-weight: 600;
+	padding: 20px 0 10px;
+}
+.modal-slide-image-settings .name:first-child {
+	padding-top: 5px;
+}
+
+
+.blox-modal-subsettings label {
+	display: block;
+	margin-top: 10px;
+}
+.blox-modal-subsetting span {
+	display: inline-block;
+    width: 60px;
+    max-width: 15%;
+    text-align: left;
+    padding: 5px 5px 0 0;
+    vertical-align: top;
+}
+.blox-modal-subsetting div {
+	display: inline-block;
+	width: 80%;
+	-webkit-width: calc(100% - 70px);
+	-moz-width: calc(100% - 70px);
+	width: calc(100% - 70px);
+}
+.blox-modal-subsetting div.blox-description {
+	width: 100%;
+}
+
 
 /* Location Options Styles
 -------------------------------------------------------------- */
@@ -1006,7 +1035,7 @@ ul.blox-columns li {
     background-color: transparent;
 	border: 0;
     border-left: 1px solid #ddd;
-    color: #72777c;
+    color: #666;
 	cursor: pointer;
     height: 50px;
     width: 50px;
@@ -1045,7 +1074,7 @@ ul.blox-columns li {
 	pointer-events: none;
 }
 .blox-modal-icon:before {
-	font: 400 22px/1 dashicons;
+	font: 400 20px/1 dashicons;
 	speak: none;
 	vertical-align: middle;
 	-webkit-font-smoothing: antialiased;
@@ -1079,6 +1108,8 @@ ul.blox-columns li {
 .blox-modal .form-table th {
 	font-size: 13px !important;
 }
+
+
 .blox-modal textarea,
 .blox-modal input[type="text"] {
 	width: 100%;
@@ -1109,6 +1140,9 @@ ul.blox-columns li {
     width:100%;
     background: #000;
     display: none;
+}
+body.blox-modal-open {
+    overflow: hidden;
 }
 
 
@@ -1187,6 +1221,29 @@ ul.blox-columns li {
 		margin: 0 !important;
 		overflow-y: scroll;
 	}
+
+	.blox-modal-titlebar {
+		height: 40px;
+	}
+	.blox-modal-title {
+		font-size: 18px;
+		line-height: 40px;
+	}
+
+	.blox-modal-prev,
+	.blox-modal-next,
+	.blox-modal-close {
+		height: 40px;
+		width: 40px;
+	}
+	.blox-modal-prev {
+		right: 80px;
+	}
+	.blox-modal-next {
+		right: 40px;
+	}
+
+	/* Old formatting still used by raw and editor */
 	.blox-modal .form-table {
 		margin-bottom: 65px !important; /* So "Apply Settings" button does not overlap content on small screens */
 	}
@@ -1201,5 +1258,15 @@ ul.blox-columns li {
 		right:0;
 		left:0;
 		position: fixed;
+	}
+
+	.modal-slide-image-details {
+		top: 40px;
+	}
+	.modal-slide-image-view,
+	.modal-slide-image-settings {
+		float: none;
+		width: 100%;
+		height: auto;
 	}
 }

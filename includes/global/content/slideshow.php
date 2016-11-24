@@ -370,15 +370,13 @@ class Blox_Content_Slideshow {
 				</button>
 			</div>
 
-			<input type="text" class="modal-slide-id blox-force-hidden" value="" />
-
-            <input type="text" class="modal-slide-image-id blox-force-hidden" value="" />
-            <input type="text" class="modal-slide-image-url blox-force-hidden" value="" />
-            <input type="text" class="modal-slide-image-thumbnail blox-force-hidden" value="" />
-
 			<!-- Body -->
-
             <div class="modal-slide-image-details">
+
+                <input type="text" class="modal-slide-id blox-force-hidden" value="" />
+                <input type="text" class="modal-slide-image-id blox-force-hidden" value="" />
+                <input type="text" class="modal-slide-image-url blox-force-hidden" value="" />
+                <input type="text" class="modal-slide-image-thumbnail blox-force-hidden" value="" />
 
                 <div class="modal-slide-image-view">
                     <img class="modal-slide-image-preview" src="" />
@@ -387,101 +385,86 @@ class Blox_Content_Slideshow {
 
                 <div class="modal-slide-image-settings">
 
-				<table class="form-table">
-					<tbody>
-                        <tr>
-                            <th scope="row"><?php _e( 'Image', 'blox' ); ?></th>
-                            <td>
-                                <div class="blox-slideshow-modal-image-atts">
-                                    <label class="blox-subtitle">
-                                        <span><?php _e( 'Title', 'blox' ); ?></span>
-                                        <input type="text" class="modal-slide-image-title" value="" />
-                                    </label>
-                                    <label class="blox-subtitle">
-                                        <span><?php _e( 'Alt', 'blox' ); ?></span>
-                                        <input type="text" class="modal-slide-image-alt" value="" />
-                                    </label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-        					<th scope="row"><?php _e( 'Image Size', 'blox' ); ?></th>
-        					<td>
-        						<select class="modal-slide-image-size">
-        							<?php foreach ( (array) $this->get_image_sizes() as $i => $size ) {
+                    <span class="name"><?php _e( 'Image Settings', 'blox' ); ?></span>
 
-        								// Remove the new Custom option added in WP 4.4 for now. Could cause confusion...
-        								if ( $size['value'] != 'custom' ) {
-        								?>
-        								    <option value="<?php echo $size['value']; ?>"><?php echo $size['name']; ?></option>
-        								<?php
-        								}
-        							} ?>
-        						</select>
-        						<div class="blox-description">
-        							<?php _e( 'Note that the selected image size is not reflected in the preview above.', 'blox' ); ?>
-        						</div>
-        					</td>
-        				</tr>
-						<tr>
-							<th scope="row"><?php _e( 'Image Link', 'blox' ); ?></th>
-							<td>
-								<label class="blox-image-link-enable">
-									<input type="checkbox" class="modal-slide-image-link-enable" value="1" />
-									<?php _e( 'Check to enable', 'blox' ); ?>
-								</label>
-								<div class="blox-image-link">
-									<label class="blox-subtitle">
-										<span><?php _e( 'URL', 'blox' ); ?></span>
-										<input type="text" class="modal-slide-image-link-url" value="" />
-									</label>
-									<label class="blox-subtitle">
-										<span><?php _e( 'Title', 'blox' ); ?></span>
-										<input type="text" class="modal-slide-image-link-title" value="" />
-									</label>
-									<label>
-										<input type="checkbox" class="modal-slide-image-link-target" value="1" />
-										<?php _e( 'Open link in new window/tab', 'blox' ); ?>
-									</label>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><?php _e( 'Slide Caption', 'blox' ); ?></th>
-							<td>
-								<textarea class="modal-slide-image-caption blox-textarea-code" type="text" rows="3" ></textarea>
-								<div class="blox-description">
-									<?php _e( 'Only basic HTML is accepted.', 'blox' ); ?>
-								</div>
-							</td>
-						</tr>
-                        <tr>
-							<th scope="row"><?php _e( 'Visibility', 'blox' ); ?></th>
-							<td>
-                                <label class="blox-visibility-disable">
-									<input type="checkbox" class="modal-slide-visibility-disable" value="1" />
-									<?php _e( 'Check to disable this slide', 'blox' ); ?>
-								</label>
+                    <div class="blox-modal-subsettings">
+                        <label class="blox-modal-subsetting">
+                            <span><?php _e( 'Title', 'blox' ); ?></span>
+                            <div>
+                                <input type="text" class="modal-slide-image-title" value="" />
+                            </div>
+                        </label>
+                        <label class="blox-modal-subsetting">
+                            <span><?php _e( 'Alt Text', 'blox' ); ?></span>
+                            <div>
+                                <input type="text" class="modal-slide-image-alt" value="" />
+                            </div>
+                        </label>
+                        <label class="blox-modal-subsetting">
+                            <span><?php _e( 'Size', 'blox' ); ?></span>
+                            <div>
+            					<select class="modal-slide-image-size">
+            						<?php foreach ( (array) $this->get_image_sizes() as $i => $size ) {
+
+            							// Remove the new Custom option added in WP 4.4 for now. Could cause confusion...
+            							if ( $size['value'] != 'custom' ) {
+            							?>
+            							    <option value="<?php echo $size['value']; ?>"><?php echo $size['name']; ?></option>
+            							<?php
+            							}
+            						} ?>
+            					</select>
                                 <div class="blox-description">
-									<?php _e( 'Disabled slides will not show up in the slideshow. Simply uncheck to begin displaying again.', 'blox' ); ?>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><?php _e( 'Slide Classes', 'blox' ); ?></th>
-							<td>
-								<input type="text" class="modal-slide-image-classes" value="" />
-								<div class="blox-description">
-									<?php _e( 'Enter a space separated list of custom CSS classes to add to this image slide.', 'blox' ); ?>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+                                    <?php _e( 'Note the selected image size is not reflected in the preview.', 'blox' ); ?>
+                                </div>
+                            </div>
+                        </label>
 
-                    <button id="blox-apply-details" type="button" class="button button-primary blox-modal-button">
-                        <?php _e( 'Apply Settings Old', 'blox' ); ?>
-                    </button>
+                    </div>
+
+
+
+                    <span class="name"><?php _e( 'Image Link', 'blox' ); ?></span>
+					<label class="blox-image-link-enable">
+						<input type="checkbox" class="modal-slide-image-link-enable" value="1" />
+						<?php _e( 'Check to enable', 'blox' ); ?>
+					</label>
+					<div class="blox-modal-subsettings">
+						<label class="blox-modal-subsetting">
+							<span><?php _e( 'URL', 'blox' ); ?></span>
+							<div><input type="text" class="modal-slide-image-link-url" value="" /></div>
+						</label>
+						<label class="blox-modal-subsetting">
+							<span><?php _e( 'Title', 'blox' ); ?></span>
+							<div><input type="text" class="modal-slide-image-link-title" value="" /></div>
+						</label>
+						<label>
+							<input type="checkbox" class="modal-slide-image-link-target" value="1" />
+							<?php _e( 'Open link in new window/tab', 'blox' ); ?>
+						</label>
+					</div>
+
+                    <span class="name"><?php _e( 'Slide Caption', 'blox' ); ?></span>
+					<textarea class="modal-slide-image-caption blox-textarea-code" type="text" rows="3" ></textarea>
+					<div class="blox-description">
+						<?php _e( 'Only basic HTML is accepted.', 'blox' ); ?>
+					</div>
+
+                    <span class="name"><?php _e( 'Visibility', 'blox' ); ?></span>
+                    <label class="blox-visibility-disable">
+						<input type="checkbox" class="modal-slide-visibility-disable" value="1" />
+						<?php _e( 'Check to disable this slide', 'blox' ); ?>
+					</label>
+                    <div class="blox-description">
+						<?php _e( 'Disabled slides will not show up in the slideshow. Simply uncheck to begin displaying again.', 'blox' ); ?>
+					</div>
+
+                    <span class="name"><?php _e( 'Slide Classes', 'blox' ); ?></span>
+					<input type="text" class="modal-slide-image-classes" value="" />
+					<div class="blox-description">
+						<?php _e( 'Enter a space separated list of custom CSS classes to add to this image slide.', 'blox' ); ?>
+					</div>
+
                     <button id="blox-apply-slide-settings" type="button" class="button button-primary blox-modal-button">
                         <?php _e( 'Apply Settings', 'blox' ); ?>
                     </button>
