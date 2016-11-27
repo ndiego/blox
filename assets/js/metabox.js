@@ -406,22 +406,20 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 
 		// Set the modal id and set the selected slide id
-		var modal_id = "#blox_slide_details",
+		var modal_id = '#blox_slide_details',
 			slide_id = $( this ).parents( 'li' ).attr( 'id' );
-
-		// Open the modal
-		blox_open_modal( modal_id );
 
 		// Determine whether the prev/next buttons should be enabled or not
 		blox_set_prev_next_buttons( modal_id, slide_id );
 
+		// Hide the apply settings message if visible
+		blox_hide_applied_message();
+
 		// Import all slide settings
 		blox_import_slide_details( slide_id );
 
-		// If the image link is enabled, show the additional options
-		if ( $( '.modal-slide-image-link-enable' ).is( ':checked' ) ) {
-		  	$( '.modal-slide-image-link-enable' ).parents( '.blox-image-link-enable' ).siblings( '.blox-image-link' ).show();
-		}
+		// Open the modal last
+		blox_open_modal( modal_id );
 
 		// Close the modal if you click on the overlay
 		$(document).on( 'click', '#blox_overlay', function() {
@@ -435,35 +433,75 @@ jQuery(document).ready(function($){
 
 	});
 
-
-	$(document).on( 'click', '#blox-apply-slide-settings', function() {
+	// Apply slide modal settings to the slide on click
+	$(document).on( 'click', '#blox-slide-apply-settings', function() {
 
 		var slide_id = $( '.modal-slide-id' ).val();
 
-		// Add the disable flag to the slide container
-		if ( $( '.modal-slide-visibility-disable' ).is( ':checked' ) ) {
-			$( '#' + slide_id ).addClass( 'disabled' );
-		}
+		blox_enable_disable_slide_visibility( slide_id );
 
 		$( '#' + slide_id + ' .slide-type' ).val( $( '.modal-slide-type' ).val() );
 		$( '#' + slide_id + ' .slide-visibility-disable' ).prop( 'checked', $( '.modal-slide-visibility-disable' ).is( ':checked' ) );
-
 		$( '#' + slide_id + ' .slide-image-thumbnail' ).attr( 'src', $( '.modal-slide-image-thumbnail' ).val() );
 		$( '#' + slide_id + ' .slide-image-id' ).val( $( '.modal-slide-image-id' ).val() );
 		$( '#' + slide_id + ' .slide-image-url' ).val( $( '.modal-slide-image-url' ).val() );
 		$( '#' + slide_id + ' .slide-image-title' ).val( $( '.modal-slide-image-title' ).val() );
 		$( '#' + slide_id + ' .slide-image-alt' ).val( $( '.modal-slide-image-alt' ).val() );
 		$( '#' + slide_id + ' .slide-image-size' ).val( $( '.modal-slide-image-size' ).val() );
-
 		$( '#' + slide_id + ' .slide-image-link-enable' ).prop( 'checked', $( '.modal-slide-image-link-enable' ).is( ':checked' ) );
 		$( '#' + slide_id + ' .slide-image-link-url' ).val( $( '.modal-slide-image-link-url' ).val() );
 		$( '#' + slide_id + ' .slide-image-link-title' ).val( $( '.modal-slide-image-link-title' ).val() );
 		$( '#' + slide_id + ' .slide-image-link-target' ).prop( 'checked', $( '.modal-slide-image-link-target' ).is( ':checked' ) );
-
 		$( '#' + slide_id + ' .slide-image-caption' ).val( $( '.modal-slide-image-caption' ).val() );
 		$( '#' + slide_id + ' .slide-image-classes' ).val( $( '.modal-slide-image-classes' ).val() );
 
+		blox_show_applied_message( 'success', 1000 );
 	});
+
+	// Enable/Disable side based on modal visibility setting for given slide
+	function blox_enable_disable_slide_visibility( slide_id ) {
+
+		// Add the disable flag to the slide container
+		if ( $( '.modal-slide-visibility-disable' ).is( ':checked' ) ) {
+			$( '#' + slide_id ).addClass( 'disabled' );
+		} else {
+			$( '#' + slide_id ).removeClass( 'disabled' );
+		}
+	}
+
+	// Show the applied message with the spinner
+	function blox_show_applied_message( status, time ) {
+
+		// If the message is visible, hide it
+		$( '#blox-slide-apply-settings-message' ).hide();
+
+		// Run the spinner
+		blox_run_spinner( time );
+
+		// Delay the message show until spinner is done
+		setTimeout( function() {
+
+			// Display the message
+			if ( status === 'success' ) {
+				$( '#blox-slide-apply-settings-message' ).addClass( 'success' ).show();
+			}
+
+		}, time );
+	}
+
+	// Utility function to hide message
+	function blox_hide_applied_message() {
+		// If the message is visible, hide it
+		$( '#blox-slide-apply-settings-message' ).hide();
+	}
+
+	// Show and hide the spinner on Apply Settings click
+	function blox_run_spinner( time ) {
+		$( '.blox-modal-spinner' ).css( 'visibility', 'visible' );
+
+		// Need setTimeout because .css does not work natively with a delay
+		setTimeout( function() { $( '.blox-modal-spinner' ).css( 'visibility', 'hidden' ); }, time );
+	}
 
 	// Slideshow Uploader function
 	blox_slideshow_change_image = {
@@ -485,8 +523,6 @@ jQuery(document).ready(function($){
 				$( '.modal-slide-image-id' ).val( attachments[0].id );
 				$( '.modal-slide-image-url' ).val( attachments[0].url );
 				$( '.modal-slide-image-thumbnail' ).val( attachments[0].sizes['thumbnail'].url );
-				//$( '.modal-slide-image-title' ).val( attachments[0].title );
-				//$( '.modal-slide-image-alt' ).val( attachments[0].alt );
 			});
 
 			frame.open();
@@ -503,6 +539,9 @@ jQuery(document).ready(function($){
 		if ( $( this ).hasClass( 'disabled' ) ) {
 			return;
 		}
+
+		// Hide the apply settings message if visible
+		blox_hide_applied_message();
 
 		// Get the required ids and indices
 		var current_slide_id    = $( '.modal-slide-id' ).val(),
@@ -538,6 +577,9 @@ jQuery(document).ready(function($){
 			return;
 		}
 
+		// Hide the apply settings message if visible
+		blox_hide_applied_message();
+
 		// Get the required ids and indices
 		var current_slide_id    = $( '.modal-slide-id' ).val(),
 			prev_slide_id       = '',
@@ -565,6 +607,9 @@ jQuery(document).ready(function($){
 	// Import slide details into the Edit Slide modal
 	// The slide_id is the unique id string for the given slide
 	function blox_import_slide_details( slide_id ) {
+
+		// Start by emptying all the settings in the modal
+		blox_reset_settings( '#blox_slide_details' );
 
 		// Grab our existing slide details
 		var slide_id 			= slide_id,
@@ -601,52 +646,61 @@ jQuery(document).ready(function($){
 		$( '.modal-slide-image-caption' ).attr( 'value' , caption );
 		$( '.modal-slide-image-classes' ).attr( 'value' , classes );
 
-		// If the image link is enabled, show the additional options
+		/* If the image link is enabled, show the additional options
 		if ( $( '.modal-slide-image-link-enable' ).is( ':checked' ) ) {
-			$( '.modal-slide-image-link-enable' ).parents( '.blox-image-link-enable' ).siblings( '.blox-image-link' ).show();
-		}
+			$( '.modal-slide-image-link-enable' ).parent().siblings( '.blox-modal-subsettings' ).show();
+		} else {
+			$( '.modal-slide-image-link-enable' ).parent().siblings( '.blox-modal-subsettings' ).hide();
+		}*/
+	}
+
+	// Reset all settings in a form
+	// Reference: http://stackoverflow.com/questions/680241/resetting-a-multi-stage-form-with-jquery
+	function blox_reset_settings( settings ) {
+    	$( settings ).find( 'input:text, select, textarea' ).val( '' );
+    	$( settings ).find( 'input:radio, input:checkbox' ).removeAttr('checked').removeAttr('selected');
 	}
 
 	// Print the standard tools output
 	// The name_prefix is needed for the copy function
 	function blox_slide_tools( name_prefix ) {
-		var output = '';
+		var edit_title       = blox_localize_metabox_scripts.slideshow_edit,
+			visibility_title = blox_localize_metabox_scripts.slideshow_visibility,
+			delete_title     = blox_localize_metabox_scripts.slideshow_delete,
+			copy_title       = blox_localize_metabox_scripts.slideshow_copy
 
-		output += '<div class="blox-slide-tools-container">';
-		output += '<a class="blox-slide-edit dashicons" href="#blox_slide_details" title="' + blox_localize_metabox_scripts.slideshow_edit + '"></a>';
-		output += '<a class="blox-slide-visibility dashicons" href="#" title="' + blox_localize_metabox_scripts.slideshow_visibility + '"></a>';
-		output += '<a class="blox-slide-delete dashicons right" href="#" title="' + blox_localize_metabox_scripts.slideshow_delete + '"></a>';
-		output += '<a class="blox-slide-copy dashicons right" href="#" title="' + blox_localize_metabox_scripts.slideshow_copy + '" data-name-prefix="' + name_prefix + '"></a>';
-		output += '</div>';
-
-		return output;
+		return (
+			'<div class="blox-slide-tools-container">' +
+				'<a class="blox-slide-edit dashicons" href="#blox_slide_details" title="' + edit_title + '"></a>' +
+				'<a class="blox-slide-visibility dashicons" href="#" title="' + visibility_title + '"></a>' +
+				'<a class="blox-slide-delete dashicons right" href="#" title="' + delete_title + '"></a>' +
+				'<a class="blox-slide-copy dashicons right" href="#" title="' + copy_title + '" data-name-prefix="' + name_prefix + '"></a>' +
+			'</div>'
+		);
 	}
 
 	// Print empty "filler" slide
 	function blox_filler_slide() {
-		var output = '';
-
-		output += '<li class="blox-filler">';
-		output += '<div class="blox-filler-container"></div>';
-		output += '<div class="blox-filler-text">';
-		output += '<span class="edit dashicons"></span>';
-		output += '<span class="visibility dashicons"></span>';
-		output += '<span class="delete dashicons right"></span>';
-		output += '<span class="copy dashicons right"></span>';
-		output += '</div>';
-		output += '</li>';
-
-		return output;
+		return (
+			'<li class="blox-filler">' +
+				'<div class="blox-filler-container"></div>' +
+				'<div class="blox-filler-tools">' +
+					'<span class="edit dashicons"></span>' +
+					'<span class="visibility dashicons"></span>' +
+					'<span class="delete dashicons right"></span>' +
+					'<span class="copy dashicons right"></span>' +
+				'</div>' +
+			'</li>'
+		);
 	}
 
 	// Open the modal
 	function blox_open_modal( modal_id ) {
 		// Add the overlay to the page and style on click
-		var overlay = $( '<div id="blox_overlay"></div>' );
+		var overlay = '<div id="blox_overlay"></div>';
 
 		$( 'body' ).append( overlay );
-		$( '#blox_overlay' ).css( { 'display' : 'block', 'opacity' : 0 } );
-		$( '#blox_overlay' ).fadeTo( 100, 0.7 );
+		$( '#blox_overlay' ).show();
 
 		// Add modal open flag so we can disable body scrolling
   		$( 'body' ).addClass( 'blox-modal-open' );
@@ -658,7 +712,6 @@ jQuery(document).ready(function($){
 		$( modal_id ).css({
 			'display' : 'block',
 			'position' : 'fixed',
-			'opacity' : 0,
 			'z-index': 110000,
 			'top' : 30 + 'px',
 			'bottom' : 30 + 'px',
@@ -666,13 +719,13 @@ jQuery(document).ready(function($){
 			'right' : 30 + 'px'
 		});
 
-		$( modal_id ).fadeTo( 100, 1 );
+		$( modal_id ).show();
 	}
 
 	// Close the modal
 	function blox_close_modal( modal_id ) {
-		$( "#blox_overlay" ).fadeOut(100);
-		$( modal_id ).css( { 'display' : 'none' } );
+		$( "#blox_overlay" ).hide();
+		$( modal_id ).hide();
 
 		// Remove modal open flag to return body scrolling back to normal
 		$( 'body' ).removeClass( 'blox-modal-open' );
@@ -935,15 +988,21 @@ jQuery(document).ready(function($){
 
 	// Shows and hides each content type on selection
 	$(document).on( 'change', '.blox-position-type select', function(){
-		if ( $(this).val() == 'default' ) {
-			$(this).siblings( '.blox-position-default' ).removeClass( 'blox-hidden' );
-			$(this).parents( '.blox-position-type' ).siblings( '.blox-position-custom' ).addClass( 'blox-hidden' );
-		} else if ( $(this).val() == 'custom' ) {
-			$(this).siblings( '.blox-position-default' ).addClass( 'blox-hidden' );
-			$(this).parents( '.blox-position-type' ).siblings( '.blox-position-custom').removeClass( 'blox-hidden' );
+
+		var selected         = $(this).val(),
+			default_position = $(this).siblings( '.blox-position-default' ),
+			custom_position  = $(this).parents( '.blox-position-type' ).siblings( '.blox-position-custom' ),
+			hidden           = 'blox-hidden';
+
+		if ( selected === 'default' ) {
+			default_position.removeClass( hidden );
+			custom_position.addClass( hidden );
+		} else if ( selected === 'custom' ) {
+			default_position.addClass( hidden );
+			custom_position.removeClass( hidden );
 		} else {
-			$(this).siblings( '.blox-position-default' ).removeClass( 'blox-hidden' );
-			$(this).parents( '.blox-position-type' ).siblings( '.blox-position-custom').addClass( 'blox-hidden' );
+			default_position.removeClass( 'blox-hidden' );
+			custom_position.addClass( hidden );
 		}
 	});
 
@@ -954,10 +1013,15 @@ jQuery(document).ready(function($){
 
 	// Shows and hides visibility restrictions
 	$(document).on( 'change', '.blox-visibility-role_type select', function(){
-		if ( $(this).val() == 'restrict' ) {
-			$(this).parents( '.blox-visibility-role_type' ).siblings( '.blox-visibility-role-restrictions' ).removeClass( 'blox-hidden' );
+
+		var selected      = $(this).val(),
+			role_restrict = $(this).parents( '.blox-visibility-role_type' ).siblings( '.blox-visibility-role-restrictions' ),
+			hidden        = 'blox-hidden';
+
+		if ( selected === 'restrict' ) {
+			role_restrict.removeClass( hidden );
 		} else {
-			$(this).parents( '.blox-visibility-role_type' ).siblings( '.blox-visibility-role-restrictions' ).addClass( 'blox-hidden' );
+			role_restrict.addClass( hidden );
 		}
 	});
 

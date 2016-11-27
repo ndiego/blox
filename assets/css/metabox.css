@@ -786,7 +786,7 @@ ul.blox-columns li {
 }
 
 .blox-slides-container li div.blox-slide-tools-container,
-.blox-filler .blox-filler-text {
+.blox-filler .blox-filler-tools {
 	padding: 4px 0 0;
 }
 .blox-slide-tools-container a {
@@ -840,19 +840,19 @@ ul.blox-columns li {
 	position: relative;
 	top: 0;
 }
-.blox-filler-text span {
+.blox-filler-tools span {
 	color: #ccc;
 	padding: 2px 0 2px 2px;
 }
-.blox-filler-text span.right {
+.blox-filler-tools span.right {
 	float: right;
 	padding: 2px 2px 2px 0;
 	font-size: 18px;
 }
-.blox-filler-text span.edit:before { content: "\f464"; }
-.blox-filler-text span.visibility:before { content: "\f177"; }
-.blox-filler-text span.copy:before { content: "\f105"; }
-.blox-filler-text span.delete:before { content: "\f182"; }
+.blox-filler-tools span.edit:before { content: "\f464"; }
+.blox-filler-tools span.visibility:before { content: "\f177"; }
+.blox-filler-tools span.copy:before { content: "\f105"; }
+.blox-filler-tools span.delete:before { content: "\f182"; }
 
 .blox-slide-multiplicity {
 	display: inline-block;
@@ -939,6 +939,13 @@ ul.blox-columns li {
 	padding-top: 5px;
 }
 
+.modal-slide-apply-settings-container {
+	margin: 25px 0;
+}
+.modal-slide-apply-settings-container .blox-message {
+	margin-top: 15px;
+}
+
 
 .blox-modal-subsettings label {
 	display: block;
@@ -961,6 +968,26 @@ ul.blox-columns li {
 }
 .blox-modal-subsetting div.blox-description {
 	width: 100%;
+}
+
+
+.blox-message {
+	background: #fff;
+	border-left: 4px solid #fff;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	display: none;
+	margin: 10px 0;
+	padding: 1px 12px;
+}
+.blox-message p {
+	margin: .5em 0;
+    padding: 2px;
+	font-size: 13px;
+	line-height: 1.5;
+}
+.blox-message.success {
+	border-left-color: #46b450;
 }
 
 
@@ -1114,6 +1141,10 @@ ul.blox-columns li {
 .blox-modal input[type="text"] {
 	width: 100%;
 }
+.blox-modal button:focus,
+.blox-modal .button-primary:focus {
+	box-shadow: none;
+}
 .blox-modal-footer {
 	height: 60px;
 	width:100%;
@@ -1140,9 +1171,24 @@ ul.blox-columns li {
     width:100%;
     background: #000;
     display: none;
+	opacity: .7;
 }
 body.blox-modal-open {
     overflow: hidden;
+}
+
+.blox-modal-spinner {
+	background: url(../images/spinner.gif) no-repeat;
+	-webkit-background-size: 20px 20px;
+	background-size: 20px 20px;
+	display: inline-block;
+	visibility: hidden;
+	vertical-align: middle;
+	opacity: .7;
+	filter: alpha(opacity=70);
+	width: 20px;
+	height: 20px;
+	margin: 4px 10px 0;
 }
 
 

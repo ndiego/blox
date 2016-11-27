@@ -178,7 +178,7 @@ class Blox_Content_Slideshow {
 							<?php } else { ?>
 								<li class="blox-filler">
 									<div class="blox-filler-container"></div>
-									<div class="blox-filler-text">
+									<div class="blox-filler-tools">
 										<span class="edit dashicons"></span>
                                         <span class="visibility dashicons"></span>
                                         <span class="delete dashicons right"></span>
@@ -465,9 +465,15 @@ class Blox_Content_Slideshow {
 						<?php _e( 'Enter a space separated list of custom CSS classes to add to this image slide.', 'blox' ); ?>
 					</div>
 
-                    <button id="blox-apply-slide-settings" type="button" class="button button-primary blox-modal-button">
-                        <?php _e( 'Apply Settings', 'blox' ); ?>
-                    </button>
+                    <div class="modal-slide-apply-settings-container">
+                        <button id="blox-slide-apply-settings" type="button" class="button button-primary">
+                            <?php _e( 'Apply Settings', 'blox' ); ?>
+                        </button>
+                        <span class="blox-modal-spinner"></span>
+                        <div id="blox-slide-apply-settings-message" class="blox-message success">
+                            <p><?php _e( 'Settings successfully applied. Publish/Update to fully save your changes.', 'blox' ); ?></p>
+                        </div>
+                    </div>
                 </div>
 
             </div>
