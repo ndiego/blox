@@ -230,6 +230,8 @@ class Blox_Settings {
 					array(
 						'section'     => $tab,
 						'id'          => isset( $option['id'] )          ? $option['id']          : null,
+                        'group'       => isset( $option['group'] )       ? $option['group']       : null,
+                        'subgroup'    => isset( $option['subgroup'] )    ? $option['subgroup']    : null,
 						'name'        => isset( $option['name'] )        ? $option['name']        : null,
 						'label' 	  => ! empty( $option['label'] )     ? $option['label']       : '',
 						'desc'        => ! empty( $option['desc'] )      ? $option['desc']        : '',
@@ -353,7 +355,7 @@ class Blox_Settings {
 					),*/
 					'defaults_position_header' => array(
 						'id'   => 'defaults_position_header',
-						'name' => '<span class="title">' . __( 'Position Settings', 'blox' ) . '</span>',
+						'name' => '<span class="title">' . __( 'Position Defaults', 'blox' ) . '</span>',
 						'desc' => sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
 						'type' => 'header'
 					),
@@ -461,7 +463,7 @@ class Blox_Settings {
 			),
 
 			/** Misc Settings */
-			'misc' => apply_filters('blox_settings_misc',
+			'misc' => apply_filters( 'blox_settings_misc',
 				array(
                     'syntax_highlighting_header' => array(
                         'id'   => 'syntax_highlighting_header',
@@ -678,8 +680,15 @@ class Blox_Settings {
 
 		global $blox_options;
 
+        echo print_r( $args );
+        $group = ! empty( $args['group'] ) ? ( '[' . esc_attr( $args['group'] ) . ']' ) : '';
+
+
+        $id   = 'blox_settings' . $group . '[' . $args['id'] . ']';
+        $name = 'blox_settings' . $group . '[' . $args['id'] . ']';
+
 		$checked = isset( $blox_options[ $args['id'] ] ) ? checked( 1, esc_attr( $blox_options[ $args['id'] ] ), false ) : '';
-		$html = '<label><input type="checkbox" id="blox_settings[' . $args['id'] . ']" name="blox_settings[' . $args['id'] . ']" value="1" ' . $checked . '/> ' . $args['label'] . '</label>';
+		$html = '<label><input type="checkbox" id="' . $id . '" name="' . $name . '" value="1" ' . $checked . '/> ' . $args['label'] . '</label>';
 		$html .= ! empty( $args['desc'] ) ? ( '<p class="description">' . $args['desc'] . '</p>' ) : '';
 
 		echo $html;
