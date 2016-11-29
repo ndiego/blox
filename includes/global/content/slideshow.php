@@ -190,28 +190,47 @@ class Blox_Content_Slideshow {
 
 					</td>
 				</tr>
+                <?php
+
+                $bs_prefix = $get_prefix['slideshow']['builtin']['settings'];
+
+                $animation      = $this->get_values( $bs_prefix, 'animation', 'builtin_slideshow_animation' );
+
+                $slideshowSpeed = $this->get_values( $bs_prefix, 'slideshowSpeed', 'builtin_slideshow_slideshowSpeed' );
+                $animationSpeed = $this->get_values( $bs_prefix, 'animationSpeed', 'builtin_slideshow_animationSpeed' );
+
+                $slideshow      = $this->get_values( $bs_prefix, 'slideshow', 'builtin_slideshow_slideshow' );
+                $animationLoop  = $this->get_values( $bs_prefix, 'animationLoop', 'builtin_slideshow_animationLoop' );
+                $pauseOnHover   = $this->get_values( $bs_prefix, 'pauseOnHover', 'builtin_slideshow_pauseOnHover' );
+                $smoothHeight   = $this->get_values( $bs_prefix, 'smoothHeight', 'builtin_slideshow_smoothHeight' );
+                $directionNav   = $this->get_values( $bs_prefix, 'directionNav', 'builtin_slideshow_directionNav' );
+                $controlNav     = $this->get_values( $bs_prefix, 'controlNav', 'builtin_slideshow_controlNav' );
+                $caption        = $this->get_values( $bs_prefix, 'caption', 'builtin_slideshow_caption' );
+
+                $background_images = $this->get_values( $bs_prefix, 'background_images', 'builtin_slideshow_background_images' );
+                ?>
 				<tr class="blox-slideshow-option blox-content-slideshow-builtin">
 					<th scope="row"><?php _e( 'Control Settings' ); ?></th>
 					<td>
 						<div class="blox-standard-settings">
 							<select name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animation]" id="blox_builtin_settings_animation">
-								<option value="slide" <?php echo ! empty( $get_prefix['slideshow']['builtin']['settings']['animation'] ) ? selected( $get_prefix['slideshow']['builtin']['settings']['animation'], 'slide' ) : 'selected'; ?> ><?php _e( 'Slide', 'blox' ); ?></option>
-								<option value="fade" <?php echo ! empty( $get_prefix['slideshow']['builtin']['settings']['animation'] ) ? selected( $get_prefix['slideshow']['builtin']['settings']['animation'], 'fade' ) : ''; ?> ><?php _e( 'Fade', 'blox' ); ?></option>
+								<option value="slide" <?php echo selected( $animation, 'slide' ); ?> ><?php _e( 'Slide', 'blox' ); ?></option>
+								<option value="fade" <?php echo selected( $animation, 'fade' ); ?> ><?php _e( 'Fade', 'blox' ); ?></option>
 							</select>
 							<label for="blox_builtin_settings_animation"><?php _e( 'Slideshow Animation', 'blox' ); ?></label><br>
-							<input type="text" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][slideshowSpeed]" id="blox_builtin_settings_slideshowSpeed" class="blox-small-text" value="<?php if ( ! empty( $get_prefix['slideshow']['builtin']['settings']['slideshowSpeed'] ) && is_numeric( $get_prefix['slideshow']['builtin']['settings']['slideshowSpeed'] ) ) { echo esc_attr( $get_prefix['slideshow']['builtin']['settings']['slideshowSpeed'] ); } else { echo '7000'; } ?>" />
+							<input type="text" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][slideshowSpeed]" id="blox_builtin_settings_slideshowSpeed" class="blox-small-text" value="<?php echo esc_attr( $slideshowSpeed ); ?>" />
 							<label for="blox_builtin_settings_slideshowSpeed"><?php _e( 'Slideshow Speed (milliseconds)', 'blox' ); ?></label><br>
-							<input type="text" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animationSpeed]" id="blox_builtin_settings_animationSpeed" class="blox-small-text" value="<?php if ( ! empty( $get_prefix['slideshow']['builtin']['settings']['animationSpeed'] ) && is_numeric( $get_prefix['slideshow']['builtin']['settings']['animationSpeed'] ) ) { echo esc_attr( $get_prefix['slideshow']['builtin']['settings']['animationSpeed'] ); } else { echo '600'; } ?>" />
+							<input type="text" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animationSpeed]" id="blox_builtin_settings_animationSpeed" class="blox-small-text" value="<?php echo esc_attr( $animationSpeed ); ?>" />
 							<label for="blox_builtin_settings_animationSpeed"><?php _e( 'Animation Speed (milliseconds)', 'blox' ); ?></label>
 						</div>
 						<div class="blox-advanced-settings">
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][slideshow]" id="blox_builtin_settings_slideshow" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['slideshow'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['slideshow'] ) : ''; ?> /> <?php _e( 'Start Slideshow Automatically', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animationLoop]" id="blox_builtin_settings_animationLoop" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['animationLoop'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['animationLoop'] ) : ''; ?> /> <?php _e( 'Loop Slideshow', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][pauseOnHover]" id="blox_builtin_settings_pauseOnHover" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['pauseOnHover'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['pauseOnHover'] ) : ''; ?> /> <?php _e( 'Enable Pause On Hover', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][smoothHeight]" id="blox_builtin_settings_smoothHeight" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['smoothHeight'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['smoothHeight'] ) : 'checked'; ?> /> <?php _e( 'Enable Slideshow Height Resizing', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][directionNav]" id="blox_builtin_settings_directionNav" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['directionNav'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['directionNav'] ) : ''; ?> /> <?php _e( 'Disable Directional Navigation (i.e. arrows)', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][controlNav]" id="blox_builtin_settings_controlNav" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['controlNav'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['controlNav'] ) : ''; ?> /> <?php _e( 'Disable Control Navigation (i.e. dots)', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][caption]" id="blox_builtin_settings_caption" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['caption'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['caption'] ) : ''; ?> /> <?php _e( 'Disable Captions ', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][slideshow]" id="blox_builtin_settings_slideshow" value="1" <?php checked( $slideshow ); ?> /> <?php _e( 'Start Slideshow Automatically', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animationLoop]" id="blox_builtin_settings_animationLoop" value="1" <?php checked( $animationLoop ); ?> /> <?php _e( 'Loop Slideshow', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][pauseOnHover]" id="blox_builtin_settings_pauseOnHover" value="1" <?php checked( $pauseOnHover ); ?> /> <?php _e( 'Enable Pause On Hover', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][smoothHeight]" id="blox_builtin_settings_smoothHeight" value="1" <?php checked( $smoothHeight ); ?> /> <?php _e( 'Enable Slideshow Height Resizing', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][directionNav]" id="blox_builtin_settings_directionNav" value="1" <?php checked( $directionNav ); ?> /> <?php _e( 'Disable Directional Navigation (i.e. arrows)', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][controlNav]" id="blox_builtin_settings_controlNav" value="1" <?php checked( $controlNav ); ?> /> <?php _e( 'Disable Control Navigation (i.e. dots)', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][caption]" id="blox_builtin_settings_caption" value="1" <?php checked( $caption ); ?> /> <?php _e( 'Disable Captions ', 'blox' ); ?></label><br>
 						</div>
 					</td>
 				</tr>
@@ -219,7 +238,7 @@ class Blox_Content_Slideshow {
 					<th scope="row"><?php _e( 'Display Settings' ); ?></th>
 					<td>
 						<label>
-                            <input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][background]" id="blox_builtin_settings_slideshow" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['background'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['background'] ) : ''; ?> />
+                            <input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][background_images]" id="blox_builtin_settings_background_images" value="1" <?php checked( $background_images ); ?> />
                             <?php _e( 'Set images as background images', 'blox' ); ?>
                         </label>
                         <span class="blox-help-text-icon">
@@ -261,6 +280,16 @@ class Blox_Content_Slideshow {
 		<?php
 	}
 
+
+    public function get_values( $prefix, $setting, $default, $type = null ) {
+
+        if ( ! empty( $prefix ) ) {
+            $value = ! empty( $prefix[$setting] ) ? $prefix[$setting] : '';
+            return $value;
+        } else {
+            return blox_get_option( $default, '' );
+        }
+    }
 
 	/**
 	 * Saves all of the slideshow ralated settings
@@ -319,7 +348,7 @@ class Blox_Content_Slideshow {
 		$settings['builtin']['settings']['caption']  		= isset( $name_prefix['builtin']['settings']['caption'] ) ? 1 : 0;
 
         // Save the display settings
-        $settings['builtin']['settings']['background']  	= isset( $name_prefix['builtin']['settings']['background'] ) ? 1 : 0;
+        $settings['builtin']['settings']['background_images']  	= isset( $name_prefix['builtin']['settings']['background_images'] ) ? 1 : 0;
 
 
 		// Save all of the additional slideshow option ids (i.e. Soliloquy, Revolution Slider, Meta Slider, etc.)
@@ -635,7 +664,7 @@ class Blox_Content_Slideshow {
             foreach ( $content_data['slideshow']['builtin']['slides'] as $key => $slides ) {
 
                 // Are we using background images?
-                $background_images  = ! empty( $content_data['slideshow']['builtin']['settings']['background'] ) ? true : false;
+                $background_images  = ! empty( $content_data['slideshow']['builtin']['settings']['background_images'] ) ? true : false;
 
                 // Setup the image
                 $image_id    = esc_attr( $slides['image']['id'] );

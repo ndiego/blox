@@ -162,7 +162,7 @@ class Blox_Content_Image {
 
 						<div class="blox-image-preview-wrapper">
 							<div class="blox-image-preview-inner">
-								<img class="blox-image-default <?php if ( !empty( $get_prefix['image']['custom']['url'] ) ) echo 'hidden'; ?>" src="<?php echo plugins_url( 'assets/images/default.jpg', $this->base->file ); ?>" />
+								<img class="blox-image-default <?php if ( !empty( $get_prefix['image']['custom']['url'] ) ) echo 'hidden'; ?>" src="<?php echo plugins_url( 'assets/images/default.png', $this->base->file ); ?>" />
 								<img class="blox-image-preview <?php if ( empty( $get_prefix['image']['custom']['url'] ) ) echo 'hidden'; ?>" src="<?php echo isset( $get_prefix['image']['custom']['url'] ) ? esc_attr( $get_prefix['image']['custom']['url'] ) : ''; ?>" />
 							</div>
 						</div>

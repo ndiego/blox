@@ -81,6 +81,10 @@ textarea.blox-textarea-code {
 	tab-size: 4;
 }
 
+.blox-grouped-settings label {
+	padding: .25em 0 .75em !important;
+}
+
 
 /* Styles for the multiple checkbox containers with columns found on Location and Visibility */
 .blox-checkbox-container {

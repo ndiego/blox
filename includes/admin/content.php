@@ -90,15 +90,114 @@ class Blox_Content {
                     'desc' => __( 'When a new block is created, the following content defaults will be applied.', 'blox' ),
                     'type' => 'header',
                 ),
-                'content_test' => array(
-                    'id'    => 'content_test',
-                    'name'  => __( 'Testing', 'blox' ),
-                    'label' => __( 'This is a test', 'blox' ),
-                    'desc'  => __( 'this is a test', 'blox' ),
-                    'type'  => 'checkbox',
-                    'group' => 'content_defaults',
-                    'subgroup' => 'slideshow',
-                    'default' => true
+                'defaults_content_slideshow' => array(
+                    'id'   => 'defaults_content_slideshow',
+                    'name' => __( 'Builtin Slideshow', 'blox' ),
+                    'desc' => '',
+                    'type' => 'group',
+                    'settings' => array(
+
+                        // All the settings in the group
+                        'builtin_slideshow_animation' => array(
+                            'id'    => 'builtin_slideshow_animation',
+                            'grouped' => 'defaults_content_slideshow',
+                            'name'  => '',
+                            'label' => __( 'Slideshow Animation', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'select',
+                            'options' => array(
+                                'slide' => __( 'Slide', 'blox' ),
+                                'fade'  => __( 'Fade', 'blox' ),
+                            ),
+                            'default' => 'slide'
+                        ),
+                        'builtin_slideshow_slideshowSpeed' => array(
+                            'id'    => 'builtin_slideshow_slideshowSpeed',
+                            'name'  => '',
+                            'label' => __( 'Slideshow Speed (milliseconds)', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'text',
+                            'size'  => 'small',
+                            'default' => '7000',
+                            'sanitize' => 'absint',
+                        ),
+                        'builtin_slideshow_animationSpeed' => array(
+                            'id'    => 'builtin_slideshow_animationSpeed',
+                            'name'  => '',
+                            'label' => __( 'Animation Speed (milliseconds)', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'text',
+                            'size'  => 'small',
+                            'default' => '600',
+                            'sanitize' => 'absint',
+                        ),
+                        'builtin_slideshow_slideshow' => array(
+                            'id'    => 'builtin_slideshow_slideshow',
+                            'name'  => '',
+                            'label' => __( 'Start Slideshow Automatically', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_animationLoop' => array(
+                            'id'    => 'builtin_slideshow_animationLoop',
+                            'name'  => '',
+                            'label' => __( 'Loop Slideshow', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_pauseOnHover' => array(
+                            'id'    => 'builtin_slideshow_pauseOnHover',
+                            'name'  => '',
+                            'label' => __( 'Enable Pause On Hover', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_smoothHeight' => array(
+                            'id'    => 'builtin_slideshow_smoothHeight',
+                            'name'  => '',
+                            'label' => __( 'Enable Slideshow Height Resizing', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_directionNav' => array(
+                            'id'    => 'builtin_slideshow_directionNav',
+                            'name'  => '',
+                            'label' => __( 'Disable Directional Navigation (i.e. arrows)', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_controlNav' => array(
+                            'id'    => 'builtin_slideshow_controlNav',
+                            'name'  => '',
+                            'label' => __( 'Disable Control Navigation (i.e. dots)', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_caption' => array(
+                            'id'    => 'builtin_slideshow_caption',
+                            'name'  => '',
+                            'label' => __( 'Disable Captions', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        /*
+                        'builtin_slideshow_background_images' => array(
+                            'id'    => 'builtin_slideshow_background_images',
+                            'name'  => '',
+                            'label' => __( 'Set images as background images', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        */
+                    ),
                 ),
             )
         );

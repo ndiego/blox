@@ -8,6 +8,13 @@ Resources:
 
 Changelog:
 
+Unreleased
+* Added fullscreen mode for raw content
+* Added syntax highlighting in full screen more for raw content
+* Added quickedit functionality to global blocks for selected position and visibility settings
+* Added bulkedit functionality to global blocks for enable/disable block
+* Updated slideshow and custom default images with correct dashicon
+
 Version 1.2.1 – 2016-10-23
 * Fixed EDD updater conflict with other plugins using EDD by adding a prefix to the updater
 
