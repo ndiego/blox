@@ -628,6 +628,9 @@ jQuery(document).ready(function($){
 			caption 			= $( '#' + slide_id + ' .slide-image-caption' ).attr( 'value' ),
 			classes 			= $( '#' + slide_id + ' .slide-image-classes' ).attr( 'value' );
 
+		// In the case that no image size is set, default to full
+		image_size = image_size != '' ? image_size : 'full';
+
 		// Populate the modal with existing details on open
 		$( '.modal-slide-id' ).attr( 'value' , slide_id );
 		$( '.modal-slide-type' ).attr( 'value' , slide_type );
@@ -646,12 +649,11 @@ jQuery(document).ready(function($){
 		$( '.modal-slide-image-caption' ).attr( 'value' , caption );
 		$( '.modal-slide-image-classes' ).attr( 'value' , classes );
 
-		/* If the image link is enabled, show the additional options
-		if ( $( '.modal-slide-image-link-enable' ).is( ':checked' ) ) {
-			$( '.modal-slide-image-link-enable' ).parent().siblings( '.blox-modal-subsettings' ).show();
-		} else {
-			$( '.modal-slide-image-link-enable' ).parent().siblings( '.blox-modal-subsettings' ).hide();
-		}*/
+		var link_enable_checkbox    = $( '.modal-slide-image-link-enable' ),
+		    link_settings_container = link_enable_checkbox.parent().siblings( '.blox-modal-subsettings.image-link' );
+
+		// If the image link is enabled, show the additional options
+		link_enable_checkbox.is( ':checked' ) ? link_settings_container.show() : link_settings_container.hide();
 	}
 
 	// Reset all settings in a form
@@ -756,6 +758,16 @@ jQuery(document).ready(function($){
 		cursor: 'move',
 		forcePlaceholderSize: true,
 		placeholder: 'placeholder'
+	});
+
+	// Show and hide image link based on click
+	$(document).on( 'click', '.modal-slide-image-link-enable', function(e) {
+
+		var checkbox  = $( this ),
+			container = checkbox.parent().siblings( '.blox-modal-subsettings.image-link' );
+
+		// If the image link is enabled, show the additional options
+		checkbox.is( ':checked' ) ? container.show() : container.hide();
 	});
 
 

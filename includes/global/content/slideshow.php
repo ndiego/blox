@@ -321,7 +321,7 @@ class Blox_Content_Slideshow {
 				$settings['builtin']['slides'][$key]['image']['url']    		= esc_url( $name_prefix['builtin']['slides'][$key]['image']['url'] );
 				$settings['builtin']['slides'][$key]['image']['title']    		= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['title'] ) );
 				$settings['builtin']['slides'][$key]['image']['alt'] 	   		= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['alt'] ) );
-                $settings['builtin']['slides'][$key]['image']['size'] 	   		= esc_attr( $name_prefix['builtin']['slides'][$key]['image']['size'] );
+                $settings['builtin']['slides'][$key]['image']['size'] 	   		= ! empty( $name_prefix['builtin']['slides'][$key]['image']['size'] ) ? esc_attr( $name_prefix['builtin']['slides'][$key]['image']['size'] ) : 'full'; // If no size is set, default to full
 
 				$settings['builtin']['slides'][$key]['image']['link']['enable']	= isset( $name_prefix['builtin']['slides'][$key]['image']['link']['enable'] ) ? 1 : 0;
 				$settings['builtin']['slides'][$key]['image']['link']['url']	= isset( $name_prefix['builtin']['slides'][$key]['image']['link']['url'] ) ? ( $name_prefix['builtin']['slides'][$key]['image']['link']['url'] == 'http://' ? '' : esc_url( $name_prefix['builtin']['slides'][$key]['image']['link']['url'] ) ) : '';
@@ -415,7 +415,6 @@ class Blox_Content_Slideshow {
                 <div class="modal-slide-image-settings">
 
                     <span class="name"><?php _e( 'Image Settings', 'blox' ); ?></span>
-
                     <div class="blox-modal-subsettings">
                         <label class="blox-modal-subsetting">
                             <span><?php _e( 'Title', 'blox' ); ?></span>
@@ -448,17 +447,14 @@ class Blox_Content_Slideshow {
                                 </div>
                             </div>
                         </label>
-
                     </div>
-
-
 
                     <span class="name"><?php _e( 'Image Link', 'blox' ); ?></span>
 					<label class="blox-image-link-enable">
 						<input type="checkbox" class="modal-slide-image-link-enable" value="1" />
 						<?php _e( 'Check to enable', 'blox' ); ?>
 					</label>
-					<div class="blox-modal-subsettings">
+					<div class="blox-modal-subsettings image-link">
 						<label class="blox-modal-subsetting">
 							<span><?php _e( 'URL', 'blox' ); ?></span>
 							<div><input type="text" class="modal-slide-image-link-url" value="" /></div>
