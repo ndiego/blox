@@ -147,7 +147,7 @@
 .blox-theme-default .slick-slider .slick-prev,
 .blox-theme-default .slick-slider .slick-prev:hover,
 .blox-theme-default .slick-slider .slick-prev:focus {
-	background-image: url(../images/prev.svg);
+	background-image: url('../images/prev.svg');
     left: 2%;
     background-repeat: no-repeat;
 	background-size: 100%;
@@ -159,7 +159,7 @@
 .blox-theme-default .slick-slider .slick-next,
 .blox-theme-default .slick-slider .slick-next:hover,
 .blox-theme-default .slick-slider .slick-next:focus {
-	background-image: url(../images/next.svg);
+	background-image: url('../images/next.svg');
     right: 2%;
     background-repeat: no-repeat;
 	background-size: 100%;
@@ -196,6 +196,24 @@
 .blox-theme-default .slick-dots li.slick-active button:before {
 	color: #fff;
 	opacity: 1;
+}
+
+/* Dark Slideshow Theme */
+.blox-theme-default.dark .slick-slider .slick-prev,
+.blox-theme-default.dark .slick-slider .slick-prev:hover,
+.blox-theme-default.dark .slick-slider .slick-prev:focus {
+	background-image: url('../images/prev-dark.svg');
+}
+.blox-theme-default.dark .slick-slider .slick-next,
+.blox-theme-default.dark .slick-slider .slick-next:hover,
+.blox-theme-default.dark .slick-slider .slick-next:focus {
+	background-image: url('../images/next-dark.svg')
+}
+.blox-theme-default.dark .slick-dots li button:before {
+	color: #000;
+}
+.blox-theme-default.dark .slick-dots li.slick-active button:before {
+	color: #000;
 }
 
 

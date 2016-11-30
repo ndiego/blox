@@ -245,7 +245,7 @@ class Blox_Content_Slideshow {
                             <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
                         </span>
                         <div class="blox-help-text top">
-                            <?php echo sprintf( __( 'When this setting is enabled, the CSS class %1$sblox-image-background%2$s is added to the content block. Additional custom CSS may be required to attain your desired effect.', 'blox' ), '<code>', '</code>' ); ?>
+                            <?php echo sprintf( __( 'When this setting is enabled, images are displayed as a background images in each slide. Additional custom CSS may be required to attain your desired effect. For additional information on how effectively to use this setting, view the builtin slideshow %sdocumentation%s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/slideshow/" target="_blank">', '</a>' ); ?>
                         </div>
                     </td>
 				</tr>
