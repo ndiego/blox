@@ -65,16 +65,9 @@
 
 /* Slideshow Defaults
 -------------------------------------------------------------- */
-.blox-theme-default .slick-slider {
-	background: #fff;
-}
-.blox-theme-default .slick-slider *:focus {
-	outline: none;
-}
-.blox-theme-default .slick-slider img {
-	width: 100%;
-	max-width: 100%;
-	line-height: 0;
+
+.blox-theme-default .blox-slideshow-item {
+	position: relative;
 }
 
 /* Styling for background images */
@@ -97,22 +90,26 @@
 	height: 100%;
 }
 
-
+/* Slick Slider Styling --------------- */
+.blox-theme-default .slick-slider *:focus {
+	outline: none;
+}
+.blox-theme-default .slick-slider .blox-slideshow-item.image img {
+	width: 100%;
+	max-width: 100%;
+	line-height: 0;
+}
 /* Arrows */
-.blox-theme-default .slick-prev,
-.blox-theme-default .slick-next {
+.blox-theme-default .slick-slider .slick-prev,
+.blox-theme-default .slick-slider .slick-next {
     font-size: 0;
     line-height: 0;
-
     position: absolute;
-
     top: 50%;
 	-webkit-transform: translate(0, -50%);
     -ms-transform: translate(0, -50%);
     transform: translate(0, -50%);
-
     display: block;
-
 	width: 60px;
 	height: 60px;
 	color: transparent;
@@ -121,71 +118,88 @@
 	background-repeat: no-repeat;
 	background-size: 100%;
 	text-align: right;
-	/*Custom added above*/
-
     padding: 0;
-
-
     cursor: pointer;
-
     color: transparent;
     border: none;
     outline: none;
     background: initial;
-
     z-index:1;
+	/* Hide the nav icons initially, show on hover */
+	visibility: hidden;
 }
-.blox-theme-default .slick-prev:hover,
-.blox-theme-default .slick-prev:focus,
-.blox-theme-default .slick-next:hover,
-.blox-theme-default .slick-next:focus {
+.blox-theme-default .slick-slider:hover .slick-prev,
+.blox-theme-default .slick-slider:hover .slick-next {
+	visibility: visible;
+}
+.blox-theme-default .slick-slider .slick-prev:hover,
+.blox-theme-default .slick-slider .slick-prev:focus,
+.blox-theme-default .slick-slider .slick-next:hover,
+.blox-theme-default .slick-slider .slick-next:focus {
     outline: none;
 }
 
-.blox-theme-default .slick-prev:hover,
-.blox-theme-default .slick-next:hover {
+.blox-theme-default .slick-slider .slick-prev:hover,
+.blox-theme-default .slick-slider .slick-next:hover {
     opacity: .7;
 }
 
-.blox-theme-default .slick-prev,
-.blox-theme-default .slick-prev:hover,
-.blox-theme-default .slick-prev:focus {
+.blox-theme-default .slick-slider .slick-prev,
+.blox-theme-default .slick-slider .slick-prev:hover,
+.blox-theme-default .slick-slider .slick-prev:focus {
 	background-image: url(../images/prev.svg);
     left: 2%;
     background-repeat: no-repeat;
 	background-size: 100%;
 }
-[dir='rtl'] .blox-theme-default .slick-prev {
+[dir='rtl'] .blox-theme-default .slick-slider .slick-prev {
     right: 2%;
     left: auto;
 }
-
-.blox-theme-default .slick-next,
-.blox-theme-default .slick-next:hover,
-.blox-theme-default .slick-next:focus {
+.blox-theme-default .slick-slider .slick-next,
+.blox-theme-default .slick-slider .slick-next:hover,
+.blox-theme-default .slick-slider .slick-next:focus {
 	background-image: url(../images/next.svg);
     right: 2%;
     background-repeat: no-repeat;
 	background-size: 100%;
 }
-[dir='rtl'] .blox-theme-default .slick-next {
+[dir='rtl'] .blox-theme-default .slick-slider .slick-next {
     right: auto;
     left: 2%;
 }
-.blox-theme-default .slick-prev:before,
-.blox-theme-default .slick-next:before {
+.blox-theme-default .slick-slider .slick-prev:before,
+.blox-theme-default .slick-slider .slick-next:before {
 	content: '';
 }
-
 /* Disable nav arrow if there is no next/prev slide */
 .blox-theme-default .slick-prev.slick-disabled,
 .blox-theme-default .slick-next.slick-disabled {
-    opacity: 0;
+    opacity: 0 !important;
+	cursor: default;
+}
+
+.blox-theme-default .slick-dots {
+	bottom: 3%;
+}
+.blox-theme-default .slick-dots li {
+	margin: 0 2px;
+}
+.blox-theme-default .slick-dots li button:before {
+	font-size: 14px;
+	color: #fff;
+	opacity: .6;
+}
+.blox-theme-default .slick-dots li button:before:hover {
+	opacity: .8;
+}
+.blox-theme-default .slick-dots li.slick-active button:before {
+	color: #fff;
+	opacity: 1;
 }
 
 
-
-/* Flexslider Styling */
+/* Flexslider Styling --------------- */
 .blox-theme-default .flexslider {
 	margin: 0 0 0;
 	background: #ffffff;
@@ -245,6 +259,7 @@
 }
 .blox-theme-default .flex-control-nav {
 	bottom: 3%;
+	z-index: 1000;
 }
 .blox-theme-default .flex-control-paging li a {
 	background: #fff;
