@@ -86,13 +86,13 @@
 	max-width: 100%;
 	font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 	font-size: 13px;
-	background: #f9f9f9;
 	outline: 0;
 	overflow: auto;
 	resize: vertical;
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
 	tab-size: 4;
+	white-space: pre;
 }
 .blox-full-text {
 	display: inline !important; /*correct for mobile styles*/

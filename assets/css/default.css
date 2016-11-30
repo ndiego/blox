@@ -139,32 +139,36 @@
 .blox-theme-default .slick-prev:focus,
 .blox-theme-default .slick-next:hover,
 .blox-theme-default .slick-next:focus {
-    color: transparent;
     outline: none;
-	background: initial;
-    background-color: transparent;
 }
 
-.blox-theme-default .slick-prev {
+.blox-theme-default .slick-prev:hover,
+.blox-theme-default .slick-next:hover {
+    opacity: .7;
+}
+
+.blox-theme-default .slick-prev,
+.blox-theme-default .slick-prev:hover,
+.blox-theme-default .slick-prev:focus {
 	background-image: url(../images/prev.svg);
     left: 2%;
     background-repeat: no-repeat;
 	background-size: 100%;
 }
 [dir='rtl'] .blox-theme-default .slick-prev {
-	background-image: url(../images/next.svg);
     right: 2%;
     left: auto;
 }
 
-.blox-theme-default .slick-next {
+.blox-theme-default .slick-next,
+.blox-theme-default .slick-next:hover,
+.blox-theme-default .slick-next:focus {
 	background-image: url(../images/next.svg);
     right: 2%;
     background-repeat: no-repeat;
 	background-size: 100%;
 }
 [dir='rtl'] .blox-theme-default .slick-next {
-	background-image: url(../images/prev.svg);
     right: auto;
     left: 2%;
 }
@@ -173,6 +177,11 @@
 	content: '';
 }
 
+/* Disable nav arrow if there is no next/prev slide */
+.blox-theme-default .slick-prev.slick-disabled,
+.blox-theme-default .slick-next.slick-disabled {
+    opacity: 0;
+}
 
 
 

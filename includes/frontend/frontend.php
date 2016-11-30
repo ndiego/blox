@@ -327,7 +327,9 @@ function blox_frontend_content( $args, $parameters ) {
 	// Get access to some of our helper functions
 	$instance = Blox_Common::get_instance();
 
-	// Check is default Blox CSS is globally disabled
+	// Get our style setting variables
+    $global_custom_classes      = blox_get_option( 'global_custom_classes', '' );
+    $local_custom_classes       = blox_get_option( 'local_custom_classes', '' );
     $global_disable_default_css = blox_get_option( 'disable_default_css', '' );
 
 	// Start with no theme
@@ -348,16 +350,31 @@ function blox_frontend_content( $args, $parameters ) {
 	// Make sure a content type is selected and then print our content block
 	if ( ! empty( $content_data['content_type'] ) ) {
 
+        // Raw content block can be printed without the standard markup, so check for that
 		if ( $content_data['content_type'] == 'raw' && $content_data['raw']['disable_markup'] == 1 ) {
+
 			// Get the block content
 			do_action( 'blox_print_content_' . $content_data['content_type'], $content_data, $id, $block, $global );
+
 		} else {
-			?>
-			<div id="<?php echo 'blox_' . $block_scope . '_' . esc_attr( $id ); ?>" class="blox-container <?php echo 'blox-content-' . esc_attr( $content_data['content_type'] ); ?> <?php echo $blox_theme; ?> <?php echo 'blox-scope-' . $block_scope; ?> <?php echo ! empty( $style_data['custom_classes'] ) ? esc_attr( $style_data['custom_classes'] ) : '';?>">
-				<div class="blox-wrap <?php echo $style_data['enable_wrap'] == 1 ? 'wrap' : '';?>">
+            
+            $block_id = 'blox_' . $block_scope . '_' . esc_attr( $id );
+
+            $block_class  = 'blox-content-' . esc_attr( $content_data['content_type'] );
+            $block_class .= ' ' . $blox_theme;
+            $block_class .= ' ' . 'blox-scope-' . $block_scope;
+            $block_class .= ! empty( $style_data['custom_classes'] ) ? ( ' ' . $style_data['custom_classes'] ) : '';
+            $block_class .= $block_scope == 'global' ? ( ' ' . $global_custom_classes ) : ( ' ' . $local_custom_classes );
+
+            $enable_wrap = $style_data['enable_wrap'] == 1 ? 'wrap' : '';
+            ?>
+
+			<div id="<?php echo $block_id; ?>" class="blox-container <?php echo $block_class; ?>">
+				<div class="blox-wrap <?php echo $enable_wrap; ?>">
 					<?php do_action( 'blox_print_content_' . $content_data['content_type'], $content_data, $id, $block, $global ); ?>
 				</div>
 			</div>
+
 			<?php
 		}
 	}

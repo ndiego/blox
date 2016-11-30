@@ -543,7 +543,11 @@ class Blox_Content_Slideshow {
 			}
 		} else if ( $content_data['slideshow']['slideshow_type'] == 'builtin' ) {
 
-            $this->print_slideshow_builtin_new( $content_data, $block_id, $block_scope );
+            if ( apply_filters( 'blox_builtin_slideshow_use_slick', true ) ) {
+                $this->print_slideshow_builtin_slick( $content_data, $block_id, $block_scope );
+            } else {
+                $this->print_slideshow_builtin_flexslider( $content_data, $block_id, $block_scope );
+            }
 
 		} else if ( is_plugin_active( 'soliloquy/soliloquy.php' ) && $content_data['slideshow']['slideshow_type'] == 'soliloquy' )  {
 
@@ -567,15 +571,16 @@ class Blox_Content_Slideshow {
 	}
 
     /**
-     * Print the builtin slideshow's frontend markup
+     * Print the builtin slideshow's frontend markup using flexslider
+     * ALERT: This function will be depracated in v1.5.0 which should provide enough time for people to transition to slick
      *
-     * @since 1.3.0
+     * @since 1.0.0
      *
      * @param array $content_data Array of all block data
      * @param string $block_id    The block id
      * @param string $block_scope The scope of the block, either global or local
      */
-    public function print_slideshow_builtin( $content_data, $block_id, $block_scope ) {
+    public function print_slideshow_builtin_flexslider( $content_data, $block_id, $block_scope ) {
 
         // Check to make sure slides have been added to the builtin slideshow
         if ( ! empty( $content_data['slideshow']['builtin'] ) ) { ?>
@@ -642,7 +647,7 @@ class Blox_Content_Slideshow {
 
 
     /**
-     * Print the builtin slideshow's frontend markup
+     * Print the builtin slideshow's frontend markup using slick
      *
      * @since 1.3.0
      *
@@ -650,7 +655,7 @@ class Blox_Content_Slideshow {
      * @param string $block_id    The block id
      * @param string $block_scope The scope of the block, either global or local
      */
-    public function print_slideshow_builtin_new( $content_data, $block_id, $block_scope ) {
+    public function print_slideshow_builtin_slick( $content_data, $block_id, $block_scope ) {
 
         // Check to make sure slides have been added to the builtin slideshow
         if ( ! empty( $content_data['slideshow']['builtin'] ) ) {

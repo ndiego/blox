@@ -14,6 +14,7 @@ Unreleased
 * Added quickedit functionality to global blocks for selected position and visibility settings
 * Added bulkedit functionality to global blocks for enable/disable block
 * Updated slideshow and custom default images with correct dashicon
+* Fixed bug where global and local custom classes were not being applied
 
 Version 1.2.1 – 2016-10-23
 * Fixed EDD updater conflict with other plugins using EDD by adding a prefix to the updater
