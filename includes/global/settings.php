@@ -83,6 +83,7 @@ class Blox_Settings {
 
 			// Get and set the default settings
         	$settings = $this->get_registered_settings();
+            $settings = $this->get_registered_settings_degrouped( $settings );
         	$tabs     = $this->get_settings_tabs();
 			$defaults = array();
 
@@ -242,6 +243,8 @@ class Blox_Settings {
 						'class'       => isset( $option['class'] )       ? $option['class']       : null,
 						'default'     => isset( $option['default'] )     ? $option['default']     : '',
 						'sanitize'	  => isset( $option['sanitize'] )    ? $option['sanitize']    : '',
+                        'settings'    => isset( $option['settings'] )    ? $option['settings']    : '',
+
 					)
 				);
 			}
@@ -335,25 +338,9 @@ class Blox_Settings {
 			/** Default Settings */
 			'default' => apply_filters( 'blox_settings_defaults',
 				array(
-                    /*
-					'defaults_content_header' => array(
-						'id'   => 'defaults_content_header',
-						'name' => '<span class="title">' . __( 'Content Settings', 'blox' ) . '</span>',
-						'desc' => '',
-						'type' => 'header'
-					),
-
-					'enable_content_restrict' => array(
-						'id'    => 'enable_content_restrict',
-						'name'  => __( 'Restrict Content Types', 'blox' ),
-						'label' => __( 'Check to restrict the available content types.', 'blox' ),
-						'desc'  => __( 'Blocks with restricted content types will no longer appear on the frontend of your site.', 'blox' ),
-						'type'  => 'checkbox',
-						'default' => true
-					),*/
 					'defaults_position_header' => array(
 						'id'   => 'defaults_position_header',
-						'name' => '<span class="title">' . __( 'Position Settings', 'blox' ) . '</span>',
+						'name' => '<span class="title">' . __( 'Position Defaults', 'blox' ) . '</span>',
 						'desc' => sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
 						'type' => 'header'
 					),
@@ -461,7 +448,7 @@ class Blox_Settings {
 			),
 
 			/** Misc Settings */
-			'misc' => apply_filters('blox_settings_misc',
+			'misc' => apply_filters( 'blox_settings_misc',
 				array(
                     'syntax_highlighting_header' => array(
                         'id'   => 'syntax_highlighting_header',
@@ -521,6 +508,39 @@ class Blox_Settings {
 	}
 
 
+    /**
+     * Retrieve the array of plugin settings with the grouped settings appended
+     *
+     * @since 1.3.0
+     *
+     * @return array of degrouped settings
+    */
+    public function get_registered_settings_degrouped( $blox_settings ) {
+
+        // Loop through each tab looking for grouped settings
+        foreach ( $blox_settings as $tab_name => $tab ) {
+
+            $degrouped_settings = array();
+
+            foreach ( $tab as $key ) {
+
+                // Get our grouped settings
+                if ( ! empty( $key['type'] ) && $key['type'] === 'group' ) {
+                    if ( ! empty( $key['settings'] ) && is_array( $key['settings'] ) ) {
+                        $degrouped_settings = array_merge( $degrouped_settings, $key['settings'] );
+                    }
+                }
+            }
+
+            // Merge degrouped settings back onto the tab where they belong
+            $blox_settings[$tab_name] = array_merge( $blox_settings[$tab_name], $degrouped_settings );
+        }
+
+        // Return new degrouped list of settings.
+        return $blox_settings;
+    }
+
+
 	/**
 	 * Settings Sanitization
 	 *
@@ -548,7 +568,10 @@ class Blox_Settings {
 		parse_str( $_POST['_wp_http_referer'], $referrer );
 
 		$settings = $this->get_registered_settings();
+        $settings = $this->get_registered_settings_degrouped( $settings );
 		$tab      = isset( $referrer['tab'] ) ? $referrer['tab'] : 'general';
+
+        //echo '<pre>' + print_r($settings) + '</pre>';
 
 		// If we are preforming a normal save, proceed
 		if ( isset( $_POST['submit'] ) ) {
@@ -556,11 +579,15 @@ class Blox_Settings {
 			$input = $input ? $input : array();
 			$input = apply_filters( 'blox_settings_' . $tab . '_sanitize', $input );
 
+
 			// Loop through each setting being saved and pass it through a sanitization filter
 			foreach ( $input as $key => $value ) {
 
 				// Get the setting sanitization type (no_html, select, etc)
 				$sanitize_type = isset( $settings[$tab][$key]['sanitize'] ) ? $settings[$tab][$key]['sanitize'] : false;
+
+                //echo $key . ': ' . $sanitize_type;
+                //echo print_r($settings[$tab][$key]);
 
 				if ( $sanitize_type ) {
 					// If the setting has a sanitization filter, run it...
@@ -644,7 +671,7 @@ class Blox_Settings {
 
 
 	/**
-	 * Header Callback. If a function is missing for settings callbacks alert the user.
+	 * Header Callback.
 	 *
 	 * @since 1.0.0
 	 *
@@ -665,6 +692,34 @@ class Blox_Settings {
 	}
 
 
+    /**
+     * Group Container Callback.
+     *
+     * @since 1.3.0
+     *
+     * @param array $args Arguments passed by the setting
+     * @return void
+     */
+    public function group_callback( $args ) {
+
+        echo '<div class="blox-grouped-settings">';
+
+        if ( ! empty( $args['settings'] ) ) {
+
+            foreach ( $args['settings'] as $setting_args ) {
+
+				$name     = isset( $setting_args['name'] ) ? $setting_args['name'] : '';
+				$callback = method_exists( __CLASS__, $setting_args['type'] . '_callback' ) ? array( $this, $setting_args['type'] . '_callback' ) : array( $this, 'missing_callback' );
+
+                // Run the setting callback function
+                call_user_func( $callback, $setting_args );
+            }
+        }
+
+        echo '</div>';
+    }
+
+
 	/**
 	 * Checkbox Callback. Renders checkbox fields.
 	 *
@@ -678,9 +733,21 @@ class Blox_Settings {
 
 		global $blox_options;
 
-		$checked = isset( $blox_options[ $args['id'] ] ) ? checked( 1, esc_attr( $blox_options[ $args['id'] ] ), false ) : '';
-		$html = '<label><input type="checkbox" id="blox_settings[' . $args['id'] . ']" name="blox_settings[' . $args['id'] . ']" value="1" ' . $checked . '/> ' . $args['label'] . '</label>';
-		$html .= ! empty( $args['desc'] ) ? ( '<p class="description">' . $args['desc'] . '</p>' ) : '';
+        $id    = 'blox_settings[' . $args['id'] . ']';
+        $name  = 'blox_settings[' . $args['id'] . ']';
+        $value = isset( $blox_options[ $args['id'] ] ) ? $blox_options[ $args['id'] ] : '';
+
+        $class = ! empty( $args['class'] ) ? esc_attr( $args['class'] ) : '';
+        $label = ! empty( $args['label'] ) ? ( '<span class="label"> ' . $args['label'] . '</span>' ) : '';
+        $desc  = ! empty( $args['desc'] ) ? ( '<p class="description">' . $args['desc'] . '</p>' ) : '';
+
+		$checked = isset( $value ) ? checked( 1, esc_attr( $value ), false ) : '';
+
+		$html  = '<label class="' . $class. '">';
+        $html .= '<input type="checkbox" id="' . $id . '" name="' . $name . '" value="1" ' . $checked . '/> ';
+        $html .= $label;
+        $html .= '</label>';
+		$html .= $desc;
 
 		echo $html;
 	}
@@ -692,24 +759,32 @@ class Blox_Settings {
 	 * @since 1.0.0
 	 *
 	 * @param array $args   Arguments passed by the setting
-	 * @global $edd_options Array of all the Blox settings
+	 * @global $blox_options Array of all the Blox settings
 	 * @return void
 	 */
 	public function text_callback( $args ) {
 
 		global $blox_options;
 
-		if ( isset( $blox_options[ $args['id'] ] ) ) {
-			$value = $blox_options[ $args['id'] ];
-		} else {
+        $id    = 'blox_settings[' . $args['id'] . ']';
+        $name  = 'blox_settings[' . $args['id'] . ']';
+        $value = isset( $blox_options[ $args['id'] ] ) ? $blox_options[ $args['id'] ] : '';
+
+        $class = ! empty( $args['class'] ) ? esc_attr( $args['class'] ) : '';
+        $label = ! empty( $args['label'] ) ? ( '<span class="label"> '  . $args['label'] . '</span>' ) : '';
+        $desc  = ! empty( $args['desc'] ) ? ( '<p class="description">' . $args['desc'] . '</p>' ) : '';
+        $size  = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
+        $placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
+
+		if ( empty( $value ) ) {
 			$value = isset( $args['default'] ) ? $args['default'] : '';
 		}
 
-		$name = 'name="blox_settings[' . $args['id'] . ']"';
-		$size = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
-
-		$html     = '<input type="text" class="text-' . $size . '" id="blox_settings[' . $args['id'] . ']"' . $name . ' placeholder="' . $args['placeholder'] . '" value="' . esc_attr( stripslashes( $value ) ) . '"/>';
-		$html    .= '<span class="description"> '  . $args['desc'] . '</span>';
+        $html  = '<label class="' . $class. '">';
+		$html .= '<input type="text" class="text-' . $size . '" id="' . $id . '" name="' . $name . '" placeholder="' . $placeholder . '" value="' . esc_attr( stripslashes( $value ) ) . '"/>';
+		$html .= $label;
+        $html .= '</label>';
+        $html .= $desc;
 
 		echo $html;
 	}
@@ -721,21 +796,28 @@ class Blox_Settings {
 	 * @since 1.0.0
 	 *
 	 * @param array $args   Arguments passed by the setting
-	 * @global $edd_options Array of all the Blox settings
+	 * @global $blox_options Array of all the Blox settings
 	 * @return void
 	 */
 	public function textarea_callback( $args ) {
 
 		global $blox_options;
 
-		if ( isset( $blox_options[ $args['id'] ] ) ) {
-			$value = $blox_options[ $args['id'] ];
-		} else {
+        $id    = 'blox_settings[' . $args['id'] . ']';
+        $name  = 'blox_settings[' . $args['id'] . ']';
+        $value = isset( $blox_options[ $args['id'] ] ) ? $blox_options[ $args['id'] ] : '';
+
+        $class = ! empty( $args['class'] ) ? esc_attr( $args['class'] ) : '';
+        $desc  = ! empty( $args['desc'] ) ? ( '<p class="description">' . $args['desc'] . '</p>' ) : '';
+        $size  = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 6;
+        $placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
+
+		if ( empty( $value ) ) {
 			$value = isset( $args['default'] ) ? $args['default'] : '';
 		}
 
-		$html = '<textarea class="text-full ' . $args['class'] . '" rows="'  . $args['size'] . '" id="blox_settings[' . $args['id'] . ']" name="blox_settings[' . $args['id'] . ']" placeholder="' . $args['placeholder'] . '">' . esc_textarea( stripslashes( $value ) ) . '</textarea>';
-		$html .= ! empty( $args['desc'] ) ? ( '<p class="description">' . $args['desc'] . '</p>' ) : '';
+		$html = '<textarea class="text-full ' . $class . '" rows="'  . $size . '" id="' . $id . '" name="' . $name . '" placeholder="' . $placeholder . '">' . esc_textarea( stripslashes( $value ) ) . '</textarea>';
+		$html .= $desc;
 
 		echo $html;
 	}
@@ -754,21 +836,29 @@ class Blox_Settings {
 
 		global $blox_options;
 
-		if ( isset( $blox_options[ $args['id'] ] ) ) {
-			$value = $blox_options[ $args['id'] ];
-		} else {
+        $id    = 'blox_settings[' . $args['id'] . ']';
+        $name  = 'blox_settings[' . $args['id'] . ']';
+        $value = isset( $blox_options[ $args['id'] ] ) ? $blox_options[ $args['id'] ] : '';
+
+        $class = ! empty( $args['class'] ) ? esc_attr( $args['class'] ) : '';
+        $label = ! empty( $args['label'] ) ? ( '<span class="label"> '  . $args['label'] . '</span>' ) : '';
+        $desc  = ! empty( $args['desc'] ) ? ( '<p class="description">' . $args['desc'] . '</p>' ) : '';
+
+		if ( empty( $value ) ) {
 			$value = isset( $args['default'] ) ? $args['default'] : '';
 		}
 
-		$html = '<select id="blox_settings[' . $args['id'] . ']" name="blox_settings[' . $args['id'] . ']" />';
+        $html  = '<label class="' . $class. '">';
+		$html .= '<select id="' . $id . '" name="' . $name . '" />';
 
 		foreach ( $args['options'] as $option => $name ) {
 			$selected = selected( $option, esc_attr( $value ), false );
 			$html .= '<option value="' . $option . '" ' . $selected . '>' . $name . '</option>';
 		}
-
-		$html .= '</select>';
-		$html .= ! empty( $args['desc'] ) ? ( '<p class="description">' . $args['desc'] . '</p>' ) : '';
+        $html .= '</select>';
+        $html .= $label;
+        $html .= '</label>';
+        $html .= $desc;
 
 		echo $html;
 	}

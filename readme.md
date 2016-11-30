@@ -1,6 +1,6 @@
 ## Welcome to Blox
 
-Blox is a premium Wordpress plugin built for users of the [Genesis Framework](http://www.studiopress.com). Blox is developed by Outermost Design, LLC. We have no direct affiliation with the makers of Genesis.
+Blox is a premium Wordpress plugin built for users of the [Genesis Framework](http://www.studiopress.com). Blox is a product of Outermost Design, LLC. We have no direct affiliation with the makers of Genesis.
 
 Blox allows you to easily add content to your Genesis theme through Genesis hooks. You are free to download and use this plugin, but understand that automatic updates and support require a paid Blox license. Blox licenses can be purchased on [www.bloxwp.com](https://www.bloxwp.com/pricing/?utm_source=blox&utm_medium=plugin&utm_content=github-readme-links&utm_campaign=Blox_Plugin_Links)
 
@@ -17,18 +17,31 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 
 ### Changelog
 
+##### Version 1.3.0 – 2016-11-30
+* Added fullscreen mode for raw content
+* Added syntax highlighting in fullscreen mode for raw content
+* Added new builder UI for the builtin slideshow
+* Added new settings to the builtin slideshow (image size, background images)
+* Added the ability to set default settings for the builtin slideshow
+* Added quick edit functionality to global blocks for selected position and visibility settings
+* Added bulk edit functionality to global blocks for enable/disable block
+* Changed from Flexslider to Slick Slider for the js powering the builtin slideshow
+* Updated styling on caption and code textareas to allow for horizontal scrolling
+* Updated custom image and slideshow default images with standardized dashicons picture icon
+* Fixed bug where global and local custom classes were not being applied
+
 ##### Version 1.2.1 – 2016-10-23
 * Fixed EDD updater conflict with other plugins using EDD by adding a prefix to the updater
 
 ##### Version 1.2.0 – 2016-10-20
 * Added System Info page to Blox Tools
 * Changed suppress_filters to false in global blocks for WPML compatibility
+* Tweaked spelling on Add-ons
+* Update EDD Updater to v1.6.5
 * Fixed anonymous function that were causing issues in PHP 5.2
 * Fixed Visibility by Role bug
 * Fixed links in hook error messages
 * Fixed error message in position admin columns when the current hook is disabled
-* Tweaked spelling on Add-ons
-* Update EDD Updater to v1.6.5
 
 ##### Version 1.1.1
 * Fixed location archive taxonomy bug

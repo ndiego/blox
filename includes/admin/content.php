@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 class Blox_Content {
-    
+
     /**
      * Holds the class object.
      *
@@ -52,22 +52,158 @@ class Blox_Content {
 
         // Load the base class object.
         $this->base = Blox_Main::get_instance();
-		
+
 		// Setup content settings
 		add_filter( 'blox_metabox_tabs', array( $this, 'add_content_tab' ), 4 );
 		add_action( 'blox_get_metabox_tab_content', array( $this, 'get_metabox_tab_content' ), 10, 4 );
 		add_filter( 'blox_save_metabox_tab_content', array( $this, 'save_metabox_tab_content' ), 10, 3 );
-		
+
 		// Run content check to make sure all content types are available, otherwise print messages
 		add_action( 'blox_tab_container_before', array( $this, 'content_check' ), 10, 5 );
-		
+
+        // Add content defaults
+		add_filter( 'blox_settings_defaults', array( $this, 'add_content_defaults' ), 10, 1 );
+
 		// Add the admin column data for global blocks
 		add_filter( 'blox_admin_column_titles', array( $this, 'admin_column_title' ), 1, 1 );
 		add_action( 'blox_admin_column_data_content', array( $this, 'admin_column_data' ), 10, 2 );
-		
+
 		// Make admin column sortable
 		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
         add_filter( 'request', array( $this, 'admin_column_orderby' ) );
+    }
+
+
+    /* Add content defaults
+     *
+     * @since 1.3.0
+     *
+     * @param array $defaults An array of all default settings
+     */
+    public function add_content_defaults( $defaults ) {
+
+        $content_defaults = apply_filters( 'blox_settings_defaults_content',
+            array(
+                'defaults_content_header' => array(
+                    'id'   => 'defaults_content_header',
+                    'name' => '<span class="title">' . __( 'Content Defaults', 'blox' ) . '</span>',
+                    'desc' => __( 'When a new block is created, the following content defaults will be applied.', 'blox' ),
+                    'type' => 'header',
+                ),
+                'defaults_content_slideshow' => array(
+                    'id'   => 'defaults_content_slideshow',
+                    'name' => __( 'Builtin Slideshow', 'blox' ),
+                    'desc' => '',
+                    'type' => 'group',
+                    'settings' => array(
+
+                        // All the settings in the group
+                        'builtin_slideshow_animation' => array(
+                            'id'    => 'builtin_slideshow_animation',
+                            'grouped' => 'defaults_content_slideshow',
+                            'name'  => '',
+                            'label' => __( 'Slideshow Animation', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'select',
+                            'options' => array(
+                                'slide' => __( 'Slide', 'blox' ),
+                                'fade'  => __( 'Fade', 'blox' ),
+                            ),
+                            'default' => 'slide'
+                        ),
+                        'builtin_slideshow_slideshowSpeed' => array(
+                            'id'    => 'builtin_slideshow_slideshowSpeed',
+                            'name'  => '',
+                            'label' => __( 'Slideshow Speed (milliseconds)', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'text',
+                            'size'  => 'small',
+                            'default' => '7000',
+                            'sanitize' => 'absint',
+                        ),
+                        'builtin_slideshow_animationSpeed' => array(
+                            'id'    => 'builtin_slideshow_animationSpeed',
+                            'name'  => '',
+                            'label' => __( 'Animation Speed (milliseconds)', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'text',
+                            'size'  => 'small',
+                            'default' => '600',
+                            'sanitize' => 'absint',
+                        ),
+                        'builtin_slideshow_slideshow' => array(
+                            'id'    => 'builtin_slideshow_slideshow',
+                            'name'  => '',
+                            'label' => __( 'Start Slideshow Automatically', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_animationLoop' => array(
+                            'id'    => 'builtin_slideshow_animationLoop',
+                            'name'  => '',
+                            'label' => __( 'Loop Slideshow', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_pauseOnHover' => array(
+                            'id'    => 'builtin_slideshow_pauseOnHover',
+                            'name'  => '',
+                            'label' => __( 'Enable Pause On Hover', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_smoothHeight' => array(
+                            'id'    => 'builtin_slideshow_smoothHeight',
+                            'name'  => '',
+                            'label' => __( 'Enable Slideshow Height Resizing', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_directionNav' => array(
+                            'id'    => 'builtin_slideshow_directionNav',
+                            'name'  => '',
+                            'label' => __( 'Disable Directional Navigation (i.e. arrows)', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_controlNav' => array(
+                            'id'    => 'builtin_slideshow_controlNav',
+                            'name'  => '',
+                            'label' => __( 'Disable Control Navigation (i.e. dots)', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        'builtin_slideshow_caption' => array(
+                            'id'    => 'builtin_slideshow_caption',
+                            'name'  => '',
+                            'label' => __( 'Disable Captions', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        /*
+                        'builtin_slideshow_background_images' => array(
+                            'id'    => 'builtin_slideshow_background_images',
+                            'name'  => '',
+                            'label' => __( 'Set images as background images', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => false
+                        ),
+                        */
+                    ),
+                ),
+            )
+        );
+
+        // We want the content settings to appear first
+        return $content_defaults + $defaults;
     }
 
 
@@ -78,12 +214,12 @@ class Blox_Content {
      * @param array $tab An array of the tabs available
      */
 	public function add_content_tab( $tabs ) {
-				
-		$tabs['content'] = array( 
+
+		$tabs['content'] = array(
 			'title' => __( 'Content', 'blox' ),
 			'scope' => 'all'  // all, local, or global
 		);
-		
+
 		return $tabs;
 	}
 
@@ -99,16 +235,16 @@ class Blox_Content {
      * @param bool $global	      The block state
      */
 	public function get_metabox_tab_content( $data = null, $name_id, $get_id, $global ) {
-		
+
 		if ( $global ) {
 			// Indicates where the content settings are saved
 			$name_prefix = "blox_content_blocks_data[content]";
 			$get_prefix = ! empty( $data['content'] ) ? $data['content'] : null;
-			
+
 		} else {
 			// Indicates where the content settings are saved
 			$name_prefix = "blox_content_blocks_data[$name_id][content]";
-		
+
 			// Used for retrieving the content settings
 			// If $data = null, then there are no settings to get
 			if ( $data == null ) {
@@ -116,20 +252,20 @@ class Blox_Content {
 			} else {
 				$get_prefix = ! empty( $data[$get_id]['content'] ) ? $data[$get_id]['content'] : null;
 			}
-		
+
 		}
-	
+
 		// Get the content for the content tab
 		$this->content_settings( $name_id, $name_prefix, $get_prefix, $global );
     }
-    
-    
+
+
     /**
      * Creates all of the fields for our block content
      *
      * @since 1.0.0
      *
-     * @param int $id             The block id 
+     * @param int $id             The block id
      * @param string $name_prefix The prefix for saving each setting
      * @param string $get_prefix  The prefix for retrieving each setting
      * @param bool $global	      Determines if the content being loaded for local or global blocks
@@ -140,7 +276,7 @@ class Blox_Content {
 			<tbody>
 				<tr>
 					<th scope="row"><?php _e( 'Content Type' ); ?><span class="icon-stop2"></span></th>
-					<td>						
+					<td>
 						<select name="<?php echo $name_prefix; ?>[content_type]" id="blox_content_type" class="blox-content-type">
 							<?php foreach ( $this->get_content_types() as $type => $title ) { ?>
 								<option value="<?php echo $type; ?>" <?php echo ! empty( $get_prefix['content_type'] ) ? selected( $get_prefix['content_type'], $type ) : ''; ?>><?php echo $title; ?></option>
@@ -150,47 +286,47 @@ class Blox_Content {
 				</tr>
 			</tbody>
 		</table>
-		
-		<?php 
+
+		<?php
 		foreach ( $this->get_content_types() as $type => $title ) {
-			
-			// Get all the available content options		
+
+			// Get all the available content options
 			do_action( 'blox_get_content_' . $type, $id, $name_prefix, $get_prefix, $global );
 		}
 		?>
     	<?php
-    }  
-    
-    
-    /** 
+    }
+
+
+    /**
 	 * Saves all of the content settings
      *
      * @since 1.0.0
      *
-     * @param int $post_id        The global block id or the post/page/custom post-type id corresponding to the local block 
+     * @param int $post_id        The global block id or the post/page/custom post-type id corresponding to the local block
      * @param string $name_prefix The prefix for saving each setting
      * @param bool $global        The block state
      *
      * @return array $settings    Return an array of updated settings
      */
 	public function save_metabox_tab_content( $post_id, $name_prefix, $global ) {
-		
+
 		$settings = array();
-		
+
 		$settings['content_type'] = esc_attr( $name_prefix['content_type'] );
 
 		foreach ( $this->get_content_types() as $type => $title ) {
 			if ( $global ) {
 				$name_prefix = ! empty( $_POST['blox_content_blocks_data']['content'][$type] ) ? $_POST['blox_content_blocks_data']['content'][$type] : '';
 				$settings[$type] = apply_filters( 'blox_save_content_' . $type, $name_prefix, $post_id, true );
-			} else { 
+			} else {
 				$name_prefix = ! empty( $_POST['blox_content_blocks_data'][$post_id]['content'][$type] ) ? $_POST['blox_content_blocks_data'][$post_id]['content'][$type] : '';
 				$settings[$type] = apply_filters( 'blox_save_content_' . $type, $name_prefix, $post_id, false );
 			}
 		}
-		
+
 		update_post_meta( $post_id, '_blox_content_blocks_type', $settings['content_type'] );
-		
+
 		return $settings;
 	}
 
@@ -206,22 +342,22 @@ class Blox_Content {
      * @param string $get_id  The content blocks id (might be random id if a local block that was added via ajax)
      * @param bool $global    Indicates if the block is global
      */
-	public function content_check( $tab, $data, $name_id, $get_id, $global ) {  
-		
+	public function content_check( $tab, $data, $name_id, $get_id, $global ) {
+
 		// Only display content check error on the content tab
 		if ( $tab == 'content' ) {
-			
+
 			$data = ! empty( $data ) ? $data : array();
-			
+
 			// Need to handle $data differently for local blocks
 			if ( $global && isset( $data['content']['content_type'] ) ) {
 				$set_content_type = $data['content']['content_type'];
 			} else if ( isset( $data[$name_id]['content']['content_type'] ) ) {
 				$set_content_type = $data[$name_id]['content']['content_type'];
 			}
-			
+
 			$available_content_types = $this->get_content_types();
-		
+
 			if ( isset( $set_content_type ) && ! array_key_exists( $set_content_type, $available_content_types ) ) {
 				?>
 				<div class="blox-alert blox-alert-error narrow">
@@ -231,8 +367,8 @@ class Blox_Content {
 			}
 		}
 	}
-	
-	
+
+
     /**
      * Add admin column for global blocks
      *
@@ -241,10 +377,10 @@ class Blox_Content {
      */
     public function admin_column_title( $columns ) {
     	$columns['content'] = __( 'Content', 'blox' );
-    	return $columns; 
+    	return $columns;
     }
-    
-    
+
+
     /**
      * Print the admin column data for global blocks.
      *
@@ -254,19 +390,19 @@ class Blox_Content {
     public function admin_column_data( $post_id, $block_data ) {
     	if (! empty( $block_data['content']['content_type'] ) ) {
     		$content   = ucfirst( esc_attr( $block_data['content']['content_type'] ) );
-    		$meta_data = esc_attr( $block_data['content']['content_type'] );	
+    		$meta_data = esc_attr( $block_data['content']['content_type'] );
 		} else {
 			$content   = '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
 			$meta_data = '';
 		}
-		
+
 		echo $content;
-		
+
 		// Save our content meta values separately for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_content', $meta_data );
 	}
-	
-	
+
+
 	/**
      * Tell Wordpress that the content column is sortable
      *
@@ -278,8 +414,8 @@ class Blox_Content {
 		$sortable_columns[ 'content' ] = 'content';
 		return $sortable_columns;
 	}
-	
-	
+
+
 	/**
      * Tell Wordpress how to sort the content column
      *
@@ -288,18 +424,18 @@ class Blox_Content {
      * @param array $vars  Array of query variables
      */
 	public function admin_column_orderby( $vars ) {
-		
+
 		if ( isset( $vars['orderby'] ) && 'content' == $vars['orderby'] ) {
 			$vars = array_merge( $vars, array(
 				'meta_key' => '_blox_content_blocks_content',
 				'orderby' => 'meta_value'
 			) );
 		}
- 
+
 		return $vars;
 	}
-	
-	
+
+
     /**
      * Helper function for retrieving the available content types.
      *
@@ -308,7 +444,7 @@ class Blox_Content {
      * @return array Array of all content types.
      */
     public function get_content_types() {
-    
+
         $instance = Blox_Common::get_instance();
         return $instance->get_content_types();
     }

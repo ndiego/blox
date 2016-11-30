@@ -79,6 +79,17 @@ class Blox_Content_Slideshow {
 		// Load base flexslider styles
         wp_register_style( $this->base->plugin_slug . '-flexslider-styles', plugins_url( 'assets/plugins/flexslider/flexslider.css', $this->base->file ), array(), $this->base->version );
         wp_enqueue_style( $this->base->plugin_slug . '-flexslider-styles' );
+
+        // Load slick js
+        wp_enqueue_script( $this->base->plugin_slug . '-slick-scripts', plugins_url( 'assets/plugins/slick/slick.min.js', $this->base->file ), array( 'jquery' ), $this->base->version );
+
+        // Load base slick styles
+        wp_register_style( $this->base->plugin_slug . '-slick-styles', plugins_url( 'assets/plugins/slick/slick.css', $this->base->file ), array(), $this->base->version );
+        wp_enqueue_style( $this->base->plugin_slug . '-slick-styles' );
+
+        // Load default slick theme
+        wp_register_style( $this->base->plugin_slug . '-slick-default-theme', plugins_url( 'assets/plugins/slick/slick-theme.css', $this->base->file ), array(), $this->base->version );
+        wp_enqueue_style( $this->base->plugin_slug . '-slick-default-theme' );
 	}
 
 
@@ -124,72 +135,119 @@ class Blox_Content_Slideshow {
 				<tr class="blox-slideshow-option blox-content-slideshow-builtin">
 					<th scope="row"><?php _e( 'Builtin Slides' ); ?></th>
 					<td>
-						<input type="submit" class="button button-primary" name="blox_slideshow_upload_button" id="blox_slideshow_upload_button" value="<?php _e( 'Select Image(s)'); ?>" onclick="blox_builtinSlideshowUpload.uploader('<?php echo $name_prefix; ?>'); return false;" /> &nbsp;
+						<input type="submit" class="button button-primary" name="blox_slideshow_upload_button" id="blox_slideshow_upload_button" value="<?php _e( 'Select Image(s)'); ?>" onclick="blox_builtinSlideshowUpload.uploader('<?php echo $name_prefix; ?>'); return false;" />
 
-						<ul class="blox-slider-container">
+						<ul class="blox-slides-container">
 
 						<?php if ( ! empty( $get_prefix['slideshow']['builtin']['slides'] ) ) { ?>
 
-							<?php foreach ( $get_prefix['slideshow']['builtin']['slides'] as $key => $slides ) { ?>
-								<li id="<?php echo $key; ?>" class="blox-slideshow-item" >
+							<?php foreach ( $get_prefix['slideshow']['builtin']['slides'] as $key => $slides ) {
+
+                                // Set the disabled flag if needed
+                                $disabled = ! empty( $slides['visibility']['disable'] ) ? 'disabled' : '';
+
+                                ?>
+                                <li id="<?php echo $key; ?>" class="blox-slideshow-item <?php echo $disabled; ?>" >
 									<div class="blox-slide-container">
-										<img src="<?php echo isset( $slides['image']['id'] ) ? wp_get_attachment_thumb_url( esc_attr( $slides['image']['id'] ) ) : ''; ?>" alt="<?php echo esc_attr( $slides['image']['alt'] ); ?>" />
+										<img class="slide-image-thumbnail" src="<?php echo isset( $slides['image']['id'] ) ? wp_get_attachment_thumb_url( esc_attr( $slides['image']['id'] ) ) : ''; ?>" alt="<?php echo esc_attr( $slides['image']['alt'] ); ?>" />
 									</div>
 									<input type="text" class="slide-type blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][slide_type]" value="image" /> <!-- possibly more slide types in the future -->
+                                    <input type="checkbox" class="slide-visibility-disable blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][visibility][disable]" value="1" <?php ! empty( $slides['visibility']['disable'] ) ? checked( $slides['visibility']['disable'] ) : ''; ?> />
 
 									<input type="text" class="slide-image-id blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][id]" value="<?php echo isset( $slides['image']['id'] ) ? esc_attr( $slides['image']['id'] ) : ''; ?>" />
 									<input type="text" class="slide-image-url blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][url]" value="<?php echo esc_attr( $slides['image']['url'] ); ?>" />
 									<input type="text" class="slide-image-title blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][title]" value="<?php echo isset( $slides['image']['title'] ) ? esc_attr( $slides['image']['title'] ) : ''; ?>" />
 									<input type="text" class="slide-image-alt blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][alt]" value="<?php echo isset( $slides['image']['alt'] ) ? esc_attr( $slides['image']['alt'] ) : ''; ?>" />
-									<input type="checkbox" class="slide-image-link-enable blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][enable]" value="1" <?php ! empty( $slides['image']['link']['enable'] ) ? checked( $slides['image']['link']['enable'] ) : ''; ?> />
+                                    <input type="text" class="slide-image-size blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][size]" value="<?php echo isset( $slides['image']['size'] ) ? esc_attr( $slides['image']['size'] ) : ''; ?>" />
+                                    <input type="checkbox" class="slide-image-link-enable blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][enable]" value="1" <?php ! empty( $slides['image']['link']['enable'] ) ? checked( $slides['image']['link']['enable'] ) : ''; ?> />
 									<input type="text" class="slide-image-link-url blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][url]" value="<?php echo ! empty( $slides['image']['link']['url'] ) ? esc_attr( $slides['image']['link']['url'] ) : 'http://'; ?>" />
 									<input type="text" class="slide-image-link-title blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][title]" value="<?php echo ! empty( $slides['image']['link']['title'] ) ? esc_attr( $slides['image']['link']['title'] ) : ''; ?>" />
 									<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][target]" value="1" <?php ! empty( $slides['image']['link']['target'] ) ? checked( $slides['image']['link']['target'] ) : ''; ?> />
 									<input type="text" class="slide-image-caption blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][caption]" value="<?php echo isset( $slides['image']['caption'] ) ? esc_attr( $slides['image']['caption'] ) : ''; ?>" />
 									<input type="text" class="slide-image-classes blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][classes]" value="<?php echo ! empty( $slides['image']['classes'] ) ? esc_attr( $slides['image']['classes'] ) : ''; ?>" />
 
-									<div class="blox-slide-details-container">
-										<a class="blox-slide-details" href="#blox_slide_details"><?php _e( 'Details', 'blox' );?></a><a class="blox-slide-remove" href="#"><?php _e( 'Remove', 'blox' );?></a>
+									<div class="blox-slide-tools-container">
+										<a class="blox-slide-edit dashicons" href="#blox_slide_details" title="<?php _e( 'Edit Slide', 'blox' );?>"></a>
+                                        <a class="blox-slide-visibility dashicons" href="#" title="<?php _e( 'Toggle Slide Visibility', 'blox' );?>"></a>
+                                        <a class="blox-slide-delete dashicons right" href="#" title="<?php _e( 'Delete Slide', 'blox' );?>"></a>
+                                        <a class="blox-slide-copy dashicons right" href="#" title="<?php _e( 'Copy Slide', 'blox' );?>" data-name-prefix="<?php echo $name_prefix; ?>"></a>
 									</div>
 								</li>
 							<?php } ?>
 
 							<?php } else { ?>
-									<li class="blox-filler" >
-										<div class="blox-filler-container"></div>
-										<div class="blox-filler-text">
-											<span><?php _e( 'Details', 'blox' );?></span><span class="right"><?php _e( 'Remove', 'blox' );?></span>
-										</div>
-									</li>
+								<li class="blox-filler">
+									<div class="blox-filler-container"></div>
+									<div class="blox-filler-tools">
+										<span class="edit dashicons"></span>
+                                        <span class="visibility dashicons"></span>
+                                        <span class="delete dashicons right"></span>
+                                        <span class="copy dashicons right"></span>
+									</div>
+								</li>
 							<?php } ?>
 						</ul>
 
 					</td>
 				</tr>
+                <?php
+
+                $bs_prefix = $get_prefix['slideshow']['builtin']['settings'];
+
+                $animation      = $this->get_values( $bs_prefix, 'animation', 'builtin_slideshow_animation' );
+
+                $slideshowSpeed = $this->get_values( $bs_prefix, 'slideshowSpeed', 'builtin_slideshow_slideshowSpeed' );
+                $animationSpeed = $this->get_values( $bs_prefix, 'animationSpeed', 'builtin_slideshow_animationSpeed' );
+
+                $slideshow      = $this->get_values( $bs_prefix, 'slideshow', 'builtin_slideshow_slideshow' );
+                $animationLoop  = $this->get_values( $bs_prefix, 'animationLoop', 'builtin_slideshow_animationLoop' );
+                $pauseOnHover   = $this->get_values( $bs_prefix, 'pauseOnHover', 'builtin_slideshow_pauseOnHover' );
+                $smoothHeight   = $this->get_values( $bs_prefix, 'smoothHeight', 'builtin_slideshow_smoothHeight' );
+                $directionNav   = $this->get_values( $bs_prefix, 'directionNav', 'builtin_slideshow_directionNav' );
+                $controlNav     = $this->get_values( $bs_prefix, 'controlNav', 'builtin_slideshow_controlNav' );
+                $caption        = $this->get_values( $bs_prefix, 'caption', 'builtin_slideshow_caption' );
+
+                $background_images = $this->get_values( $bs_prefix, 'background_images', 'builtin_slideshow_background_images' );
+                ?>
 				<tr class="blox-slideshow-option blox-content-slideshow-builtin">
-					<th scope="row"><?php _e( 'Builtin Settings' ); ?></th>
+					<th scope="row"><?php _e( 'Control Settings' ); ?></th>
 					<td>
 						<div class="blox-standard-settings">
 							<select name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animation]" id="blox_builtin_settings_animation">
-								<option value="slide" <?php echo ! empty( $get_prefix['slideshow']['builtin']['settings']['animation'] ) ? selected( $get_prefix['slideshow']['builtin']['settings']['animation'], 'slide' ) : 'selected'; ?> ><?php _e( 'Slide', 'blox' ); ?></option>
-								<option value="fade" <?php echo ! empty( $get_prefix['slideshow']['builtin']['settings']['animation'] ) ? selected( $get_prefix['slideshow']['builtin']['settings']['animation'], 'fade' ) : ''; ?> ><?php _e( 'Fade', 'blox' ); ?></option>
+								<option value="slide" <?php echo selected( $animation, 'slide' ); ?> ><?php _e( 'Slide', 'blox' ); ?></option>
+								<option value="fade" <?php echo selected( $animation, 'fade' ); ?> ><?php _e( 'Fade', 'blox' ); ?></option>
 							</select>
 							<label for="blox_builtin_settings_animation"><?php _e( 'Slideshow Animation', 'blox' ); ?></label><br>
-							<input type="text" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][slideshowSpeed]" id="blox_builtin_settings_slideshowSpeed" class="blox-small-text" value="<?php if ( ! empty( $get_prefix['slideshow']['builtin']['settings']['slideshowSpeed'] ) && is_numeric( $get_prefix['slideshow']['builtin']['settings']['slideshowSpeed'] ) ) { echo esc_attr( $get_prefix['slideshow']['builtin']['settings']['slideshowSpeed'] ); } else { echo '7000'; } ?>" />
+							<input type="text" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][slideshowSpeed]" id="blox_builtin_settings_slideshowSpeed" class="blox-small-text" value="<?php echo esc_attr( $slideshowSpeed ); ?>" />
 							<label for="blox_builtin_settings_slideshowSpeed"><?php _e( 'Slideshow Speed (milliseconds)', 'blox' ); ?></label><br>
-							<input type="text" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animationSpeed]" id="blox_builtin_settings_animationSpeed" class="blox-small-text" value="<?php if ( ! empty( $get_prefix['slideshow']['builtin']['settings']['animationSpeed'] ) && is_numeric( $get_prefix['slideshow']['builtin']['settings']['animationSpeed'] ) ) { echo esc_attr( $get_prefix['slideshow']['builtin']['settings']['animationSpeed'] ); } else { echo '600'; } ?>" />
+							<input type="text" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animationSpeed]" id="blox_builtin_settings_animationSpeed" class="blox-small-text" value="<?php echo esc_attr( $animationSpeed ); ?>" />
 							<label for="blox_builtin_settings_animationSpeed"><?php _e( 'Animation Speed (milliseconds)', 'blox' ); ?></label>
 						</div>
 						<div class="blox-advanced-settings">
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][slideshow]" id="blox_builtin_settings_slideshow" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['slideshow'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['slideshow'] ) : ''; ?>> <?php _e( 'Start Slideshow Automatically', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animationLoop]" id="blox_builtin_settings_animationLoop" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['animationLoop'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['animationLoop'] ) : ''; ?>> <?php _e( 'Loop Slideshow', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][pauseOnHover]" id="blox_builtin_settings_pauseOnHover" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['pauseOnHover'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['pauseOnHover'] ) : ''; ?>> <?php _e( 'Enable Pause On Hover', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][smoothHeight]" id="blox_builtin_settings_smoothHeight" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['smoothHeight'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['smoothHeight'] ) : 'checked'; ?>> <?php _e( 'Enable Slideshow Height Resizing', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][directionNav]" id="blox_builtin_settings_directionNav" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['directionNav'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['directionNav'] ) : ''; ?>> <?php _e( 'Disable Directional Navigation (i.e. arrows)', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][controlNav]" id="blox_builtin_settings_controlNav" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['controlNav'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['controlNav'] ) : ''; ?>> <?php _e( 'Disable Control Navigation (i.e. dots)', 'blox' ); ?></label><br>
-							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][caption]" id="blox_builtin_settings_caption" value="1" <?php ! empty( $get_prefix['slideshow']['builtin']['settings']['caption'] ) ? checked( $get_prefix['slideshow']['builtin']['settings']['caption'] ) : ''; ?>> <?php _e( 'Disable Captions ', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][slideshow]" id="blox_builtin_settings_slideshow" value="1" <?php checked( $slideshow ); ?> /> <?php _e( 'Start Slideshow Automatically', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][animationLoop]" id="blox_builtin_settings_animationLoop" value="1" <?php checked( $animationLoop ); ?> /> <?php _e( 'Loop Slideshow', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][pauseOnHover]" id="blox_builtin_settings_pauseOnHover" value="1" <?php checked( $pauseOnHover ); ?> /> <?php _e( 'Enable Pause On Hover', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][smoothHeight]" id="blox_builtin_settings_smoothHeight" value="1" <?php checked( $smoothHeight ); ?> /> <?php _e( 'Enable Slideshow Height Resizing', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][directionNav]" id="blox_builtin_settings_directionNav" value="1" <?php checked( $directionNav ); ?> /> <?php _e( 'Disable Directional Navigation (i.e. arrows)', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][controlNav]" id="blox_builtin_settings_controlNav" value="1" <?php checked( $controlNav ); ?> /> <?php _e( 'Disable Control Navigation (i.e. dots)', 'blox' ); ?></label><br>
+							<label><input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][caption]" id="blox_builtin_settings_caption" value="1" <?php checked( $caption ); ?> /> <?php _e( 'Disable Captions ', 'blox' ); ?></label><br>
 						</div>
 					</td>
+				</tr>
+                <tr class="blox-slideshow-option blox-content-slideshow-builtin">
+					<th scope="row"><?php _e( 'Display Settings' ); ?></th>
+					<td>
+						<label>
+                            <input type="checkbox" name="<?php echo $name_prefix; ?>[slideshow][builtin][settings][background_images]" id="blox_builtin_settings_background_images" value="1" <?php checked( $background_images ); ?> />
+                            <?php _e( 'Set images as background images', 'blox' ); ?>
+                        </label>
+                        <span class="blox-help-text-icon">
+                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                        </span>
+                        <div class="blox-help-text top">
+                            <?php echo sprintf( __( 'When this setting is enabled, images are displayed as a background images in each slide. Additional custom CSS may be required to attain your desired effect. For additional information on how effectively to use this setting, view the builtin slideshow %sdocumentation%s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/slideshow/" target="_blank">', '</a>' ); ?>
+                        </div>
+                    </td>
 				</tr>
 
 				<?php
@@ -223,6 +281,16 @@ class Blox_Content_Slideshow {
 	}
 
 
+    public function get_values( $prefix, $setting, $default, $type = null ) {
+
+        if ( ! empty( $prefix ) ) {
+            $value = ! empty( $prefix[$setting] ) ? $prefix[$setting] : '';
+            return $value;
+        } else {
+            return blox_get_option( $default, '' );
+        }
+    }
+
 	/**
 	 * Saves all of the slideshow ralated settings
      *
@@ -247,22 +315,27 @@ class Blox_Content_Slideshow {
 				// Only slide type currently (v1.0.0) is "image"
 				$settings['builtin']['slides'][$key]['slide_type'] 				= 'image';
 
+                $settings['builtin']['slides'][$key]['visibility']['disable'] 	= isset( $name_prefix['builtin']['slides'][$key]['visibility']['disable'] ) ? 1 : 0;
+
 				$settings['builtin']['slides'][$key]['image']['id'] 			= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['id'] ) );
 				$settings['builtin']['slides'][$key]['image']['url']    		= esc_url( $name_prefix['builtin']['slides'][$key]['image']['url'] );
 				$settings['builtin']['slides'][$key]['image']['title']    		= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['title'] ) );
 				$settings['builtin']['slides'][$key]['image']['alt'] 	   		= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['alt'] ) );
-				$settings['builtin']['slides'][$key]['image']['caption']  		= wp_kses_post( $name_prefix['builtin']['slides'][$key]['image']['caption'] );
+                $settings['builtin']['slides'][$key]['image']['size'] 	   		= ! empty( $name_prefix['builtin']['slides'][$key]['image']['size'] ) ? esc_attr( $name_prefix['builtin']['slides'][$key]['image']['size'] ) : 'full'; // If no size is set, default to full
+
 				$settings['builtin']['slides'][$key]['image']['link']['enable']	= isset( $name_prefix['builtin']['slides'][$key]['image']['link']['enable'] ) ? 1 : 0;
 				$settings['builtin']['slides'][$key]['image']['link']['url']	= isset( $name_prefix['builtin']['slides'][$key]['image']['link']['url'] ) ? ( $name_prefix['builtin']['slides'][$key]['image']['link']['url'] == 'http://' ? '' : esc_url( $name_prefix['builtin']['slides'][$key]['image']['link']['url'] ) ) : '';
 				$settings['builtin']['slides'][$key]['image']['link']['title']	= isset( $name_prefix['builtin']['slides'][$key]['image']['link']['title'] ) ? trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['link']['title'] ) ) : '';
 				$settings['builtin']['slides'][$key]['image']['link']['target']	= isset( $name_prefix['builtin']['slides'][$key]['image']['link']['target'] ) ? 1 : 0;
-				$settings['builtin']['slides'][$key]['image']['classes'] 	 	= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['classes'] ) );
+
+                $settings['builtin']['slides'][$key]['image']['caption']  		= wp_kses_post( $name_prefix['builtin']['slides'][$key]['image']['caption'] );
+                $settings['builtin']['slides'][$key]['image']['classes'] 	 	= trim( strip_tags( $name_prefix['builtin']['slides'][$key]['image']['classes'] ) );
 			}
 		} else {
 			$settings['builtin']['slides'] = '';
 		}
 
-		// Save the builtin settings
+		// Save the control settings
 		$settings['builtin']['settings']['animation']      	= esc_attr( $name_prefix['builtin']['settings']['animation'] );
 		$settings['builtin']['settings']['slideshowSpeed'] 	= absint( $name_prefix['builtin']['settings']['slideshowSpeed'] );
 		$settings['builtin']['settings']['animationSpeed'] 	= absint( $name_prefix['builtin']['settings']['animationSpeed'] );
@@ -273,6 +346,10 @@ class Blox_Content_Slideshow {
 		$settings['builtin']['settings']['directionNav'] 	= isset( $name_prefix['builtin']['settings']['directionNav'] ) ? 1 : 0;
 		$settings['builtin']['settings']['controlNav']		= isset( $name_prefix['builtin']['settings']['controlNav'] ) ? 1 : 0;
 		$settings['builtin']['settings']['caption']  		= isset( $name_prefix['builtin']['settings']['caption'] ) ? 1 : 0;
+
+        // Save the display settings
+        $settings['builtin']['settings']['background_images']  	= isset( $name_prefix['builtin']['settings']['background_images'] ) ? 1 : 0;
+
 
 		// Save all of the additional slideshow option ids (i.e. Soliloquy, Revolution Slider, Meta Slider, etc.)
 		foreach( $this->get_slideshow_types() as $type => $title ){
@@ -300,86 +377,131 @@ class Blox_Content_Slideshow {
 	public function add_slideshow_modal( $global ) {
 		?>
 		<!--Slideshow Image Settings Modal-->
-		<div id="blox_slide_details" class='blox-hidden blox-modal' title="<?php _e( 'Image Details', 'blox' );?>">
+		<div id="blox_slide_details" class='blox-hidden blox-modal prev-next'>
 
 			<!-- Header -->
 			<div class="blox-modal-titlebar">
-				<span class="blox-modal-title"><?php _e( 'Slide Details', 'blox' ); ?></span>
-				<button type="button" class="blox-modal-close" title="<?php _e( 'Close' );?>">
-					<span class="blox-modal-close-icon"></span>
-					<span class="blox-modal-close-text"><?php _e( 'Close', 'blox' ); ?></span>
+				<span class="blox-modal-title"><?php _e( 'Edit Slide', 'blox' ); ?></span>
+                <button type="button" class="blox-modal-prev">
+                    <span class="blox-modal-icon">
+                        <span class="screen-reader-text"><?php _e( 'Previous', 'blox' ); ?></span>
+                    </span>
+                </button>
+                <button type="button" class="blox-modal-next">
+                    <span class="blox-modal-icon">
+                        <span class="screen-reader-text"><?php _e( 'Next', 'blox' ); ?></span>
+                    </span>
+                </button>
+				<button type="button" class="blox-modal-close">
+					<span class="blox-modal-icon">
+                        <span class="screen-reader-text"><?php _e( 'Close', 'blox' ); ?></span>
+                    </span>
 				</button>
 			</div>
-
-			<input type="text" class="modal-slide-id blox-force-hidden" value="" />
 
 			<!-- Body -->
-			<div class="blox-form-container">
-				<table class="form-table">
-					<tbody>
-						<tr>
-							<th scope="row"><?php _e( 'Image Title', 'blox' ); ?></th>
-							<td>
-								<input type="text" class="modal-slide-image-title" value="" />
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><?php _e( 'Image Alt Text', 'blox' ); ?></th>
-							<td>
-								<input type="text" class="modal-slide-image-alt" value="" />
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><?php _e( 'Image Link', 'blox' ); ?></th>
-							<td>
-								<label class="blox-image-link-enable">
-									<input type="checkbox" class="modal-slide-image-link-enable" value="1" />
-									<?php _e( 'Check to enable', 'blox' ); ?>
-								</label>
-								<div class="blox-image-link">
-									<label class="blox-subtitle">
-										<span><?php _e( 'URL', 'blox' ); ?></span>
-										<input type="text" class="modal-slide-image-link-url" value="" />
-									</label>
-									<label class="blox-subtitle">
-										<span><?php _e( 'Title', 'blox' ); ?></span>
-										<input type="text" class="modal-slide-image-link-title" value="" />
-									</label>
-									<label>
-										<input type="checkbox" class="modal-slide-image-link-target" value="1" />
-										<?php _e( 'Open link in new window/tab', 'blox' ); ?>
-									</label>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><?php _e( 'Slide Caption', 'blox' ); ?></th>
-							<td>
-								<textarea class="modal-slide-image-caption blox-textarea-code" type="text" rows="3" ></textarea>
-								<div class="blox-description">
-									<?php _e( 'Only basic HTML is accepted.', 'blox' ); ?>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><?php _e( 'Slide CSS Classes', 'blox' ); ?></th>
-							<td>
-								<input type="text" class="modal-slide-image-classes" value="" />
-								<div class="blox-description">
-									<?php _e( 'Enter a space separated list of custom CSS classes to add to this image slide.', 'blox' ); ?>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+            <div class="modal-slide-image-details">
 
-			<!-- Footer -->
-			<div class="blox-modal-buttonpane">
-				<button id="blox-apply-details" type="button" class="button button-primary blox-modal-button">
-					<?php _e( 'Apply Settings', 'blox' ); ?>
-				</button>
-			</div>
+                <input type="text" class="modal-slide-id blox-force-hidden" value="" />
+                <input type="text" class="modal-slide-image-id blox-force-hidden" value="" />
+                <input type="text" class="modal-slide-image-url blox-force-hidden" value="" />
+                <input type="text" class="modal-slide-image-thumbnail blox-force-hidden" value="" />
+
+                <div class="modal-slide-image-view">
+                    <img class="modal-slide-image-preview" src="" />
+                    <a class="button" name="blox_upload_button" id="blox_upload_button"  onclick="blox_slideshow_change_image.uploader(); return false;"><?php _e( 'Select New Image', 'blox' );?></a>
+                </div>
+
+                <div class="modal-slide-image-settings">
+
+                    <span class="name"><?php _e( 'Image Settings', 'blox' ); ?></span>
+                    <div class="blox-modal-subsettings">
+                        <label class="blox-modal-subsetting">
+                            <span><?php _e( 'Title', 'blox' ); ?></span>
+                            <div>
+                                <input type="text" class="modal-slide-image-title" value="" />
+                            </div>
+                        </label>
+                        <label class="blox-modal-subsetting">
+                            <span><?php _e( 'Alt Text', 'blox' ); ?></span>
+                            <div>
+                                <input type="text" class="modal-slide-image-alt" value="" />
+                            </div>
+                        </label>
+                        <label class="blox-modal-subsetting">
+                            <span><?php _e( 'Size', 'blox' ); ?></span>
+                            <div>
+            					<select class="modal-slide-image-size">
+            						<?php foreach ( (array) $this->get_image_sizes() as $i => $size ) {
+
+            							// Remove the new Custom option added in WP 4.4 for now. Could cause confusion...
+            							if ( $size['value'] != 'custom' ) {
+            							?>
+            							    <option value="<?php echo $size['value']; ?>"><?php echo $size['name']; ?></option>
+            							<?php
+            							}
+            						} ?>
+            					</select>
+                                <div class="blox-description">
+                                    <?php _e( 'Note the selected image size is not reflected in the preview.', 'blox' ); ?>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <span class="name"><?php _e( 'Image Link', 'blox' ); ?></span>
+					<label class="blox-image-link-enable">
+						<input type="checkbox" class="modal-slide-image-link-enable" value="1" />
+						<?php _e( 'Check to enable', 'blox' ); ?>
+					</label>
+					<div class="blox-modal-subsettings image-link">
+						<label class="blox-modal-subsetting">
+							<span><?php _e( 'URL', 'blox' ); ?></span>
+							<div><input type="text" class="modal-slide-image-link-url" value="" /></div>
+						</label>
+						<label class="blox-modal-subsetting">
+							<span><?php _e( 'Title', 'blox' ); ?></span>
+							<div><input type="text" class="modal-slide-image-link-title" value="" /></div>
+						</label>
+						<label>
+							<input type="checkbox" class="modal-slide-image-link-target" value="1" />
+							<?php _e( 'Open link in new window/tab', 'blox' ); ?>
+						</label>
+					</div>
+
+                    <span class="name"><?php _e( 'Slide Caption', 'blox' ); ?></span>
+					<textarea class="modal-slide-image-caption blox-textarea-code" type="text" rows="3" ></textarea>
+					<div class="blox-description">
+						<?php _e( 'Only basic HTML is accepted.', 'blox' ); ?>
+					</div>
+
+                    <span class="name"><?php _e( 'Visibility', 'blox' ); ?></span>
+                    <label class="blox-visibility-disable">
+						<input type="checkbox" class="modal-slide-visibility-disable" value="1" />
+						<?php _e( 'Check to disable this slide', 'blox' ); ?>
+					</label>
+                    <div class="blox-description">
+						<?php _e( 'Disabled slides will not show up in the slideshow. Simply uncheck to begin displaying again.', 'blox' ); ?>
+					</div>
+
+                    <span class="name"><?php _e( 'Slide Classes', 'blox' ); ?></span>
+					<input type="text" class="modal-slide-image-classes" value="" />
+					<div class="blox-description">
+						<?php _e( 'Enter a space separated list of custom CSS classes to add to this image slide.', 'blox' ); ?>
+					</div>
+
+                    <div class="modal-slide-apply-settings-container">
+                        <button id="blox-slide-apply-settings" type="button" class="button button-primary">
+                            <?php _e( 'Apply Settings', 'blox' ); ?>
+                        </button>
+                        <span class="blox-modal-spinner"></span>
+                        <div id="blox-slide-apply-settings-message" class="blox-message success">
+                            <p><?php _e( 'Settings successfully applied. Publish/Update to fully save your changes.', 'blox' ); ?></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
 
 		</div> <!-- end blox_slide_details -->
 		<?php
@@ -421,71 +543,11 @@ class Blox_Content_Slideshow {
 			}
 		} else if ( $content_data['slideshow']['slideshow_type'] == 'builtin' ) {
 
-			// Check to make sure slides have been added to the builtin slideshow
-			if ( ! empty( $content_data['slideshow']['builtin'] ) ) { ?>
-				<div class="blox-slideshow-container builtin flexslider <?php echo implode( ' ', apply_filters( 'blox_content_slideshow_classes', $classes ) ); ?>">
-					<ul class="blox-slideshow-wrap slides">
-
-						<?php foreach ( $content_data['slideshow']['builtin']['slides'] as $key => $slides ) { ?>
-							<li id="<?php echo $key; ?>" class="blox-slideshow-item <?php echo $slides['slide_type']; ?> <?php echo $slides['image']['classes']; ?>" >
-								<?php
-									// Get our image link if enabled
-									if ( ! empty( $slides['image']['link']['url'] ) && $slides['image']['link']['enable'] ) {
-										$target = $slides['image']['link']['target'] == 1 ? '_blank' : '_self';
-										$link_start = '<a href="' . $slides['image']['link']['url'] . '" target="' . $target . '" title="' . $slides['image']['link']['title'] . '">';
-										$link_end   = '</a>';
-									} else {
-										$link_start = '';
-										$link_end   = '';
-									}
-								?>
-
-								<?php echo $link_start; ?>
-									<img src="<?php echo ! empty( $slides['image']['url'] ) ? esc_attr( $slides['image']['url'] ) : ''; ?>" alt="<?php echo ! empty( $slides['image']['alt'] ) ? esc_attr( $slides['image']['alt'] ) : ''; ?>" title="<?php echo ! empty( $slides['image']['title'] ) ? esc_attr( $slides['image']['title'] ) : ''; ?>" />
-								<?php echo $link_end; ?>
-								<?php if ( empty( $content_data['slideshow']['builtin']['settings']['caption'] ) && ! empty( $slides['image']['caption'] ) ) {  ?>
-									<div class="blox-caption-container">
-										<div class="blox-caption-wrap">
-											<?php echo wp_kses_post( $slides['image']['caption'] ); ?>
-										</div>
-									</div>
-								<?php }  ?>
-
-							</li>
-						<?php } ?>
-					</ul>
-				</div>
-
-				<script type="text/javascript">
-					jQuery(document).ready(function($){
-
-						// Set all of our slider settings
-						$(window).load(function() {
-							$('#blox_<?php echo $block_scope . "_" . $block_id;?> .blox-slideshow-container.builtin').flexslider({
-								animation: "<?php echo ! empty( $content_data['slideshow']['builtin']['settings']['animation'] ) ? $content_data['slideshow']['builtin']['settings']['animation'] : 'fade'; ?>",
-								animationLoop: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['animationLoop'] ) ? 'true' : 'false'; ?>,
-								slideshow: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['slideshow'] ) ? 'true' : 'false'; ?>,
-								pauseOnHover: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['pauseOnHover'] ) ? 'true' : 'false'; ?>,
-								directionNav: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['directionNav'] ) ? 'false' : 'true'; ?>,
-								controlNav: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['controlNav'] ) ? 'false' : 'true'; ?>,
-								slideshowSpeed: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['slideshowSpeed'] ) ? esc_attr( $content_data['slideshow']['builtin']['settings']['slideshowSpeed'] ) : 7000; ?>,
-								animationSpeed: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['animationSpeed'] ) ? esc_attr( $content_data['slideshow']['builtin']['settings']['animationSpeed'] ) : 600; ?>,
-								smoothHeight: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['smoothHeight'] ) ? 'true' : 'false'; ?>,
-
-								//after: function(){
-									//if ( $( '.flex-active-slide' ).hasClass( 'dark' ) ) { alert('true'); } else { alert( 'false')};
-								//}
-							});
-						});
-
-					});
-				</script>
-
-			<?php } else { ?>
-				<div class="media-error">
-					<p><?php _e( 'You haven\'t added any slides to the slideshow!' ); ?></p>
-				</div>
-			<?php }
+            if ( apply_filters( 'blox_builtin_slideshow_use_slick', true ) ) {
+                $this->print_slideshow_builtin_slick( $content_data, $block_id, $block_scope );
+            } else {
+                $this->print_slideshow_builtin_flexslider( $content_data, $block_id, $block_scope );
+            }
 
 		} else if ( is_plugin_active( 'soliloquy/soliloquy.php' ) && $content_data['slideshow']['slideshow_type'] == 'soliloquy' )  {
 
@@ -507,6 +569,221 @@ class Blox_Content_Slideshow {
 			}
 		}
 	}
+
+    /**
+     * Print the builtin slideshow's frontend markup using flexslider
+     * ALERT: This function will be depracated in v1.5.0 which should provide enough time for people to transition to slick
+     *
+     * @since 1.0.0
+     *
+     * @param array $content_data Array of all block data
+     * @param string $block_id    The block id
+     * @param string $block_scope The scope of the block, either global or local
+     */
+    public function print_slideshow_builtin_flexslider( $content_data, $block_id, $block_scope ) {
+
+        // Check to make sure slides have been added to the builtin slideshow
+        if ( ! empty( $content_data['slideshow']['builtin'] ) ) { ?>
+            <div class="blox-slideshow-container builtin flexslider <?php echo implode( ' ', apply_filters( 'blox_content_slideshow_classes', $classes ) ); ?>">
+                <ul class="blox-slideshow-wrap slides">
+
+                    <?php foreach ( $content_data['slideshow']['builtin']['slides'] as $key => $slides ) { ?>
+                        <li id="<?php echo $key; ?>" class="blox-slideshow-item <?php echo $slides['slide_type']; ?> <?php echo $slides['image']['classes']; ?>" >
+                            <?php
+                                // Get our image link if enabled
+                                if ( ! empty( $slides['image']['link']['url'] ) && $slides['image']['link']['enable'] ) {
+                                    $target = $slides['image']['link']['target'] == 1 ? '_blank' : '_self';
+                                    $link_start = '<a href="' . $slides['image']['link']['url'] . '" target="' . $target . '" title="' . $slides['image']['link']['title'] . '">';
+                                    $link_end   = '</a>';
+                                } else {
+                                    $link_start = '';
+                                    $link_end   = '';
+                                }
+                            ?>
+
+                            <?php echo $link_start; ?>
+                                <img src="<?php echo ! empty( $slides['image']['url'] ) ? esc_attr( $slides['image']['url'] ) : ''; ?>" alt="<?php echo ! empty( $slides['image']['alt'] ) ? esc_attr( $slides['image']['alt'] ) : ''; ?>" title="<?php echo ! empty( $slides['image']['title'] ) ? esc_attr( $slides['image']['title'] ) : ''; ?>" />
+                            <?php echo $link_end; ?>
+                            <?php if ( empty( $content_data['slideshow']['builtin']['settings']['caption'] ) && ! empty( $slides['image']['caption'] ) ) {  ?>
+                                <div class="blox-caption-container">
+                                    <div class="blox-caption-wrap">
+                                        <?php echo wp_kses_post( $slides['image']['caption'] ); ?>
+                                    </div>
+                                </div>
+                            <?php }  ?>
+
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
+
+            <script type="text/javascript">
+                jQuery(document).ready(function($){
+
+                    // Set all of our slider settings
+                    $(window).load(function() {
+                        $('#blox_<?php echo $block_scope . "_" . $block_id;?> .blox-slideshow-container.builtin').flexslider({
+                            animation: "<?php echo ! empty( $content_data['slideshow']['builtin']['settings']['animation'] ) ? $content_data['slideshow']['builtin']['settings']['animation'] : 'fade'; ?>",
+                            animationLoop: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['animationLoop'] ) ? 'true' : 'false'; ?>,
+                            slideshow: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['slideshow'] ) ? 'true' : 'false'; ?>,
+                            pauseOnHover: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['pauseOnHover'] ) ? 'true' : 'false'; ?>,
+                            directionNav: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['directionNav'] ) ? 'false' : 'true'; ?>,
+                            controlNav: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['controlNav'] ) ? 'false' : 'true'; ?>,
+                            slideshowSpeed: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['slideshowSpeed'] ) ? esc_attr( $content_data['slideshow']['builtin']['settings']['slideshowSpeed'] ) : 7000; ?>,
+                            animationSpeed: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['animationSpeed'] ) ? esc_attr( $content_data['slideshow']['builtin']['settings']['animationSpeed'] ) : 600; ?>,
+                            smoothHeight: <?php echo ! empty( $content_data['slideshow']['builtin']['settings']['smoothHeight'] ) ? 'true' : 'false'; ?>,
+                        });
+                    });
+
+                });
+            </script>
+
+        <?php } else { ?>
+            <div class="media-error">
+                <p><?php _e( 'You haven\'t added any slides to the slideshow!' ); ?></p>
+            </div>
+        <?php }
+    }
+
+
+    /**
+     * Print the builtin slideshow's frontend markup using slick
+     *
+     * @since 1.3.0
+     *
+     * @param array $content_data Array of all block data
+     * @param string $block_id    The block id
+     * @param string $block_scope The scope of the block, either global or local
+     */
+    public function print_slideshow_builtin_slick( $content_data, $block_id, $block_scope ) {
+
+        // Check to make sure slides have been added to the builtin slideshow
+        if ( ! empty( $content_data['slideshow']['builtin'] ) ) {
+
+            $html = '<div class="blox-slideshow-container builtin">';
+
+            foreach ( $content_data['slideshow']['builtin']['slides'] as $key => $slides ) {
+
+                // Are we using background images?
+                $background_images  = ! empty( $content_data['slideshow']['builtin']['settings']['background_images'] ) ? true : false;
+
+                // Setup the image
+                $image_id    = esc_attr( $slides['image']['id'] );
+                $image_size  = ! empty( $slides['image']['size'] ) ? esc_attr( $slides['image']['size'] ) : 'full';
+                $image_alt   = ! empty( $slides['image']['alt'] ) ? esc_attr( $slides['image']['alt'] ) : '';
+                $image_title = ! empty( $slides['image']['title'] ) ? esc_attr( $slides['image']['title'] ) : '';
+
+                // Get the image
+                if ( $background_images ) {
+
+                    // We only need the src for background images
+                    $image = wp_get_attachment_image_src( $image_id, $image_size. '' );
+                    $image = $image[0];
+
+                } else {
+                    $image_atts = array (
+                        'class' => '',
+                        'title' => $image_title,
+                        'alt'   => $image_alt,
+                    );
+
+                    // The 3rd param is used to determine is image should be an icon, and thus is not used
+                    $image = wp_get_attachment_image( $image_id, $image_size, '', $image_atts );
+                }
+
+                // Setup the slide link if there is one
+                $link_start = '';
+                $link_end   = '';
+
+                // Get our image link if enabled
+                if ( ! empty( $slides['image']['link']['url'] ) && $slides['image']['link']['enable'] ) {
+                    $target    = $slides['image']['link']['target'] == 1 ? '_blank' : '_self';
+                    $link_start = '<a href="' . $slides['image']['link']['url'] . '" target="' . $target . '" title="' . $slides['image']['link']['title'] . '">';
+                    $link_end   = '</a>';
+                }
+
+                // Setup the image caption
+                $caption = '';
+
+                if ( empty( $content_data['slideshow']['builtin']['settings']['caption'] ) && ! empty( $slides['image']['caption'] ) ) {
+                    $caption .= '<div class="blox-caption-container">';
+                    $caption .= '<div class="blox-caption-wrap">';
+                    $caption .= wp_kses_post( $slides['image']['caption'] );
+                    $caption .= '</div>';
+                    $caption .= '</div>';
+                }
+
+                // Get visbility settings
+                $disabled = ! empty( $slides['visibility']['disable'] ) ? esc_attr( $slides['visibility']['disable'] ) : 0;
+
+                // Maybe show the slide
+                if ( ! $disabled ) {
+
+                    // Final markup
+                    $html .= '<div id="' . $key . '" class="blox-slideshow-item ' . $slides['slide_type'] . ' ' . $slides['image']['classes'] . '">';
+
+                    if ( $background_images ) {
+                        $html .= '<div class="blox-image-background" style="background-image: url(' . $image . ')">';
+                        $html .= $link_start . $link_end;
+                        $html .= $caption;
+                        $html .= '</div>';
+                    } else {
+                        $html .= $link_start . $image . $link_end;
+                        $html .= $caption;
+                    }
+
+                    $html .= '</div>';
+                }
+            }
+
+            $html .= '</div>';
+
+            echo $html;
+
+            $this->print_slideshow_js( $content_data, $block_id, $block_scope );
+
+         } else {
+            ?>
+            <div class="media-error">
+                <p><?php _e( 'You haven\'t added any slides to the slideshow!' ); ?></p>
+            </div>
+            <?php
+        }
+    }
+
+
+    public function print_slideshow_js( $content_data, $block_id, $block_scope ) {
+
+        $settings = $content_data['slideshow']['builtin']['settings'];
+
+        $fade           = $content_data['slideshow']['builtin']['settings']['animation'] == 'fade' ? 'true' : 'false';
+        $infinite       = ! empty( $settings['animationLoop'] ) ? 'true' : 'false';
+        $autoplay       = ! empty( $settings['slideshow'] ) ? 'true' : 'false';
+        $pauseOnHover   = ! empty( $settings['pauseOnHover'] ) ? 'true' : 'false';
+        $arrows         = ! empty( $settings['directionNav'] ) ? 'false' : 'true';
+        $dots           = ! empty( $settings['controlNav'] ) ? 'false' : 'true';
+        $autoplaySpeed  = ! empty( $settings['slideshowSpeed'] ) ? esc_attr( $settings['slideshowSpeed'] ) : 7000;
+        $speed          = ! empty( $settings['animationSpeed'] ) ? esc_attr( $settings['animationSpeed'] ) : 600;
+        $adaptiveHeight = ! empty( $settings['smoothHeight'] ) ? 'true' : 'false';
+
+        ?>
+        <script type="text/javascript">
+        jQuery(document).ready(function($){
+            $( '#blox_<?php echo $block_scope . "_" . $block_id;?> .blox-slideshow-container.builtin').slick({
+                adaptiveHeight: <?php echo $adaptiveHeight;?>,
+                autoplay: <?php echo $autoplay;?>,
+                autoplaySpeed: <?php echo $autoplaySpeed;?>,
+                arrows: <?php echo $arrows;?>,
+                dots: <?php echo $dots;?>,
+                fade: <?php echo $fade;?>,
+                infinite: <?php echo $infinite;?>,
+                pauseOnHover: <?php echo $pauseOnHover;?>,
+                speed: <?php echo $speed;?>,
+            });
+        });
+        </script>
+        <?php
+    }
 
 
 	/**
@@ -741,6 +1018,20 @@ class Blox_Content_Slideshow {
 			<?php
 		}
 	}
+
+
+    /**
+     * Helper method for retrieving image sizes.
+     *
+     * @since 1.0.0
+     *
+     * @return array Array of image size data.
+     */
+    public function get_image_sizes() {
+
+        $instance = Blox_Common::get_instance();
+        return $instance->get_image_sizes();
+    }
 
 
     /**

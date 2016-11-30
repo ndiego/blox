@@ -255,15 +255,16 @@ class Blox_Content_Raw {
 
         ?>
         <!--Raw Content Modal-->
-        <div id="blox_raw" class='blox-hidden blox-modal' title="<?php _e( 'Raw Content', 'blox' );?>">
+        <div id="blox_raw" class='blox-hidden blox-modal'>
 
             <!-- Header -->
             <div class="blox-modal-titlebar">
                 <span class="blox-modal-title"><?php _e( 'Raw Content', 'blox' ); ?></span>
-                <button type="button" class="blox-modal-close" title="<?php _e( 'Close' );?>">
-                    <span class="blox-modal-close-icon"></span>
-                    <span class="blox-modal-close-text"><?php _e( 'Close', 'blox' ); ?></span>
-                </button>
+                <button type="button" class="blox-modal-close">
+					<span class="blox-modal-icon">
+                        <span class="screen-reader-text"><?php _e( 'Close', 'blox' ); ?></span>
+                    </span>
+				</button>
             </div>
 
             <input type="text" id="blox_raw_block_type" class="blox-force-hidden" value="" />
