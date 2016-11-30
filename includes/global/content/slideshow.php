@@ -658,7 +658,7 @@ class Blox_Content_Slideshow {
     public function print_slideshow_builtin_slick( $content_data, $block_id, $block_scope ) {
 
         // Check to make sure slides have been added to the builtin slideshow
-        if ( ! empty( $content_data['slideshow']['builtin'] ) ) {
+        if ( ! empty( $content_data['slideshow']['builtin'] ) && ! empty( $content_data['slideshow']['builtin']['slides'] ) ) {
 
             $html = '<div class="blox-slideshow-container builtin">';
 

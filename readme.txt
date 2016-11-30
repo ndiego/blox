@@ -8,7 +8,7 @@ Resources:
 
 Changelog:
 
-Version 1.3.0 – 2016-11-30
+Version 1.3.0 – 2016-12-01
 * Added fullscreen mode for raw content
 * Added syntax highlighting in fullscreen mode for raw content
 * Added new builder UI for the builtin slideshow
