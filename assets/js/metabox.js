@@ -260,6 +260,9 @@ jQuery(document).ready(function($){
 						output += '<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][target]" value="1" />';
 
 						output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" value="' + attachment.caption + '" />';
+
+						output += '<textarea class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" >' + attachment.caption + '</textarea>';
+
 						output += '<input type="text" class="slide-image-classes blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][classes]" value="" />';
 						output += blox_slide_tools( frame.id );
 						output += '</li>';

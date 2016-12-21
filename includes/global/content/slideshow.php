@@ -146,6 +146,9 @@ class Blox_Content_Slideshow {
                                 // Set the disabled flag if needed
                                 $disabled = ! empty( $slides['visibility']['disable'] ) ? 'disabled' : '';
 
+
+                                /* <input type="text" class="slide-image-caption blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][caption]" value="<?php echo isset( $slides['image']['caption'] ) ? esc_attr( $slides['image']['caption'] ) : ''; ?>" />*/
+
                                 ?>
                                 <li id="<?php echo $key; ?>" class="blox-slideshow-item <?php echo $disabled; ?>" >
 									<div class="blox-slide-container">
@@ -163,7 +166,9 @@ class Blox_Content_Slideshow {
 									<input type="text" class="slide-image-link-url blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][url]" value="<?php echo ! empty( $slides['image']['link']['url'] ) ? esc_attr( $slides['image']['link']['url'] ) : 'http://'; ?>" />
 									<input type="text" class="slide-image-link-title blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][title]" value="<?php echo ! empty( $slides['image']['link']['title'] ) ? esc_attr( $slides['image']['link']['title'] ) : ''; ?>" />
 									<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][target]" value="1" <?php ! empty( $slides['image']['link']['target'] ) ? checked( $slides['image']['link']['target'] ) : ''; ?> />
-									<input type="text" class="slide-image-caption blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][caption]" value="<?php echo isset( $slides['image']['caption'] ) ? esc_attr( $slides['image']['caption'] ) : ''; ?>" />
+
+                                    <textarea class="slide-image-caption blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][caption]" ><?php echo isset( $slides['image']['caption'] ) ? esc_attr( $slides['image']['caption'] ) : ''; ?></textarea>
+
 									<input type="text" class="slide-image-classes blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][classes]" value="<?php echo ! empty( $slides['image']['classes'] ) ? esc_attr( $slides['image']['classes'] ) : ''; ?>" />
 
 									<div class="blox-slide-tools-container">
