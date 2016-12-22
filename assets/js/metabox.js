@@ -259,7 +259,7 @@ jQuery(document).ready(function($){
 						output += '<input type="text" class="slide-image-link-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][title]" value="" />';
 						output += '<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][target]" value="1" />';
 
-						output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" value="' + attachment.caption + '" />';
+						//output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" value="' + attachment.caption + '" />';
 
 						output += '<textarea class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" >' + attachment.caption + '</textarea>';
 
@@ -476,7 +476,7 @@ jQuery(document).ready(function($){
 	function blox_show_applied_message( status, time ) {
 
 		// If the message is visible, hide it
-		$( '#blox-slide-apply-settings-message' ).hide();
+		$( '#blox-slide-apply-settings-message' ).css( 'display', 'none' );
 
 		// Run the spinner
 		blox_run_spinner( time );
@@ -486,7 +486,7 @@ jQuery(document).ready(function($){
 
 			// Display the message
 			if ( status === 'success' ) {
-				$( '#blox-slide-apply-settings-message' ).addClass( 'success' ).show();
+				$( '#blox-slide-apply-settings-message' ).addClass( 'success' ).css( 'display', 'inline-block' );
 			}
 
 		}, time );
@@ -495,7 +495,7 @@ jQuery(document).ready(function($){
 	// Utility function to hide message
 	function blox_hide_applied_message() {
 		// If the message is visible, hide it
-		$( '#blox-slide-apply-settings-message' ).hide();
+		$( '#blox-slide-apply-settings-message' ).css( 'display', 'none' );
 	}
 
 	// Show and hide the spinner on Apply Settings click

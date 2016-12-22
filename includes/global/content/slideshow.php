@@ -495,17 +495,26 @@ class Blox_Content_Slideshow {
 						<?php _e( 'Enter a space separated list of custom CSS classes to add to this image slide.', 'blox' ); ?>
 					</div>
 
-                    <div class="modal-slide-apply-settings-container">
-                        <button id="blox-slide-apply-settings" type="button" class="button button-primary">
-                            <?php _e( 'Apply Settings', 'blox' ); ?>
-                        </button>
-                        <span class="blox-modal-spinner"></span>
-                        <div id="blox-slide-apply-settings-message" class="blox-message success">
-                            <p><?php _e( 'Settings successfully applied. Publish/Update to fully save your changes.', 'blox' ); ?></p>
-                        </div>
-                    </div>
                 </div>
 
+            </div>
+
+            <!-- Footer -->
+            <div class="blox-modal-footer">
+                <div class="blox-modal-buttonpane">
+
+                    <div class="modal-slide-apply-settings-container">
+                        <span class="blox-modal-spinner"></span>
+                        <div id="blox-slide-apply-settings-message" class="blox-message success">
+                            <p class="main"><?php _e( 'Settings successfully applied. Publish/Update to fully save your changes.', 'blox' ); ?></p>
+                            <span class="dashicons dashicons-yes mobile"></span>
+                        </div>
+                        <button id="blox-slide-apply-settings" type="button" class="button button-primary blox-modal-button">
+                            <?php _e( 'Apply Settings', 'blox' ); ?>
+                        </button>
+                    </div>
+
+                </div>
             </div>
 
 		</div> <!-- end blox_slide_details -->
