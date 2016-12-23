@@ -149,8 +149,30 @@ class Blox_Position {
 		?>
 		<table class="form-table">
 			<tbody>
+                <tr class="blox-position-format">
+                    <th scope="row"><?php echo __( 'Position Type', 'blox' ); ?></th>
+                    <td>
+                        <select name="<?php echo $name_prefix; ?>[position_format]" id="blox_position_format_<?php echo $id; ?>">
+                            <option value="hook" <?php echo ! empty( $get_prefix['position_format'] ) ? selected( esc_attr( $get_prefix['position_format'] ), 'hook' ) : 'selected'; ?>><?php _e( 'Hook', 'blox' ); ?></option>
+                            <?php
+
+                            $postion_options = apply_filters( 'blox_position_formats', array() );
+
+                            if ( ! empty( $postion_options ) ) {
+                                foreach ( $postion_options as $format => $title ) {
+                                    echo '<option value="' . $format . '">' . $title . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="form-table blox-position-format hook">
+        	<tbody>
 				<tr class="blox-position-type">
-					<th scope="row"><?php echo __( 'Position Type', 'blox' ); ?></th>
+					<th scope="row"><?php echo __( 'Hook Type', 'blox' ); ?></th>
 					<td>
 						<select name="<?php echo $name_prefix; ?>[position_type]" id="blox_position_type_<?php echo $id; ?>">
 							<option value="default" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( esc_attr( $get_prefix['position_type'] ), 'default' ) : 'selected'; ?>><?php _e( 'Default', 'blox' ); ?></option>
@@ -191,7 +213,7 @@ class Blox_Position {
 							<?php echo sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=position-tab-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ); ?>
 						</div>
 						<?php
-							$custom_postion   = ! empty( $get_prefix['custom']['position'] ) ? $get_prefix['custom']['position'] : '';
+							$custom_postion = ! empty( $get_prefix['custom']['position'] ) ? $get_prefix['custom']['position'] : '';
 							// Print error if the saved hook is no longer available for some reason
 							if ( ! empty( $custom_postion ) && ! in_array( $custom_postion, $available_hooks ) ) {
 								echo '<div class="blox-alert">' . sprintf( __( 'The current saved custom hook, %3$s, is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( '/edit.php?post_type=blox&page=blox-settings&tab=hooks' ) . '">', '</a>', '<strong>' . $custom_postion . '</strong>' ) . '</div>';

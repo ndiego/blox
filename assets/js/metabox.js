@@ -1016,11 +1016,51 @@ jQuery(document).ready(function($){
 			default_position.addClass( hidden );
 			custom_position.removeClass( hidden );
 		} else {
-			default_position.removeClass( 'blox-hidden' );
+			default_position.removeClass( hidden );
 			custom_position.addClass( hidden );
 		}
 	});
 
+	// Shows and hides each content type on selection
+	$(document).on( 'change', '.blox-position-format select', function(){
+
+		var format = $(this).val(),
+			parent = $(this).parents( '.form-table' ),
+			hidden = 'blox-hidden';
+
+			if ( format ) {
+
+				// Begin by hidding all sibling tables
+				parent.siblings( '.form-table' ).addClass( hidden );
+
+				// Show the selected format
+				parent.siblings( '.blox-position-format.' + format ).removeClass( hidden );
+			}
+
+	});
+
+
+	// Show the selected content type
+	function show_position_format_settings() {
+		$( 'tr.blox-position-format select' ).each( function() {
+
+			var format = $(this).val(),
+				parent = $(this).parents( '.form-table' ),
+				hidden = 'blox-hidden';
+
+			if ( format ) {
+
+				// Begin by hidding all sibling tables
+				parent.siblings( '.form-table' ).addClass( hidden );
+
+				// Show the selected format
+				parent.siblings( '.blox-position-format.' + format ).removeClass( hidden );
+			}
+		});
+	};
+
+	// Run on page load so selected content is visible
+	show_position_format_settings();
 
 
 	/* Visibility scripts
