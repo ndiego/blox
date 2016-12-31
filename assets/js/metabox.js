@@ -1028,14 +1028,14 @@ jQuery(document).ready(function($){
 			parent = $(this).parents( '.form-table' ),
 			hidden = 'blox-hidden';
 
-			if ( format ) {
+		if ( format ) {
 
-				// Begin by hidding all sibling tables
-				parent.siblings( '.form-table' ).addClass( hidden );
+			// Begin by hidding all sibling tables
+			parent.siblings( '.form-table' ).addClass( hidden );
 
-				// Show the selected format
-				parent.siblings( '.blox-position-format.' + format ).removeClass( hidden );
-			}
+			// Show the selected format
+			parent.siblings( '.blox-position-format.' + format ).removeClass( hidden );
+		}
 
 	});
 

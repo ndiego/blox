@@ -160,7 +160,7 @@ class Blox_Position {
 
                             if ( ! empty( $postion_options ) ) {
                                 foreach ( $postion_options as $format => $title ) {
-                                    echo '<option value="' . $format . '">' . $title . '</option>';
+                                    echo '<option value="' . $format . '" ' . selected( esc_attr( $get_prefix['position_format'] ), $format ) . ' >' . $title . '</option>';
                                 }
                             }
                             ?>
@@ -262,6 +262,9 @@ class Blox_Position {
 
 		$settings = array();
 
+        $settings['position_format']    = isset( $name_prefix['position_format'] ) ? esc_attr( $name_prefix['position_format'] ) : 'hook';
+
+        // Hook specific settings
 		$settings['position_type']      = esc_attr( $name_prefix['position_type'] );
 		$settings['custom']['position'] = isset( $name_prefix['custom']['position'] ) ? esc_attr( $name_prefix['custom']['position'] ) : '';
 		$settings['custom']['priority'] = absint( $name_prefix['custom']['priority'] );

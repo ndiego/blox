@@ -357,7 +357,7 @@ function blox_frontend_content( $args, $parameters ) {
 			do_action( 'blox_print_content_' . $content_data['content_type'], $content_data, $id, $block, $global );
 
 		} else {
-            
+
             $block_id = 'blox_' . $block_scope . '_' . esc_attr( $id );
 
             $block_class  = 'blox-content-' . esc_attr( $content_data['content_type'] );
