@@ -17,9 +17,10 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 
 ### Changelog
 
-##### Unreleased
+##### Version 1.3.1 – 2016-01-02
 * Changed Apply Settings button in the slideshow modal for a better user experience
-* Update EDD Updater to v1.6.8
+* Updated position settings and tests to handle additional position formats
+* Updated EDD Updater to v1.6.8
 * Fixed slideshow caption bug which eliminated content wrapping
 
 ##### Version 1.3.0 – 2016-12-01
@@ -42,7 +43,7 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 * Added System Info page to Blox Tools
 * Changed suppress_filters to false in global blocks for WPML compatibility
 * Tweaked spelling on Add-ons
-* Update EDD Updater to v1.6.5
+* Updated EDD Updater to v1.6.5
 * Fixed anonymous function that were causing issues in PHP 5.2
 * Fixed Visibility by Role bug
 * Fixed links in hook error messages
