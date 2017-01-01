@@ -176,14 +176,14 @@ class Blox_Frontend {
         // Get the position format, default to 'hook' if nothing is set
         $position_format = ! empty( $position_data['position_format'] ) ? esc_attr( $position_data['position_format'] ) : 'hook';
 
+        // Since this block passed all previous tests, it is considered active so pass it's content type to $active_content_types
+        array_push( $this->active_content_types, $block['content']['content_type'] );
+
         if ( $position_format != 'hook' ) {
 
-            // Do something for non-hook position formats
-            
-        } else {
+            // Do something for non-hook position formats. Most formats will take care of this themselves
 
-    		// Since this block passed all previous tests, it is considered active to pass it's content type to $active_content_types
-    		array_push( $this->active_content_types, $block['content']['content_type'] );
+        } else {
 
     		// Determine if we are using the default position or a custom position, and then set position and priority
     		if ( empty( $position_data['position_type'] ) || $position_data['position_type'] == 'default' ) {
@@ -193,7 +193,6 @@ class Blox_Frontend {
     			$position = ! empty( $position_data['custom']['position'] ) ? $position_data['custom']['position'] : 'genesis_after_header';
     			$priority = ! empty( $position_data['custom']['priority'] ) ? $position_data['custom']['priority'] : 1;
     		}
-
 
     		// If hook defaults are enabled we need to make sure the block is set to a position that is one of the defaults
     		$default_hooks_enabled = blox_get_option( 'default_hooks', false );
