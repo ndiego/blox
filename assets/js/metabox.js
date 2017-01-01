@@ -1034,7 +1034,7 @@ jQuery(document).ready(function($){
 			parent.siblings( '.form-table' ).addClass( hidden );
 
 			// Show the selected format
-			parent.siblings( '.blox-position-format.' + format ).removeClass( hidden );
+			parent.siblings( '.blox-position-format-type.' + format ).removeClass( hidden );
 		}
 
 	});
@@ -1054,12 +1054,12 @@ jQuery(document).ready(function($){
 				parent.siblings( '.form-table' ).addClass( hidden );
 
 				// Show the selected format
-				parent.siblings( '.blox-position-format.' + format ).removeClass( hidden );
+				parent.siblings( '.blox-position-format-type.' + format ).removeClass( hidden );
 			}
 		});
 	};
 
-	// Run on page load so selected content is visible
+	// Run on page load so selected position content is visible
 	show_position_format_settings();
 
 
@@ -1352,6 +1352,9 @@ jQuery(document).ready(function($){
 
 			// Run when new block is added so default content is visible
 			show_selected_content();
+
+			// Run new block is added so selected position content is visible
+			show_position_format_settings();
 
 			// Hide the Add Block button description if it is there.
 			$( '#blox_add_block_description' ).hide();
