@@ -169,7 +169,7 @@ class Blox_Position {
                             <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
                         </span>
                         <div class="blox-help-text top">
-                            <?php echo sprintf( __( 'By default, Blox only allows positioning via action hooks. Blox Addons enable additional options.', 'blox' ), '<strong>', '</strong>', '<a href="http://www.bloxwp.com/documentation" title="Blox Documentation">', '</a>' ); ?>
+                            <?php echo sprintf( __( 'By default, Blox only allows positioning via action hooks. %1$sBlox Add-ons%2$s enable additional options.', 'blox' ), '<a href="http://www.bloxwp.com/add-ons" title="Blox Add-ons" target="_blank">', '</a>' ); ?>
                         </div>
                     </td>
                 </tr>
