@@ -21,7 +21,7 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 * Changed Apply Settings button in the slideshow modal for a better user experience
 * Updated position settings and tests to handle additional position formats
 * Updated EDD Updater to v1.6.8
-* Updated .pot file
+* Updated .pot file for language translation
 * Fixed slideshow caption bug which eliminated content wrapping
 
 ##### Version 1.3.0 – 2016-12-01
