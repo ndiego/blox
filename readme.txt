@@ -8,7 +8,7 @@ Resources:
 
 Changelog:
 
-Version 1.3.1 – 2016-01-02
+Version 1.4.0 – 2016-01-04
 * Changed Apply Settings button in the slideshow modal for a better user experience
 * Updated position settings and tests to handle additional position formats
 * Updated EDD Updater to v1.6.8
