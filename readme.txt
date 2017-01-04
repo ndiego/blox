@@ -8,6 +8,13 @@ Resources:
 
 Changelog:
 
+Version 1.4.0 – 2016-01-04
+* Changed Apply Settings button in the slideshow modal for a better user experience
+* Updated position settings and tests to handle additional position formats
+* Updated EDD Updater to v1.6.8
+* Updated .pot file for language translation
+* Fixed slideshow caption bug which eliminated content wrapping
+
 Version 1.3.0 – 2016-12-01
 * Added fullscreen mode for raw content
 * Added syntax highlighting in fullscreen mode for raw content
@@ -28,7 +35,7 @@ Version 1.2.0 – 2016-10-20
 * Added System Info page to Blox Tools
 * Changed suppress_filters to false in global blocks for WPML compatibility
 * Tweaked spelling on Add-ons
-* Update EDD Updater to v1.6.5
+* Updated EDD Updater to v1.6.5
 * Fixed anonymous function that were causing issues in PHP 5.2
 * Fixed Visibility by Role bug
 * Fixed links in hook error messages

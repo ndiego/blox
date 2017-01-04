@@ -259,7 +259,10 @@ jQuery(document).ready(function($){
 						output += '<input type="text" class="slide-image-link-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][title]" value="" />';
 						output += '<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][target]" value="1" />';
 
-						output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" value="' + attachment.caption + '" />';
+						//output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" value="' + attachment.caption + '" />';
+
+						output += '<textarea class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" >' + attachment.caption + '</textarea>';
+
 						output += '<input type="text" class="slide-image-classes blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][classes]" value="" />';
 						output += blox_slide_tools( frame.id );
 						output += '</li>';
@@ -473,7 +476,7 @@ jQuery(document).ready(function($){
 	function blox_show_applied_message( status, time ) {
 
 		// If the message is visible, hide it
-		$( '#blox-slide-apply-settings-message' ).hide();
+		$( '#blox-slide-apply-settings-message' ).css( 'display', 'none' );
 
 		// Run the spinner
 		blox_run_spinner( time );
@@ -483,7 +486,7 @@ jQuery(document).ready(function($){
 
 			// Display the message
 			if ( status === 'success' ) {
-				$( '#blox-slide-apply-settings-message' ).addClass( 'success' ).show();
+				$( '#blox-slide-apply-settings-message' ).addClass( 'success' ).css( 'display', 'inline-block' );
 			}
 
 		}, time );
@@ -492,7 +495,7 @@ jQuery(document).ready(function($){
 	// Utility function to hide message
 	function blox_hide_applied_message() {
 		// If the message is visible, hide it
-		$( '#blox-slide-apply-settings-message' ).hide();
+		$( '#blox-slide-apply-settings-message' ).css( 'display', 'none' );
 	}
 
 	// Show and hide the spinner on Apply Settings click
@@ -1013,11 +1016,51 @@ jQuery(document).ready(function($){
 			default_position.addClass( hidden );
 			custom_position.removeClass( hidden );
 		} else {
-			default_position.removeClass( 'blox-hidden' );
+			default_position.removeClass( hidden );
 			custom_position.addClass( hidden );
 		}
 	});
 
+	// Shows and hides each content type on selection
+	$(document).on( 'change', '.blox-position-format select', function(){
+
+		var format = $(this).val(),
+			parent = $(this).parents( '.form-table' ),
+			hidden = 'blox-hidden';
+
+		if ( format ) {
+
+			// Begin by hidding all sibling tables
+			parent.siblings( '.form-table' ).addClass( hidden );
+
+			// Show the selected format
+			parent.siblings( '.blox-position-format-type.' + format ).removeClass( hidden );
+		}
+
+	});
+
+
+	// Show the selected content type
+	function show_position_format_settings() {
+		$( 'tr.blox-position-format select' ).each( function() {
+
+			var format = $(this).val(),
+				parent = $(this).parents( '.form-table' ),
+				hidden = 'blox-hidden';
+
+			if ( format ) {
+
+				// Begin by hidding all sibling tables
+				parent.siblings( '.form-table' ).addClass( hidden );
+
+				// Show the selected format
+				parent.siblings( '.blox-position-format-type.' + format ).removeClass( hidden );
+			}
+		});
+	};
+
+	// Run on page load so selected position content is visible
+	show_position_format_settings();
 
 
 	/* Visibility scripts
@@ -1309,6 +1352,9 @@ jQuery(document).ready(function($){
 
 			// Run when new block is added so default content is visible
 			show_selected_content();
+
+			// Run new block is added so selected position content is visible
+			show_position_format_settings();
 
 			// Hide the Add Block button description if it is there.
 			$( '#blox_add_block_description' ).hide();

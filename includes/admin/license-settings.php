@@ -261,6 +261,14 @@ class Blox_License_Settings {
 	public function get_addons() {
 
 		$addons = array(
+            'blox-shortcodes' => array(
+                'id'    => 'blox-shortcodes',
+                'name'  => __( 'Shortcodes Add-on', 'blox' ),
+                'desc'  => __( 'Allows you to display your content blocks anywhere that supports a shortcode. ', 'blox' ),
+                'image' => 'https://bloxwp.com/wp-content/uploads/2017/01/Blox-Shortcodes.png',
+                'link'  => 'https://www.bloxwp.com/add-ons/shortcodes/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links',
+                'uc'    => 0
+            ),
 			'blox-widgets' => array(
 				'id'    => 'blox-widgets',
 				'name'  => __( 'Widgets Add-on', 'blox' ),

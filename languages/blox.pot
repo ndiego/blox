@@ -1,14 +1,14 @@
-# Copyright (C) 2016 Blox
+# Copyright (C) 2017 Blox
 # This file is distributed under the same license as the Blox package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Blox 1.1.1\n"
+"Project-Id-Version: Blox 1.4.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/blox\n"
-"POT-Creation-Date: 2016-04-26 21:31:20+00:00\n"
+"POT-Creation-Date: 2017-01-04 01:46:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
@@ -20,39 +20,99 @@ msgstr ""
 msgid "Sorry, you can't activate %1$sBlox%2$s unless you have installed the %3$sGenesis %4$s%5$s. Go back to the %6$sPlugins Page%5$s."
 msgstr ""
 
-#: blox.php:237 includes/global/settings.php:113
+#: blox.php:241 includes/global/settings.php:114
 msgid "Settings"
 msgstr ""
 
-#: blox.php:272
+#: blox.php:276
 msgid "Documentation"
 msgstr ""
 
-#: includes/admin/content.php:83 includes/admin/content.php:243
+#: includes/admin/content.php:89
+msgid "Content Defaults"
+msgstr ""
+
+#: includes/admin/content.php:90
+msgid "When a new block is created, the following content defaults will be applied."
+msgstr ""
+
+#: includes/admin/content.php:95 includes/global/content/slideshow.php:813
+msgid "Builtin Slideshow"
+msgstr ""
+
+#: includes/admin/content.php:105 includes/global/content/slideshow.php:225
+msgid "Slideshow Animation"
+msgstr ""
+
+#: includes/admin/content.php:109 includes/global/content/slideshow.php:222
+msgid "Slide"
+msgstr ""
+
+#: includes/admin/content.php:110 includes/global/content/slideshow.php:223
+msgid "Fade"
+msgstr ""
+
+#: includes/admin/content.php:117 includes/global/content/slideshow.php:227
+msgid "Slideshow Speed (milliseconds)"
+msgstr ""
+
+#: includes/admin/content.php:127 includes/global/content/slideshow.php:229
+msgid "Animation Speed (milliseconds)"
+msgstr ""
+
+#: includes/admin/content.php:137 includes/global/content/slideshow.php:232
+msgid "Start Slideshow Automatically"
+msgstr ""
+
+#: includes/admin/content.php:145 includes/global/content/slideshow.php:233
+msgid "Loop Slideshow"
+msgstr ""
+
+#: includes/admin/content.php:153 includes/global/content/slideshow.php:234
+msgid "Enable Pause On Hover"
+msgstr ""
+
+#: includes/admin/content.php:161 includes/global/content/slideshow.php:235
+msgid "Enable Slideshow Height Resizing"
+msgstr ""
+
+#: includes/admin/content.php:169 includes/global/content/slideshow.php:236
+msgid "Disable Directional Navigation (i.e. arrows)"
+msgstr ""
+
+#: includes/admin/content.php:177 includes/global/content/slideshow.php:237
+msgid "Disable Control Navigation (i.e. dots)"
+msgstr ""
+
+#: includes/admin/content.php:185
+msgid "Disable Captions"
+msgstr ""
+
+#: includes/admin/content.php:219 includes/admin/content.php:379
 msgid "Content"
 msgstr ""
 
-#: includes/admin/content.php:142
+#: includes/admin/content.php:278
 msgid "Content Type"
 msgstr ""
 
-#: includes/admin/content.php:228
+#: includes/admin/content.php:364
 msgid "The content type of this block is currently set to %1$s, which no longer exists. Therefore, this block is currently not visible on your site. Perhaps you deactivated a Blox Addon by mistake, or switched to Blox Lite. Choose a new content type and publish to get this block displaying again."
 msgstr ""
 
-#: includes/admin/content.php:259 includes/admin/license.php:174
+#: includes/admin/content.php:395 includes/admin/license.php:174
 #: includes/admin/license.php:212 includes/admin/license.php:249
 #: includes/admin/license.php:282 includes/admin/license.php:317
-#: includes/admin/license.php:350 includes/admin/metaboxes.php:451
-#: includes/admin/metaboxes.php:493 includes/admin/metaboxes.php:499
-#: includes/admin/position.php:304 includes/admin/updater.php:339
-#: includes/global/location.php:938 includes/global/visibility.php:288
+#: includes/admin/license.php:350 includes/admin/metaboxes.php:456
+#: includes/admin/metaboxes.php:498 includes/admin/metaboxes.php:504
+#: includes/admin/position.php:370 includes/admin/updater.php:369
+#: includes/global/location.php:938 includes/global/visibility.php:301
 msgid "Error"
 msgstr ""
 
 #: includes/admin/license-settings.php:66
 #: includes/admin/license-settings.php:178
-msgid "Licenses & Addons"
+msgid "Licenses & Add-ons"
 msgstr ""
 
 #: includes/admin/license-settings.php:141
@@ -63,15 +123,15 @@ msgstr ""
 msgid "Enter your license key(s) below. Please note that your \"Bundle License\" is only used for license renewals. It is not used for plugin activation and should not be added below. For information on Blox and Addon licensing, check out the %1$sdocumentation%1$s."
 msgstr ""
 
-#: includes/admin/license-settings.php:142 includes/admin/position.php:185
-#: includes/admin/style.php:153 includes/global/content/image.php:146
-#: includes/global/location.php:661 includes/global/settings.php:341
-#: includes/global/settings.php:430
+#: includes/admin/license-settings.php:142 includes/admin/position.php:219
+#: includes/admin/style.php:153 includes/global/content/image.php:145
+#: includes/global/location.php:661 includes/global/settings.php:344
+#: includes/global/settings.php:433
 msgid "Blox Documentation"
 msgstr ""
 
 #: includes/admin/license-settings.php:153
-msgid "Addon Licensing"
+msgid "Add-on Licensing"
 msgstr ""
 
 #: includes/admin/license-settings.php:208
@@ -79,7 +139,7 @@ msgid "Save Licenses"
 msgstr ""
 
 #: includes/admin/license-settings.php:216
-msgid "Addons enhance Blox and make it more versatile. To download and install addons, you must have purchased a %1$sMultisite Bundle%2$s or %1$sDeveloper Bundle%2$s. Head over to %3$syour account %4$s on bloxwp.com to download, or upgrade your license."
+msgid "Add-ons enhance Blox and make it more versatile. To download and install add-ons, you must have purchased a %1$sMultisite Bundle%2$s or %1$sDeveloper Bundle%2$s. Head over to %3$syour account %4$s on bloxwp.com to download, or upgrade your license."
 msgstr ""
 
 #: includes/admin/license-settings.php:216
@@ -94,75 +154,83 @@ msgstr ""
 msgid "Learn More"
 msgstr ""
 
-#: includes/admin/license-settings.php:247
+#: includes/admin/license-settings.php:247 includes/admin/tools.php:392
 msgid "Licenses"
 msgstr ""
 
 #: includes/admin/license-settings.php:248
-msgid "Addons"
+msgid "Add-ons"
 msgstr ""
 
 #: includes/admin/license-settings.php:266
-msgid "Widgets Addon"
+msgid "Shortcodes Add-on"
 msgstr ""
 
 #: includes/admin/license-settings.php:267
-msgid "Allows you to add any widget, and any number of widgets, to your content blocks."
+msgid "Allows you to display your content blocks anywhere that supports a shortcode. "
 msgstr ""
 
 #: includes/admin/license-settings.php:274
-msgid "Sandbox Addon"
+msgid "Widgets Add-on"
 msgstr ""
 
 #: includes/admin/license-settings.php:275
-msgid "Creates a new settings page that acts like your theme's functions.php file. Oh the possibilities..."
+msgid "Allows you to add any widget, and any number of widgets, to your content blocks."
 msgstr ""
 
 #: includes/admin/license-settings.php:282
-msgid "Scheduler Addon"
+msgid "Sandbox Add-on"
 msgstr ""
 
 #: includes/admin/license-settings.php:283
+msgid "Creates a new settings page that acts like your theme's functions.php file. Oh the possibilities..."
+msgstr ""
+
+#: includes/admin/license-settings.php:290
+msgid "Scheduler Add-on"
+msgstr ""
+
+#: includes/admin/license-settings.php:291
 msgid "Schedule blocks to show/hide based on the date and time. Great for promotions!"
 msgstr ""
 
-#: includes/admin/license-settings.php:330
+#: includes/admin/license-settings.php:338
 msgid "Licenses have been saved."
 msgstr ""
 
-#: includes/admin/license-settings.php:351 includes/global/settings.php:594
+#: includes/admin/license-settings.php:359 includes/global/settings.php:669
 msgid "The callback function used for the <strong>%s</strong> setting seems to be missing..."
 msgstr ""
 
-#: includes/admin/license-settings.php:413
+#: includes/admin/license-settings.php:421
 msgid "Check License"
 msgstr ""
 
-#: includes/admin/license-settings.php:414
+#: includes/admin/license-settings.php:422
 msgid "Deactivate License"
 msgstr ""
 
-#: includes/admin/license-settings.php:415
+#: includes/admin/license-settings.php:423
 msgid "This license key is %1$sactive%2$s, and expires on %3$s. Click to deactivate. Once deactivated, you will no longer receive automatic updates for %4$s."
 msgstr ""
 
-#: includes/admin/license-settings.php:420
+#: includes/admin/license-settings.php:428
 msgid "Activate License"
 msgstr ""
 
-#: includes/admin/license-settings.php:421
+#: includes/admin/license-settings.php:429
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/license-settings.php:422
+#: includes/admin/license-settings.php:430
 msgid "This license key is %1$snot activated%2$s, so you are not receiving automatic updates. Click to activate or edit the license key."
 msgstr ""
 
-#: includes/admin/license-settings.php:423
+#: includes/admin/license-settings.php:431
 msgid "Edited license keys need to be resaved before they can be activated."
 msgstr ""
 
-#: includes/admin/license-settings.php:434
+#: includes/admin/license-settings.php:442
 msgid "Enter your license key and save. Once saved, you will be able to activate and begin receiving automatic updates."
 msgstr ""
 
@@ -244,91 +312,98 @@ msgstr ""
 msgid "Use Selected Image"
 msgstr ""
 
-#: includes/admin/metaboxes.php:162 includes/global/content/editor.php:100
+#: includes/admin/metaboxes.php:164 includes/global/content/editor.php:99
 msgid "Add Content"
 msgstr ""
 
-#: includes/admin/metaboxes.php:163 includes/global/content/editor.php:100
+#: includes/admin/metaboxes.php:165 includes/global/content/editor.php:99
 msgid "Edit Content"
 msgstr ""
 
-#: includes/admin/metaboxes.php:164
+#: includes/admin/metaboxes.php:166
 msgid "Hide HTML"
 msgstr ""
 
-#: includes/admin/metaboxes.php:165 includes/global/content/editor.php:100
+#: includes/admin/metaboxes.php:167 includes/global/content/editor.php:99
 msgid "Show HTML"
 msgstr ""
 
-#: includes/admin/metaboxes.php:167
+#: includes/admin/metaboxes.php:169
 msgid "Choose or Upload an Image(s)"
 msgstr ""
 
-#: includes/admin/metaboxes.php:168
+#: includes/admin/metaboxes.php:170
 msgid "Insert Image(s)"
 msgstr ""
 
-#: includes/admin/metaboxes.php:169 includes/global/content/slideshow.php:153
-#: includes/global/content/slideshow.php:162
-msgid "Details"
+#: includes/admin/metaboxes.php:171 includes/global/content/slideshow.php:175
+#: includes/global/content/slideshow.php:389
+msgid "Edit Slide"
 msgstr ""
 
-#: includes/admin/metaboxes.php:170 includes/global/content/slideshow.php:153
-#: includes/global/content/slideshow.php:162
-msgid "Remove"
+#: includes/admin/metaboxes.php:172
+msgid "Toggle Slide Viibility"
 msgstr ""
 
-#: includes/admin/metaboxes.php:171
+#: includes/admin/metaboxes.php:173 includes/global/content/slideshow.php:177
+msgid "Delete Slide"
+msgstr ""
+
+#: includes/admin/metaboxes.php:174 includes/global/content/slideshow.php:178
+msgid "Copy Slide"
+msgstr ""
+
+#: includes/admin/metaboxes.php:175
 msgid "Are you sure you want to remove this image from the slideshow? This action cannot be undone."
 msgstr ""
 
-#: includes/admin/metaboxes.php:200 includes/global/settings.php:301
-#: includes/global/settings.php:457
+#: includes/admin/metaboxes.php:204 includes/global/settings.php:304
+#: includes/global/settings.php:492
 msgid "Local Content Blocks"
 msgstr ""
 
-#: includes/admin/metaboxes.php:216
+#: includes/admin/metaboxes.php:220
 msgid "Block Settings"
 msgstr ""
 
-#: includes/admin/metaboxes.php:395
+#: includes/admin/metaboxes.php:400
 msgid "Add Content Block"
 msgstr ""
 
-#: includes/admin/metaboxes.php:400
+#: includes/admin/metaboxes.php:405
 msgid "Click to add a local content block to this webpage. Local content blocks will only be visible on the page/post/custom post type that they are added to."
 msgstr ""
 
-#: includes/admin/metaboxes.php:439
+#: includes/admin/metaboxes.php:444
 msgid "Please try refreshing the page and try again..."
 msgstr ""
 
-#: includes/admin/metaboxes.php:450
+#: includes/admin/metaboxes.php:455
 msgid " COPY"
 msgstr ""
 
-#: includes/admin/metaboxes.php:474
+#: includes/admin/metaboxes.php:479
 msgid "No Title"
 msgstr ""
 
-#: includes/admin/metaboxes.php:477
+#: includes/admin/metaboxes.php:482
 msgid "Content Block Title"
 msgstr ""
 
-#: includes/admin/metaboxes.php:480 includes/admin/posttype.php:90
+#: includes/admin/metaboxes.php:485 includes/admin/posttype.php:101
 msgid "Duplicate"
 msgstr ""
 
-#: includes/admin/metaboxes.php:481 includes/global/settings.php:967
-#: includes/global/settings.php:1168
+#: includes/admin/metaboxes.php:486 includes/admin/tools.php:567
+#: includes/global/settings.php:1105 includes/global/settings.php:1303
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/metaboxes.php:489
+#: includes/admin/metaboxes.php:494
 msgid "Not Saved"
 msgstr ""
 
-#: includes/admin/metaboxes.php:512
+#: includes/admin/metaboxes.php:517
 msgid "Edit Content Block"
 msgstr ""
 
@@ -360,125 +435,164 @@ msgstr ""
 msgid "Note that you can use Blox and all Addons without activated/valid licenses. However in doing so, you will not receive automatic updates or support. If you are fine with this, then you might as well turn off these notifications in the plugin %5$ssettings%4$s."
 msgstr ""
 
-#: includes/admin/position.php:82 includes/admin/position.php:258
+#: includes/admin/position.php:88 includes/admin/position.php:295
+#: includes/admin/position.php:435
 msgid "Position"
 msgstr ""
 
-#: includes/admin/position.php:147
+#: includes/admin/position.php:153
 msgid "Position Type"
 msgstr ""
 
-#: includes/admin/position.php:150
-msgid "Default"
-msgstr ""
-
-#: includes/admin/position.php:151 includes/global/common.php:111
-msgid "Custom"
-msgstr ""
-
-#: includes/admin/position.php:159
-msgid "The default position is %1$s and the default priority is %2$s. You can change this default positioning by visiting the %3$sDefaults%4$s setting page, or use custom positioning to override this default."
-msgstr ""
-
-#: includes/admin/position.php:165
-msgid "The current saved default hook is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page."
+#: includes/admin/position.php:156 includes/admin/position.php:441
+msgid "Hook"
 msgstr ""
 
 #: includes/admin/position.php:172
+msgid "By default, Blox only allows positioning via action hooks. %1$sBlox Add-ons%2$s enable additional options."
+msgstr ""
+
+#: includes/admin/position.php:181 includes/admin/position.php:463
+msgid "Hook Type"
+msgstr ""
+
+#: includes/admin/position.php:184 includes/admin/position.php:460
+msgid "Default"
+msgstr ""
+
+#: includes/admin/position.php:185 includes/admin/position.php:461
+#: includes/global/common.php:111
+msgid "Custom"
+msgstr ""
+
+#: includes/admin/position.php:193
+msgid "The default position is %1$s and the default priority is %2$s. You can change this default positioning by visiting the %3$sDefaults%4$s setting page, or use custom positioning to override this default."
+msgstr ""
+
+#: includes/admin/position.php:199
+msgid "The current saved default hook is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page."
+msgstr ""
+
+#: includes/admin/position.php:206
 msgid "Position on Page"
 msgstr ""
 
-#: includes/admin/position.php:185
+#: includes/admin/position.php:219
 msgid "Please refer to the %1$sBlox Documentation%2$s for hook reference."
 msgstr ""
 
-#: includes/admin/position.php:191
+#: includes/admin/position.php:225
 msgid "The current saved custom hook, %3$s, is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page."
 msgstr ""
 
-#: includes/admin/position.php:198
+#: includes/admin/position.php:232 includes/admin/position.php:486
 msgid "Priority"
 msgstr ""
 
-#: includes/admin/position.php:202
+#: includes/admin/position.php:236
 msgid "Enter a whole number greater than zero."
 msgstr ""
 
-#: includes/admin/position.php:208
+#: includes/admin/position.php:242
 msgid "Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)"
 msgstr ""
 
-#: includes/admin/posttype.php:111
+#: includes/admin/position.php:332
+msgid "The position format on this block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error."
+msgstr ""
+
+#: includes/admin/position.php:348 includes/admin/position.php:360
+msgid "This block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error."
+msgstr ""
+
+#: includes/admin/position.php:453
+msgid "Format"
+msgstr ""
+
+#: includes/admin/position.php:468
+msgid "The default position is %1$s and the default priority is %2$s. Modify defaults by visiting the %3$sDefaults%4$s setting page."
+msgstr ""
+
+#: includes/admin/posttype.php:122
 msgid "Duplicate Block"
 msgstr ""
 
-#: includes/admin/posttype.php:130
+#: includes/admin/posttype.php:141
 msgid "You didn't choose a block to duplicate...try again."
 msgstr ""
 
-#: includes/admin/posttype.php:143
+#: includes/admin/posttype.php:154
 msgid "Copy"
 msgstr ""
 
-#: includes/admin/posttype.php:163
+#: includes/admin/posttype.php:174
 msgid "Duplication has failed, the original block could not be located."
 msgstr ""
 
-#: includes/admin/posttype.php:180 includes/global/content/image.php:173
-#: includes/global/content/image.php:226
-#: includes/global/content/slideshow.php:346
+#: includes/admin/posttype.php:191
+msgid "Quick edit &#8220;%s&#8221; inline"
+msgstr ""
+
+#: includes/admin/posttype.php:191
+msgid "Quick&nbsp;Edit"
+msgstr ""
+
+#: includes/admin/posttype.php:343 includes/global/content/image.php:172
+#: includes/global/content/image.php:225
+#: includes/global/content/slideshow.php:425
+#: includes/global/content/slideshow.php:468
 msgid "Title"
 msgstr ""
 
-#: includes/admin/posttype.php:185
+#: includes/admin/posttype.php:348
 msgid "Last Modified"
 msgstr ""
 
-#: includes/admin/posttype.php:186
+#: includes/admin/posttype.php:349
 msgid "Date"
 msgstr ""
 
-#: includes/admin/posttype.php:257 includes/admin/posttype.php:260
+#: includes/admin/posttype.php:420 includes/admin/posttype.php:423
 msgid "Global block updated."
 msgstr ""
 
-#: includes/admin/posttype.php:258
+#: includes/admin/posttype.php:421
 msgid "Global block custom field updated."
 msgstr ""
 
-#: includes/admin/posttype.php:259
+#: includes/admin/posttype.php:422
 msgid "Global block custom field deleted."
 msgstr ""
 
-#: includes/admin/posttype.php:261
+#: includes/admin/posttype.php:424
 msgid "Global block restored to revision from %s."
 msgstr ""
 
-#: includes/admin/posttype.php:262
+#: includes/admin/posttype.php:425
 msgid "Global block published."
 msgstr ""
 
-#: includes/admin/posttype.php:263
+#: includes/admin/posttype.php:426
 msgid "Global block saved."
 msgstr ""
 
-#: includes/admin/posttype.php:264
+#: includes/admin/posttype.php:427
 msgid "Global block submitted."
 msgstr ""
 
-#: includes/admin/posttype.php:265
+#: includes/admin/posttype.php:428
 msgid "Global block scheduled for: <strong>%1$s</strong>."
 msgstr ""
 
-#: includes/admin/posttype.php:265
+#: includes/admin/posttype.php:428
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: includes/admin/posttype.php:266
+#: includes/admin/posttype.php:429
 msgid "Global block draft updated."
 msgstr ""
 
-#: includes/admin/posttype.php:320
+#: includes/admin/posttype.php:483 includes/admin/tools.php:376
 msgid "Local Blocks"
 msgstr ""
 
@@ -506,7 +620,7 @@ msgstr ""
 msgid "Otherwise the custom CSS could interfere with other content blocks. For reference on content block frontend markup, please refer to the %1$sBlox Documentation%2$s."
 msgstr ""
 
-#: includes/admin/style.php:158 includes/global/settings.php:438
+#: includes/admin/style.php:158 includes/global/settings.php:441
 msgid "Disable Default CSS"
 msgstr ""
 
@@ -530,15 +644,237 @@ msgstr ""
 msgid "Many Genesis child themes use this selector and enabling it can assist with block styling."
 msgstr ""
 
-#: includes/admin/updater.php:191
-msgid "There is a new version of %1$s available. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+#: includes/admin/tools.php:83 includes/admin/tools.php:100
+msgid "Blox Tools"
 msgstr ""
 
-#: includes/admin/updater.php:198
-msgid "There is a new version of %1$s available. <a target=\"_blank\" class=\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s\">update now</a>."
+#: includes/admin/tools.php:83
+msgid "Tools"
 msgstr ""
 
-#: includes/admin/updater.php:339
+#: includes/admin/tools.php:150
+msgid "System Info"
+msgstr ""
+
+#: includes/admin/tools.php:182
+msgid "Copy the above system information and include it with your support request."
+msgstr ""
+
+#: includes/admin/tools.php:188
+msgid "Copy System Info"
+msgstr ""
+
+#: includes/admin/tools.php:192
+msgid "Download System Info"
+msgstr ""
+
+#: includes/admin/tools.php:270 includes/admin/tools.php:368
+#: includes/admin/tools.php:482 includes/admin/tools.php:504
+#: includes/admin/tools.php:533
+msgid "Version"
+msgstr ""
+
+#: includes/admin/tools.php:296
+msgid "WordPress Environment"
+msgstr ""
+
+#: includes/admin/tools.php:299
+msgid "Site URL"
+msgstr ""
+
+#: includes/admin/tools.php:303
+msgid "Home URL"
+msgstr ""
+
+#: includes/admin/tools.php:307
+msgid "Multisite Enabled"
+msgstr ""
+
+#: includes/admin/tools.php:308 includes/admin/tools.php:348
+#: includes/admin/tools.php:373 includes/admin/tools.php:377
+msgid "Enabled"
+msgstr ""
+
+#: includes/admin/tools.php:311
+msgid "WordPress Version"
+msgstr ""
+
+#: includes/admin/tools.php:315
+msgid "Genesis Version"
+msgstr ""
+
+#: includes/admin/tools.php:319
+msgid "Active Child Theme"
+msgstr ""
+
+#: includes/admin/tools.php:320
+msgid "No active Genesis child theme"
+msgstr ""
+
+#: includes/admin/tools.php:323
+msgid "Language"
+msgstr ""
+
+#: includes/admin/tools.php:327
+msgid "Front Page Displays"
+msgstr ""
+
+#: includes/admin/tools.php:328
+msgid "A static page"
+msgstr ""
+
+#: includes/admin/tools.php:328
+msgid "Your latest posts"
+msgstr ""
+
+#: includes/admin/tools.php:331 includes/global/location.php:891
+msgid "Front Page"
+msgstr ""
+
+#: includes/admin/tools.php:335 includes/global/location.php:892
+msgid "Posts Page"
+msgstr ""
+
+#: includes/admin/tools.php:339
+msgid "Permalink Structure"
+msgstr ""
+
+#: includes/admin/tools.php:343
+msgid "ABSPATH"
+msgstr ""
+
+#: includes/admin/tools.php:347
+msgid "Debug"
+msgstr ""
+
+#: includes/admin/tools.php:351
+msgid "Memory Limit"
+msgstr ""
+
+#: includes/admin/tools.php:361 includes/global/settings.php:114
+#: includes/global/settings.php:131
+msgid "Blox Settings"
+msgstr ""
+
+#: includes/admin/tools.php:364
+msgid "Type"
+msgstr ""
+
+#: includes/admin/tools.php:372
+msgid "Global Blocks"
+msgstr ""
+
+#: includes/admin/tools.php:380
+msgid "Local Blocks Enabled On"
+msgstr ""
+
+#: includes/admin/tools.php:384
+msgid "Available Post Types"
+msgstr ""
+
+#: includes/admin/tools.php:388
+msgid "Active Addons"
+msgstr ""
+
+#: includes/admin/tools.php:399
+msgid "Plugins"
+msgstr ""
+
+#: includes/admin/tools.php:403
+msgid "Server Environment"
+msgstr ""
+
+#: includes/admin/tools.php:406
+msgid "Server Info"
+msgstr ""
+
+#: includes/admin/tools.php:410
+msgid "PHP Version"
+msgstr ""
+
+#: includes/admin/tools.php:414
+msgid "MySQL Version"
+msgstr ""
+
+#: includes/admin/tools.php:418
+msgid "Post Max Size"
+msgstr ""
+
+#: includes/admin/tools.php:422
+msgid "Max Upload Size"
+msgstr ""
+
+#: includes/admin/tools.php:426
+msgid "Time Limit"
+msgstr ""
+
+#: includes/admin/tools.php:430
+msgid "Max Input Vars"
+msgstr ""
+
+#: includes/admin/tools.php:434
+msgid "cURL"
+msgstr ""
+
+#: includes/admin/tools.php:438
+msgid "fsockopen"
+msgstr ""
+
+#: includes/admin/tools.php:442
+msgid "SoapClient"
+msgstr ""
+
+#: includes/admin/tools.php:446
+msgid "SUHOSIN"
+msgstr ""
+
+#: includes/admin/tools.php:465
+msgid "Must-Use Plugins"
+msgstr ""
+
+#: includes/admin/tools.php:481 includes/admin/tools.php:503
+#: includes/admin/tools.php:529
+msgid "update available"
+msgstr ""
+
+#: includes/admin/tools.php:487
+msgid "Active Plugins"
+msgstr ""
+
+#: includes/admin/tools.php:509
+msgid "Inactive Plugins"
+msgstr ""
+
+#: includes/admin/tools.php:538
+msgid "Network Active Plugins"
+msgstr ""
+
+#: includes/admin/tools.php:565 includes/global/settings.php:1301
+msgid "Are you sure you want to reset these settings? This action cannot be undone."
+msgstr ""
+
+#: includes/admin/tools.php:566 includes/global/settings.php:1302
+msgid "Enter a hook name"
+msgstr ""
+
+#: includes/admin/tools.php:568 includes/global/settings.php:1304
+msgid "Are you sure you want to delete this hook? This action cannot be undone."
+msgstr ""
+
+#: includes/admin/tools.php:569 includes/global/settings.php:1111
+#: includes/global/settings.php:1305
+msgid "Add a custom hook..."
+msgstr ""
+
+#: includes/admin/updater.php:201
+msgid "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
+msgstr ""
+
+#: includes/admin/updater.php:209
+msgid "There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s."
+msgstr ""
+
+#: includes/admin/updater.php:369
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
@@ -774,40 +1110,33 @@ msgstr ""
 msgid "This hook executes near the </body> tag of the document source."
 msgstr ""
 
-#: includes/global/content/editor.php:74 includes/global/content/editor.php:97
+#: includes/global/content/editor.php:74 includes/global/content/editor.php:96
 msgid "Editor Content"
 msgstr ""
 
-#: includes/global/content/editor.php:95
-msgid "Editor Content Settings"
-msgstr ""
-
-#: includes/global/content/editor.php:102
+#: includes/global/content/editor.php:101
 msgid "No content yet... Use button above, or type HTML content in manually."
 msgstr ""
 
-#: includes/global/content/editor.php:104
+#: includes/global/content/editor.php:103
 msgid "The Editor Content option will not accept any scripts, iframes, unsafe HTML, or PHP. Use the Raw Content option for this type of content."
 msgstr ""
 
-#: includes/global/content/editor.php:120
+#: includes/global/content/editor.php:119
 #: includes/global/content/editor.php:194
 msgid "The editor will not accept any scripts, iframes, unsafe HTML, or PHP. Use the Raw Content option for this type of content."
 msgstr ""
 
-#: includes/global/content/editor.php:164
-#: includes/global/content/editor.php:168
+#: includes/global/content/editor.php:167
 msgid "Content Editor"
 msgstr ""
 
-#: includes/global/content/editor.php:169
-#: includes/global/content/editor.php:171
-#: includes/global/content/slideshow.php:309
-#: includes/global/content/slideshow.php:311
+#: includes/global/content/editor.php:170 includes/global/content/raw.php:265
+#: includes/global/content/slideshow.php:402
 msgid "Close"
 msgstr ""
 
-#: includes/global/content/editor.php:203
+#: includes/global/content/editor.php:203 includes/global/content/raw.php:302
 msgid "Apply Content"
 msgstr ""
 
@@ -815,321 +1144,320 @@ msgstr ""
 msgid "Static Image"
 msgstr ""
 
-#: includes/global/content/image.php:107
-msgid "Static Image Settings"
-msgstr ""
-
-#: includes/global/content/image.php:109
+#: includes/global/content/image.php:108
 msgid "Image Type"
 msgstr ""
 
-#: includes/global/content/image.php:112
+#: includes/global/content/image.php:111
 msgid "Featured Image"
 msgstr ""
 
-#: includes/global/content/image.php:113 includes/global/content/image.php:156
+#: includes/global/content/image.php:112 includes/global/content/image.php:155
 msgid "Custom Image"
 msgstr ""
 
-#: includes/global/content/image.php:116
+#: includes/global/content/image.php:115
 msgid "Featured or Custom Image"
 msgstr ""
 
-#: includes/global/content/image.php:125
+#: includes/global/content/image.php:124
 msgid "Choose between the page's featured image or select a custom image from the media library. Otherwise, select %1$sFeatured or Custom Image%2$s. This setting will display a custom image in place of the featured image if the page does not support or have a featured image."
 msgstr ""
 
-#: includes/global/content/image.php:128
+#: includes/global/content/image.php:127
 msgid "Choose between this page's featured image or select a custom image from the media library."
 msgstr ""
 
-#: includes/global/content/image.php:130
+#: includes/global/content/image.php:129
 msgid "This post type does not support featured images, so select a custom image from the media library instead."
 msgstr ""
 
-#: includes/global/content/image.php:140
+#: includes/global/content/image.php:139
 msgid "Check to only display featured images on singular pages"
 msgstr ""
 
-#: includes/global/content/image.php:146
+#: includes/global/content/image.php:145
 msgid "Only singular pages can have featured images. Singular pages include posts, pages, and custom post types. When the image type is set to %1$sFeatured Image%2$s or %1$sFeatured or Custom Image%2$s, some unexpected results may occur if the block is placed on a non-singular page such as an archive page. That said, if the block is placed within the loop on archive pages, it can effectively pull featured images if this option is left unchecked. So you the choice is yours. For more information, see the %3$sBlox Documentation%4$s."
 msgstr ""
 
-#: includes/global/content/image.php:161
+#: includes/global/content/image.php:160
 msgid "Select an Image"
 msgstr ""
 
-#: includes/global/content/image.php:162
+#: includes/global/content/image.php:161
 msgid "Remove Image"
 msgstr ""
 
-#: includes/global/content/image.php:177
+#: includes/global/content/image.php:176
 msgid "Alt"
 msgstr ""
 
-#: includes/global/content/image.php:181 includes/global/content/image.php:238
+#: includes/global/content/image.php:180 includes/global/content/image.php:237
 msgid "Class"
 msgstr ""
 
-#: includes/global/content/image.php:182 includes/global/content/image.php:239
-#: includes/global/settings.php:413 includes/global/settings.php:423
+#: includes/global/content/image.php:181 includes/global/content/image.php:238
+#: includes/global/settings.php:416 includes/global/settings.php:426
 msgid "e.g. class-one class-two"
 msgstr ""
 
-#: includes/global/content/image.php:184
+#: includes/global/content/image.php:183
 msgid "Enter a space separated list of custom CSS classes to add to the image."
 msgstr ""
 
-#: includes/global/content/image.php:192
+#: includes/global/content/image.php:191
 msgid "Image Size"
 msgstr ""
 
-#: includes/global/content/image.php:209
+#: includes/global/content/image.php:208
 msgid "If you are using a %1$sCustom Image%2$s, note that the size selection will not be reflected in the image preview above."
 msgstr ""
 
-#: includes/global/content/image.php:214
-#: includes/global/content/slideshow.php:334
+#: includes/global/content/image.php:213
+#: includes/global/content/slideshow.php:457
 msgid "Image Link"
 msgstr ""
 
-#: includes/global/content/image.php:218 includes/global/content/image.php:261
-#: includes/global/content/slideshow.php:338
+#: includes/global/content/image.php:217 includes/global/content/image.php:260
+#: includes/global/content/slideshow.php:460
 msgid "Check to enable"
 msgstr ""
 
-#: includes/global/content/image.php:222
-#: includes/global/content/slideshow.php:342
+#: includes/global/content/image.php:221
+#: includes/global/content/slideshow.php:464
 msgid "URL"
 msgstr ""
 
-#: includes/global/content/image.php:231
-#: includes/global/content/slideshow.php:351
+#: includes/global/content/image.php:230
+#: includes/global/content/slideshow.php:473
 msgid "Open link in new window/tab"
 msgstr ""
 
-#: includes/global/content/image.php:234
+#: includes/global/content/image.php:233
 msgid "Rel"
 msgstr ""
 
-#: includes/global/content/image.php:241
+#: includes/global/content/image.php:240
 msgid "Enter a space separated list of custom CSS classes to add to the image link."
 msgstr ""
 
-#: includes/global/content/image.php:248
+#: includes/global/content/image.php:247
 msgid "Image Caption"
 msgstr ""
 
-#: includes/global/content/image.php:252
+#: includes/global/content/image.php:251
 msgid "Only basic HTML and shortcodes are accepted. Leave blank for no caption."
 msgstr ""
 
-#: includes/global/content/image.php:257
+#: includes/global/content/image.php:256
 msgid "Set As Background"
 msgstr ""
 
-#: includes/global/content/image.php:267
+#: includes/global/content/image.php:266
 msgid "Set image as a background image. When this setting is enabled, the CSS class %1$sblox-image-background%2$s is added to the content block. Additional custom CSS may be required to attain your desired effect."
 msgstr ""
 
-#: includes/global/content/raw.php:71 includes/global/content/raw.php:96
+#: includes/global/content/raw.php:115 includes/global/content/raw.php:139
+#: includes/global/content/raw.php:262
 msgid "Raw Content"
 msgstr ""
 
-#: includes/global/content/raw.php:94
-msgid "Raw Content Settings"
+#: includes/global/content/raw.php:143
+msgid "Fullscreen"
 msgstr ""
 
-#: includes/global/content/raw.php:100
+#: includes/global/content/raw.php:149
+msgid "Enter your content here..."
+msgstr ""
+
+#: includes/global/content/raw.php:151 includes/global/content/raw.php:281
 msgid "By default, the Raw Content box will accept practically anything except PHP. When PHP is enabled, make sure to use correct syntax and wrap all PHP code in "
 msgstr ""
 
-#: includes/global/content/raw.php:100
+#: includes/global/content/raw.php:151 includes/global/content/raw.php:281
 msgid " and "
 msgstr ""
 
-#: includes/global/content/raw.php:105
+#: includes/global/content/raw.php:156
+msgid "Raw Settings"
+msgstr ""
+
+#: includes/global/content/raw.php:160
 msgid "Check to enable shortcodes"
 msgstr ""
 
-#: includes/global/content/raw.php:109
+#: includes/global/content/raw.php:164
 msgid "Check to enable PHP code"
 msgstr ""
 
-#: includes/global/content/raw.php:113
+#: includes/global/content/raw.php:168
 msgid "Check to disable all markup"
 msgstr ""
 
-#: includes/global/content/raw.php:119
+#: includes/global/content/raw.php:174
 msgid "By default, Raw Content is wrapped in the following markup:"
 msgstr ""
 
-#: includes/global/content/raw.php:119
+#: includes/global/content/raw.php:174
 msgid "Your Raw Content "
 msgstr ""
 
-#: includes/global/content/raw.php:119
+#: includes/global/content/raw.php:174
 msgid "This setting removes all wrapper divs. Note that by removing all markup, most of the Style settings will no longer apply."
 msgstr ""
 
-#: includes/global/content/slideshow.php:93
+#: includes/global/content/slideshow.php:104
 msgid "Slideshow"
 msgstr ""
 
-#: includes/global/content/slideshow.php:114
-msgid "Slideshow Settings"
-msgstr ""
-
-#: includes/global/content/slideshow.php:116
+#: includes/global/content/slideshow.php:126
 msgid "Slideshow Type"
 msgstr ""
 
-#: includes/global/content/slideshow.php:126
+#: includes/global/content/slideshow.php:136
 msgid "Builtin Slides"
 msgstr ""
 
-#: includes/global/content/slideshow.php:128
+#: includes/global/content/slideshow.php:138
 msgid "Select Image(s)"
 msgstr ""
 
-#: includes/global/content/slideshow.php:171
-msgid "Builtin Settings"
-msgstr ""
-
-#: includes/global/content/slideshow.php:175
-msgid "Slide"
-msgstr ""
-
 #: includes/global/content/slideshow.php:176
-msgid "Fade"
+msgid "Toggle Slide Visibility"
 msgstr ""
 
-#: includes/global/content/slideshow.php:178
-msgid "Slideshow Animation"
+#: includes/global/content/slideshow.php:218
+msgid "Control Settings"
 msgstr ""
 
-#: includes/global/content/slideshow.php:180
-msgid "Slideshow Speed (milliseconds)"
-msgstr ""
-
-#: includes/global/content/slideshow.php:182
-msgid "Animation Speed (milliseconds)"
-msgstr ""
-
-#: includes/global/content/slideshow.php:185
-msgid "Start Slideshow Automatically"
-msgstr ""
-
-#: includes/global/content/slideshow.php:186
-msgid "Loop Slideshow"
-msgstr ""
-
-#: includes/global/content/slideshow.php:187
-msgid "Enable Pause On Hover"
-msgstr ""
-
-#: includes/global/content/slideshow.php:188
-msgid "Enable Slideshow Height Resizing"
-msgstr ""
-
-#: includes/global/content/slideshow.php:189
-msgid "Disable Directional Navigation (i.e. arrows)"
-msgstr ""
-
-#: includes/global/content/slideshow.php:190
-msgid "Disable Control Navigation (i.e. dots)"
-msgstr ""
-
-#: includes/global/content/slideshow.php:191
+#: includes/global/content/slideshow.php:238
 msgid "Disable Captions "
 msgstr ""
 
-#: includes/global/content/slideshow.php:213
+#: includes/global/content/slideshow.php:243
+msgid "Display Settings"
+msgstr ""
+
+#: includes/global/content/slideshow.php:247
+msgid "Set images as background images"
+msgstr ""
+
+#: includes/global/content/slideshow.php:253
+msgid "When this setting is enabled, images are displayed as a background images in each slide. Additional custom CSS may be required to attain your desired effect. For additional information on how effectively to use this setting, view the builtin slideshow %sdocumentation%s."
+msgstr ""
+
+#: includes/global/content/slideshow.php:275
 msgid "Slideshow Shortcode"
 msgstr ""
 
-#: includes/global/content/slideshow.php:217
+#: includes/global/content/slideshow.php:279
 msgid "This serves as an alternate method for adding a slideshow to a content block. If the slideshow plugin you are using includes a shortcode, simply paste it above."
 msgstr ""
 
-#: includes/global/content/slideshow.php:304
-msgid "Image Details"
+#: includes/global/content/slideshow.php:392
+msgid "Previous"
 msgstr ""
 
-#: includes/global/content/slideshow.php:308
-msgid "Slide Details"
+#: includes/global/content/slideshow.php:397
+msgid "Next"
 msgstr ""
 
-#: includes/global/content/slideshow.php:322
-msgid "Image Title"
+#: includes/global/content/slideshow.php:417
+msgid "Select New Image"
 msgstr ""
 
-#: includes/global/content/slideshow.php:328
-msgid "Image Alt Text"
+#: includes/global/content/slideshow.php:422
+msgid "Image Settings"
 msgstr ""
 
-#: includes/global/content/slideshow.php:357
+#: includes/global/content/slideshow.php:431
+msgid "Alt Text"
+msgstr ""
+
+#: includes/global/content/slideshow.php:437
+msgid "Size"
+msgstr ""
+
+#: includes/global/content/slideshow.php:451
+msgid "Note the selected image size is not reflected in the preview."
+msgstr ""
+
+#: includes/global/content/slideshow.php:477
 msgid "Slide Caption"
 msgstr ""
 
-#: includes/global/content/slideshow.php:361
+#: includes/global/content/slideshow.php:480
 msgid "Only basic HTML is accepted."
 msgstr ""
 
-#: includes/global/content/slideshow.php:366
-msgid "Slide CSS Classes"
+#: includes/global/content/slideshow.php:483 includes/global/visibility.php:94
+#: includes/global/visibility.php:252 includes/global/visibility.php:369
+msgid "Visibility"
 msgstr ""
 
-#: includes/global/content/slideshow.php:370
+#: includes/global/content/slideshow.php:486
+msgid "Check to disable this slide"
+msgstr ""
+
+#: includes/global/content/slideshow.php:489
+msgid "Disabled slides will not show up in the slideshow. Simply uncheck to begin displaying again."
+msgstr ""
+
+#: includes/global/content/slideshow.php:492
+msgid "Slide Classes"
+msgstr ""
+
+#: includes/global/content/slideshow.php:495
 msgid "Enter a space separated list of custom CSS classes to add to this image slide."
 msgstr ""
 
-#: includes/global/content/slideshow.php:381
+#: includes/global/content/slideshow.php:509
+msgid "Settings successfully applied. Publish/Update to fully save your changes."
+msgstr ""
+
+#: includes/global/content/slideshow.php:513
 msgid "Apply Settings"
 msgstr ""
 
-#: includes/global/content/slideshow.php:487
+#: includes/global/content/slideshow.php:657
+#: includes/global/content/slideshow.php:762
 msgid "You haven't added any slides to the slideshow!"
 msgstr ""
 
-#: includes/global/content/slideshow.php:523
-msgid "Builtin Slideshow"
-msgstr ""
-
-#: includes/global/content/slideshow.php:527
-#: includes/global/content/slideshow.php:576
+#: includes/global/content/slideshow.php:817
+#: includes/global/content/slideshow.php:866
 msgid "Soliloquy Slider"
 msgstr ""
 
-#: includes/global/content/slideshow.php:532
-#: includes/global/content/slideshow.php:643
+#: includes/global/content/slideshow.php:822
+#: includes/global/content/slideshow.php:933
 msgid "Revolution Slider"
 msgstr ""
 
-#: includes/global/content/slideshow.php:537
-#: includes/global/content/slideshow.php:708
+#: includes/global/content/slideshow.php:827
+#: includes/global/content/slideshow.php:998
 msgid "Meta Slider"
 msgstr ""
 
-#: includes/global/content/slideshow.php:544
+#: includes/global/content/slideshow.php:834
 msgid "Shortcode"
 msgstr ""
 
-#: includes/global/content/slideshow.php:579
-#: includes/global/content/slideshow.php:646
-#: includes/global/content/slideshow.php:711
+#: includes/global/content/slideshow.php:869
+#: includes/global/content/slideshow.php:936
+#: includes/global/content/slideshow.php:1001
 msgid "Display None"
 msgstr ""
 
-#: includes/global/content/slideshow.php:586
+#: includes/global/content/slideshow.php:876
 msgid "You have not created any Soliloquy sliders yet."
 msgstr ""
 
-#: includes/global/content/slideshow.php:653
+#: includes/global/content/slideshow.php:943
 msgid "You have not created any Revolution sliders yet."
 msgstr ""
 
-#: includes/global/content/slideshow.php:718
+#: includes/global/content/slideshow.php:1008
 msgid "You have not created any Meta sliders yet."
 msgstr ""
 
@@ -1161,8 +1489,7 @@ msgstr ""
 #: includes/global/location.php:320 includes/global/location.php:355
 #: includes/global/location.php:395 includes/global/location.php:441
 #: includes/global/location.php:577 includes/global/location.php:701
-#: includes/global/location.php:774 includes/global/settings.php:893
-#: includes/global/settings.php:979 includes/global/visibility.php:195
+#: includes/global/location.php:774 includes/global/visibility.php:199
 msgid "Select All"
 msgstr ""
 
@@ -1170,8 +1497,7 @@ msgstr ""
 #: includes/global/location.php:320 includes/global/location.php:355
 #: includes/global/location.php:395 includes/global/location.php:441
 #: includes/global/location.php:577 includes/global/location.php:701
-#: includes/global/location.php:774 includes/global/settings.php:893
-#: includes/global/settings.php:979 includes/global/visibility.php:195
+#: includes/global/location.php:774 includes/global/visibility.php:199
 msgid "Unselect All"
 msgstr ""
 
@@ -1339,14 +1665,6 @@ msgstr ""
 msgid "There does not appear to be any taxonomies associated with this post type yet."
 msgstr ""
 
-#: includes/global/location.php:891
-msgid "Front Page"
-msgstr ""
-
-#: includes/global/location.php:892
-msgid "Posts Page"
-msgstr ""
-
 #: includes/global/location.php:895
 msgid "Search Pages"
 msgstr ""
@@ -1355,8 +1673,8 @@ msgstr ""
 msgid "404 Error Page"
 msgstr ""
 
-#: includes/global/location.php:929 includes/global/visibility.php:271
-#: includes/global/visibility.php:352
+#: includes/global/location.php:929 includes/global/visibility.php:284
+#: includes/global/visibility.php:420
 msgid "All"
 msgstr ""
 
@@ -1368,7 +1686,7 @@ msgstr ""
 msgid "Hide On Selected"
 msgstr ""
 
-#: includes/global/posttype.php:59 includes/global/settings.php:275
+#: includes/global/posttype.php:59 includes/global/settings.php:278
 msgid "Global Content Blocks"
 msgstr ""
 
@@ -1412,363 +1730,395 @@ msgstr ""
 msgid "All Global Blocks"
 msgstr ""
 
-#: includes/global/settings.php:113 includes/global/settings.php:130
-msgid "Blox Settings"
-msgstr ""
-
-#: includes/global/settings.php:161
+#: includes/global/settings.php:162
 msgid "Save %1$s Settings"
 msgstr ""
 
-#: includes/global/settings.php:162
+#: includes/global/settings.php:163
 msgid "Reset %1$s Settings"
 msgstr ""
 
-#: includes/global/settings.php:186
+#: includes/global/settings.php:187
 msgid "General"
 msgstr ""
 
-#: includes/global/settings.php:187
+#: includes/global/settings.php:188
 msgid "Defaults"
 msgstr ""
 
-#: includes/global/settings.php:188
+#: includes/global/settings.php:189
 msgid "Hooks"
 msgstr ""
 
-#: includes/global/settings.php:189
+#: includes/global/settings.php:190
 msgid "Styles"
 msgstr ""
 
-#: includes/global/settings.php:190
+#: includes/global/settings.php:191
 msgid "Misc"
 msgstr ""
 
-#: includes/global/settings.php:281
+#: includes/global/settings.php:284
 msgid "Enable Global Blocks"
 msgstr ""
 
-#: includes/global/settings.php:282 includes/global/settings.php:308
-msgid "Globally enable local content blocks"
+#: includes/global/settings.php:285
+msgid "Globally enable global content blocks"
 msgstr ""
 
-#: includes/global/settings.php:283
+#: includes/global/settings.php:286
 msgid "Turning off this setting will disable all global content blocks."
 msgstr ""
 
-#: includes/global/settings.php:289
+#: includes/global/settings.php:292
 msgid "Global Permissions"
 msgstr ""
 
-#: includes/global/settings.php:290
+#: includes/global/settings.php:293
 msgid "Determines what type of user can manage global content blocks."
 msgstr ""
 
-#: includes/global/settings.php:293 includes/global/settings.php:326
+#: includes/global/settings.php:296 includes/global/settings.php:329
 msgid "Admins Only"
 msgstr ""
 
-#: includes/global/settings.php:294 includes/global/settings.php:327
+#: includes/global/settings.php:297 includes/global/settings.php:330
 msgid "Admins and Editors"
 msgstr ""
 
-#: includes/global/settings.php:295 includes/global/settings.php:328
+#: includes/global/settings.php:298 includes/global/settings.php:331
 msgid "Admins, Editors, and Authors"
 msgstr ""
 
-#: includes/global/settings.php:307
+#: includes/global/settings.php:310
 msgid "Enable Local Blocks"
 msgstr ""
 
-#: includes/global/settings.php:309
+#: includes/global/settings.php:311
+msgid "Globally enable local content blocks"
+msgstr ""
+
+#: includes/global/settings.php:312
 msgid "Turning off this setting will disable local blocks on all post types."
 msgstr ""
 
-#: includes/global/settings.php:315
+#: includes/global/settings.php:318
 msgid "Enable Local Blocks On..."
 msgstr ""
 
-#: includes/global/settings.php:316
+#: includes/global/settings.php:319
 msgid "Enable local blocks on specific post types. Note that only \"public\" custom post types will be displayed above. Disabling local blocks on a specific post type will not remove any meta data."
 msgstr ""
 
-#: includes/global/settings.php:322
+#: includes/global/settings.php:325
 msgid "Local Permissions"
 msgstr ""
 
-#: includes/global/settings.php:323
+#: includes/global/settings.php:326
 msgid "Determines what type of user can manage local content blocks."
 msgstr ""
 
-#: includes/global/settings.php:340
-msgid "Default Block Position"
+#: includes/global/settings.php:343
+msgid "Position Defaults"
 msgstr ""
 
-#: includes/global/settings.php:341
+#: includes/global/settings.php:344
 msgid "Please refer to the %1$sBlox Documentation%2$s for hook reference. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)"
 msgstr ""
 
-#: includes/global/settings.php:346
+#: includes/global/settings.php:349
 msgid "Global Block Position"
 msgstr ""
 
-#: includes/global/settings.php:347
+#: includes/global/settings.php:350
 msgid "Set the default block position for all global content blocks."
 msgstr ""
 
-#: includes/global/settings.php:353
+#: includes/global/settings.php:356
 msgid "Global Block Priority"
 msgstr ""
 
-#: includes/global/settings.php:354
+#: includes/global/settings.php:357
 msgid "Set the default block priority for all global content blocks"
 msgstr ""
 
-#: includes/global/settings.php:362
+#: includes/global/settings.php:365
 msgid "Local Block Position"
 msgstr ""
 
-#: includes/global/settings.php:363
+#: includes/global/settings.php:366
 msgid "Set the default block position for all local content blocks."
 msgstr ""
 
-#: includes/global/settings.php:369
+#: includes/global/settings.php:372
 msgid "Local Block Priority"
 msgstr ""
 
-#: includes/global/settings.php:370
+#: includes/global/settings.php:373
 msgid "Set the default block priority for all local content blocks"
 msgstr ""
 
-#: includes/global/settings.php:383
+#: includes/global/settings.php:386
 msgid "Hook Control"
 msgstr ""
 
-#: includes/global/settings.php:384
+#: includes/global/settings.php:387
 msgid "By default, Blox allows you to choose from over 50 Genesis hooks. Here you can pick and choose the ones you want to use, rename the hooks, or even add your own custom hooks to use with a third-party Genesis theme or plugin."
 msgstr ""
 
-#: includes/global/settings.php:389
+#: includes/global/settings.php:392
 msgid "Genesis Hooks"
 msgstr ""
 
-#: includes/global/settings.php:396 includes/global/settings.php:938
+#: includes/global/settings.php:399 includes/global/settings.php:1076
 msgid "Custom Hooks"
 msgstr ""
 
-#: includes/global/settings.php:409
+#: includes/global/settings.php:412
 msgid "Global Custom Classes"
 msgstr ""
 
-#: includes/global/settings.php:410
+#: includes/global/settings.php:413
 msgid "Enter a space separated list of custom CSS classes to add to all global blocks."
 msgstr ""
 
-#: includes/global/settings.php:419
+#: includes/global/settings.php:422
 msgid "Local Custom Classes"
 msgstr ""
 
-#: includes/global/settings.php:420
+#: includes/global/settings.php:423
 msgid "Enter a space separated list of custom CSS classes to add to all local blocks."
 msgstr ""
 
-#: includes/global/settings.php:429
+#: includes/global/settings.php:432
 msgid "Custom CSS"
 msgstr ""
 
-#: includes/global/settings.php:430
+#: includes/global/settings.php:433
 msgid "Add custom CSS that can affect all content blocks. For reference on content block frontend markup, please refer to the %1$sBlox Documentation%2$s."
 msgstr ""
 
-#: includes/global/settings.php:439
+#: includes/global/settings.php:442
 msgid "Globally disable all default styles"
 msgstr ""
 
-#: includes/global/settings.php:440
+#: includes/global/settings.php:443
 msgid "Blox includes default CSS to provide minimal block styling. If this option is left un-checked, default CSS can be disabled on each individual content block as needed."
 msgstr ""
 
-#: includes/global/settings.php:452
-msgid "Local Metabox Title"
+#: includes/global/settings.php:455
+msgid "Syntax Highlighting"
 msgstr ""
 
-#: includes/global/settings.php:453
-msgid "This is the metabox title that is displayed on pages/posts/custom post types when local blocks are activated."
-msgstr ""
-
-#: includes/global/settings.php:456
-msgid "e.g. Local Content Blocks"
+#: includes/global/settings.php:461
+msgid "Disable Highlighting"
 msgstr ""
 
 #: includes/global/settings.php:462
-msgid "Remove Data on Uninstall"
+msgid "Disable all syntax highlighting"
 msgstr ""
 
 #: includes/global/settings.php:463
+msgid "Checking this setting will disable syntax highlighting in the raw content fullscreen modal."
+msgstr ""
+
+#: includes/global/settings.php:469
+msgid "Visual Theme"
+msgstr ""
+
+#: includes/global/settings.php:470
+msgid "Choose the visual theme for when syntax highlighting is enabled."
+msgstr ""
+
+#: includes/global/settings.php:473
+msgid "Default (Light)"
+msgstr ""
+
+#: includes/global/settings.php:474
+msgid "Monokai (Dark)"
+msgstr ""
+
+#: includes/global/settings.php:475
+msgid "Spacegray (Dark)"
+msgstr ""
+
+#: includes/global/settings.php:481
+msgid "Additional Settings"
+msgstr ""
+
+#: includes/global/settings.php:487
+msgid "Local Metabox Title"
+msgstr ""
+
+#: includes/global/settings.php:488
+msgid "This is the metabox title that is displayed on pages/posts/custom post types when local blocks are activated."
+msgstr ""
+
+#: includes/global/settings.php:491
+msgid "e.g. Local Content Blocks"
+msgstr ""
+
+#: includes/global/settings.php:497
+msgid "Remove Data on Uninstall"
+msgstr ""
+
+#: includes/global/settings.php:498
 msgid "Check to completely remove all plugin data when Blox is deleted"
 msgstr ""
 
-#: includes/global/settings.php:535
+#: includes/global/settings.php:610
 msgid "Settings updated."
 msgstr ""
 
-#: includes/global/settings.php:568
+#: includes/global/settings.php:643
 msgid "Settings have been reset."
 msgstr ""
 
-#: includes/global/settings.php:770
+#: includes/global/settings.php:908
 msgid "The current saved hook is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page."
 msgstr ""
 
-#: includes/global/settings.php:794
+#: includes/global/settings.php:932
 msgid "Pages"
 msgstr ""
 
-#: includes/global/settings.php:798
+#: includes/global/settings.php:936
 msgid "Posts"
 msgstr ""
 
-#: includes/global/settings.php:813
+#: includes/global/settings.php:951
 msgid "custom"
 msgstr ""
 
-#: includes/global/settings.php:848
+#: includes/global/settings.php:986
 msgid "Limit Available Genesis Hooks"
 msgstr ""
 
-#: includes/global/settings.php:850
+#: includes/global/settings.php:988
 msgid "This setting allows you to limit the number of Genesis hooks that are available and also rename them to improve UI. When enabling this option, any existing blocks using hooks that are not enabled will cease to display on the frontend. %1$sCheck the hooks you want to enable%2$s."
 msgstr ""
 
-#: includes/global/settings.php:927
+#: includes/global/settings.php:1031 includes/global/settings.php:1117
+msgid "Enable All"
+msgstr ""
+
+#: includes/global/settings.php:1031 includes/global/settings.php:1117
+msgid "Disable All"
+msgstr ""
+
+#: includes/global/settings.php:1065
 msgid "Enable Custom Hooks"
 msgstr ""
 
-#: includes/global/settings.php:929
+#: includes/global/settings.php:1067
 msgid "This setting allows you add your own custom hooks. Many themes and plugins have their own hooks. Enter them here so that Blox can target them."
 msgstr ""
 
-#: includes/global/settings.php:932
+#: includes/global/settings.php:1070
 msgid "Enter hook slug"
 msgstr ""
 
-#: includes/global/settings.php:932
+#: includes/global/settings.php:1070
 msgid "Add Custom Hook"
 msgstr ""
 
-#: includes/global/settings.php:933
+#: includes/global/settings.php:1071
 msgid "The hook slug can only be made up of letters, numbers, dashes and underscores."
 msgstr ""
 
-#: includes/global/settings.php:963
+#: includes/global/settings.php:1101
 msgid "Hook slug (No spaces allowed)"
 msgstr ""
 
-#: includes/global/settings.php:973 includes/global/settings.php:1170
-msgid "Add a custom hook..."
-msgstr ""
-
-#: includes/global/settings.php:1166
-msgid "Are you sure you want to reset these settings? This action cannot be undone."
-msgstr ""
-
-#: includes/global/settings.php:1167
-msgid "Enter a hook name"
-msgstr ""
-
-#: includes/global/settings.php:1169
-msgid "Are you sure you want to delete this hook? This action cannot be undone."
-msgstr ""
-
-#: includes/global/visibility.php:88 includes/global/visibility.php:245
-msgid "Visibility"
-msgstr ""
-
-#: includes/global/visibility.php:148
+#: includes/global/visibility.php:154
 msgid "Global Visibility"
 msgstr ""
 
-#: includes/global/visibility.php:152
+#: includes/global/visibility.php:158
 msgid "Check to globally disable"
 msgstr ""
 
-#: includes/global/visibility.php:155
+#: includes/global/visibility.php:161
 msgid "Disable this content block and it will no longer appear on the frontend of the website."
 msgstr ""
 
-#: includes/global/visibility.php:161
+#: includes/global/visibility.php:167
 msgid "Visibility by Role"
 msgstr ""
 
-#: includes/global/visibility.php:164
+#: includes/global/visibility.php:170
 msgid "Visible to everyone."
 msgstr ""
 
-#: includes/global/visibility.php:164
+#: includes/global/visibility.php:170
 msgid "Visible to All"
 msgstr ""
 
-#: includes/global/visibility.php:165
+#: includes/global/visibility.php:171
 msgid "Visible to everyone that is logged out."
 msgstr ""
 
-#: includes/global/visibility.php:165
+#: includes/global/visibility.php:171
 msgid "Public Facing"
 msgstr ""
 
-#: includes/global/visibility.php:166
+#: includes/global/visibility.php:172
 msgid "Visible to everyone that is logged in."
 msgstr ""
 
-#: includes/global/visibility.php:166
+#: includes/global/visibility.php:172
 msgid "Private Facing"
 msgstr ""
 
-#: includes/global/visibility.php:167
+#: includes/global/visibility.php:173
 msgid "Only visible to user roles that are selected below."
 msgstr ""
 
-#: includes/global/visibility.php:167
+#: includes/global/visibility.php:173
 msgid "Restrict by User Role"
 msgstr ""
 
-#: includes/global/visibility.php:171
+#: includes/global/visibility.php:177
 msgid "Choose who should be able to view the content block on the frontend."
 msgstr ""
 
-#: includes/global/visibility.php:178
+#: includes/global/visibility.php:184
 msgid "Role Restriction Settings"
 msgstr ""
 
-#: includes/global/visibility.php:198
+#: includes/global/visibility.php:202
 msgid "If role restriction is enabled, the content block will only show on the frontend for the users selected above."
 msgstr ""
 
-#: includes/global/visibility.php:262 includes/global/visibility.php:345
+#: includes/global/visibility.php:274 includes/global/visibility.php:413
 msgid "Disabled"
 msgstr ""
 
-#: includes/global/visibility.php:274 includes/global/visibility.php:355
+#: includes/global/visibility.php:287 includes/global/visibility.php:423
 msgid "Public"
 msgstr ""
 
-#: includes/global/visibility.php:277 includes/global/visibility.php:358
+#: includes/global/visibility.php:290 includes/global/visibility.php:426
 msgid "Private"
 msgstr ""
 
-#: includes/global/visibility.php:284 includes/global/visibility.php:365
+#: includes/global/visibility.php:297 includes/global/visibility.php:433
 msgid "No Roles Selected"
 msgstr ""
 
-#: includes/global/visibility.php:293
+#: includes/global/visibility.php:309
 msgid "Globally Disabled"
 msgstr ""
 
-#: includes/global/visibility.php:369
+#: includes/global/visibility.php:373
+msgid "Disable Block"
+msgstr ""
+
+#: includes/global/visibility.php:437
 msgid "Error, Not Saved"
 msgstr ""
 
-#: includes/global/visibility.php:373
+#: includes/global/visibility.php:441
 msgid "Active"
 msgstr ""
 #. Plugin Name of the plugin/theme

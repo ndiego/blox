@@ -146,6 +146,9 @@ class Blox_Content_Slideshow {
                                 // Set the disabled flag if needed
                                 $disabled = ! empty( $slides['visibility']['disable'] ) ? 'disabled' : '';
 
+
+                                /* <input type="text" class="slide-image-caption blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][caption]" value="<?php echo isset( $slides['image']['caption'] ) ? esc_attr( $slides['image']['caption'] ) : ''; ?>" />*/
+
                                 ?>
                                 <li id="<?php echo $key; ?>" class="blox-slideshow-item <?php echo $disabled; ?>" >
 									<div class="blox-slide-container">
@@ -163,7 +166,9 @@ class Blox_Content_Slideshow {
 									<input type="text" class="slide-image-link-url blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][url]" value="<?php echo ! empty( $slides['image']['link']['url'] ) ? esc_attr( $slides['image']['link']['url'] ) : 'http://'; ?>" />
 									<input type="text" class="slide-image-link-title blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][title]" value="<?php echo ! empty( $slides['image']['link']['title'] ) ? esc_attr( $slides['image']['link']['title'] ) : ''; ?>" />
 									<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][link][target]" value="1" <?php ! empty( $slides['image']['link']['target'] ) ? checked( $slides['image']['link']['target'] ) : ''; ?> />
-									<input type="text" class="slide-image-caption blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][caption]" value="<?php echo isset( $slides['image']['caption'] ) ? esc_attr( $slides['image']['caption'] ) : ''; ?>" />
+
+                                    <textarea class="slide-image-caption blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][caption]" ><?php echo isset( $slides['image']['caption'] ) ? esc_attr( $slides['image']['caption'] ) : ''; ?></textarea>
+
 									<input type="text" class="slide-image-classes blox-force-hidden" name="<?php echo $name_prefix; ?>[slideshow][builtin][slides][<?php echo $key; ?>][image][classes]" value="<?php echo ! empty( $slides['image']['classes'] ) ? esc_attr( $slides['image']['classes'] ) : ''; ?>" />
 
 									<div class="blox-slide-tools-container">
@@ -490,17 +495,26 @@ class Blox_Content_Slideshow {
 						<?php _e( 'Enter a space separated list of custom CSS classes to add to this image slide.', 'blox' ); ?>
 					</div>
 
-                    <div class="modal-slide-apply-settings-container">
-                        <button id="blox-slide-apply-settings" type="button" class="button button-primary">
-                            <?php _e( 'Apply Settings', 'blox' ); ?>
-                        </button>
-                        <span class="blox-modal-spinner"></span>
-                        <div id="blox-slide-apply-settings-message" class="blox-message success">
-                            <p><?php _e( 'Settings successfully applied. Publish/Update to fully save your changes.', 'blox' ); ?></p>
-                        </div>
-                    </div>
                 </div>
 
+            </div>
+
+            <!-- Footer -->
+            <div class="blox-modal-footer">
+                <div class="blox-modal-buttonpane">
+
+                    <div class="modal-slide-apply-settings-container">
+                        <span class="blox-modal-spinner"></span>
+                        <div id="blox-slide-apply-settings-message" class="blox-message success">
+                            <p class="main"><?php _e( 'Settings successfully applied. Publish/Update to fully save your changes.', 'blox' ); ?></p>
+                            <span class="dashicons dashicons-yes mobile"></span>
+                        </div>
+                        <button id="blox-slide-apply-settings" type="button" class="button button-primary blox-modal-button">
+                            <?php _e( 'Apply Settings', 'blox' ); ?>
+                        </button>
+                    </div>
+
+                </div>
             </div>
 
 		</div> <!-- end blox_slide_details -->

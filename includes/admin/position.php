@@ -149,8 +149,36 @@ class Blox_Position {
 		?>
 		<table class="form-table">
 			<tbody>
+                <tr class="blox-position-format">
+                    <th scope="row"><?php echo __( 'Position Type', 'blox' ); ?></th>
+                    <td>
+                        <select name="<?php echo $name_prefix; ?>[position_format]" id="blox_position_format_<?php echo $id; ?>">
+                            <option value="hook" <?php echo ! empty( $get_prefix['position_format'] ) ? selected( esc_attr( $get_prefix['position_format'] ), 'hook' ) : 'selected'; ?>><?php _e( 'Hook', 'blox' ); ?></option>
+                            <?php
+
+                            $postion_options = apply_filters( 'blox_position_formats', array() );
+
+                            if ( ! empty( $postion_options ) ) {
+                                foreach ( $postion_options as $format => $title ) {
+                                    echo '<option value="' . $format . '" ' . selected( esc_attr( $get_prefix['position_format'] ), $format ) . ' >' . $title . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                        <span class="blox-help-text-icon">
+                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                        </span>
+                        <div class="blox-help-text top">
+                            <?php echo sprintf( __( 'By default, Blox only allows positioning via action hooks. %1$sBlox Add-ons%2$s enable additional options.', 'blox' ), '<a href="http://www.bloxwp.com/add-ons" title="Blox Add-ons" target="_blank">', '</a>' ); ?>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="form-table blox-position-format-type hook">
+        	<tbody>
 				<tr class="blox-position-type">
-					<th scope="row"><?php echo __( 'Position Type', 'blox' ); ?></th>
+					<th scope="row"><?php echo __( 'Hook Type', 'blox' ); ?></th>
 					<td>
 						<select name="<?php echo $name_prefix; ?>[position_type]" id="blox_position_type_<?php echo $id; ?>">
 							<option value="default" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( esc_attr( $get_prefix['position_type'] ), 'default' ) : 'selected'; ?>><?php _e( 'Default', 'blox' ); ?></option>
@@ -191,10 +219,10 @@ class Blox_Position {
 							<?php echo sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=position-tab-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ); ?>
 						</div>
 						<?php
-							$custom_postion   = ! empty( $get_prefix['custom']['position'] ) ? $get_prefix['custom']['position'] : '';
+							$custom_position = ! empty( $get_prefix['custom']['position'] ) ? $get_prefix['custom']['position'] : '';
 							// Print error if the saved hook is no longer available for some reason
-							if ( ! empty( $custom_postion ) && ! in_array( $custom_postion, $available_hooks ) ) {
-								echo '<div class="blox-alert">' . sprintf( __( 'The current saved custom hook, %3$s, is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( '/edit.php?post_type=blox&page=blox-settings&tab=hooks' ) . '">', '</a>', '<strong>' . $custom_postion . '</strong>' ) . '</div>';
+							if ( ! empty( $custom_position ) && ! in_array( $custom_position, $available_hooks ) ) {
+								echo '<div class="blox-alert">' . sprintf( __( 'The current saved custom hook, %3$s, is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( '/edit.php?post_type=blox&page=blox-settings&tab=hooks' ) . '">', '</a>', '<strong>' . $custom_position . '</strong>' ) . '</div>';
 							}
 						?>
 					</td>
@@ -240,6 +268,9 @@ class Blox_Position {
 
 		$settings = array();
 
+        $settings['position_format']    = isset( $name_prefix['position_format'] ) ? esc_attr( $name_prefix['position_format'] ) : 'hook';
+
+        // Hook specific settings
 		$settings['position_type']      = esc_attr( $name_prefix['position_type'] );
 		$settings['custom']['position'] = isset( $name_prefix['custom']['position'] ) ? esc_attr( $name_prefix['custom']['position'] ) : '';
 		$settings['custom']['priority'] = absint( $name_prefix['custom']['priority'] );
@@ -278,47 +309,69 @@ class Blox_Position {
 		$available_hooks = $instance->get_genesis_hooks_flattened();
 
 		//echo print_r( $available_hooks );
+        $position_format  = ! empty( $block_data['position']['position_format'] ) ? esc_attr( $block_data['position']['position_format'] ) : 'hook';
         $position_type    = esc_attr( $block_data['position']['position_type'] );
         $default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
-        $custom_postion   = esc_attr( $block_data['position']['custom']['position'] );
+        $custom_position  = esc_attr( $block_data['position']['custom']['position'] );
         $custom_priority  = esc_attr( $block_data['position']['custom']['priority'] );
 
-		if ( ! empty( $block_data['position']['position_type'] ) ) {
+        $title = '';
 
-			if ( $block_data['position']['position_type'] == 'default' ) {
+        if ( $position_format != 'hook' ) {
 
-				$title = $default_position;
+            $postion_options = apply_filters( 'blox_position_formats', array() );
 
-				if ( ! empty( $default_position ) && array_key_exists( $default_position, $available_hooks ) ){
-					$position  = esc_attr( $available_hooks[$default_position] );
-					$meta_data = $default_position;
-				} else {
-					$position  = false;
-					$title     = sprintf( __( 'This block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), $default_position );
-					$meta_data = '';
-				}
-			} else if ( ! empty( $block_data['position']['custom'] ) ) {
+            if ( array_key_exists( $position_format, $postion_options ) ) {
 
-				$title = $custom_postion;
+                $output = '–';
 
-				if( ! empty( $custom_postion ) && array_key_exists( $block_data['position']['custom']['position'], $available_hooks ) ) {
-                    $position  = esc_attr( $available_hooks[$custom_postion] );
-					$meta_data = $custom_postion;
-				} else {
-                    $hidden   .= '<input type="hidden" name="custom_position" value="">';
-					$position  = false;
-					$meta_data = '';
-				}
-			}
-		} else {
-			$position  = false;
-			$meta_data = '';
-		}
+                $position  = apply_filters( 'blox_admin_column_output_position', $output, $position_format, $post_id, $block_data );
+                $meta_data = '_' . $position_format;
+            } else {
+                $position  = false;
+                $title     = sprintf( __( 'The position format on this block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), ucfirst($position_format) );
+                $meta_data = '';
+            }
+
+        } else {
+            if ( ! empty( $block_data['position']['position_type'] ) ) {
+
+    			if ( $block_data['position']['position_type'] == 'default' ) {
+
+    				$title = $default_position;
+
+    				if ( ! empty( $default_position ) && array_key_exists( $default_position, $available_hooks ) ){
+    					$position  = esc_attr( $available_hooks[$default_position] );
+    					$meta_data = $default_position;
+    				} else {
+    					$position  = false;
+    					$title     = sprintf( __( 'This block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), $default_position );
+    					$meta_data = '';
+    				}
+    			} else if ( ! empty( $block_data['position']['custom'] ) ) {
+
+    				$title = $custom_position;
+
+    				if( ! empty( $custom_position ) && array_key_exists( $block_data['position']['custom']['position'], $available_hooks ) ) {
+                        $position  = esc_attr( $available_hooks[$custom_position] );
+    					$meta_data = $custom_position;
+    				} else {
+    					$position  = false;
+                        $title     = sprintf( __( 'This block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), $custom_position );
+    					$meta_data = '';
+    				}
+    			}
+    		} else {
+    			$position  = false;
+    			$meta_data = '';
+    		}
+        }
 
 		$error = '<span style="color:#a00;font-style:italic;cursor: help" title="' . $title . '">' . __( 'Error', 'blox' ) . '</span>';
 
-        $hidden = '<input type="hidden" name="position_type" value="' . $position_type . '">';
-        $hidden .= '<input type="hidden" name="custom_position" value="' . $custom_postion . '">';
+        $hidden = '<input type="hidden" name="position_format" value="' . $position_format . '">';
+        $hidden .= '<input type="hidden" name="position_type" value="' . $position_type . '">';
+        $hidden .= '<input type="hidden" name="custom_position" value="' . $custom_position . '">';
         $hidden .= '<input type="hidden" name="custom_priority" value="' . $custom_priority . '">';
 
         echo $hidden;
@@ -382,7 +435,25 @@ class Blox_Position {
                 <span class="title"><?php _e( 'Position', 'blox' ); ?></span>
 
                 <div class="quickedit-settings">
-                    <div class="quickedit-position-hook">
+                    <div class="quickedit-position-format">
+                        <label>
+                            <select name="position_format">
+                                <option value="hook"><?php _e( 'Hook', 'blox' ); ?></option>
+                                <?php
+
+                                $postion_options = apply_filters( 'blox_position_formats', array() );
+
+                                if ( ! empty( $postion_options ) ) {
+                                    foreach ( $postion_options as $format => $title ) {
+                                        echo '<option value="' . $format . '">' . $title . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                            <span><?php _e( 'Format', 'blox' ); ?></span>
+                        </label>
+                    </div>
+                    <div class="quickedit-position-format-type hook" style="display:none">
 
                         <label>
                             <select name="position_type">
@@ -441,6 +512,7 @@ class Blox_Position {
      */
     function quickedit_bulkedit_save_settings( $settings, $request, $type ) {
 
+        $settings['position']['position_format']    = esc_attr( $request['position_format'] );
         $settings['position']['position_type']      = esc_attr( $request['position_type'] );
 		$settings['position']['custom']['position'] = isset( $request['custom_position'] ) ? esc_attr( $request['custom_position'] ) : 'genesis_after_header';
 		$settings['position']['custom']['priority'] = isset( $request['custom_position'] ) ? absint( $request['custom_priority'] ) : 15;

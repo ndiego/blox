@@ -894,7 +894,7 @@ ul.blox-columns li {
 	position: absolute;
     overflow: auto;
     top: 50px;
-    bottom: 0;
+    bottom: 60px;
     right: 0;
     left: 0;
     -webkit-box-shadow: inset 0 4px 4px -4px rgba(0,0,0,.1);
@@ -905,7 +905,7 @@ ul.blox-columns li {
 	float: left;
     width: 65%;
     height: 100%;
-	padding: 16px;
+	padding: 16px 16px 32px;
 	box-sizing: border-box;
 }
 .modal-slide-image-settings {
@@ -939,10 +939,11 @@ ul.blox-columns li {
 }
 
 .modal-slide-apply-settings-container {
-	margin: 25px 0;
+	margin: 16px 0;
 }
 .modal-slide-apply-settings-container .blox-message {
-	margin-top: 15px;
+	margin-top: -5px;
+	float: left;
 }
 
 
@@ -987,6 +988,27 @@ ul.blox-columns li {
 }
 .blox-message.success {
 	border-left-color: #46b450;
+}
+
+.blox-message.success .mobile {
+	color: #46b450;
+	display: none;
+	font-size: 24px;
+}
+
+#blox_slide_details .blox-modal-footer {
+	position: absolute;
+	bottom: 0;
+}
+
+#blox_slide_details .blox-modal-footer a {
+
+}
+
+#blox_slide_details .blox-modal-button {
+	margin: 0 !important;
+	padding: 0 10px 1px !important;
+	line-height: 26px !important;
 }
 
 
@@ -1219,6 +1241,27 @@ body.blox-modal-open {
 	.blox-content-title td {
 		display: block;
 		margin-top: 4px !important;
+	}
+
+	.blox-modal-button {
+		font-size: 13px !important;
+	}
+
+	.blox-message.success {
+		display: inline-block;
+		width: 20px;
+		float: none;
+		border: 0;
+		background-color: transparent;
+		box-shadow: none;
+	}
+
+	.blox-message.success p {
+		display: none;
+	}
+
+	.blox-message.success .mobile {
+		display: inline-block;
 	}
 }
 

@@ -146,7 +146,7 @@ class Blox_Content_Raw {
                                 <div style="clear: both;"></div>
                             </div>
                         </div>
-                        <textarea class="blox-raw-output blox-enable-tab" name="<?php echo $name_prefix; ?>[raw][content]" rows="8" wrap="off"><?php echo ! empty( $get_prefix['raw']['content'] ) ? esc_html( $get_prefix['raw']['content'] ) : ''; ?></textarea>
+                        <textarea class="blox-raw-output blox-enable-tab" name="<?php echo $name_prefix; ?>[raw][content]" rows="8" wrap="off" placeholder="<?php _e( 'Enter your content here...', 'blox' ); ?>"><?php echo ! empty( $get_prefix['raw']['content'] ) ? esc_html( $get_prefix['raw']['content'] ) : ''; ?></textarea>
                         <div class="blox-description">
                             <?php _e( 'By default, the Raw Content box will accept practically anything except PHP. When PHP is enabled, make sure to use correct syntax and wrap all PHP code in ', 'blox' ); ?><code>&#60;?php</code><?php _e( ' and ', 'blox' ); ?><code>?&#62;</code>
                         </div>
