@@ -259,8 +259,6 @@ jQuery(document).ready(function($){
 						output += '<input type="text" class="slide-image-link-title blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][title]" value="" />';
 						output += '<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][link][target]" value="1" />';
 
-						//output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" value="' + attachment.caption + '" />';
-
 						output += '<textarea class="slide-image-caption blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][caption]" >' + attachment.caption + '</textarea>';
 
 						output += '<input type="text" class="slide-image-classes blox-force-hidden" name="' + frame.id + '[slideshow][builtin][slides]['+ randSlideId +'][image][classes]" value="" />';
@@ -341,7 +339,8 @@ jQuery(document).ready(function($){
 			output += '<input type="text" class="slide-image-link-title blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][link][title]" value="' + link_title + '" />';
 			output += '<input type="checkbox" class="slide-image-link-target blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][link][target]" value="1" ' + link_target + '/>';
 
-			output += '<input type="text" class="slide-image-caption blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][caption]" value="' + caption + '" />';
+			output += '<textarea class="slide-image-caption blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][caption]" >' + caption + '</textarea>';
+
 			output += '<input type="text" class="slide-image-classes blox-force-hidden" name="' + name_prefix + '[slideshow][builtin][slides]['+ new_slide_id +'][image][classes]" value="' + classes + '" />';
 			output += blox_slide_tools( name_prefix );
 			output += '</li>';

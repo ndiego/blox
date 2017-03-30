@@ -66,6 +66,8 @@ class Blox_Posttype_Admin {
         add_action( 'quick_edit_custom_box', array( $this, 'display_custom_quickedit' ), 10, 2 );
         add_action( 'save_post', array( $this, 'save_quickedit_meta' ) );
 
+        add_action( 'save_post', array( $this, 'local_blocks_columns_quickedit' ));
+
         // Enable bulk edit for Global blocks
         add_action( 'bulk_edit_custom_box', array( $this, 'display_custom_bulkedit' ), 10, 2 );
         add_action( 'wp_ajax_blox_save_bulkedit_meta', array( $this, 'save_bulkedit_meta' ) );
@@ -442,7 +444,39 @@ class Blox_Posttype_Admin {
      * @global string $typenow The current post type.
      */
 	public function local_blocks_columns() {
-		global $typenow;
+
+        global $typenow;
+
+		$local_enable  = blox_get_option( 'local_enable', false );
+
+		if ( $local_enable ) {
+
+			$enabled_pages = blox_get_option( 'local_enabled_pages', '' );
+
+			// Note this does not work on some custom post types in other plugins, need to explore reason...
+			if ( ! empty( $enabled_pages ) && in_array( $typenow, $enabled_pages ) ) {
+				add_filter( 'manage_' . $typenow . '_posts_columns', array( $this, 'local_blocks_column_title' ), 5 );
+				add_action( 'manage_' . $typenow . '_posts_custom_column', array( $this, 'local_blocks_column_data' ), 10, 2);
+
+				// Tell Wordpress that the Local Blocks column is sortable
+				add_filter( 'manage_edit-' . $typenow . '_sortable_columns', array( $this, 'local_blocks_columns_sortable' ), 5 );
+			}
+        }
+
+        // Tell Wordpress how to sort Local Blocks
+        add_filter( 'request', array( $this, 'local_blocks_columns_orderby' ) );
+	}
+
+
+    /**
+     * Fixed bug where custom columns are not added back on quick edit (A bit redundant though)
+     *
+     * @since 1.4.1
+     */
+	public function local_blocks_columns_quickedit() {
+
+        // Since this function is run when WP is using ajax, we need to use the $_POST to get the current post type
+        $typenow = $_POST['post_type'];
 
 		$local_enable  = blox_get_option( 'local_enable', false );
 
