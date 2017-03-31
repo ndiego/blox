@@ -52,25 +52,25 @@ class Blox_Location {
 
         // Load the base class object.
         $this->base = Blox_Main::get_instance();
-		
+
 		// Setup location settings
 		add_filter( 'blox_metabox_tabs', array( $this, 'add_location_tab' ), 6 );
 		add_action( 'blox_get_metabox_tab_location', array( $this, 'get_metabox_tab_location' ), 10, 4 );
 		add_filter( 'blox_save_metabox_tab_location', array( $this, 'save_metabox_tab_location' ), 10, 3 );
-		
+
 		// Add the admin column data for global blocks
 		add_filter( 'blox_admin_column_titles', array( $this, 'admin_column_title' ), 3, 1 );
 		add_action( 'blox_admin_column_data_location', array( $this, 'admin_column_data' ), 10, 2 );
-		
+
 		// Make admin column sortable
 		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
         add_filter( 'request', array( $this, 'admin_column_orderby' ) );
-		
+
 		// Run location test on the frontend.
 		add_filter( 'blox_display_test', array( $this, 'run_location_display_test' ), 5, 4 );
     }
-	
-	
+
+
 	/**
 	 * Add the Location tab
      *
@@ -263,24 +263,24 @@ class Blox_Location {
 
 					</td>
 				</tr>
-				
-				
-				
+
+
+
 				<tr id="blox_location_archive" class="<?php if ( empty( $get_prefix['selection'] ) ||  ! in_array( 'archive', $get_prefix['selection'] ) ) echo ('blox-hidden'); ?>">
-					
-					<?php 
+
+					<?php
 					// Get all public taxonomies
-					$taxonomies = get_taxonomies( array( 'public' => true ), 'objects', 'and' ); 
-					
+					$taxonomies = get_taxonomies( array( 'public' => true ), 'objects', 'and' );
+
 					// Get all users with author privileges or higher
 					$author_ids = get_users( array(
 						'orderby' => 'names',
 						'order'   => 'ASC',
 						'fields'  => 'ids',
 						'who'     => 'authors'
-					) ); 
+					) );
 					?>
-					
+
 					<th scope="row"><?php _e( 'Archive Pages' ); ?></th>
 					<td>
 						<select class="blox-location-select_type" name="<?php echo $name_prefix; ?>[archive][select_type]" >
@@ -289,7 +289,7 @@ class Blox_Location {
 						</select>
 
 						<div class="blox-location-selected-container <?php if ( empty( $get_prefix['archive']['select_type'] ) ||  $get_prefix['archive']['select_type'] != 'selected' ) echo ('blox-hidden'); ?>">
-							
+
 							<div class="blox-location-archive-selection">
 								<div class="blox-description">
 									<?php _e( 'Select an archive type below to view additional options.', 'blox' ); ?>
@@ -298,7 +298,7 @@ class Blox_Location {
 									<ul class="blox-columns">
 										<li><label><input type="checkbox" name="<?php echo $name_prefix; ?>[archive][selection][]" value="posttypes" <?php echo ! empty( $get_prefix['archive']['selection'] ) && in_array( 'posttypes', $get_prefix['archive']['selection'] ) ? 'checked="checked"' : ''; ?> /> <?php _e( 'Post Type', 'blox' ); ?></label></li>
 										<li><label><input type="checkbox" name="<?php echo $name_prefix; ?>[archive][selection][]" value="authors" <?php echo ! empty( $get_prefix['archive']['selection'] ) && in_array( 'authors', $get_prefix['archive']['selection'] ) ? 'checked="checked"' : ''; ?> /> <?php _e( 'Author', 'blox' ); ?></label></li>
-										<li><label><input type="checkbox" name="<?php echo $name_prefix; ?>[archive][selection][]" value="datetime" <?php echo ! empty( $get_prefix['archive']['selection'] ) && in_array( 'datetime', $get_prefix['archive']['selection'] ) ? 'checked="checked"' : ''; ?> /> <?php _e( 'Date & Time', 'blox' ); ?></label></li>									
+										<li><label><input type="checkbox" name="<?php echo $name_prefix; ?>[archive][selection][]" value="datetime" <?php echo ! empty( $get_prefix['archive']['selection'] ) && in_array( 'datetime', $get_prefix['archive']['selection'] ) ? 'checked="checked"' : ''; ?> /> <?php _e( 'Date & Time', 'blox' ); ?></label></li>
 										<?php
 										if ( $taxonomies ) {
 										  	foreach ( $taxonomies as $taxonomy ) {
@@ -318,10 +318,10 @@ class Blox_Location {
 								</div>
 								<div class="blox-checkbox-select-tools">
 									<a class="blox-checkbox-select-all" href="#"><?php _e( 'Select All' ); ?></a> <a class="blox-checkbox-select-none" href="#"><?php _e( 'Unselect All' ); ?></a>
-								</div> 
-							</div>							
-							
-														
+								</div>
+							</div>
+
+
 							<div class="blox-location-archive-posttypes blox-subcontainer <?php if ( empty( $get_prefix['archive']['selection'] ) || ! in_array( 'posttypes', $get_prefix['archive']['selection'] ) ) echo ('blox-hidden'); ?>">
 								<span class="blox-title"><?php _e( 'Post Type', 'blox' );?></span>
 
@@ -333,8 +333,8 @@ class Blox_Location {
 									<?php _e( 'Use this option to show/hide the content block on archive pages of post types. Note: If you are looking to target the "archive" page for Posts, use the Blog Page option in the main Block Location settings panel above.', 'blox' ); ?>
 								</div>
 								<div class="blox-location-selected-container <?php if ( empty( $get_prefix['archive']['posttypes']['select_type'] ) || $get_prefix['archive']['posttypes']['select_type'] == 'all' ) echo ( 'blox-hidden' ); ?>">
-									
-									<?php 
+
+									<?php
 									if ( $posts_with_archives ) { ?>
 										<div class="blox-checkbox-container">
 											<ul class="blox-columns">
@@ -348,7 +348,7 @@ class Blox_Location {
 													</label>
 												</li>
 												<?php } ?>
-			
+
 											</ul>
 										</div>
 										<div class="blox-checkbox-select-tools">
@@ -359,11 +359,11 @@ class Blox_Location {
 											<?php echo __( 'There does not appear to be any post types that have archives.', 'blox' ); ?>
 										</div>
 									<?php } ?>
-									
+
 								</div>
 							</div>
-							
-													
+
+
 							<div class="blox-location-archive-authors blox-subcontainer <?php if ( empty( $get_prefix['archive']['selection'] ) || ! in_array( 'authors', $get_prefix['archive']['selection'] ) ) echo ('blox-hidden'); ?>">
 								<span class="blox-title"><?php _e( 'Author', 'blox' );?></span>
 
@@ -373,13 +373,13 @@ class Blox_Location {
 								</select>
 
 								<div class="blox-location-selected-container <?php if ( empty( $get_prefix['archive']['authors']['select_type'] ) || $get_prefix['archive']['authors']['select_type'] == 'all' ) echo ( 'blox-hidden' ); ?>">
-									
-									<?php 
+
+									<?php
 									if ( $author_ids ) { ?>
 										<div class="blox-checkbox-container">
 											<ul class="blox-columns">
-		
-												<?php foreach ( $author_ids as $author_id ) { 
+
+												<?php foreach ( $author_ids as $author_id ) {
 													$author_name = get_the_author_meta( 'display_name', $author_id ); ?>
 												<li>
 													<label>
@@ -388,7 +388,7 @@ class Blox_Location {
 													</label>
 												</li>
 												<?php } ?>
-			
+
 											</ul>
 										</div>
 										<div class="blox-checkbox-select-tools">
@@ -399,20 +399,20 @@ class Blox_Location {
 											<?php echo __( 'There does not appear to be any authors on this website.', 'blox' ); ?>
 										</div>
 									<?php } ?>
-									
+
 								</div>
 							</div>
-							
-							
+
+
 							<?php
-							if ( $taxonomies ) { 
+							if ( $taxonomies ) {
 								foreach ( $taxonomies as $taxonomy ) {
 									if ( $taxonomy->name == 'post_format' && ! current_theme_supports( 'post-formats' ) ) {
 										// Do nothing since the current theme does not support post formats, otherwise showing this option could be confusing
 									} else {
 										$assigned_postypes = implode( ', ', $taxonomy->object_type );
 										?>
-	
+
 										<div class="blox-location-archive-<?php echo $taxonomy->name;?>  blox-subcontainer <?php if ( empty( $get_prefix['archive']['selection'] ) || ! in_array( $taxonomy->name, $get_prefix['archive']['selection'] ) ) echo ('blox-hidden'); ?>">
 											<span class="blox-title"><?php echo $taxonomy->labels->name ?> <span class="blox-post-status">(<?php echo $assigned_postypes;?>)</span></span>
 
@@ -422,7 +422,7 @@ class Blox_Location {
 											</select>
 
 											<div class="blox-location-selected-container <?php if ( empty( $get_prefix['archive'][$taxonomy->name]['select_type'] ) || $get_prefix['archive'][$taxonomy->name]['select_type'] == 'all' ) echo ( 'blox-hidden' ); ?>">
-												<?php 
+												<?php
 												$taxonomy_terms = get_terms( $taxonomy->name, array( 'orderby' => 'name', 'order' => 'ASC' ) );
 												if ( $taxonomy_terms ) { ?>
 													<div class="blox-checkbox-container">
@@ -447,7 +447,7 @@ class Blox_Location {
 												<?php } ?>
 											</div>
 										</div>
-										
+
 										<?php
 									}
 								}
@@ -457,7 +457,7 @@ class Blox_Location {
 						</div>
 					</td>
 				</tr>
-				
+
 				<!-- <tr id="blox_location_manual_show" class="<?php if ( empty( $get_prefix['location_type'] ) || $get_prefix['location_type'] != 'hide_selected' ) echo ('blox-hidden'); ?>"">
 					<th scope="row"><?php _e( 'Manual Override (Show)' ); ?></th>
 					<td>
@@ -520,7 +520,7 @@ class Blox_Location {
 			<div class="<?php if ( empty( $get_prefix['singles'][$post_type]['select_type'] ) || $get_prefix['singles'][$post_type]['select_type'] == 'all' ) echo ( 'blox-hidden' ); ?> blox-singles-container-inner">
 				<?php
 				if ( $post_type == 'attachment' ) {
-				
+
 					// For attachments, just display the manual restrict by id input
 					?>
 					<div class="<?php if ( empty( $get_prefix['singles'][$post_type]['select_type'] ) || $get_prefix['singles'][$post_type]['select_type'] != 'selected_posts' ) echo ( 'blox-hidden' ); ?> blox-singles-post-container">
@@ -530,10 +530,10 @@ class Blox_Location {
 						</div>
 					</div>
 					<?php
-					
+
 					$this->blox_location_singles_get_authors( $name_prefix, $get_prefix, $post_type, $post_name_singular );
 				} else {
-				
+
 					// For all other builtin and custom post types, lets display them all
 					$this->blox_location_singles_get_posts( $name_prefix, $get_prefix, $post_type, $post_name );
 					$this->blox_location_singles_get_taxonomies( $name_prefix, $get_prefix, $post_type, $post_name_singular );
@@ -741,23 +741,23 @@ class Blox_Location {
      */
 	public function blox_location_singles_get_authors( $name_prefix, $get_prefix, $post_type, $post_name_singular ) {
 		?>
-		
+
 		<div class="<?php if ( empty( $get_prefix['singles'][$post_type]['select_type'] ) || $get_prefix['singles'][$post_type]['select_type'] != 'selected_authors' ) echo ( 'blox-hidden' ); ?> blox-singles-authors-container-wrapper" >
-	
-			<?php 
+
+			<?php
 			$author_ids = get_users( array(
 				'orderby' => 'names',
 				'order'   => 'ASC',
 				'fields'  => 'ids',
 				'who'     => 'authors'
 			) );
-			
+
 			if ( ! empty( $author_ids ) ) { ?>
 				<div class="blox-checkbox-container">
 					<ul class="blox-columns">
-				
-						<?php foreach ( $author_ids as $author_id ) { 
-							$author_name = get_the_author_meta( 'display_name', $author_id ); 
+
+						<?php foreach ( $author_ids as $author_id ) {
+							$author_name = get_the_author_meta( 'display_name', $author_id );
 							$count_posts = count_user_posts( $author_id, $post_type );
 							?>
 							<li>
@@ -767,7 +767,7 @@ class Blox_Location {
 								</label>
 							</li>
 						<?php } ?>
-					
+
 					</ul>
 				</div>
 				<div class="blox-checkbox-select-tools">
@@ -779,17 +779,17 @@ class Blox_Location {
 				</div>
 			<?php } ?>
 		</div>
-			
+
 		<?php
 	}
 
 
-    /** 
+    /**
 	 * Saves all of the location settings
      *
      * @since 1.0.0
      *
-     * @param int $post_id        The global block id or the post/page/custom post-type id corresponding to the local block 
+     * @param int $post_id        The global block id or the post/page/custom post-type id corresponding to the local block
      * @param string $name_prefix The prefix for saving each setting
      * @param bool $global        The block state
      *
@@ -841,7 +841,7 @@ class Blox_Location {
 						}
 					}
 				}
-				
+
 				// Save all selected authors
 				$settings['singles'][$post]['authors']['selection'] = isset( $name_prefix['singles'][$post]['authors']['selection'] ) ? array_map( 'esc_attr', $name_prefix['singles'][$post]['authors']['selection'] ) : '';
 			}
@@ -867,18 +867,18 @@ class Blox_Location {
 				$settings['archive'][$taxonomy->name]['selection']   = isset( $name_prefix['archive'][$taxonomy->name]['selection'] ) ? array_map( 'esc_attr', $name_prefix['archive'][$taxonomy->name]['selection'] ) : '';
 			}
 		} // end Archives
-		
-		
+
+
 		/* Manual Overrides
 		$settings['manual_override']['manual_show_ids'] = array_filter( array_map( 'absint', explode( ",", preg_replace( '/\s+/', '', $name_prefix['manual_override']['manual_show_ids'] ) ) ) );
         $settings['manual_override']['manual_hide_ids'] = array_filter( array_map( 'absint', explode( ",", preg_replace( '/\s+/', '', $name_prefix['manual_override']['manual_hide_ids'] ) ) ) );
 		*/
-	
+
 		return apply_filters( 'blox_save_location_settings', $settings, $post_id, $name_prefix, $global );
 	}
 
 
-	/** 
+	/**
 	 * Helper function for getting all major page types
      *
      * @since 1.0.0
@@ -898,8 +898,8 @@ class Blox_Location {
 
         return $page_types;
     }
-    
-    
+
+
     /**
      * Add admin column for global blocks
      *
@@ -908,10 +908,10 @@ class Blox_Location {
      */
     public function admin_column_title( $columns ) {
     	$columns['location'] = __( 'Location', 'blox' );
-    	return $columns; 
+    	return $columns;
     }
-    
-    
+
+
     /**
      * Print the admin column data for global blocks.
      *
@@ -919,10 +919,10 @@ class Blox_Location {
      * @param array $block_data
      */
     public function admin_column_data( $post_id, $block_data ) {
-		$type = ! empty( $block_data['location']['location_type'] ) ? esc_attr( $block_data['location']['location_type'] ) : '';	
-        
+		$type = ! empty( $block_data['location']['location_type'] ) ? esc_attr( $block_data['location']['location_type'] ) : '';
+
         $meta_data = $type;
-               
+
 		// More location information to come...
 		switch ( $type ) {
 			case 'all' :
@@ -938,14 +938,14 @@ class Blox_Location {
 				$output = '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
 				break;
 		}
-		
+
 		echo $output;
-		
+
 		// Save our location meta values separately for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_location', $meta_data );
     }
-    
-    
+
+
     /**
      * Tell Wordpress that the location column is sortable
      *
@@ -957,8 +957,8 @@ class Blox_Location {
 		$sortable_columns[ 'location' ] = 'location';
 		return $sortable_columns;
 	}
-	
-	
+
+
 	/**
      * Tell Wordpress how to sort the location column
      *
@@ -967,14 +967,14 @@ class Blox_Location {
      * @param array $vars  Array of query variables
      */
 	public function admin_column_orderby( $vars ) {
-		
+
 		if ( isset( $vars['orderby'] ) && 'location' == $vars['orderby'] ) {
 			$vars = array_merge( $vars, array(
 				'meta_key' => '_blox_content_blocks_location',
 				'orderby' => 'meta_value'
 			) );
 		}
- 
+
 		return $vars;
 	}
 
@@ -990,7 +990,7 @@ class Blox_Location {
 	 * @param bool $global       Tells whether our block is global or local
 	 */
 	public function run_location_display_test( $display_test, $id, $block, $global ) {
-		
+
 		// If the display test is already false, bail...
 		if ( $display_test == false ) {
 			return $display_test;
@@ -1012,12 +1012,12 @@ class Blox_Location {
 
 					// Run our show on selected test
 					return $this->begin_location_test( $location_data, $id, $block, $global, 'show' );
-					
+
 				} else if ( $location_data['location_type'] == 'hide_selected' ) {
 
 					// Run our hide on selected test
 					return $this->begin_location_test( $location_data, $id, $block, $global, 'hide' );
-					
+
 				} else {
 
 					// If no test is selected, proceed to block positioning
@@ -1040,7 +1040,7 @@ class Blox_Location {
 	 * @param string $show_hide_test Either "show" or "hide"
 	 */
 	public function begin_location_test( $location_data, $id, $block, $global, $show_hide_test ) {
-		
+
 		// Need to try and make this true in order for the block to display on the page
 		$location_test = false;
 
@@ -1074,38 +1074,39 @@ class Blox_Location {
 
 					// Show the block on any archive page
 					$location_test = true;
-					
+
 					//echo 'hello';
 
 				} else if ( $location_data['archive']['select_type'] == 'selected' ) {
-				
+
 					// If our archive selection set is not empty, proceed...
 					if ( ! empty( $location_data['archive']['selection'] ) ) {
-                	
+
                 		if ( in_array( 'datetime', $location_data['archive']['selection'] ) && is_date() ) {
-                		
+
                 			// We are on a Date/Time archive, so proceed...
 							$location_test = true;
-                		
+
                 		} else if ( in_array( 'posttypes', $location_data['archive']['selection'] ) && is_post_type_archive() ) {
-                		
+
                 		    if ( $location_data['archive']['posttypes']['select_type'] == 'all' ) {
 
 								// Show the block on any post type archive page
 								$location_test = true;
 
 							} else if ( $location_data['archive']['posttypes']['select_type'] == 'selected' ) {
-							
+
 								if ( ! empty( $location_data['archive']['posttypes']['selection'] ) ) {
-									
+
 									$posttypes = $location_data['archive']['posttypes']['selection'];
-									
+
+                                    // Loop through each selected post type archive, if we are on this archive set to true, otherwise inherit previous test value (could be true or false)
 									foreach ( $posttypes as $posttype ) {
-										$location_test = is_post_type_archive( $posttype ) ? true : false;
+										$location_test = is_post_type_archive( $posttype ) ? true : $location_test;
 									}
 								}
 							}
-                		
+
                 		} else if ( in_array( 'authors', $location_data['archive']['selection'] ) && is_author() ) {
 
                 			if ( $location_data['archive']['authors']['select_type'] == 'all' ) {
@@ -1114,23 +1115,23 @@ class Blox_Location {
 								$location_test = true;
 
 							} else if ( $location_data['archive']['authors']['select_type'] == 'selected' ) {
-								
+
 								if ( ! empty( $location_data['archive']['authors']['selection'] ) ) {
-									
+
 									// Get author and sort through selection to check
 									$author = get_userdata( get_query_var('author') );
-									
+
 									if ( in_array( $author->id, $location_data['archive']['authors']['selection'] ) ) {
-										
+
 										// This author archive is part of the selection, so proceed...
 										$location_test = true;
-									
+
 									}
 								}
 							}
-                		
+
                 		} else if ( in_array( 'category', $location_data['archive']['selection'] ) && is_category() ) {
-							
+
 							// Post categories need to be treated differently than normal taxonomies
                 			if ( $location_data['archive']['category']['select_type'] == 'all' ) {
 
@@ -1138,22 +1139,22 @@ class Blox_Location {
 								$location_test = true;
 
 							} else if ( $location_data['archive']['category']['select_type'] == 'selected' ) {
-								
+
 								if ( ! empty( $location_data['archive']['category']['selection'] ) ) {
-									
+
 									// Get selected categories and loop through to see which category page we are on, if any
 									$categories = $location_data['archive']['category']['selection'];
-									
+
 									foreach ( $categories as $category ) {
 										$term_test[] = is_category( $category ) ? true : false;
 									}
-									
+
 									$location_test = in_array( true, $term_test ) ? true : false;
 								}
 							}
-                		
+
                 		} else if ( in_array( 'post_tag', $location_data['archive']['selection'] ) && is_tag() ) {
-							
+
 							// Post tags need to be treated differently than normal taxonomies
                 			if ( $location_data['archive']['post_tag']['select_type'] == 'all' ) {
 
@@ -1161,40 +1162,40 @@ class Blox_Location {
 								$location_test = true;
 
 							} else if ( $location_data['archive']['post_tag']['select_type'] == 'selected' ) {
-								
+
 								if ( ! empty( $location_data['archive']['post_tag']['selection'] ) ) {
-									
+
 									// Get selected tags and loop through to see which tag page we are on, if any
 									$tags = $location_data['archive']['post_tag']['selection'];
-									
+
 									foreach ( $tags as $tag ) {
 										$term_test[] = is_tag( $tag ) ? true : false;
 									}
-									
+
 									$location_test = in_array( true, $term_test ) ? true : false;
 								}
 							}
-                		
+
                 		} else {
-                			
+
                 			// Remove Date/Time, Authors, Post Types, Post Tags, and Post Categories from the selection (if they are there)
 							$taxonomy_archives = array_diff( $location_data['archive']['selection'],  array( 'datetime', 'authors', 'posttypes', 'category', 'post_tag' ) );
-							
+
 							if ( ! empty( $taxonomy_archives ) ) {
 								foreach ( $taxonomy_archives as $taxonomy_archive ) {
-							
+
 									if ( $location_data['archive'][$taxonomy_archive]['select_type'] == 'all' && is_tax( $taxonomy_archive ) ) {
 
 										// Show the block on any taxonomy's archive pages
 										$location_test = true;
 
 									} else if ( $location_data['archive'][$taxonomy_archive]['select_type'] == 'selected' ) {
-							
+
 										if ( ! empty( $location_data['archive'][$taxonomy_archive]['selection'] ) ) {
-								
+
 											// Get selected tags and loop through to see which tag page we are on, if any
 											$terms = $location_data['archive'][$taxonomy_archive]['selection'];
-											
+
 											foreach ( $terms as $term ) {
 												$term_object = get_term( $term, $taxonomy_archive );
 												$term_test[] = is_tax( $taxonomy_archive, $term_object->slug ) ? true : false;
@@ -1205,11 +1206,11 @@ class Blox_Location {
 									}
 								}
 							}
-							
+
                 		} // end archive test
-                	
+
                 	}
-                	
+
 				}
 
 			} else if ( in_array( 'singles', $location_data['selection'] ) && is_singular() == true && is_front_page() == false ) {
@@ -1347,7 +1348,7 @@ class Blox_Location {
 											// If select type equals "ignore", we do not include the taxonomy as part of the taxonomy show/hide test
 
 										}
-									} 
+									}
 
 									// Determine the outcome of the taxonomy test
 									if ( $taxonomy_test_type == 'loose' ) {
@@ -1366,9 +1367,9 @@ class Blox_Location {
 
 
 								}
-								
+
 							} else if ( $display_type == 'selected_authors' ) {
-									
+
 								// Get author of page and sort through selection to check
 								$author = get_queried_object()->post_author;
 
@@ -1376,17 +1377,17 @@ class Blox_Location {
 								if ( ! empty( $location_data['singles'][$current_post_type]['authors']['selection'] ) && in_array( $author, $location_data['singles'][$current_post_type]['authors']['selection'] ) ) {
 									$location_test = true;
 								}
-																
+
 							}
 						}
 					}
 				}
 			}
 		}
-		
+
 		// Determine whether to show or hide the block
 		if ( $show_hide_test == 'show' ) {
-			
+
 			// Since we are running a show test, we only show the block if the location_test is true
 			if ( $location_test == true ) {
 				//echo 'hello';
@@ -1394,7 +1395,7 @@ class Blox_Location {
 			} else {
 				return false;
 			}
-			
+
 		} else if ( $show_hide_test == 'hide' ) {
 
 			// Since we are running a hide test, we only show the block if the location_test is false

@@ -8,6 +8,11 @@ Resources:
 
 Changelog:
 
+Version 1.4.1 – 2017-03-30
+* Fixed post type archive location setting bug where the global block would not display if multiple post type archives were selected
+* Fixed quick edit bug where the Local Blocks admin column would disappear on quick edit save
+* Fixed slideshow copy bug that caused issues with the caption include parentheses
+
 Version 1.4.0 – 2016-01-04
 * Changed Apply Settings button in the slideshow modal for a better user experience
 * Updated position settings and tests to handle additional position formats
