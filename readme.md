@@ -18,7 +18,7 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 ### Changelog
 
 ##### Version 1.4.2 – 2017-04-10
-* Fixed bug inadvertently introduced by the quick edit bug fix in v1.2.3
+* Fixed bug inadvertently introduced by the quick edit bug fix in v1.4.1
 
 ##### Version 1.4.1 – 2017-03-30
 * Fixed post type archive location setting bug where the global block would not display if multiple post type archives were selected
