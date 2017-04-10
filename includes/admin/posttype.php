@@ -475,6 +475,11 @@ class Blox_Posttype_Admin {
      */
 	public function local_blocks_columns_quickedit() {
 
+        // If there is no post_type, bail...
+        if ( ! isset( $_POST['post_type'] ) ) {
+            return;
+        }
+
         // Since this function is run when WP is using ajax, we need to use the $_POST to get the current post type
         $typenow = $_POST['post_type'];
 
