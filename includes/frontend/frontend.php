@@ -353,7 +353,7 @@ function blox_frontend_content( $args, $parameters ) {
 
 	// If this block has its own custom css, add that before the block is displayed on the page
 	if ( ! empty( $style_data['custom_css'] ) ) {
-		echo '<style type="text/css">' . $instance->minify_string( html_entity_decode( $style_data['custom_css'] ) ) . '</style>';
+		echo '<style type="text/css">' . html_entity_decode( $style_data['custom_css'] ) . '</style>';
 	}
 
 	// Make sure a content type is selected and then print our content block

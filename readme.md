@@ -17,6 +17,9 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 
 ### Changelog
 
+##### Version 1.4.3 – 2017-05-05
+* Fixed bug that broke urls placed in the Custom Block CSS settings field
+
 ##### Version 1.4.2 – 2017-04-10
 * Fixed bug inadvertently introduced by the quick edit bug fix in v1.4.1
 
