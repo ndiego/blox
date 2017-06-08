@@ -146,6 +146,7 @@ class Blox_Position {
     	$instance        = Blox_Common::get_instance();
 		$available_hooks = $instance->get_genesis_hooks_flattened();
 
+        echo print_r($get_prefix);
 		?>
 		<table class="form-table">
 			<tbody>
