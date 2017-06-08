@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Creates the poistion tab and loads in all the available options
+ * Creates the position tab and loads in all the available options
  *
  * @since 	1.0.0
  *
@@ -243,6 +243,16 @@ class Blox_Position {
 						</div>
 					</td>
 				</tr>
+
+
+                <div>
+                    <span class="blox-toggle left">
+                        <input id="UPDATE" type="checkbox"/>
+                        <label class="toggle" for="UPDATE"></label>
+                    </span>
+                    <span class="title"><?php _e( 'Shortcode Positioning', 'blox' ); ?></span>
+                </div>
+
 
 				<?php do_action( 'blox_position_settings', $id, $name_prefix, $get_prefix, $global ); ?>
 

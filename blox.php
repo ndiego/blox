@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Blox
  * Plugin URI:  https://www.bloxwp.com
- * Description: Easily customize themes built on the Genesis Framework
+ * Description: Reusable content blocks for Genesis, Woocommerce and more...
  * Author:      Nick Diego
  * Author URI:  http://www.outermostdesign.com
- * Version:     1.4.3
+ * Version:     2.0.0
  * Text Domain: blox
  * Domain Path: languages
  *
@@ -53,7 +53,7 @@ class Blox_Main {
      *
      * @var string
      */
-    public $version = '1.4.3';
+    public $version = '2.0.0';
 
     /**
      * The name of the plugin.

@@ -1358,3 +1358,59 @@ body.blox-modal-open {
 		height: auto;
 	}
 }
+
+
+/* Toggle styling, turns checkboxes into toggles */
+.blox-toggle * {
+  	box-sizing: border-box;
+}
+.blox-toggle *::selection,
+.blox-toggle *::-moz-selection{
+	background: none;
+}
+.blox-toggle input {
+	display: none;
+}
+.blox-toggle label {
+	background: #a2a2a2;
+	border-radius: 8px;
+	padding: 2px;
+	-webkit-transition: all .4s ease;
+	transition: all .4s ease;
+	outline: 0;
+	display: inline-block;
+	width: 24px;
+	height: 16px;
+	position: relative;
+	cursor: pointer;
+	-webkit-user-select: none;
+	 -moz-user-select: none;
+	  -ms-user-select: none;
+	      user-select: none;
+}
+.blox-toggle label:after,
+.blox-toggle label:before {
+	position: relative;
+	display: block;
+	content: "";
+	width: 50%;
+	height: 100%;
+}
+.blox-toggle label:after {
+	left: 0;
+	border-radius: 50%;
+	width: 12px;
+	height: 12px;
+	background: #fff;
+	-webkit-transition: all .2s ease;
+	transition: all .2s ease;
+}
+.blox-toggle label:before {
+	display: none;
+}
+.blox-toggle > input:checked + label:after {
+	left: 8px;
+}
+.blox-toggle > input:checked + label {
+	background: #0073aa;
+}
