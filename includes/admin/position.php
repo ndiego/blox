@@ -245,13 +245,30 @@ class Blox_Position {
 					</td>
 				</tr>
 
+                <div class="blox-toggle">
+                    <span class="blox-toggle-wrap">
+                        <input id="blox_position_enable_hook_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[controls][hook][enable]" type="checkbox" value="1" <?php ! empty( $get_prefix['controls']['hook']['enable'] ) ? checked( $get_prefix['controls']['hook']['enable'] ) : checked( true ); ?> />
+                        <label class="toggle" for="blox_position_enable_hook_<?php echo $id; ?>"></label>
+                    </span>
+                    <span class="title"><?php _e( 'Hook Positioning', 'blox' ); ?></span>
+                </div>
 
-                <div>
-                    <span class="blox-toggle left">
-                        <input id="UPDATE" type="checkbox"/>
-                        <label class="toggle" for="UPDATE"></label>
+
+                <div class="blox-toggle">
+                    <span class="blox-toggle-wrap">
+                        <input id="blox_position_enable_shortcode_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[controls][shortcode][enable]" type="checkbox" value="1" <?php ! empty( $get_prefix['controls']['shortcode']['enable'] ) ? checked( $get_prefix['controls']['shortcode']['enable'] ) : ''; ?> />
+                        <label class="toggle" for="blox_position_enable_shortcode_<?php echo $id; ?>"></label>
                     </span>
                     <span class="title"><?php _e( 'Shortcode Positioning', 'blox' ); ?></span>
+                </div>
+
+
+                <div class="blox-toggle">
+                    <span class="blox-toggle-wrap">
+                        <input id="blox_position_enable_php_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[controls][php][enable]" type="checkbox" value="1" <?php ! empty( $get_prefix['controls']['php']['enable'] ) ? checked( $get_prefix['controls']['php']['enable'] ) : ''; ?> />
+                        <label class="toggle" for="blox_position_enable_php_<?php echo $id; ?>"></label>
+                    </span>
+                    <span class="title"><?php _e( 'PHP Function Positioning', 'blox' ); ?></span>
                 </div>
 
 
@@ -285,6 +302,11 @@ class Blox_Position {
 		$settings['position_type']      = esc_attr( $name_prefix['position_type'] );
 		$settings['custom']['position'] = isset( $name_prefix['custom']['position'] ) ? esc_attr( $name_prefix['custom']['position'] ) : '';
 		$settings['custom']['priority'] = absint( $name_prefix['custom']['priority'] );
+
+        $settings['controls']['hook']['enable']         = isset( $name_prefix['controls']['hook']['enable'] ) ? 1 : 0;
+        $settings['controls']['shortcode']['enable']    = isset( $name_prefix['controls']['shortcode']['enable'] ) ? 1 : 0;
+
+        $settings['controls']['php']['enable']          = isset( $name_prefix['controls']['php']['enable'] ) ? 1 : 0;
 
 		if ( $settings['position_type'] == 'default' ) {
 		  $position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );

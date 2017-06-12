@@ -1408,9 +1408,9 @@ body.blox-modal-open {
 .blox-toggle label:before {
 	display: none;
 }
-.blox-toggle > input:checked + label:after {
+.blox-toggle-wrap > input:checked + label:after {
 	left: 8px;
 }
-.blox-toggle > input:checked + label {
+.blox-toggle-wrap > input:checked + label {
 	background: #0073aa;
 }
