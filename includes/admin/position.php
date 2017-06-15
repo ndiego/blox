@@ -146,136 +146,238 @@ class Blox_Position {
     	$instance        = Blox_Common::get_instance();
 		$available_hooks = $instance->get_genesis_hooks_flattened();
 
+        $scope = $global ? "global" : 'local';
+
         echo print_r($get_prefix);
 		?>
-		<table class="form-table">
-			<tbody>
-                <tr class="blox-position-format">
-                    <th scope="row"><?php echo __( 'Position Type', 'blox' ); ?></th>
-                    <td>
-                        <select name="<?php echo $name_prefix; ?>[position_format]" id="blox_position_format_<?php echo $id; ?>">
-                            <option value="hook" <?php echo ! empty( $get_prefix['position_format'] ) ? selected( esc_attr( $get_prefix['position_format'] ), 'hook' ) : 'selected'; ?>><?php _e( 'Hook', 'blox' ); ?></option>
-                            <?php
 
-                            $postion_options = apply_filters( 'blox_position_formats', array() );
-
-                            if ( ! empty( $postion_options ) ) {
-                                foreach ( $postion_options as $format => $title ) {
-                                    echo '<option value="' . $format . '" ' . selected( esc_attr( $get_prefix['position_format'] ), $format ) . ' >' . $title . '</option>';
-                                }
-                            }
-                            ?>
-                        </select>
-                        <span class="blox-help-text-icon">
-                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                        </span>
-                        <div class="blox-help-text top">
-                            <?php echo sprintf( __( 'By default, Blox only allows positioning via action hooks. %1$sBlox Add-ons%2$s enable additional options.', 'blox' ), '<a href="http://www.bloxwp.com/add-ons" title="Blox Add-ons" target="_blank">', '</a>' ); ?>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="form-table blox-position-format-type hook">
-        	<tbody>
-				<tr class="blox-position-type">
-					<th scope="row"><?php echo __( 'Hook Type', 'blox' ); ?></th>
-					<td>
-						<select name="<?php echo $name_prefix; ?>[position_type]" id="blox_position_type_<?php echo $id; ?>">
-							<option value="default" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( esc_attr( $get_prefix['position_type'] ), 'default' ) : 'selected'; ?>><?php _e( 'Default', 'blox' ); ?></option>
-							<option value="custom" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( esc_attr( $get_prefix['position_type'] ), 'custom' ) : ''; ?>><?php _e( 'Custom', 'blox' ); ?></option>
-						</select>
-						<div class="blox-position-default <?php if ( $get_prefix['position_type'] == 'custom' ) echo ( 'blox-hidden' ); ?>">
-							<div class="blox-description">
-								<?php
-									$default_position = $global ? esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) ) : esc_attr( blox_get_option( 'local_default_position', 'genesis_after_header' ) );
-									$default_priority = $global ? esc_attr( blox_get_option( 'global_default_priority', 15 ) ) : esc_attr( blox_get_option( 'local_default_priority', 15 ) );
-
-									echo sprintf( __( 'The default position is %1$s and the default priority is %2$s. You can change this default positioning by visiting the %3$sDefaults%4$s setting page, or use custom positioning to override this default.', 'blox' ), '<strong>' . $default_position . '</strong>', '<strong>' . $default_priority . '</strong>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=default' ) . '">', '</a>' );
-								?>
-							</div>
-							<?php
-								// Print error if the saved hook is no longer available for some reason
-								if ( ! in_array( $default_position, $available_hooks ) ) {
-									echo '<div class="blox-alert">' . sprintf( __( 'The current saved default hook is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( '/edit.php?post_type=blox&page=blox-settings&tab=hooks' ) . '">', '</a>' ) . '</div>';
-								}
-							?>
-						</div>
-					</td>
-				</tr>
-				<tr class="blox-position-custom-position blox-position-custom <?php if ( empty( $get_prefix['position_type'] ) || $get_prefix['position_type'] != 'custom' ) echo ( 'blox-hidden' ); ?>">
-					<th scope="row"><?php _e( 'Position on Page', 'blox' ); ?></th>
-					<td>
-						<select name="<?php echo $name_prefix; ?>[custom][position]" id="blox_position_custom_position_<?php echo $id; ?>">
-							<?php
-							foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
-								<optgroup label="<?php echo $section['name']; ?>">
-									<?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
-										<option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>" <?php echo ! empty( $get_prefix['custom']['position'] ) ? selected( esc_attr( $get_prefix['custom']['position'] ), $hooks ) : ''; ?>><?php echo $hook['name']; ?></option>
-									<?php } ?>
-								</optgroup>
-							<?php } ?>
-						</select>
-						<div class="blox-description">
-							<?php echo sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=position-tab-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ); ?>
-						</div>
-						<?php
-							$custom_position = ! empty( $get_prefix['custom']['position'] ) ? $get_prefix['custom']['position'] : '';
-							// Print error if the saved hook is no longer available for some reason
-							if ( ! empty( $custom_position ) && ! in_array( $custom_position, $available_hooks ) ) {
-								echo '<div class="blox-alert">' . sprintf( __( 'The current saved custom hook, %3$s, is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( '/edit.php?post_type=blox&page=blox-settings&tab=hooks' ) . '">', '</a>', '<strong>' . $custom_position . '</strong>' ) . '</div>';
-							}
-						?>
-					</td>
-				</tr>
-
-				<tr class="blox-position-custom-priority blox-position-custom <?php if ( empty( $get_prefix['position_type'] ) || $get_prefix['position_type'] != 'custom' ) echo ( 'blox-hidden' ); ?>">
-					<th scope="row"><?php _e( 'Priority', 'blox' ); ?></th>
-					<td>
-						<label>
-							<input type="text" name="<?php echo $name_prefix; ?>[custom][priority]" id="blox_position_custom_priority_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['custom']['priority'] ) ? esc_attr( $get_prefix['custom']['priority'] )  : '15'; ?>" class="blox-small-text"/>
-							<?php _e( 'Enter a whole number greater than zero.', 'blox' ); ?>
-						</label>
-						<span class="blox-help-text-icon">
-							<a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-						</span>
-						<div class="blox-help-text top">
-							<?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
-						</div>
-					</td>
-				</tr>
-
-                <div class="blox-toggle">
+                <div class="blox-toggle blox-toggle-has-container">
                     <span class="blox-toggle-wrap">
-                        <input id="blox_position_enable_hook_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[controls][hook][enable]" type="checkbox" value="1" <?php ! empty( $get_prefix['controls']['hook']['enable'] ) ? checked( $get_prefix['controls']['hook']['enable'] ) : checked( true ); ?> />
+                        <input id="blox_position_enable_hook_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[hook][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['hook']['enable'] ) ? checked( $get_prefix['hook']['enable'], 1, false ) : ' checked="checked"'; ?> />
                         <label class="toggle" for="blox_position_enable_hook_<?php echo $id; ?>"></label>
                     </span>
                     <span class="title"><?php _e( 'Hook Positioning', 'blox' ); ?></span>
                 </div>
 
+                <div class="blox-toggle-container">
 
-                <div class="blox-toggle">
+
+                    <?php
+                    $genesis_hooks = $this->get_genesis_hooks();
+
+                    //echo print_r($hooks['core']);
+
+                    $genesis_enabled = true;
+
+                    ?>
+                    <div class="blox-hook-selector">
+                        <div class="blox-hook-selector-menu">
+                            <?php
+                                if ( $genesis_enabled ) {
+                                    ?>
+                                    <div class="blox-hook-group">
+                                        Genesis Hooks
+                                    </div>
+                                    <?php
+                                }
+                            ?>
+                        </div>
+                        <div class="blox-hook-selector-content">
+                            <?php
+                                if ( $genesis_enabled ) {
+                                    foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
+                                        <div class="blox-hook-section">
+                                            <div class="blox-hook-section-title"><?php echo $section['name']; ?></div>
+                                            <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
+                                                <div class="blox-hook-item">
+                                                    <div class="blox-hook-name"><?php echo $hook['name']; ?></div>
+                                                    <div class="blox-hook-description"><?php echo $hook['title']; ?></div>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    <?php }
+                                }
+                            ?>
+                        </div>
+                    </div>
+
+
+
+
+                    <table class="form-table">
+                        <tbody>
+                            <tr class="blox-position-format">
+                                <th scope="row"><?php echo __( 'Position Type', 'blox' ); ?></th>
+                                <td>
+                                    <select name="<?php echo $name_prefix; ?>[position_format]" id="blox_position_format_<?php echo $id; ?>">
+                                        <option value="hook" <?php echo ! empty( $get_prefix['position_format'] ) ? selected( esc_attr( $get_prefix['position_format'] ), 'hook' ) : 'selected'; ?>><?php _e( 'Hook', 'blox' ); ?></option>
+                                        <?php
+
+                                        $postion_options = apply_filters( 'blox_position_formats', array() );
+
+                                        if ( ! empty( $postion_options ) ) {
+                                            foreach ( $postion_options as $format => $title ) {
+                                                echo '<option value="' . $format . '" ' . selected( esc_attr( $get_prefix['position_format'] ), $format ) . ' >' . $title . '</option>';
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                    <span class="blox-help-text-icon">
+                                        <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                                    </span>
+                                    <div class="blox-help-text top">
+                                        <?php echo sprintf( __( 'By default, Blox only allows positioning via action hooks. %1$sBlox Add-ons%2$s enable additional options.', 'blox' ), '<a href="http://www.bloxwp.com/add-ons" title="Blox Add-ons" target="_blank">', '</a>' ); ?>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="form-table blox-position-format-type hook">
+                        <tbody>
+                            <tr class="blox-position-type">
+                                <th scope="row"><?php echo __( 'Hook Type', 'blox' ); ?></th>
+                                <td>
+                                    <select name="<?php echo $name_prefix; ?>[position_type]" id="blox_position_type_<?php echo $id; ?>">
+                                        <option value="default" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( esc_attr( $get_prefix['position_type'] ), 'default' ) : 'selected'; ?>><?php _e( 'Default', 'blox' ); ?></option>
+                                        <option value="custom" <?php echo ! empty( $get_prefix['position_type'] ) ? selected( esc_attr( $get_prefix['position_type'] ), 'custom' ) : ''; ?>><?php _e( 'Custom', 'blox' ); ?></option>
+                                    </select>
+                                    <div class="blox-position-default <?php if ( $get_prefix['position_type'] == 'custom' ) echo ( 'blox-hidden' ); ?>">
+                                        <div class="blox-description">
+                                            <?php
+                                                $default_position = $global ? esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) ) : esc_attr( blox_get_option( 'local_default_position', 'genesis_after_header' ) );
+                                                $default_priority = $global ? esc_attr( blox_get_option( 'global_default_priority', 15 ) ) : esc_attr( blox_get_option( 'local_default_priority', 15 ) );
+
+                                                echo sprintf( __( 'The default position is %1$s and the default priority is %2$s. You can change this default positioning by visiting the %3$sDefaults%4$s setting page, or use custom positioning to override this default.', 'blox' ), '<strong>' . $default_position . '</strong>', '<strong>' . $default_priority . '</strong>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=default' ) . '">', '</a>' );
+                                            ?>
+                                        </div>
+                                        <?php
+                                            // Print error if the saved hook is no longer available for some reason
+                                            if ( ! in_array( $default_position, $available_hooks ) ) {
+                                                echo '<div class="blox-alert">' . sprintf( __( 'The current saved default hook is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( '/edit.php?post_type=blox&page=blox-settings&tab=hooks' ) . '">', '</a>' ) . '</div>';
+                                            }
+                                        ?>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="blox-position-custom-position blox-position-custom <?php if ( empty( $get_prefix['position_type'] ) || $get_prefix['position_type'] != 'custom' ) echo ( 'blox-hidden' ); ?>">
+                                <th scope="row"><?php _e( 'Position on Page', 'blox' ); ?></th>
+                                <td>
+                                    <select name="<?php echo $name_prefix; ?>[custom][position]" id="blox_position_custom_position_<?php echo $id; ?>">
+                                        <?php
+                                        foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
+                                            <optgroup label="<?php echo $section['name']; ?>">
+                                                <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
+                                                    <option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>" <?php echo ! empty( $get_prefix['custom']['position'] ) ? selected( esc_attr( $get_prefix['custom']['position'] ), $hooks ) : ''; ?>><?php echo $hook['name']; ?></option>
+                                                <?php } ?>
+                                            </optgroup>
+                                        <?php } ?>
+                                    </select>
+                                    <div class="blox-description">
+                                        <?php echo sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=position-tab-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ); ?>
+                                    </div>
+                                    <?php
+                                        $custom_position = ! empty( $get_prefix['custom']['position'] ) ? $get_prefix['custom']['position'] : '';
+                                        // Print error if the saved hook is no longer available for some reason
+                                        if ( ! empty( $custom_position ) && ! in_array( $custom_position, $available_hooks ) ) {
+                                            echo '<div class="blox-alert">' . sprintf( __( 'The current saved custom hook, %3$s, is no longer available. Choose a new one, or re-enable it on the %1$sHooks%2$s settings page.', 'blox' ), '<a href="' . admin_url( '/edit.php?post_type=blox&page=blox-settings&tab=hooks' ) . '">', '</a>', '<strong>' . $custom_position . '</strong>' ) . '</div>';
+                                        }
+                                    ?>
+                                </td>
+                            </tr>
+
+                            <tr class="blox-position-custom-priority blox-position-custom <?php if ( empty( $get_prefix['position_type'] ) || $get_prefix['position_type'] != 'custom' ) echo ( 'blox-hidden' ); ?>">
+                                <th scope="row"><?php _e( 'Priority', 'blox' ); ?></th>
+                                <td>
+                                    <label>
+                                        <input type="text" name="<?php echo $name_prefix; ?>[custom][priority]" id="blox_position_custom_priority_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['custom']['priority'] ) ? esc_attr( $get_prefix['custom']['priority'] )  : '15'; ?>" class="blox-small-text"/>
+                                        <?php _e( 'Enter a whole number greater than zero.', 'blox' ); ?>
+                                    </label>
+                                    <span class="blox-help-text-icon">
+                                        <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                                    </span>
+                                    <div class="blox-help-text top">
+                                        <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+
+
+                <div class="blox-toggle blox-toggle-has-container">
                     <span class="blox-toggle-wrap">
-                        <input id="blox_position_enable_shortcode_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[controls][shortcode][enable]" type="checkbox" value="1" <?php ! empty( $get_prefix['controls']['shortcode']['enable'] ) ? checked( $get_prefix['controls']['shortcode']['enable'] ) : ''; ?> />
+                        <input id="blox_position_enable_shortcode_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[shortcode][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['shortcode']['enable'] ) ? checked( $get_prefix['shortcode']['enable'], 1, false ) : ''; ?> />
                         <label class="toggle" for="blox_position_enable_shortcode_<?php echo $id; ?>"></label>
                     </span>
                     <span class="title"><?php _e( 'Shortcode Positioning', 'blox' ); ?></span>
                 </div>
 
+                <div class="blox-toggle-container">
+                    <div class="blox-code">[blox id="<?php echo $scope . '_' . $id; ?>"]</div>
+                    <div class="blox-description">
+                        <?php
+                            _e( 'Copy and paste this above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox-shortcodes' );
+                            if ( ! $global ) {
+                                echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
+                            }
+                        ?>
+                    </div>
 
-                <div class="blox-toggle">
+                    <div class="blox-checkbox after">
+                        <label>
+                            <input type="checkbox" name="<?php echo $name_prefix; ?>[shortcode][ignore_location]" value="1" <?php echo isset( $get_prefix['shortcode']['ignore_location'] ) ? checked( $get_prefix['shortcode']['ignore_location'], 1, false ) : ''; ?> />
+                            <?php _e( 'Check to ignore location settings', 'blox' ); ?>
+                        </label>
+                        <span class="blox-help-text-icon">
+                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                        </span>
+                        <div class="blox-help-text">
+                            Test
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="blox-toggle blox-toggle-has-container">
                     <span class="blox-toggle-wrap">
-                        <input id="blox_position_enable_php_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[controls][php][enable]" type="checkbox" value="1" <?php ! empty( $get_prefix['controls']['php']['enable'] ) ? checked( $get_prefix['controls']['php']['enable'] ) : ''; ?> />
+                        <input id="blox_position_enable_php_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[php][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['php']['enable'] ) ? checked( $get_prefix['php']['enable'], 1, false ) : ''; ?> />
                         <label class="toggle" for="blox_position_enable_php_<?php echo $id; ?>"></label>
                     </span>
                     <span class="title"><?php _e( 'PHP Function Positioning', 'blox' ); ?></span>
                 </div>
 
+                <div class="blox-toggle-container last">
+                    <div class="blox-code">blox_display_block( "<?php echo $scope . '_' . $id; ?>" );</div>
+                    <div class="blox-description">
+                        <?php
+                            _e( 'Copy and paste this above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox-shortcodes' );
+                            if ( ! $global ) {
+                                echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
+                            }
+                        ?>
+                    </div>
+
+                    <div class="blox-checkbox after">
+                        <label>
+                            <input type="checkbox" name="<?php echo $name_prefix; ?>[php][ignore_location]" value="1" <?php echo isset( $get_prefix['php']['ignore_location'] ) ? checked( $get_prefix['php']['ignore_location'], 1, false ) : ''; ?> />
+                            <?php _e( 'Check to ignore location settings', 'blox' ); ?>
+                        </label>
+                        <span class="blox-help-text-icon">
+                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                        </span>
+                        <div class="blox-help-text">
+                            Test
+                        </div>
+                    </div>
+
+                </div>
 
 				<?php do_action( 'blox_position_settings', $id, $name_prefix, $get_prefix, $global ); ?>
-
-			</tbody>
-		</table>
 
 		<?php
     }
@@ -303,16 +405,19 @@ class Blox_Position {
 		$settings['custom']['position'] = isset( $name_prefix['custom']['position'] ) ? esc_attr( $name_prefix['custom']['position'] ) : '';
 		$settings['custom']['priority'] = absint( $name_prefix['custom']['priority'] );
 
-        $settings['controls']['hook']['enable']         = isset( $name_prefix['controls']['hook']['enable'] ) ? 1 : 0;
-        $settings['controls']['shortcode']['enable']    = isset( $name_prefix['controls']['shortcode']['enable'] ) ? 1 : 0;
-
-        $settings['controls']['php']['enable']          = isset( $name_prefix['controls']['php']['enable'] ) ? 1 : 0;
+        $settings['hook']['enable']                 = isset( $name_prefix['hook']['enable'] ) ? 1 : 0;
 
 		if ( $settings['position_type'] == 'default' ) {
 		  $position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
 		} else if ( $settings['custom'] ) {
 		  $position = ! empty( $settings['custom']['position'] ) ? esc_attr( $settings['custom']['position'] ) : '';
 		}
+
+        $settings['shortcode']['enable']            = isset( $name_prefix['shortcode']['enable'] ) ? 1 : 0;
+        $settings['shortcode']['ignore_location']   = isset( $name_prefix['shortcode']['ignore_location'] ) ? 1 : 0;
+
+        $settings['php']['enable']                  = isset( $name_prefix['php']['enable'] ) ? 1 : 0;
+        $settings['php']['ignore_location']         = isset( $name_prefix['php']['ignore_location'] ) ? 1 : 0;
 
 		return apply_filters( 'blox_save_position_settings', $settings, $post_id, $name_prefix, $global );
 	}

@@ -25,6 +25,33 @@ jQuery(document).ready(function($){
 	});
 
 
+	// Hide toggle containers
+	function show_toggle_containers() {
+		$('.blox-toggle-has-container').each( function() {
+			var is_enabled = $( this ).find( 'input' ).is( ':checked' );
+
+			if ( ! is_enabled ) {
+				//$( this ).next().addClass( 'blox-toggle-hide' );
+				$( this ).next().hide();
+			}
+		});
+	};
+
+	// Hide toggle containers on page load
+	show_toggle_containers();
+
+	// Shows and hides each toggle container on selection
+	$( document ).on( 'change', '.blox-toggle-wrap > input ', function(){
+		var is_enabled = $(this).is( ':checked' );
+
+		if ( is_enabled ) {
+			$( this ).parents( '.blox-toggle-has-container' ).next().slideDown(400);
+		} else {
+			$( this ).parents( '.blox-toggle-has-container' ).next().slideUp(400);
+		}
+	});
+
+
 
 	/* Modal scripts
 	-------------------------------------------------------------- */

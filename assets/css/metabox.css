@@ -11,9 +11,14 @@
 
 /* Blox Defaults
 -------------------------------------------------------------- */
-.blox-checkbox label {
+.blox-checkbox.after {
+	margin-top: 15px;
+}
+.blox-checkbox label,
+.blox-checkbox .blox-help-text-icon {
 	margin-bottom: .5em;
 	display: inline-block;
+	vertical-align: middle;
 }
 .blox-checkbox label:last-child {
 	margin-bottom: 0;
@@ -80,6 +85,14 @@
 	font-size: 13px;
 	font-style: italic;
 	margin-top: 5px;
+}
+.blox-code {
+	width: 100%;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #dfdfdf;
+    box-sizing: border-box;
+    font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 }
 .blox-textarea-code {
 	width: 100%;
@@ -311,7 +324,7 @@ ul.blox-columns li {
 /* Content blocks container header styles (Local Only) */
 
 .blox-content-block-header {
-	background: #fafafa;
+	background: #f9f9f9;
 	border: 1px solid #dfdfdf;
 	cursor: move;
 	padding: 10px 12px;
@@ -467,7 +480,7 @@ ul.blox-columns li {
 	/*font-weight: 600;*/
 }
 .blox-tab-navigation li {
-	background-color: #fafafa;
+	background-color: #f9f9f9;
 	border: 1px solid #dfdfdf;
 	display: inline-block;
 	margin: 0 8px -1px 0;
@@ -679,7 +692,7 @@ ul.blox-columns li {
 	float: right;
 }
 .blox-toolbar-button:hover {
-	background: #fafafa;
+	background: #f9f9f9;
 	border-color: #555d66;
 	color: #23282d;
 	-webkit-box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08);
@@ -1408,9 +1421,67 @@ body.blox-modal-open {
 .blox-toggle label:before {
 	display: none;
 }
+.blox-toggle .title {
+	font-weight: 600;
+	padding-left: 3px;
+	vertical-align: middle;
+	-webkit-font-smoothing: subpixel-antialiased;
+}
 .blox-toggle-wrap > input:checked + label:after {
 	left: 8px;
 }
 .blox-toggle-wrap > input:checked + label {
 	background: #0073aa;
+}
+
+.blox-toggle.blox-toggle-has-container {
+	margin-bottom: 15px;
+}
+.blox-toggle-container {
+	border-bottom: 1px solid #dfdfdf;
+	margin-bottom: 20px;
+	padding: 10px 10px 25px;
+}
+.blox-toggle-container.last {
+	border-bottom: none;
+	padding: 10px 10px 0;
+}
+
+
+
+/* Position Hook Selector Box */
+.blox-hook-selector {
+	overflow: hidden;
+}
+.blox-hook-selector * {
+	box-sizing: border-box
+}
+.blox-hook-selector-menu {
+	float: left;
+	width: 25%;
+}
+.blox-hook-selector-content {
+	height: 400px;
+	overflow: scroll;
+	border: 1px solid #dfdfdf;
+	float: right;
+    width: 75%;
+}
+
+.blox-hook-item {
+	padding: 6px 10px;
+	border-bottom: 1px solid #dfdfdf;
+}
+.blox-hook-item .blox-hook-name {
+	font-weight: 600;
+	margin-bottom: 3px;
+}
+.blox-hook-item .blox-hook-description {
+	color: #666;
+	font-size: 13px;
+	font-style: italic;
+}
+.blox-hook-item:hover {
+	background-color: #f9f9f9;
+	cursor: pointer
 }
