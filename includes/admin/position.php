@@ -153,14 +153,36 @@ class Blox_Position {
 
                 <div class="blox-toggle blox-toggle-has-container">
                     <span class="blox-toggle-wrap">
-                        <input id="blox_position_enable_hook_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[hook][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['hook']['enable'] ) ? checked( $get_prefix['hook']['enable'], 1, false ) : ' checked="checked"'; ?> />
-                        <label class="toggle" for="blox_position_enable_hook_<?php echo $id; ?>"></label>
+                        <input id="blox_position_hook_enable_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[hook][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['hook']['enable'] ) ? checked( $get_prefix['hook']['enable'], 1, false ) : ' checked="checked"'; ?> />
+                        <label class="toggle" for="blox_position_hook_enable_<?php echo $id; ?>"></label>
                     </span>
                     <span class="title"><?php _e( 'Hook Positioning', 'blox' ); ?></span>
                 </div>
 
                 <div class="blox-toggle-container">
 
+
+                    <div>
+                        <div>
+                            <div>
+                                <span><?php _e( 'Hook', 'blox' ); ?></span>
+                            </div>
+                            <input type="text" name="<?php echo $name_prefix; ?>[hook][position]" id="blox_position_hook_position_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['position'] ) ? esc_attr( $get_prefix['hook']['position'] )  : 'genesis_after_header'; ?>" />
+                        </div>
+                        <div>
+                            <div>
+                                <span><?php _e( 'Priority', 'blox' ); ?></span>
+                                <span class="blox-help-text-icon">
+                                    <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                                </span>
+                                <div class="blox-help-text top">
+                                    <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
+                                </div>
+                            </div>
+                            <input type="text" name="<?php echo $name_prefix; ?>[hook][priority]" id="blox_position_hook_priority_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['priority'] ) ? esc_attr( $get_prefix['hook']['priority'] )  : '15'; ?>" class="blox-small-text"/>
+                        </div>
+
+                    </div>
 
                     <?php
                     $genesis_hooks = $this->get_genesis_hooks();
@@ -285,21 +307,7 @@ class Blox_Position {
                                 </td>
                             </tr>
 
-                            <tr class="blox-position-custom-priority blox-position-custom <?php if ( empty( $get_prefix['position_type'] ) || $get_prefix['position_type'] != 'custom' ) echo ( 'blox-hidden' ); ?>">
-                                <th scope="row"><?php _e( 'Priority', 'blox' ); ?></th>
-                                <td>
-                                    <label>
-                                        <input type="text" name="<?php echo $name_prefix; ?>[custom][priority]" id="blox_position_custom_priority_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['custom']['priority'] ) ? esc_attr( $get_prefix['custom']['priority'] )  : '15'; ?>" class="blox-small-text"/>
-                                        <?php _e( 'Enter a whole number greater than zero.', 'blox' ); ?>
-                                    </label>
-                                    <span class="blox-help-text-icon">
-                                        <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                                    </span>
-                                    <div class="blox-help-text top">
-                                        <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
-                                    </div>
-                                </td>
-                            </tr>
+
 
                         </tbody>
                     </table>
@@ -311,8 +319,8 @@ class Blox_Position {
 
                 <div class="blox-toggle blox-toggle-has-container">
                     <span class="blox-toggle-wrap">
-                        <input id="blox_position_enable_shortcode_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[shortcode][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['shortcode']['enable'] ) ? checked( $get_prefix['shortcode']['enable'], 1, false ) : ''; ?> />
-                        <label class="toggle" for="blox_position_enable_shortcode_<?php echo $id; ?>"></label>
+                        <input id="blox_position_shortcode_enable_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[shortcode][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['shortcode']['enable'] ) ? checked( $get_prefix['shortcode']['enable'], 1, false ) : ''; ?> />
+                        <label class="toggle" for="blox_position_shortcode_enable_<?php echo $id; ?>"></label>
                     </span>
                     <span class="title"><?php _e( 'Shortcode Positioning', 'blox' ); ?></span>
                 </div>
@@ -330,7 +338,7 @@ class Blox_Position {
 
                     <div class="blox-checkbox after">
                         <label>
-                            <input type="checkbox" name="<?php echo $name_prefix; ?>[shortcode][ignore_location]" value="1" <?php echo isset( $get_prefix['shortcode']['ignore_location'] ) ? checked( $get_prefix['shortcode']['ignore_location'], 1, false ) : ''; ?> />
+                            <input type="checkbox" id="blox_position_shortcode_ignore_location_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[shortcode][ignore_location]" value="1" <?php echo isset( $get_prefix['shortcode']['ignore_location'] ) ? checked( $get_prefix['shortcode']['ignore_location'], 1, false ) : ''; ?> />
                             <?php _e( 'Check to ignore location settings', 'blox' ); ?>
                         </label>
                         <span class="blox-help-text-icon">
@@ -345,8 +353,8 @@ class Blox_Position {
 
                 <div class="blox-toggle blox-toggle-has-container">
                     <span class="blox-toggle-wrap">
-                        <input id="blox_position_enable_php_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[php][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['php']['enable'] ) ? checked( $get_prefix['php']['enable'], 1, false ) : ''; ?> />
-                        <label class="toggle" for="blox_position_enable_php_<?php echo $id; ?>"></label>
+                        <input id="blox_position_php_enable_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[php][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['php']['enable'] ) ? checked( $get_prefix['php']['enable'], 1, false ) : ''; ?> />
+                        <label class="toggle" for="blox_position_php_enable_<?php echo $id; ?>"></label>
                     </span>
                     <span class="title"><?php _e( 'PHP Function Positioning', 'blox' ); ?></span>
                 </div>
@@ -364,7 +372,7 @@ class Blox_Position {
 
                     <div class="blox-checkbox after">
                         <label>
-                            <input type="checkbox" name="<?php echo $name_prefix; ?>[php][ignore_location]" value="1" <?php echo isset( $get_prefix['php']['ignore_location'] ) ? checked( $get_prefix['php']['ignore_location'], 1, false ) : ''; ?> />
+                            <input type="checkbox" id="blox_position_php_ignore_location_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[php][ignore_location]" value="1" <?php echo isset( $get_prefix['php']['ignore_location'] ) ? checked( $get_prefix['php']['ignore_location'], 1, false ) : ''; ?> />
                             <?php _e( 'Check to ignore location settings', 'blox' ); ?>
                         </label>
                         <span class="blox-help-text-icon">
@@ -398,20 +406,22 @@ class Blox_Position {
 
 		$settings = array();
 
+        /* Depracated settings as of v2.0
         $settings['position_format']    = isset( $name_prefix['position_format'] ) ? esc_attr( $name_prefix['position_format'] ) : 'hook';
-
-        // Hook specific settings
 		$settings['position_type']      = esc_attr( $name_prefix['position_type'] );
 		$settings['custom']['position'] = isset( $name_prefix['custom']['position'] ) ? esc_attr( $name_prefix['custom']['position'] ) : '';
 		$settings['custom']['priority'] = absint( $name_prefix['custom']['priority'] );
 
-        $settings['hook']['enable']                 = isset( $name_prefix['hook']['enable'] ) ? 1 : 0;
-
-		if ( $settings['position_type'] == 'default' ) {
+        if ( $settings['position_type'] == 'default' ) {
 		  $position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
 		} else if ( $settings['custom'] ) {
 		  $position = ! empty( $settings['custom']['position'] ) ? esc_attr( $settings['custom']['position'] ) : '';
 		}
+        */
+
+        $settings['hook']['enable']                 = isset( $name_prefix['hook']['enable'] ) ? 1 : 0;
+        $settings['hook']['position']               = isset( $name_prefix['hook']['position'] ) ? esc_attr( $name_prefix['hook']['position'] ) : '';
+        $settings['hook']['priority']               = absint( $name_prefix['hook']['priority'] );
 
         $settings['shortcode']['enable']            = isset( $name_prefix['shortcode']['enable'] ) ? 1 : 0;
         $settings['shortcode']['ignore_location']   = isset( $name_prefix['shortcode']['ignore_location'] ) ? 1 : 0;
