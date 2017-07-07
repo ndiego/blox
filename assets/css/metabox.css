@@ -1451,6 +1451,7 @@ body.blox-modal-open {
 
 /* Position Hook Selector Box */
 .blox-hook-selector {
+	border: 1px solid #dfdfdf;
 	overflow: hidden;
 }
 .blox-hook-selector * {
@@ -1459,18 +1460,27 @@ body.blox-modal-open {
 .blox-hook-selector-menu {
 	float: left;
 	width: 25%;
+	height: 400px;
+	background-color: #f9f9f9;
 }
 .blox-hook-selector-content {
 	height: 400px;
 	overflow: scroll;
-	border: 1px solid #dfdfdf;
+	border-left: 1px solid #dfdfdf;
 	float: right;
     width: 75%;
 }
 
+.blox-hook-section-title {
+	border-bottom: 1px solid #dfdfdf;
+    margin: 15px 0 5px;
+    padding: 0 10px 5px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
 .blox-hook-item {
 	padding: 6px 10px;
-	border-bottom: 1px solid #dfdfdf;
 }
 .blox-hook-item .blox-hook-name {
 	font-weight: 600;

@@ -1088,6 +1088,12 @@ jQuery(document).ready(function($){
 	// Run on page load so selected position content is visible
 	show_position_format_settings();
 
+	$( '.blox-position-show-hook-descriptions' ).click( function(e) {
+		var parent = $(this).parents( '.form-table' );
+
+		$( '.blox-hook-description' ).toggle();
+	});
+
 
 	/* Visibility scripts
 	-------------------------------------------------------------- */

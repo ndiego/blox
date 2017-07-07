@@ -203,6 +203,11 @@ class Blox_Position {
                                     <?php
                                 }
                             ?>
+                            <div class="blox-position-show-hook-descriptions">
+                                <span class="blox-help-text-icon">
+                                    <a href="#" class="dashicons dashicons-editor-help"></a>
+                                </span>
+                            </div>
                         </div>
                         <div class="blox-hook-selector-content">
                             <?php
