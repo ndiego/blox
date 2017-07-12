@@ -190,19 +190,53 @@ class Blox_Position {
                     //echo print_r($hooks['core']);
 
                     $genesis_enabled = true;
+                    $custom_enabled = true;
+                    $wordpress_enabled = true;
+                    $woocommerce_enabled = true;
+
+                    $enabled_hook_types = array(
+                        'genesis' => array(
+                            'enabled' => 1,
+                            'title'   => __( 'Genesis Hooks', 'blox' )
+                        ),
+                        'woocommerce' => array(
+                            'enabled' => 1,
+                            'title'   => __( 'WooCommerce Hooks', 'blox' )
+                        ),
+                        'custom' => array(
+                            'enabled' => 1,
+                            'title'   => __( 'Custom Hooks', 'blox' )
+                        ),
+                        'wordpress' => array(
+                            'enabled' => 1,
+                            'title'   => __( 'WordPress Hooks', 'blox' )
+                        ),
+                    );
 
                     ?>
                     <div class="blox-hook-selector">
                         <div class="blox-hook-selector-menu">
+                            <ul class="blox-hook-type-list">
                             <?php
-                                if ( $genesis_enabled ) {
-                                    ?>
-                                    <div class="blox-hook-group">
-                                        Genesis Hooks
-                                    </div>
-                                    <?php
+                                if ( ! empty( $enabled_hook_types ) ) {
+                                    $i = 0;
+                                    foreach ( $enabled_hook_types as $slug => $atts ) {
+                                        if ( $atts['enabled'] ) {
+
+                                            // Set the first type to current
+                                            $current = $i == 0 ? 'current' : '';
+                                            ?>
+                                            <li class="blox-hook-type <?php echo $current; ?>" data-hook="<? echo $slug; ?>">
+                                                <div class="blox-hook-dashicon blox-<?php echo $slug; ?>-dashicon dashicons-before"></div>
+                                                <span><?php echo $atts['title']; ?></span>
+                                            </li>
+                                            <?php
+                                        }
+                                        $i++;
+                                    }
                                 }
                             ?>
+                            </ul>
                             <div class="blox-position-show-hook-descriptions">
                                 <span class="blox-help-text-icon">
                                     <a href="#" class="dashicons dashicons-editor-help"></a>
@@ -211,20 +245,33 @@ class Blox_Position {
                         </div>
                         <div class="blox-hook-selector-content">
                             <?php
-                                if ( $genesis_enabled ) {
-                                    foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
-                                        <div class="blox-hook-section">
-                                            <div class="blox-hook-section-title"><?php echo $section['name']; ?></div>
-                                            <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
-                                                <div class="blox-hook-item">
-                                                    <div class="blox-hook-name"><?php echo $hook['name']; ?></div>
-                                                    <div class="blox-hook-description"><?php echo $hook['title']; ?></div>
-                                                </div>
-                                            <?php } ?>
+                            if ( ! empty( $enabled_hook_types ) ) {
+                                $i = 0;
+                                foreach ( $enabled_hook_types as $slug => $atts ) {
+                                    if ( $atts['enabled'] ) {
+                                        ?>
+                                        <div class="blox-hooks <?php echo $slug; ?>">
+                                            <h1><?php echo $slug; ?></h1>
+                                        <?php
+                                        foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
+                                            <div class="blox-hook-section">
+                                                <div class="blox-hook-section-title"><?php echo $section['name']; ?></div>
+                                                <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
+                                                    <div class="blox-hook-item">
+                                                        <div class="blox-hook-name"><?php echo $hook['name']; ?></div>
+                                                        <div class="blox-hook-description"><?php echo $hook['title']; ?></div>
+                                                    </div>
+                                                <?php } ?>
+                                            </div>
+                                        <?php } ?>
                                         </div>
-                                    <?php }
+                                    <?php
+                                    }
+                                    $i++;
                                 }
+                            }
                             ?>
+
                         </div>
                     </div>
 

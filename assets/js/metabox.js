@@ -31,7 +31,6 @@ jQuery(document).ready(function($){
 			var is_enabled = $( this ).find( 'input' ).is( ':checked' );
 
 			if ( ! is_enabled ) {
-				//$( this ).next().addClass( 'blox-toggle-hide' );
 				$( this ).next().hide();
 			}
 		});
@@ -1088,10 +1087,33 @@ jQuery(document).ready(function($){
 	// Run on page load so selected position content is visible
 	show_position_format_settings();
 
-	$( '.blox-position-show-hook-descriptions' ).click( function(e) {
-		var parent = $(this).parents( '.form-table' );
+
+
+	$(document).on( 'click', '.blox-position-show-hook-descriptions', function(e) {
+		e.preventDefault();
 
 		$( '.blox-hook-description' ).toggle();
+	});
+
+
+	// Show position hooks based on type
+	$(document).on( 'click', '.blox-hook-type', function(e) {
+		e.preventDefault();
+
+		if ( $( this ).hasClass( 'current' ) ) {
+			return;
+		} else {
+			// Adds current class to active hook type
+			$( this ).addClass( 'current' );
+			$( this ).siblings().removeClass( 'current' );
+
+			var hook = $( this ).data( 'hook' );
+
+			// Show the correct hook tab
+			$(this).parents( '.blox-hook-selector-menu' ).siblings( '.blox-hook-selector-content' ).children( '.blox-hooks' ).not( '.' + hook ).hide();
+			$(this).parents( '.blox-hook-selector-menu' ).siblings( '.blox-hook-selector-content' ).children( '.' + hook ).show();
+		}
+
 	});
 
 
@@ -1264,7 +1286,6 @@ jQuery(document).ready(function($){
 
 	// Edit Content Blocks (Need to '.on' because we are working with dynamically generated content)
 	$(document).on( 'click', '.blox-content-block-header', function() {
-		//$( this ).siblings( '.blox-settings-tabs' ).toggle( 0 );
 		$( this ).parents( '.blox-content-block' ).toggleClass( 'editing' );
 
 		var editing = $( this ).siblings( '.blox-content-block-editing' );

@@ -1462,7 +1462,44 @@ body.blox-modal-open {
 	width: 25%;
 	height: 400px;
 	background-color: #f9f9f9;
+	color: #666;
+	font-weight: 600;
 }
+.blox-hook-type-list {
+	margin: 0;
+}
+.blox-hook-type {
+	cursor: pointer;
+	border-bottom: 1px solid #dfdfdf;
+	margin-bottom: 0;
+	padding: 10px 6px;
+}
+.blox-hook-type.current,
+.blox-hook-type:hover {
+	background-color: #fff;
+	color: #23282d;
+}
+.blox-hook-dashicon {
+	float: left;
+    width: 30px;
+    margin: 0;
+    text-align: center;
+}
+.blox-genesis-dashicon:before {
+	font-family: genesis-icon!important;
+	content: "\e600";
+}
+.blox-woocommerce-dashicon:before {
+	font-family: WooCommerce!important;
+    content: '\e03d';
+}
+.blox-wordpress-dashicon:before {
+	content: "\f324";
+}
+.blox-custom-dashicon:before {
+	content: "\f308";
+}
+
 .blox-hook-selector-content {
 	height: 400px;
 	overflow: scroll;
@@ -1473,9 +1510,7 @@ body.blox-modal-open {
 
 .blox-hook-section-title {
 	border-bottom: 1px solid #dfdfdf;
-    margin: 15px 0 5px;
-    padding: 0 10px 5px;
-    font-size: 14px;
+    padding: 6px 10px 6px;
     font-weight: 600;
 }
 
@@ -1483,13 +1518,14 @@ body.blox-modal-open {
 	padding: 6px 10px;
 }
 .blox-hook-item .blox-hook-name {
-	font-weight: 600;
-	margin-bottom: 3px;
+	font-weight: 400;
 }
 .blox-hook-item .blox-hook-description {
 	color: #666;
+	display: none;
 	font-size: 13px;
 	font-style: italic;
+	padding-top: 3px;
 }
 .blox-hook-item:hover {
 	background-color: #f9f9f9;

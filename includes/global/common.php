@@ -52,7 +52,7 @@ class Blox_Common {
 
         // Load the base class object.
         $this->base = Blox_Main::get_instance();
-        
+
         add_filter( 'blox_genesis_hooks', array( $this, 'push_hook_defaults' ), 10 );
     }
 
@@ -114,6 +114,30 @@ class Blox_Common {
         );
 
         return apply_filters( 'blox_image_sizes', $sizes );
+    }
+
+
+    /**
+     * Helper function for retrieving all available Core WordPress hooks.
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all Core WordPress hooks.
+     */
+    public function get_wordpress_hooks_unfiltered() {
+
+        // All current standardized WordPress Hooks broken into their respective categories
+        $wordpress_hooks = array(
+            'core' => array(
+                'name'  => __( 'Wordpress Core Hooks', 'blox' ),
+                'hooks' => array(
+                    'wp_head' 	=> array( 'name' => 'wp_head', 'title' => __( 'This hook executes within the <head></head> section of the document source.', 'blox' ) ),
+                    'wp_footer' => array( 'name' => 'wp_footer', 'title' => __( 'This hook executes near the </body> tag of the document source.', 'blox' ) )
+                )
+            ),
+        );
+
+        return $wordpress_hooks;
     }
 
 
@@ -201,7 +225,7 @@ class Blox_Common {
 					'genesis_after_comment_form' 	=> array( 'name'  => 'genesis_after_comment_form', 'title' => __( 'This hook executes immediately after the comment form, outside the #respond div.', 'blox' ) ),
 				)
 			),
-			
+
 			// Also include the main Wordpress core hooks that are included in all Genesis themes built by StudioPress and most other premium Genesis themes
             'core' => array(
                 'name'  => __( 'Wordpress Core Hooks', 'blox' ),
@@ -214,8 +238,75 @@ class Blox_Common {
 
     	return $genesis_hooks;
     }
-    
-    
+
+
+    /**
+     * Helper function for retrieving all available WooCommerce hooks.
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all WooCommerce hooks.
+     */
+    public function get_woocommerce_hooks_unfiltered() {
+
+        // All current WooCommerce Hooks broken into their respective categories
+        $woocommerce_hooks = array(
+            'single-product' => array(
+                'name'  => __( 'Single Product Page', 'blox' ),
+                'hooks' => array(
+                    'woocommerce_before_single_product' 	    => array( 'name' => 'woocommerce_before_single_product', 'title' => __( 'This hook executes before all of the single product information.', 'blox' ) ),
+                    'woocommerce_before_single_product_summary' => array( 'name' => 'woocommerce_before_single_product_summary', 'title' => __( 'This hook executes before the summary portion of the single product page.', 'blox' ) ),
+                    'woocommerce_single_product_summary' 	    => array( 'name' => 'woocommerce_single_product_summary', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_add_to_cart_form' 	    => array( 'name' => 'woocommerce_before_add_to_cart_form', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_variations_form' 	    => array( 'name' => 'woocommerce_before_variations_form', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_add_to_cart_button' 	=> array( 'name' => 'woocommerce_before_add_to_cart_button', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_single_variation' 	    => array( 'name' => 'woocommerce_before_single_variation', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_single_variation' 	            => array( 'name' => 'woocommerce_single_variation', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_single_variation' 	    => array( 'name' => 'woocommerce_after_single_variation', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_add_to_cart_button' 	    => array( 'name' => 'woocommerce_after_add_to_cart_button', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_variations_form' 	    => array( 'name' => 'woocommerce_after_variations_form', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_add_to_cart_form' 	    => array( 'name' => 'woocommerce_after_add_to_cart_form', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_product_meta_start' 	        => array( 'name' => 'woocommerce_product_meta_start', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_product_meta_end' 	            => array( 'name' => 'woocommerce_product_meta_end', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_share' 	                    => array( 'name' => 'woocommerce_share', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_product_thumbnails' 	        => array( 'name' => 'woocommerce_product_thumbnails', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_single_product_summary'  => array( 'name' => 'woocommerce_after_single_product_summary', 'title' => __( 'This hook executes after the summary portion of the single product page.', 'blox' ) ),
+                    'woocommerce_after_single_product' 	        => array( 'name' => 'woocommerce_after_single_product', 'title' => __( 'This hook executes after all of the single product information.', 'blox' ) ),
+                )
+            ),
+            'checkout' => array(
+                'name'  => __( 'Checkout Page', 'blox' ),
+                'hooks' => array(
+                    'woocommerce_before_checkout_form' 	            => array( 'name' => 'woocommerce_before_checkout_form', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_checkout_before_customer_details'  => array( 'name' => 'woocommerce_checkout_before_customer_details', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_checkout_billing_form' 	    => array( 'name' => 'woocommerce_before_checkout_billing_form', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_checkout_billing_form' 	    => array( 'name' => 'woocommerce_after_checkout_billing_form', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_checkout_shipping_form'     => array( 'name' => 'woocommerce_before_checkout_shipping_form', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_checkout_shipping_form' 	    => array( 'name' => 'woocommerce_after_checkout_shipping_form', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_order_notes' 	            => array( 'name' => 'woocommerce_before_order_notes', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_order_notes' 	            => array( 'name' => 'woocommerce_after_order_notes', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_checkout_after_customer_details'   => array( 'name' => 'woocommerce_checkout_after_customer_details', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_checkout_before_order_review' 	    => array( 'name' => 'woocommerce_checkout_before_order_review', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_review_order_before_cart_contents' => array( 'name' => 'woocommerce_review_order_before_cart_contents', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_review_order_after_cart_contents' 	=> array( 'name' => 'woocommerce_review_order_after_cart_contents', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_review_order_before_shipping' 	    => array( 'name' => 'woocommerce_review_order_before_shipping', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_review_order_after_shipping' 	    => array( 'name' => 'woocommerce_review_order_after_shipping', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_review_order_before_order_total' 	=> array( 'name' => 'woocommerce_review_order_before_order_total', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_review_order_after_order_total' 	=> array( 'name' => 'woocommerce_review_order_after_order_total', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_review_order_before_payment' 	    => array( 'name' => 'woocommerce_review_order_before_payment', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_review_order_before_submit' 	    => array( 'name' => 'woocommerce_review_order_before_submit', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_review_order_after_submit' 	    => array( 'name' => 'woocommerce_review_order_after_submit', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_review_order_after_payment' 	    => array( 'name' => 'woocommerce_review_order_after_payment', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_checkout_after_order_review' 	    => array( 'name' => 'woocommerce_checkout_after_order_review', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_checkout_form' 	            => array( 'name' => 'woocommerce_after_checkout_form', 'title' => __( 'NEED', 'blox' ) ),
+                )
+            ),
+        );
+
+        return $woocommerce_hooks;
+    }
+
+
     /**
      * Helper function for retrieving all available Genesis hooks post filtering
      *
@@ -224,11 +315,24 @@ class Blox_Common {
      * @return array Array of all Genesis hooks after they have been filtered.
      */
     public function get_genesis_hooks() {
-    
+
     	return apply_filters( 'blox_genesis_hooks', $this->get_genesis_hooks_unfiltered() );
     }
-    
-    
+
+
+    /**
+     * Helper function for retrieving all available Core Wordpress hooks post filtering
+     *
+     * @since 1.1.0
+     *
+     * @return array Array of all Core WordPress hooks after they have been filtered.
+     */
+    public function get_wordpress_hooks() {
+
+        return apply_filters( 'blox_wordpress_hooks', $this->get_wordpress_hooks_unfiltered() );
+    }
+
+
     /**
      * Helper function for retrieving all available hooks post filtering in flattened, 1-dim, array
      *
@@ -237,11 +341,11 @@ class Blox_Common {
      * @return array Array of all available hooks in 1-dimensional array
      */
     public function get_genesis_hooks_flattened() {
-    
+
     	$unflattened = $this->get_genesis_hooks();
-    	
+
     	$flattened = array();
-    	
+
     	foreach( $unflattened as $sections => $section ) {
     		foreach ( $section['hooks'] as $hooks => $hook ) {
     			$flattened[$hooks] = $hook['name'];
@@ -249,8 +353,8 @@ class Blox_Common {
     	}
     	return $flattened;
     }
-    
-    
+
+
     /**
      * Helper method for retrieving all Genesis hooks.
      *
@@ -259,22 +363,22 @@ class Blox_Common {
      * @return array Array of all Genesis hooks.
      */
     public function push_hook_defaults() {
-    
+
     	$default_hooks        = blox_get_option( 'default_hooks', array() );
     	$default_custom_hooks = blox_get_option( 'default_custom_hooks', array() );
     	$final_hooks          = array();
-    	
+
 		// Make sure default hooks are enabled
 		if ( ! empty( $default_hooks ) && isset( $default_hooks['enable'] ) && $default_hooks['enable'] == 1 ) {
-	
+
 			$available_hooks = $default_hooks['available_hooks'];
-	
+
 			foreach ( $available_hooks as $sections => $section ) {
-	
+
 				$enabled_hooks = array();
-	
+
 				foreach ( $section['hooks'] as $hooks => $hook ) {
-	
+
 					if ( isset( $hook['enable'] ) && $hook['enable'] == 1 ) {
 						$enabled_hooks[$hooks] = array(
 							'name'  => ! empty( $hook['name'] ) ? esc_attr( $hook['name'] ) : $hooks,
@@ -282,7 +386,7 @@ class Blox_Common {
 						);
 					}
 				}
-		
+
 				if ( ! empty( $enabled_hooks ) ) {
 					$final_hooks[$sections]['name']  = $section['name'];
 					$final_hooks[$sections]['hooks'] = $enabled_hooks;
@@ -291,19 +395,19 @@ class Blox_Common {
 		} else {
 			$final_hooks = $this->get_genesis_hooks_unfiltered();
 		}
-		
-				
+
+
 		// Run our custom hooks through the same process, but only after the Genesis hooks
 		if ( ! empty( $default_custom_hooks ) && isset( $default_custom_hooks['enable'] ) && $default_custom_hooks['enable'] == 1 ) {
-	
+
 			$available_hooks = $default_custom_hooks['available_hooks'];
-	
+
 			foreach ( $available_hooks as $sections => $section ) {
-	
+
 				$enabled_hooks = array();
-	
+
 				foreach ( $section['hooks'] as $hooks => $hook ) {
-	
+
 					if ( isset( $hook['enable'] ) && $hook['enable'] == 1 ) {
 						$enabled_hooks[$hooks] = array(
 							'name'  => ! empty( $hook['name'] ) ? esc_attr( $hook['name'] ) : $hooks,
@@ -311,14 +415,14 @@ class Blox_Common {
 						);
 					}
 				}
-		
+
 				if ( ! empty( $enabled_hooks ) ) {;
 					$final_hooks[$sections]['name']  = $section['name'];
 					$final_hooks[$sections]['hooks'] = $enabled_hooks;
 				}
 			}
-		}	
-	
+		}
+
 		// Return our modified array of hooks
 		return $final_hooks;
     }
@@ -337,8 +441,8 @@ class Blox_Common {
 
     	return apply_filters( 'blox_content_type', $content_types );
     }
-    
-    
+
+
     /**
      * Helper method for retrieving the content defaults
      *
@@ -347,7 +451,7 @@ class Blox_Common {
      * @return array Array of all enabled content types
      */
     public function push_content_defaults() {
-    	
+
     }
 
 
