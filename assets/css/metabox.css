@@ -243,6 +243,16 @@ ul.blox-columns li {
 	border-color: #ede0a9;
 }
 
+.blox-error-box {
+	background: #f9f9f9;
+    border-left: 4px solid #fff;
+    -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+    margin: 15px 10px 10px;
+    padding: 10px 12px;
+    border-left-color: #dc3232;
+}
+
 
 
 /* Metabox styles
@@ -1464,6 +1474,7 @@ body.blox-modal-open {
 	background-color: #f9f9f9;
 	color: #666;
 	font-weight: 600;
+	position: relative;
 }
 .blox-hook-type-list {
 	margin: 0;
@@ -1479,6 +1490,9 @@ body.blox-modal-open {
 	background-color: #fff;
 	color: #23282d;
 }
+.blox-hook-type span {
+	padding-left: 2px;
+}
 .blox-hook-dashicon {
 	float: left;
     width: 30px;
@@ -1492,12 +1506,35 @@ body.blox-modal-open {
 .blox-woocommerce-dashicon:before {
 	font-family: WooCommerce!important;
     content: '\e03d';
+	width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+.blox-custom-dashicon:before {
+	content: "\f227";
 }
 .blox-wordpress-dashicon:before {
 	content: "\f324";
+	width: 18px;
+    height: 18px;
+    font-size: 18px;
 }
-.blox-custom-dashicon:before {
-	content: "\f308";
+.blox-hooks-disabled {
+	float: right;
+    margin-right: 5px;
+	color: #a2a2a2;
+    font-size: 18px;
+}
+
+.blox-show-hook-descriptions {
+	position: absolute;
+	bottom: 0;
+	margin: 10px;
+	font-weight: 400;
+	font-size: 13px;
+	color: #a2a2a2;
+	width: 100%;
+	cursor: pointer;
 }
 
 .blox-hook-selector-content {
@@ -1528,6 +1565,6 @@ body.blox-modal-open {
 	padding-top: 3px;
 }
 .blox-hook-item:hover {
-	background-color: #f9f9f9;
+	background-color: #f1f1f1;
 	cursor: pointer
 }

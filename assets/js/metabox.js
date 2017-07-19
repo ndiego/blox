@@ -1089,25 +1089,25 @@ jQuery(document).ready(function($){
 
 
 
-	$(document).on( 'click', '.blox-position-show-hook-descriptions', function(e) {
+	$(document).on( 'click', '.blox-show-hook-descriptions', function(e) {
 		e.preventDefault();
 
 		$( '.blox-hook-description' ).toggle();
 	});
 
 
-	// Show position hooks based on type
+	// Show position hooks based on type on click
 	$(document).on( 'click', '.blox-hook-type', function(e) {
 		e.preventDefault();
 
-		if ( $( this ).hasClass( 'current' ) ) {
+		if ( $(this).hasClass( 'current' ) ) {
 			return;
 		} else {
 			// Adds current class to active hook type
-			$( this ).addClass( 'current' );
-			$( this ).siblings().removeClass( 'current' );
+			$(this).addClass( 'current' );
+			$(this).siblings().removeClass( 'current' );
 
-			var hook = $( this ).data( 'hook' );
+			var hook = $(this).data( 'hook-type' );
 
 			// Show the correct hook tab
 			$(this).parents( '.blox-hook-selector-menu' ).siblings( '.blox-hook-selector-content' ).children( '.blox-hooks' ).not( '.' + hook ).hide();
@@ -1115,6 +1115,40 @@ jQuery(document).ready(function($){
 		}
 
 	});
+
+
+	// Show current hooks on page load
+	function show_current_hooks() {
+		$( '.blox-hook-type' ).each( function() {
+
+			if ( $(this).hasClass( 'current' ) ) {
+
+				var hook = $(this).data( 'hook-type' );
+
+				// Show the correct hook tab
+				$(this).parents( '.blox-hook-selector-menu' ).siblings( '.blox-hook-selector-content' ).children( '.blox-hooks' ).not( '.' + hook ).hide();
+				$(this).parents( '.blox-hook-selector-menu' ).siblings( '.blox-hook-selector-content' ).children( '.' + hook ).show();
+			}
+		});
+	};
+
+	show_current_hooks();
+
+
+	// Populate the selected hook field on click
+	$(document).on( 'click', '.blox-hook-item', function(e) {
+		e.preventDefault();
+
+		var hook 	 = $(this).data( 'hook' ),
+		    block_id = $(this).parents( '.blox-content-block' ).attr( 'id' ),
+
+			// If we are on a global block, the retrieved block id will be gibberish and not be a number. But if we are on a global block we don't need to worry about targeting...
+			target = ! isNaN( block_id ) ? ( '#blox_position_hook_position_' + block_id ) : '.blox-selected-hook-position';
+
+		// Update setting with selected hook
+		$( target ).val( hook );
+	});
+
 
 
 	/* Visibility scripts

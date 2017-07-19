@@ -307,6 +307,8 @@ class Blox_Common {
     }
 
 
+
+
     /**
      * Helper function for retrieving all available Genesis hooks post filtering
      *
@@ -323,13 +325,33 @@ class Blox_Common {
     /**
      * Helper function for retrieving all available Core Wordpress hooks post filtering
      *
-     * @since 1.1.0
+     * @since 2.0.0
      *
      * @return array Array of all Core WordPress hooks after they have been filtered.
      */
     public function get_wordpress_hooks() {
 
         return apply_filters( 'blox_wordpress_hooks', $this->get_wordpress_hooks_unfiltered() );
+    }
+
+
+    /**
+     * Helper function for retrieving all available hooks
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all hooks.
+     */
+    public function get_hooks() {
+
+        $hooks = array() {
+            'genesis'       => $this->get_genesis_hooks_unfiltered(),
+            'woocommerce'   => $this->get_woocommerce_hooks_unfiltered(),
+            'custom'        => $this->get_custom_hooks_unfiltered(),
+            'wordpress'     => $this->get_wordpress_hooks_unfiltered(),
+        };
+
+        return apply_filters( 'blox_position_hooks', $hooks );
     }
 
 
