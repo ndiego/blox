@@ -161,25 +161,24 @@ class Blox_Position {
 
                 <div class="blox-toggle-container">
 
-
-                    <div>
-                        <div>
-                            <div>
-                                <span><?php _e( 'Hook', 'blox' ); ?></span>
-                            </div>
+                    <div class="blox-position-hook-settings">
+                        <div class="blox-position-selected-hook">
+                            <label>
+                                <span><?php _e( 'Selected Hook', 'blox' ); ?></span>
+                            </label>
                             <input type="text" readonly class="blox-selected-hook-position" name="<?php echo $name_prefix; ?>[hook][position]" id="blox_position_hook_position_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['position'] ) ? esc_attr( $get_prefix['hook']['position'] )  : 'genesis_after_header'; ?>" />
                         </div>
-                        <div>
-                            <div>
-                                <span><?php _e( 'Priority', 'blox' ); ?></span>
-                                <span class="blox-help-text-icon">
-                                    <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                                </span>
-                                <div class="blox-help-text top">
-                                    <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
-                                </div>
-                            </div>
+                        <div class="blox-position-selected-hook-priority">
+                            <label>
+                                <span><?php _e( 'Hook Priority', 'blox' ); ?></span>
+                            </label>
                             <input type="text" name="<?php echo $name_prefix; ?>[hook][priority]" id="blox_position_hook_priority_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['priority'] ) ? esc_attr( $get_prefix['hook']['priority'] )  : '15'; ?>" class="blox-small-text"/>
+                            <span class="blox-help-text-icon">
+                                <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                            </span>
+                            <div class="blox-help-text top">
+                                <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
+                            </div>
                         </div>
                     </div>
 
@@ -258,7 +257,11 @@ class Blox_Position {
                         </div>
                         <div class="blox-hook-selector-content">
                             <?php
-                            if ( ! empty( $enabled_hook_types ) ) {
+
+                            // Get all available hooks
+                            $all_available_hooks = $this->get_hooks();
+
+                            if ( ! empty( $enabled_hook_types ) && ! empty( $all_available_hooks ) ) {
                                 $i = 0;
                                 foreach ( $enabled_hook_types as $slug => $atts ) {
                                     if ( $atts['enabled'] ) {
@@ -270,7 +273,7 @@ class Blox_Position {
                                             <div class="blox-error-box">Alert, this ones is not working</div>
                                             <?php
                                         }
-                                        foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
+                                        foreach ( $all_available_hooks[$slug] as $sections => $section ) { ?>
                                             <div class="blox-hook-section">
                                                 <div class="blox-hook-section-title"><?php echo $section['name']; ?></div>
                                                 <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
@@ -296,7 +299,7 @@ class Blox_Position {
 
 
 
-
+                    <!--
                     <table class="form-table">
                         <tbody>
                             <tr class="blox-position-format">
@@ -382,7 +385,7 @@ class Blox_Position {
 
                         </tbody>
                     </table>
-
+                -->
 
 
                 </div>
@@ -751,6 +754,14 @@ class Blox_Position {
 
         $instance = Blox_Common::get_instance();
         return $instance->get_genesis_hooks();
+
+    }
+
+
+    public function get_hooks() {
+
+        $instance = Blox_Common::get_instance();
+        return $instance->get_hooks();
 
     }
 

@@ -1458,11 +1458,36 @@ body.blox-modal-open {
 }
 
 
+.blox-position-hook-settings {
+	overflow: hidden;
+	box-sizing: border-box;
+}
+.blox-position-hook-settings label {
+	font-weight: 600;
+	display: block;
+	padding-bottom:5px;
+}
+.blox-position-selected-hook {
+	width: 70%;
+	float: left;
+	padding-right: 30px;
+	box-sizing: border-box;
+
+}
+.blox-position-selected-hook input {
+	width: 100%;
+}
+.blox-position-selected-hook-priority {
+	width: 30%;
+	float: left;
+}
 
 /* Position Hook Selector Box */
 .blox-hook-selector {
 	border: 1px solid #dfdfdf;
 	overflow: hidden;
+	clear: both;
+	margin-top: 20px;
 }
 .blox-hook-selector * {
 	box-sizing: border-box

@@ -127,7 +127,7 @@ class Blox_Common {
     public function get_wordpress_hooks_unfiltered() {
 
         // All current standardized WordPress Hooks broken into their respective categories
-        $wordpress_hooks = array(
+        $hooks = array(
             'core' => array(
                 'name'  => __( 'Wordpress Core Hooks', 'blox' ),
                 'hooks' => array(
@@ -137,7 +137,7 @@ class Blox_Common {
             ),
         );
 
-        return $wordpress_hooks;
+        return $hooks;
     }
 
 
@@ -151,7 +151,7 @@ class Blox_Common {
     public function get_genesis_hooks_unfiltered() {
 
     	// All current Genesis Hooks broken into their respective categories - http://my.studiopress.com/docs/hook-reference/
-    	$genesis_hooks = array(
+    	$hooks = array(
             'doc_head' => array(
 				'name'  => __( 'Document Head Action Hooks', 'blox' ),
 				'hooks' => array(
@@ -224,19 +224,10 @@ class Blox_Common {
 					'genesis_comment_form' 			=> array( 'name'  => 'genesis_comment_form', 'title' => __( 'This hook outputs the actual comment form, including the #respond div wrapper.', 'blox' ) ),
 					'genesis_after_comment_form' 	=> array( 'name'  => 'genesis_after_comment_form', 'title' => __( 'This hook executes immediately after the comment form, outside the #respond div.', 'blox' ) ),
 				)
-			),
-
-			// Also include the main Wordpress core hooks that are included in all Genesis themes built by StudioPress and most other premium Genesis themes
-            'core' => array(
-                'name'  => __( 'Wordpress Core Hooks', 'blox' ),
-                'hooks' => array(
-                    'wp_head' 	=> array( 'name' => 'wp_head', 'title' => __( 'This hook executes within the <head></head> section of the document source.', 'blox' ) ),
-                    'wp_footer' => array( 'name' => 'wp_footer', 'title' => __( 'This hook executes near the </body> tag of the document source.', 'blox' ) )
-                )
-            ),
+			)
 		);
 
-    	return $genesis_hooks;
+    	return $hooks;
     }
 
 
@@ -250,7 +241,7 @@ class Blox_Common {
     public function get_woocommerce_hooks_unfiltered() {
 
         // All current WooCommerce Hooks broken into their respective categories
-        $woocommerce_hooks = array(
+        $hooks = array(
             'single-product' => array(
                 'name'  => __( 'Single Product Page', 'blox' ),
                 'hooks' => array(
@@ -303,7 +294,7 @@ class Blox_Common {
             ),
         );
 
-        return $woocommerce_hooks;
+        return $hooks;
     }
 
 
@@ -344,12 +335,13 @@ class Blox_Common {
      */
     public function get_hooks() {
 
-        $hooks = array() {
-            'genesis'       => $this->get_genesis_hooks_unfiltered(),
+        $hooks = array(
             'woocommerce'   => $this->get_woocommerce_hooks_unfiltered(),
-            'custom'        => $this->get_custom_hooks_unfiltered(),
+            'genesis'       => $this->get_genesis_hooks_unfiltered(),
+
+            //'custom'        => $this->get_custom_hooks_unfiltered(),
             'wordpress'     => $this->get_wordpress_hooks_unfiltered(),
-        };
+        );
 
         return apply_filters( 'blox_position_hooks', $hooks );
     }
