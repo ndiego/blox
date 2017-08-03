@@ -243,7 +243,7 @@ ul.blox-columns li {
 	border-color: #ede0a9;
 }
 
-.blox-error-box {
+.blox-alert-box {
 	background: #f9f9f9;
     border-left: 4px solid #fff;
     -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
@@ -1237,150 +1237,6 @@ body.blox-modal-open {
 
 
 
-/* Media Queries for content block styling
--------------------------------------------------------------- */
-
-@media only screen and (max-width: 782px) {
-	.blox-tab-content .form-table th {
-		font-size: 14px;
-		padding-bottom: 0;
-	}
-	.blox-columns li label {
-		height: 34px;
-	}
-
-	/* Make select dropdowns smaller so help icon does not drop to the next line */
-	.blox-has-help {
-		display: inline-block !important;
-		width: 88% !important;
-	}
-
-	.blox-content-title th {
-		display: block;
-		float: left;
-		margin-bottom: 10px;
-		width: 180px;
-	}
-	.blox-content-title td {
-		display: block;
-		margin-top: 4px !important;
-	}
-
-	.blox-modal-button {
-		font-size: 13px !important;
-	}
-
-	.blox-message.success {
-		display: inline-block;
-		width: 20px;
-		float: none;
-		border: 0;
-		background-color: transparent;
-		box-shadow: none;
-	}
-
-	.blox-message.success p {
-		display: none;
-	}
-
-	.blox-message.success .mobile {
-		display: inline-block;
-	}
-}
-
-@media only screen and (max-width: 599px) {
-
-	.blox-content-block-type {
-		display: none;
-	}
-
-	.blox-tab-navigation li {
-		width: 48%;
-		text-align: center;
-	}
-	.blox-tab-navigation li a {
-		display: block;
-	}
-	.blox-tab-navigation li:nth-child(even) {
-		margin-right: 0;
-	}
-	.blox-tab-navigation li:nth-child(odd) {
-		margin-right: 2%;
-	}
-	.blox-tab-navigation li.current {
-		border-bottom: 1px solid #dfdfdf;
-	}
-}
-
-@media only screen and (max-width: 499px) {
-	.blox-content-block-controls {
-		display: none;
-	}
-	.blox-tab-navigation li {
-		width: 100%;
-		margin: 0 0 -1px 0;
-	}
-}
-
-@media only screen and (max-width: 480px) {
-	.blox-modal {
-		top: 0 !important;
-		left: 0 !important;
-		right: 0 !important;
-		bottom: 0 !important;
-		width: 100% !important;
-		margin: 0 !important;
-		overflow-y: scroll;
-	}
-
-	.blox-modal-titlebar {
-		height: 40px;
-	}
-	.blox-modal-title {
-		font-size: 18px;
-		line-height: 40px;
-	}
-
-	.blox-modal-prev,
-	.blox-modal-next,
-	.blox-modal-close {
-		height: 40px;
-		width: 40px;
-	}
-	.blox-modal-prev {
-		right: 80px;
-	}
-	.blox-modal-next {
-		right: 40px;
-	}
-
-	/* Old formatting still used by raw and editor */
-	.blox-modal .form-table {
-		margin-bottom: 65px !important; /* So "Apply Settings" button does not overlap content on small screens */
-	}
-	.blox-modal .form-table th {
-		padding-left: 5px !important;
-	}
-	.blox-modal .form-table td {
-		padding-left: 5px !important;
-	}
-	.blox-modal-buttonpane {
-		bottom:0;
-		right:0;
-		left:0;
-		position: fixed;
-	}
-
-	.modal-slide-image-details {
-		top: 40px;
-	}
-	.modal-slide-image-view,
-	.modal-slide-image-settings {
-		float: none;
-		width: 100%;
-		height: auto;
-	}
-}
 
 
 /* Toggle styling, turns checkboxes into toggles */
@@ -1475,7 +1331,7 @@ body.blox-modal-open {
 
 }
 .blox-position-selected-hook input {
-	width: 100%;
+	width: 92%;
 }
 .blox-position-selected-hook-priority {
 	width: 30%;
@@ -1497,6 +1353,7 @@ body.blox-modal-open {
 	width: 25%;
 	height: 400px;
 	background-color: #f9f9f9;
+	border-right: 1px solid #dfdfdf;
 	color: #666;
 	font-weight: 600;
 	position: relative;
@@ -1509,6 +1366,7 @@ body.blox-modal-open {
 	border-bottom: 1px solid #dfdfdf;
 	margin-bottom: 0;
 	padding: 10px 6px;
+	overflow: hidden;
 }
 .blox-hook-type.current,
 .blox-hook-type:hover {
@@ -1550,7 +1408,6 @@ body.blox-modal-open {
 	color: #a2a2a2;
     font-size: 18px;
 }
-
 .blox-show-hook-descriptions {
 	position: absolute;
 	bottom: 0;
@@ -1561,21 +1418,17 @@ body.blox-modal-open {
 	width: 100%;
 	cursor: pointer;
 }
-
 .blox-hook-selector-content {
 	height: 400px;
 	overflow: scroll;
-	border-left: 1px solid #dfdfdf;
 	float: right;
     width: 75%;
 }
-
 .blox-hook-section-title {
 	border-bottom: 1px solid #dfdfdf;
     padding: 6px 10px 6px;
     font-weight: 600;
 }
-
 .blox-hook-item {
 	padding: 6px 10px;
 }
@@ -1592,4 +1445,181 @@ body.blox-modal-open {
 .blox-hook-item:hover {
 	background-color: #f1f1f1;
 	cursor: pointer
+}
+
+
+
+
+/* Media Queries for content block styling
+-------------------------------------------------------------- */
+
+@media only screen and (max-width: 1400px) {
+	.blox-hook-selector-menu {
+		position: absolute;
+		max-width: 44px;
+	}
+	.blox-hook-type-name,
+	.blox-hooks-disabled,
+	.blox-show-hook-descriptions-text {
+		display: none;
+	}
+	.blox-hook-selector-content {
+		width: 100%;
+		padding-left: 44px;
+	}
+}
+
+@media only screen and (max-width: 782px) {
+	.blox-tab-content .form-table th {
+		font-size: 14px;
+		padding-bottom: 0;
+	}
+	.blox-columns li label {
+		height: 34px;
+	}
+
+	/* Make select dropdowns smaller so help icon does not drop to the next line */
+	.blox-has-help {
+		display: inline-block !important;
+		width: 88% !important;
+	}
+
+	.blox-content-title th {
+		display: block;
+		float: left;
+		margin-bottom: 10px;
+		width: 180px;
+	}
+	.blox-content-title td {
+		display: block;
+		margin-top: 4px !important;
+	}
+
+	.blox-modal-button {
+		font-size: 13px !important;
+	}
+
+	.blox-message.success {
+		display: inline-block;
+		width: 20px;
+		float: none;
+		border: 0;
+		background-color: transparent;
+		box-shadow: none;
+	}
+
+	.blox-message.success p {
+		display: none;
+	}
+
+	.blox-message.success .mobile {
+		display: inline-block;
+	}
+}
+
+@media only screen and (max-width: 599px) {
+
+	.blox-content-block-type {
+		display: none;
+	}
+
+	.blox-tab-navigation li {
+		width: 48%;
+		text-align: center;
+	}
+	.blox-tab-navigation li a {
+		display: block;
+	}
+	.blox-tab-navigation li:nth-child(even) {
+		margin-right: 0;
+	}
+	.blox-tab-navigation li:nth-child(odd) {
+		margin-right: 2%;
+	}
+	.blox-tab-navigation li.current {
+		border-bottom: 1px solid #dfdfdf;
+	}
+}
+
+@media only screen and (max-width: 499px) {
+	.blox-content-block-controls {
+		display: none;
+	}
+	.blox-tab-navigation li {
+		width: 100%;
+		margin: 0 0 -1px 0;
+	}
+
+
+
+	.blox-position-selected-hook,
+	.blox-position-selected-hook-priority {
+		width: 100%;
+	}
+	.blox-position-selected-hook {
+		margin-bottom: 15px;
+	}
+	.blox-position-selected-hook input {
+		width: 90%;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.blox-modal {
+		top: 0 !important;
+		left: 0 !important;
+		right: 0 !important;
+		bottom: 0 !important;
+		width: 100% !important;
+		margin: 0 !important;
+		overflow-y: scroll;
+	}
+
+	.blox-modal-titlebar {
+		height: 40px;
+	}
+	.blox-modal-title {
+		font-size: 18px;
+		line-height: 40px;
+	}
+
+	.blox-modal-prev,
+	.blox-modal-next,
+	.blox-modal-close {
+		height: 40px;
+		width: 40px;
+	}
+	.blox-modal-prev {
+		right: 80px;
+	}
+	.blox-modal-next {
+		right: 40px;
+	}
+
+	/* Old formatting still used by raw and editor */
+	.blox-modal .form-table {
+		margin-bottom: 65px !important; /* So "Apply Settings" button does not overlap content on small screens */
+	}
+	.blox-modal .form-table th {
+		padding-left: 5px !important;
+	}
+	.blox-modal .form-table td {
+		padding-left: 5px !important;
+	}
+	.blox-modal-buttonpane {
+		bottom:0;
+		right:0;
+		left:0;
+		position: fixed;
+	}
+
+	.modal-slide-image-details {
+		top: 40px;
+	}
+	.modal-slide-image-view,
+	.modal-slide-image-settings {
+		float: none;
+		width: 100%;
+		height: auto;
+	}
 }

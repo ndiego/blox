@@ -132,6 +132,44 @@ class Blox_Position {
 
 
     /**
+     * Returns list of all available hook types (filterable)
+     *
+     * @since 2.0.0
+     */
+    public function get_hook_types() {
+
+        $hook_types = array(
+            'genesis' => array(
+                'enabled' => 1,
+                'active'  => 1,
+                'title'   => __( 'Genesis Hooks', 'blox' ),
+                'alert'   => __( 'It appears that the Genesis Framework is not active on this website. Therefore, the hooks below will not work. If you are not planning on using Genesis, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
+            ),
+            'woocommerce' => array(
+                'enabled' => 1,
+                'active'  => 1,
+                'title'   => __( 'WooCommerce Hooks', 'blox' ),
+                'alert'   => __( 'It appears that the WooCommerce plugin is not active on this website. Therefore, the hooks below will not work. If you are not planning on using WooCommerce, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
+            ),
+            'custom' => array(
+                'enabled' => 1,
+                'active'  => 1,
+                'title'   => __( 'Custom Hooks', 'blox' ),
+                'alert'   => __( 'It appears that Blox has experienced an error, please reach out to.', 'blox' )
+            ),
+            'wordpress' => array(
+                'enabled' => 1,
+                'active'  => 1,
+                'title'   => __( 'WordPress Hooks', 'blox' ),
+                'alert'   => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
+            ),
+        );
+
+        return apply_filters( 'blox_hook_types', $hook_types );
+    }
+
+
+    /**
      * Creates all of the fields for our block positioning
      *
      * @since 1.0.0
@@ -147,6 +185,8 @@ class Blox_Position {
 		$available_hooks = $instance->get_genesis_hooks_flattened();
 
         $scope = $global ? "global" : 'local';
+
+        $hook_types = $this->get_hook_types();
 
         echo print_r($get_prefix);
 		?>
@@ -167,6 +207,12 @@ class Blox_Position {
                                 <span><?php _e( 'Selected Hook', 'blox' ); ?></span>
                             </label>
                             <input type="text" readonly class="blox-selected-hook-position" name="<?php echo $name_prefix; ?>[hook][position]" id="blox_position_hook_position_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['position'] ) ? esc_attr( $get_prefix['hook']['position'] )  : 'genesis_after_header'; ?>" />
+                            <span class="blox-help-text-icon">
+                                <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                            </span>
+                            <div class="blox-help-text top">
+                                <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
+                            </div>
                         </div>
                         <div class="blox-position-selected-hook-priority">
                             <label>
@@ -183,46 +229,18 @@ class Blox_Position {
                     </div>
 
                     <?php
-                    $genesis_hooks = $this->get_genesis_hooks();
 
-                    //echo print_r($hooks['core']);
 
-                    $genesis_enabled = true;
-                    $custom_enabled = true;
-                    $wordpress_enabled = true;
-                    $woocommerce_enabled = true;
 
-                    $enabled_hook_types = array(
-                        'genesis' => array(
-                            'enabled' => 1,
-                            'active'  => 1,
-                            'title'   => __( 'Genesis Hooks', 'blox' )
-                        ),
-                        'woocommerce' => array(
-                            'enabled' => 1,
-                            'active'  => 0,
-                            'title'   => __( 'WooCommerce Hooks', 'blox' )
-                        ),
-                        'custom' => array(
-                            'enabled' => 1,
-                            'active'  => 1,
-                            'title'   => __( 'Custom Hooks', 'blox' )
-                        ),
-                        'wordpress' => array(
-                            'enabled' => 1,
-                            'active'  => 1,
-                            'title'   => __( 'WordPress Hooks', 'blox' )
-                        ),
-                    );
 
                     ?>
                     <div class="blox-hook-selector">
                         <div class="blox-hook-selector-menu">
                             <ul class="blox-hook-type-list">
                             <?php
-                                if ( ! empty( $enabled_hook_types ) ) {
+                                if ( ! empty( $hook_types ) ) {
                                     $i = 0;
-                                    foreach ( $enabled_hook_types as $slug => $atts ) {
+                                    foreach ( $hook_types as $slug => $atts ) {
 
                                         if ( $atts['enabled'] ) {
                                             // Set the first type to current
@@ -230,7 +248,7 @@ class Blox_Position {
                                             ?>
                                             <li class="blox-hook-type <?php echo $current; ?>" data-hook-type="<? echo $slug; ?>">
                                                 <div class="blox-hook-dashicon blox-<?php echo $slug; ?>-dashicon dashicons-before"></div>
-                                                <span><?php echo $atts['title']; ?></span>
+                                                <span class="blox-hook-type-name"><?php echo $atts['title']; ?></span>
                                                 <?php
                                                     if ( ! $atts['active'] ) {
                                                         ?>
@@ -251,7 +269,7 @@ class Blox_Position {
                             <div class="blox-show-hook-descriptions">
                                 <span class="blox-help-text-icon">
                                     <a href="#" class="dashicons dashicons-editor-help"></a>
-                                    <?php _e( 'Toggle Hook Descriptions', 'blox' ); ?>
+                                    <span class="blox-show-hook-descriptions-text"><?php _e( 'Toggle Hook Descriptions', 'blox' ); ?></span>
                                 </span>
                             </div>
                         </div>
@@ -261,16 +279,16 @@ class Blox_Position {
                             // Get all available hooks
                             $all_available_hooks = $this->get_hooks();
 
-                            if ( ! empty( $enabled_hook_types ) && ! empty( $all_available_hooks ) ) {
+                            if ( ! empty( $hook_types ) && ! empty( $all_available_hooks ) ) {
                                 $i = 0;
-                                foreach ( $enabled_hook_types as $slug => $atts ) {
+                                foreach ( $hook_types as $slug => $atts ) {
                                     if ( $atts['enabled'] ) {
                                         ?>
                                         <div class="blox-hooks <?php echo $slug; ?>">
                                         <?php
                                         if ( ! $atts['active'] ) {
                                             ?>
-                                            <div class="blox-error-box">Alert, this ones is not working</div>
+                                            <div class="blox-alert-box"><?php echo $atts['alert']; ?></div>
                                             <?php
                                         }
                                         foreach ( $all_available_hooks[$slug] as $sections => $section ) { ?>

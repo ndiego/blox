@@ -123,7 +123,18 @@ class Blox_Settings {
 	public function print_settings_page() {
 
 		// Get the active tab
-		$active_tab = isset( $_GET['tab'] ) && array_key_exists( $_GET['tab'], $this->get_settings_tabs() ) ? $_GET['tab'] : 'general';
+        $settings_tabs = $this->get_settings_tabs();
+        $settings_tabs = empty( $settings_tabs ) ? array() : $settings_tabs;
+        $active_tab    = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'general';
+        $active_tab    = array_key_exists( $active_tab, $settings_tabs ) ? $active_tab : 'general';
+        $sections      = $this->get_settings_tab_sections( $active_tab );
+        $key           = 'main'; // Default value for the section key
+
+        if ( is_array( $sections ) ) {
+            $key = key( $sections );
+        }
+
+        //NEED TO FINISH HERE
 
 		ob_start();
 		?>
@@ -132,12 +143,14 @@ class Blox_Settings {
 
 			<?php settings_errors( 'blox-notices' ); ?>
 
+            <?php echo print_r(get_option( 'blox_settings' )) ; ?>
+
 			<h2 class="nav-tab-wrapper">
 				<?php foreach( $this->get_settings_tabs() as $tab_id => $tab_name ) {
 
 					$tab_url = add_query_arg( array(
 						'settings-updated' => false,
-						'tab' => $tab_id
+						'tab'              => $tab_id
 					) );
 
 					$active = $active_tab == $tab_id ? ' nav-tab-active' : '';
@@ -179,19 +192,85 @@ class Blox_Settings {
 	 */
 	public function get_settings_tabs() {
 
-		// $settings = blox_get_registered_settings();
-
-		$settings = array();
-
-		$tabs             = array();
-		$tabs['general']  = __( 'General', 'blox' );
-		$tabs['default']  = __( 'Defaults', 'blox' );
-		$tabs['hooks']    = __( 'Hooks', 'blox' );
-		$tabs['style']    = __( 'Styles', 'blox' );
-		$tabs['misc']     = __( 'Misc', 'blox' );
+		$tabs = array(
+            'general'   => __( 'General', 'blox' ),
+    		'default'   => __( 'Defaults', 'blox' ),
+            'content'   => __( 'Content', 'blox' ),
+            'position'  => __( 'Position', 'blox' ),
+    		'hooks'     => __( 'Hooks', 'blox' ),
+    		'style'     => __( 'Styles', 'blox' ),
+    		'misc'      => __( 'Misc', 'blox' ),
+        );
 
 		return apply_filters( 'blox_settings_tabs', $tabs );
 	}
+
+
+    /**
+     * Retrieve settings tabs
+     *
+     * @since 2.0
+     * @return array $section
+     */
+    function get_settings_tab_sections( $tab = false ) {
+
+    	$tabs     = false;
+    	$sections = $this->get_registered_settings_sections();
+
+    	if( $tab && ! empty( $sections[ $tab ] ) ) {
+    		$tabs = $sections[ $tab ];
+    	} else if ( $tab ) {
+    		$tabs = false;
+    	}
+
+    	return $tabs;
+    }
+
+
+    /**
+     * Get the settings sections for each tab
+     * Uses a static to avoid running the filters on every request to this function
+     *
+     * @since  2.0.0
+     * @return array Array of tabs and sections
+     */
+    function get_registered_settings_sections() {
+
+    	static $sections = false;
+
+    	if ( false !== $sections ) {
+    		return $sections;
+    	}
+
+    	$sections = array(
+    		'general'    => apply_filters( 'blox_settings_sections_general', array(
+    			'main'   => __( 'General Settings', 'blox' ),
+    		) ),
+            'default'    => apply_filters( 'blox_settings_sections_general', array(
+                'main'   => __( 'Default Settings', 'blox' ),
+            ) ),
+            'content'    => apply_filters( 'blox_settings_sections_content', array(
+                'main'   => __( 'Content Settings', 'blox' ),
+            ) ),
+            'position'   => apply_filters( 'blox_settings_sections_position', array(
+                'main'              => __( 'Position Settings', 'blox' ),
+                'custom_hooks'      => __( 'Custom Hooks', 'blox' ),
+                'genesis_hooks'     => __( 'Genesis Hooks', 'blox' ),
+                'woocommerce_hooks' => __( 'WooCommerce Hooks', 'blox' ),
+                'wordpress_hooks'   => __( 'WordPress Hooks', 'blox' ),
+            ) ),
+            'style'      => apply_filters( 'blox_settings_sections_style', array(
+                'main'   => __( 'Style Settings', 'blox' ),
+            ) ),
+            'misc'       => apply_filters( 'blox_settings_sections_misc', array(
+                'main'   => __( 'Misc Settings', 'blox' ),
+            ) ),
+    	);
+
+    	$sections = apply_filters( 'blox_registered_settings_sections', $sections );
+
+    	return $sections;
+    }
 
 
 	/**
@@ -208,46 +287,59 @@ class Blox_Settings {
 			add_option( 'blox_settings' );
 		}
 
-		foreach( $this->get_registered_settings() as $tab => $settings ) {
+		foreach( $this->get_registered_settings() as $tab => $sections ) {
+            foreach ( $sections as $section => $settings) {
 
-			add_settings_section(
-				'blox_settings_' . $tab,
-				__return_null(),
-				'__return_false',
-				'blox_settings_' . $tab
-			);
+                // Check for backwards compatibility
+    			$section_tabs = $this->get_settings_tab_sections( $tab );
+    			if ( ! is_array( $section_tabs ) || ! array_key_exists( $section, $section_tabs ) ) {
+    				$section = 'main';
+    				$settings = $sections;
+    			}
 
-			foreach ( $settings as $option ) {
+    			add_settings_section(
+    				'blox_settings_' . $tab . '_' . $section,
+    				__return_null(),
+    				'__return_false',
+    				'blox_settings_' . $tab . '_' . $section
+    			);
 
-				$name     = isset( $option['name'] ) ? $option['name'] : '';
-				$callback = method_exists( __CLASS__, $option['type'] . '_callback' ) ? array( $this, $option['type'] . '_callback' ) : array( $this, 'missing_callback' );
+    			foreach ( $settings as $option ) {
 
-				add_settings_field(
-					'blox_settings[' . $option['id'] . ']',
-					$name,
-					$callback,
-					'blox_settings_' . $tab, // $page
-					'blox_settings_' . $tab, // $section
-					array(
-						'section'     => $tab,
-						'id'          => isset( $option['id'] )          ? $option['id']          : null,
-						'name'        => isset( $option['name'] )        ? $option['name']        : null,
-						'label' 	  => ! empty( $option['label'] )     ? $option['label']       : '',
-						'desc'        => ! empty( $option['desc'] )      ? $option['desc']        : '',
-						'size'        => isset( $option['size'] )        ? $option['size']        : null,
-						'options'     => isset( $option['options'] )     ? $option['options']     : '',
-						'min'         => isset( $option['min'] )         ? $option['min']         : null,
-						'max'         => isset( $option['max'] )         ? $option['max']         : null,
-						'step'        => isset( $option['step'] )        ? $option['step']        : null,
-						'placeholder' => isset( $option['placeholder'] ) ? $option['placeholder'] : null,
-						'class'       => isset( $option['class'] )       ? $option['class']       : null,
-						'default'     => isset( $option['default'] )     ? $option['default']     : '',
-						'sanitize'	  => isset( $option['sanitize'] )    ? $option['sanitize']    : '',
-                        'settings'    => isset( $option['settings'] )    ? $option['settings']    : '',
+                    // For backwards compatibility
+                    if ( empty( $option['id'] ) ) {
+                        continue;
+                    }
 
-					)
-				);
-			}
+    				$name     = isset( $option['name'] ) ? $option['name'] : '';
+    				$callback = method_exists( __CLASS__, $option['type'] . '_callback' ) ? array( $this, $option['type'] . '_callback' ) : array( $this, 'missing_callback' );
+
+    				add_settings_field(
+    					'blox_settings[' . $option['id'] . ']',
+    					$name,
+    					$callback,
+    					'blox_settings_' . $tab . '_' . $section, // $page
+    					'blox_settings_' . $tab . '_' . $section, // $section
+    					array(
+    						'section'     => $section,
+    						'id'          => isset( $option['id'] )          ? $option['id']          : null,
+    						'name'        => isset( $option['name'] )        ? $option['name']        : null,
+    						'label' 	  => ! empty( $option['label'] )     ? $option['label']       : '',
+    						'desc'        => ! empty( $option['desc'] )      ? $option['desc']        : '',
+    						'size'        => isset( $option['size'] )        ? $option['size']        : null,
+    						'options'     => isset( $option['options'] )     ? $option['options']     : '',
+    						'min'         => isset( $option['min'] )         ? $option['min']         : null,
+    						'max'         => isset( $option['max'] )         ? $option['max']         : null,
+    						'step'        => isset( $option['step'] )        ? $option['step']        : null,
+    						'placeholder' => isset( $option['placeholder'] ) ? $option['placeholder'] : null,
+    						'class'       => isset( $option['class'] )       ? $option['class']       : null,
+    						'default'     => isset( $option['default'] )     ? $option['default']     : '',
+    						'sanitize'	  => isset( $option['sanitize'] )    ? $option['sanitize']    : '',
+                            'settings'    => isset( $option['settings'] )    ? $option['settings']    : '',
+    					)
+    				);
+    			}
+            }
 		}
 
 		// Creates our settings in the options table
@@ -273,233 +365,274 @@ class Blox_Settings {
 			/** General Settings */
 			'general' => apply_filters( 'blox_settings_general',
 				array(
-					'general_global_header' => array(
-						'id' => 'general_global_header',
-						'name' => '<span class="title">' . __( 'Global Content Blocks', 'blox' ) . '</span>',
-						'desc' => '',
-						'type' => 'header'
-					),
-					'global_enable' => array(
-						'id'    => 'global_enable',
-						'name'  => __( 'Enable Global Blocks', 'blox' ),
-						'label' => __( 'Globally enable global content blocks', 'blox' ),
-						'desc'  => __( 'Turning off this setting will disable all global content blocks.', 'blox' ),
-						'type'  => 'checkbox',
-						'default' => true
-					),
-					'global_permissions' => array(
-						'id'   => 'global_permissions',
-						'name' => __( 'Global Permissions', 'blox' ),
-						'desc' => __( 'Determines what type of user can manage global content blocks.', 'blox' ),
-						'type' => 'select',
-						'options' => array(
-							'manage_options' => __( 'Admins Only', 'blox' ),
-							'publish_pages'  => __( 'Admins and Editors', 'blox' ),
-							'publish_posts'  => __( 'Admins, Editors, and Authors', 'blox' ),
-						),
-						'default' => 'manage_options'
-					),
-					'general_local_header' => array(
-						'id'   => 'general_local_header',
-						'name' => '<span class="title">' . __( 'Local Content Blocks', 'blox' ) . '</span>',
-						'desc' => '',
-						'type' => 'header'
-					),
-					'local_enable' => array(
-						'id'    => 'local_enable',
-						'name'  => __( 'Enable Local Blocks', 'blox' ),
-						'label' => __( 'Globally enable local content blocks', 'blox' ),
-						'desc'  => __( 'Turning off this setting will disable local blocks on all post types.', 'blox' ),
-						'type'  => 'checkbox',
-						'default' => true
-					),
-					'local_enabled_pages' => array(
-						'id'    => 'local_enabled_pages',
-						'name'  => __( 'Enable Local Blocks On...', 'blox' ),
-						'desc'  => __( 'Enable local blocks on specific post types. Note that only "public" custom post types will be displayed above. Disabling local blocks on a specific post type will not remove any meta data.', 'blox' ),
-						'type'  => 'enabled_pages',
-						'default' => array( 'post', 'page' )
-					),
-					'local_permissions' => array(
-						'id'   => 'local_permissions',
-						'name' => __( 'Local Permissions', 'blox' ),
-						'desc' => __( 'Determines what type of user can manage local content blocks.', 'blox' ),
-						'type' => 'select',
-						'options' => array(
-							'manage_options' => __( 'Admins Only', 'blox' ),
-							'publish_pages'  => __( 'Admins and Editors', 'blox' ),
-							'publish_posts'  => __( 'Admins, Editors, and Authors', 'blox' ),
-						),
-						'default' => 'manage_options'
-					),
+                    'main' => array(
+    					'general_global_header' => array(
+    						'id' => 'general_global_header',
+    						'name' => '<span class="title">' . __( 'Global Content Blocks', 'blox' ) . '</span>',
+    						'desc' => '',
+    						'type' => 'header'
+    					),
+    					'global_enable' => array(
+    						'id'    => 'global_enable',
+    						'name'  => __( 'Enable Global Blocks', 'blox' ),
+    						'label' => __( 'Globally enable global content blocks', 'blox' ),
+    						'desc'  => __( 'Turning off this setting will disable all global content blocks.', 'blox' ),
+    						'type'  => 'checkbox',
+    						'default' => true
+    					),
+    					'global_permissions' => array(
+    						'id'   => 'global_permissions',
+    						'name' => __( 'Global Permissions', 'blox' ),
+    						'desc' => __( 'Determines what type of user can manage global content blocks.', 'blox' ),
+    						'type' => 'select',
+    						'options' => array(
+    							'manage_options' => __( 'Admins Only', 'blox' ),
+    							'publish_pages'  => __( 'Admins and Editors', 'blox' ),
+    							'publish_posts'  => __( 'Admins, Editors, and Authors', 'blox' ),
+    						),
+    						'default' => 'manage_options'
+    					),
+    					'general_local_header' => array(
+    						'id'   => 'general_local_header',
+    						'name' => '<span class="title">' . __( 'Local Content Blocks', 'blox' ) . '</span>',
+    						'desc' => '',
+    						'type' => 'header'
+    					),
+    					'local_enable' => array(
+    						'id'    => 'local_enable',
+    						'name'  => __( 'Enable Local Blocks', 'blox' ),
+    						'label' => __( 'Globally enable local content blocks', 'blox' ),
+    						'desc'  => __( 'Turning off this setting will disable local blocks on all post types.', 'blox' ),
+    						'type'  => 'checkbox',
+    						'default' => true
+    					),
+    					'local_enabled_pages' => array(
+    						'id'    => 'local_enabled_pages',
+    						'name'  => __( 'Enable Local Blocks On...', 'blox' ),
+    						'desc'  => __( 'Enable local blocks on specific post types. Note that only "public" custom post types will be displayed above. Disabling local blocks on a specific post type will not remove any meta data.', 'blox' ),
+    						'type'  => 'enabled_pages',
+    						'default' => array( 'post', 'page' )
+    					),
+    					'local_permissions' => array(
+    						'id'   => 'local_permissions',
+    						'name' => __( 'Local Permissions', 'blox' ),
+    						'desc' => __( 'Determines what type of user can manage local content blocks.', 'blox' ),
+    						'type' => 'select',
+    						'options' => array(
+    							'manage_options' => __( 'Admins Only', 'blox' ),
+    							'publish_pages'  => __( 'Admins and Editors', 'blox' ),
+    							'publish_posts'  => __( 'Admins, Editors, and Authors', 'blox' ),
+    						),
+    						'default' => 'manage_options'
+    					),
+                    ),
 				)
 			),
 
 			/** Default Settings */
 			'default' => apply_filters( 'blox_settings_defaults',
 				array(
-					'defaults_position_header' => array(
-						'id'   => 'defaults_position_header',
-						'name' => '<span class="title">' . __( 'Position Defaults', 'blox' ) . '</span>',
-						'desc' => sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
-						'type' => 'header'
-					),
-					'global_default_position' => array(
-						'id'   => 'global_default_position',
-						'name' => __( 'Global Block Position', 'blox' ),
-						'desc' => __( 'Set the default block position for all global content blocks.', 'blox' ),
-						'type' => 'select_hooks',
-						'default' => 'genesis_after_header'
-					),
-					'global_default_priority' => array(
-						'id'   => 'global_default_priority',
-						'name' => __( 'Global Block Priority', 'blox' ),
-						'desc' => __( 'Set the default block priority for all global content blocks', 'blox' ),
-						'type' => 'text',
-						'size' => 'small',
-						'default' => '15',
-						'sanitize' => 'absint',
-					),
-					'local_default_position' => array(
-						'id'   => 'local_default_position',
-						'name' => __( 'Local Block Position', 'blox' ),
-						'desc' => __( 'Set the default block position for all local content blocks.', 'blox' ),
-						'type' => 'select_hooks',
-						'default' => 'genesis_after_header'
-					),
-					'local_default_priority' => array(
-						'id'   => 'local_default_priority',
-						'name' => __( 'Local Block Priority', 'blox' ),
-						'desc' => __( 'Set the default block priority for all local content blocks', 'blox' ),
-						'type' => 'text',
-						'size' => 'small',
-						'default' => '15',
-						'sanitize' => 'absint',
-					),
+                    'main' => array(
+    					'defaults_position_header' => array(
+    						'id'   => 'defaults_position_header',
+    						'name' => '<span class="title">' . __( 'Position Defaults', 'blox' ) . '</span>',
+    						'desc' => sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
+    						'type' => 'header'
+    					),
+    					'global_default_position' => array(
+    						'id'   => 'global_default_position',
+    						'name' => __( 'Global Block Position', 'blox' ),
+    						'desc' => __( 'Set the default block position for all global content blocks.', 'blox' ),
+    						'type' => 'select_hooks',
+    						'default' => 'genesis_after_header'
+    					),
+    					'global_default_priority' => array(
+    						'id'   => 'global_default_priority',
+    						'name' => __( 'Global Block Priority', 'blox' ),
+    						'desc' => __( 'Set the default block priority for all global content blocks', 'blox' ),
+    						'type' => 'text',
+    						'size' => 'small',
+    						'default' => '15',
+    						'sanitize' => 'absint',
+    					),
+    					'local_default_position' => array(
+    						'id'   => 'local_default_position',
+    						'name' => __( 'Local Block Position', 'blox' ),
+    						'desc' => __( 'Set the default block position for all local content blocks.', 'blox' ),
+    						'type' => 'select_hooks',
+    						'default' => 'genesis_after_header'
+    					),
+    					'local_default_priority' => array(
+    						'id'   => 'local_default_priority',
+    						'name' => __( 'Local Block Priority', 'blox' ),
+    						'desc' => __( 'Set the default block priority for all local content blocks', 'blox' ),
+    						'type' => 'text',
+    						'size' => 'small',
+    						'default' => '15',
+    						'sanitize' => 'absint',
+    					),
+                    ),
 				)
 			),
 
 			'hooks' => apply_filters( 'blox_settings_hooks',
-					array(
-					'hook_control_header' => array(
-						'id'   => 'hook_control_header',
-						'name' => '<span class="title">' . __( 'Hook Control', 'blox' ) . '</span>',
-						'desc' => __( 'By default, Blox allows you to choose from over 50 Genesis hooks. Here you can pick and choose the ones you want to use, rename the hooks, or even add your own custom hooks to use with a third-party Genesis theme or plugin.', 'blox' ),
-						'type' => 'header'
-					),
-					'default_hooks' => array(
-						'id'       => 'default_hooks',
-						'name'     => __( 'Genesis Hooks', 'blox' ),
-						'desc'     => '',
-						'type'     => 'hooks',
-						'sanitize' => 'default_hooks',
-					),
-					'default_custom_hooks' => array(
-						'id'       => 'default_custom_hooks',
-						'name'     => __( 'Custom Hooks', 'blox' ),
-						'desc'     => '',
-						'type'     => 'custom_hooks',
-						'sanitize' => 'default_hooks',
-					),
+				array(
+                    'main' => array(
+    					'hook_control_header' => array(
+    						'id'   => 'hook_control_header',
+    						'name' => '<span class="title">' . __( 'Hook Control', 'blox' ) . '</span>',
+    						'desc' => __( 'By default, Blox allows you to choose from over 50 Genesis hooks. Here you can pick and choose the ones you want to use, rename the hooks, or even add your own custom hooks to use with a third-party Genesis theme or plugin.', 'blox' ),
+    						'type' => 'header'
+    					),
+    					'default_hooks' => array(
+    						'id'       => 'default_hooks',
+    						'name'     => __( 'Genesis Hooks', 'blox' ),
+    						'desc'     => '',
+    						'type'     => 'hooks',
+    						'sanitize' => 'default_hooks',
+    					),
+    					'default_custom_hooks' => array(
+    						'id'       => 'default_custom_hooks',
+    						'name'     => __( 'Custom Hooks', 'blox' ),
+    						'desc'     => '',
+    						'type'     => 'custom_hooks',
+    						'sanitize' => 'default_hooks',
+    					),
+                    ),
+				)
+			),
+
+            'position' => apply_filters( 'blox_settings_position',
+				array(
+                    'main' => array(
+    					'position_enable_hook_positioning' => array(
+    						'id'   => 'position_enable_hook_positioning',
+    						'name'  => __( 'Enable Hook Positioning', 'blox' ),
+    						'label' => __( 'Allow block to be positioned via action hook', 'blox' ),
+    						'desc'  => '',
+    						'type'  => 'checkbox',
+    						'default' => true
+    					),
+                        'position_enable_shortcode_positioning' => array(
+    						'id'   => 'position_enable_shortcode_positioning',
+    						'name'  => __( 'Enable Shortcode Positioning', 'blox' ),
+    						'label' => __( 'Allow block to be positioned via shortcode', 'blox' ),
+    						'desc'  => '',
+    						'type'  => 'checkbox',
+    						'default' => true
+    					),
+                        'position_enable_php_positioning' => array(
+                            'id'   => 'position_enable_php_positioning',
+                            'name'  => __( 'Enable PHP Positioning', 'blox' ),
+                            'label' => __( 'Allow block to be positioned via PHP function', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'default' => true
+                        ),
+                    ),
 				)
 			),
 
 			/** Style Settings */
 			'style' => apply_filters( 'blox_settings_styles',
 				array(
-					'global_custom_classes' => array(
-						'id'   => 'global_custom_classes',
-						'name' => __( 'Global Custom Classes', 'blox' ),
-						'desc' => __( 'Enter a space separated list of custom CSS classes to add to all global blocks.', 'blox' ),
-						'type' => 'text',
-						'size' => 'full',
-						'placeholder' => __( 'e.g. class-one class-two', 'blox' ),
-						'default' => '',
-						'sanitize' => 'no_html',
-					),
-					'local_custom_classes' => array(
-						'id'   => 'local_custom_classes',
-						'name' => __( 'Local Custom Classes', 'blox' ),
-						'desc' => __( 'Enter a space separated list of custom CSS classes to add to all local blocks.', 'blox' ),
-						'type' => 'text',
-						'size' => 'full',
-						'placeholder' => __( 'e.g. class-one class-two', 'blox' ),
-						'default' => '',
-						'sanitize' => 'no_html',
-					),
-					'custom_css' => array(
-						'id'   => 'custom_css',
-						'name' => __( 'Custom CSS', 'blox' ),
-						'desc' => sprintf( __( 'Add custom CSS that can affect all content blocks. For reference on content block frontend markup, please refer to the %1$sBlox Documentation%2$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/frontend-markup/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
-						'type' => 'textarea',
-						'class' => 'blox-textarea-code',
-						'size' => 10,
-						'default' => '',
-					),
-					'disable_default_css' => array(
-						'id'    => 'disable_default_css',
-						'name'  => __( 'Disable Default CSS', 'blox' ),
-						'label' => __( 'Globally disable all default styles', 'blox' ),
-						'desc'  => __( 'Blox includes default CSS to provide minimal block styling. If this option is left un-checked, default CSS can be disabled on each individual content block as needed.', 'blox' ),
-						'type'  => 'checkbox',
-						'default' => '',
-					),
+                    'main' => array(
+    					'global_custom_classes' => array(
+    						'id'   => 'global_custom_classes',
+    						'name' => __( 'Global Custom Classes', 'blox' ),
+    						'desc' => __( 'Enter a space separated list of custom CSS classes to add to all global blocks.', 'blox' ),
+    						'type' => 'text',
+    						'size' => 'full',
+    						'placeholder' => __( 'e.g. class-one class-two', 'blox' ),
+    						'default' => '',
+    						'sanitize' => 'no_html',
+    					),
+    					'local_custom_classes' => array(
+    						'id'   => 'local_custom_classes',
+    						'name' => __( 'Local Custom Classes', 'blox' ),
+    						'desc' => __( 'Enter a space separated list of custom CSS classes to add to all local blocks.', 'blox' ),
+    						'type' => 'text',
+    						'size' => 'full',
+    						'placeholder' => __( 'e.g. class-one class-two', 'blox' ),
+    						'default' => '',
+    						'sanitize' => 'no_html',
+    					),
+    					'custom_css' => array(
+    						'id'   => 'custom_css',
+    						'name' => __( 'Custom CSS', 'blox' ),
+    						'desc' => sprintf( __( 'Add custom CSS that can affect all content blocks. For reference on content block frontend markup, please refer to the %1$sBlox Documentation%2$s.', 'blox' ), '<a href="https://www.bloxwp.com/documentation/frontend-markup/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
+    						'type' => 'textarea',
+    						'class' => 'blox-textarea-code',
+    						'size' => 10,
+    						'default' => '',
+    					),
+    					'disable_default_css' => array(
+    						'id'    => 'disable_default_css',
+    						'name'  => __( 'Disable Default CSS', 'blox' ),
+    						'label' => __( 'Globally disable all default styles', 'blox' ),
+    						'desc'  => __( 'Blox includes default CSS to provide minimal block styling. If this option is left un-checked, default CSS can be disabled on each individual content block as needed.', 'blox' ),
+    						'type'  => 'checkbox',
+    						'default' => '',
+    					),
+                    ),
 				)
 			),
 
 			/** Misc Settings */
 			'misc' => apply_filters( 'blox_settings_misc',
 				array(
-                    'syntax_highlighting_header' => array(
-                        'id'   => 'syntax_highlighting_header',
-                        'name' => '<span class="title">' . __( 'Syntax Highlighting', 'blox' ) . '</span>',
-                        'desc' => '',
-                        'type' => 'header'
-                    ),
-                    'syntax_highlighting_disable' => array(
-                        'id'      => 'syntax_highlighting_disable',
-                        'name'    => __( 'Disable Highlighting', 'blox' ),
-                        'label'   => __( 'Disable all syntax highlighting', 'blox' ),
-                        'desc'    => __( 'Checking this setting will disable syntax highlighting in the raw content fullscreen modal.', 'blox' ),
-                        'type'    => 'checkbox',
-                        'default' => false
-                    ),
-                    'syntax_highlighting_theme' => array(
-                        'id'   => 'syntax_highlighting_theme',
-                        'name' => __( 'Visual Theme', 'blox' ),
-                        'desc' => __( 'Choose the visual theme for when syntax highlighting is enabled.', 'blox' ),
-                        'type' => 'select',
-                        'options' => array(
-                            'default'    => __( 'Default (Light)', 'blox' ),
-                            'monokai'    => __( 'Monokai (Dark)', 'blox' ),
-                            'spacegray'  => __( 'Spacegray (Dark)', 'blox' ),
+                    'main' => array(
+                        'syntax_highlighting_header' => array(
+                            'id'   => 'syntax_highlighting_header',
+                            'name' => '<span class="title">' . __( 'Syntax Highlighting', 'blox' ) . '</span>',
+                            'desc' => '',
+                            'type' => 'header'
                         ),
-                        'default' => 'default'
+                        'syntax_highlighting_disable' => array(
+                            'id'      => 'syntax_highlighting_disable',
+                            'name'    => __( 'Disable Highlighting', 'blox' ),
+                            'label'   => __( 'Disable all syntax highlighting', 'blox' ),
+                            'desc'    => __( 'Checking this setting will disable syntax highlighting in the raw content fullscreen modal.', 'blox' ),
+                            'type'    => 'checkbox',
+                            'default' => false
+                        ),
+                        'syntax_highlighting_theme' => array(
+                            'id'   => 'syntax_highlighting_theme',
+                            'name' => __( 'Visual Theme', 'blox' ),
+                            'desc' => __( 'Choose the visual theme for when syntax highlighting is enabled.', 'blox' ),
+                            'type' => 'select',
+                            'options' => array(
+                                'default'    => __( 'Default (Light)', 'blox' ),
+                                'monokai'    => __( 'Monokai (Dark)', 'blox' ),
+                                'spacegray'  => __( 'Spacegray (Dark)', 'blox' ),
+                            ),
+                            'default' => 'default'
+                        ),
+                        'other_header' => array(
+                            'id'   => 'other_header',
+                            'name' => '<span class="title">' . __( 'Additional Settings', 'blox' ) . '</span>',
+                            'desc' => '',
+                            'type' => 'header'
+                        ),
+    					'local_metabox_title' => array(
+    						'id'   => 'local_metabox_title',
+    						'name' => __( 'Local Metabox Title', 'blox' ),
+    						'desc' => __( 'This is the metabox title that is displayed on pages/posts/custom post types when local blocks are activated.', 'blox' ),
+    						'type' => 'text',
+    						'size' => 'full',
+    						'placeholder' => __( 'e.g. Local Content Blocks', 'blox' ),
+    						'default' => __( 'Local Content Blocks', 'blox' ),
+    						'sanitize' => 'no_html',
+    					),
+    					'uninstall_on_delete' => array(
+    						'id'    => 'uninstall_on_delete',
+    						'name'  => __( 'Remove Data on Uninstall', 'blox' ),
+    						'label' => __( 'Check to completely remove all plugin data when Blox is deleted', 'blox' ),
+    						'desc'  => '',
+    						'type'  => 'checkbox',
+    						'default' => '',
+    					),
                     ),
-                    'other_header' => array(
-                        'id'   => 'other_header',
-                        'name' => '<span class="title">' . __( 'Additional Settings', 'blox' ) . '</span>',
-                        'desc' => '',
-                        'type' => 'header'
-                    ),
-					'local_metabox_title' => array(
-						'id'   => 'local_metabox_title',
-						'name' => __( 'Local Metabox Title', 'blox' ),
-						'desc' => __( 'This is the metabox title that is displayed on pages/posts/custom post types when local blocks are activated.', 'blox' ),
-						'type' => 'text',
-						'size' => 'full',
-						'placeholder' => __( 'e.g. Local Content Blocks', 'blox' ),
-						'default' => __( 'Local Content Blocks', 'blox' ),
-						'sanitize' => 'no_html',
-					),
-					'uninstall_on_delete' => array(
-						'id'    => 'uninstall_on_delete',
-						'name'  => __( 'Remove Data on Uninstall', 'blox' ),
-						'label' => __( 'Check to completely remove all plugin data when Blox is deleted', 'blox' ),
-						'desc'  => '',
-						'type'  => 'checkbox',
-						'default' => '',
-					),
 				)
 			),
 		);
@@ -509,7 +642,7 @@ class Blox_Settings {
 
 
     /**
-     * Retrieve the array of plugin settings with the grouped settings appended
+     * Retrieve the array of plugin settings with the grouped settings appended NOT DONE!!!!
      *
      * @since 1.3.0
      *
@@ -542,7 +675,7 @@ class Blox_Settings {
 
 
 	/**
-	 * Settings Sanitization
+	 * Settings Sanitization NOT DONE!!!!
 	 *
 	 * Adds a settings error (for the updated message)
 	 * At some point this will validate input
