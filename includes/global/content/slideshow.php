@@ -357,12 +357,14 @@ class Blox_Content_Slideshow {
 
 
 		// Save all of the additional slideshow option ids (i.e. Soliloquy, Revolution Slider, Meta Slider, etc.)
-		foreach( $this->get_slideshow_types() as $type => $title ){
-			if ( $type != 'builtin' && $type != 'shortcode' ) {
-				$settings[$type]['id'] = trim( strip_tags( $name_prefix[$type]['id'] ) );
-			}
-		}
-
+        // Need to check if function exists due to Jetpack conflict
+        if ( function_exists( 'is_plugin_active' ) ) {
+            foreach( $this->get_slideshow_types() as $type => $title ){
+    			if ( $type != 'builtin' && $type != 'shortcode' ) {
+    				$settings[$type]['id'] = trim( strip_tags( $name_prefix[$type]['id'] ) );
+    			}
+    		}
+        }
 		// Save slideshow shortcode. Ensure that the string begins with [ and ends with ]
 		if ( preg_match( "/(^[\[]).*([\]]$)/", $name_prefix['shortcode'] ) == 1 ){
 			$settings['shortcode'] = $name_prefix['shortcode'];

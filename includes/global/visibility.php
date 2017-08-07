@@ -231,9 +231,12 @@ class Blox_Visibility {
 		$settings['global_disable']      = isset( $name_prefix['global_disable'] ) ? 1 : 0;
 		$settings['role']['role_type']   = esc_attr( $name_prefix['role']['role_type'] );
 
-		foreach ( get_editable_roles() as $role_name => $role_info ) {
-			$settings['role']['restrictions'][$role_name] = isset( $name_prefix['role']['restrictions'][$role_name] ) ? 1 : 0;
-		}
+        // Need to check if function exists due to Jetpack conflict
+        if ( function_exists( 'get_editable_roles' ) ) {
+    		foreach ( get_editable_roles() as $role_name => $role_info ) {
+    			$settings['role']['restrictions'][$role_name] = isset( $name_prefix['role']['restrictions'][$role_name] ) ? 1 : 0;
+    		}
+        }
 
 		return apply_filters( 'blox_save_visibility_settings', $settings, $post_id, $name_prefix, $global );
 	}

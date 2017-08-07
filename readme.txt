@@ -8,8 +8,11 @@ Resources:
 
 Changelog:
 
+Version 1.4.4 – 2017-08-06
+* Fixed Jetpack conflict caused by jetpack_store_migration_data
+
 Version 1.4.3 – 2017-05-05
-Fixed bug that broke urls placed in the Custom Block CSS settings field
+* Fixed bug that broke urls placed in the Custom Block CSS settings field
 
 Version 1.4.2 – 2017-04-10
 * Fixed bug inadvertently introduced by the quick edit bug fix in v1.4.1
