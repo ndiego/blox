@@ -301,6 +301,11 @@ class Blox_Posttype_Admin {
      */
     function save_quickedit_meta( $post_id ) {
 
+        // Need to check if $_POST exists due to Woocommerce conflict
+        if ( ! $_POST ) {
+            return;
+        }
+
         $_POST += array( 'blox_quickedit_nonce' => '' );
 
         if ( !wp_verify_nonce( $_POST['blox_quickedit_nonce'], plugin_basename( __FILE__ ) ) ) {
