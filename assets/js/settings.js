@@ -105,7 +105,7 @@ jQuery(document).ready(function($) {
 
 			hook_fields = '<li><span>';
 
-			hook_fields += '<input class="blox-force-hidden" disabled type="text" name="' + hook_name + '" value="' + hook_slug + '" />';
+			//hook_fields += '<input class="blox-force-hidden" disabled type="text" name="' + hook_name + '" value="' + hook_slug + '" />';
 			hook_fields += '<input type="checkbox" name="' + enable_name + '" value="1" />';
 			hook_fields += '<input class="hook-name" type="text" name="' + name_name + '" placeholder="' + hook_slug + '" value="' + hook_slug + '" />';
 			hook_fields += '<input class="blox-force-hidden" type="text" name="' + title_name + '" value="" />';
@@ -123,16 +123,16 @@ jQuery(document).ready(function($) {
 	});
 
 
-	$(document).on( 'click', '.delete-custom-hook', function(){
+	$(document).on( 'click', '.blox-custom-hook-delete', function(){
 
 		// Need to have the "return" or won't work
 	   	var message = confirm( blox_localize_settings_scripts.confirm_delete_hook );
 
 		if ( message == true ) {
-			$(this).parents( 'li' ).remove();
+			$(this).parents( 'div.hook-row' ).remove();
 			// If we remove the slide and there are no more, show our filler slide
-			if ( $( '.custom-hooks li').length == 0 ) {
-				$( '.custom-hooks' ).append( '<li class="no-hooks">' + blox_localize_settings_scripts.no_hooks + '</li>' );
+			if ( $( '.blox-hook-table div.hook-row').length == 0 ) {
+				$( '.blox-hook-table' ).append( '<div class="blox-no-custom-hooks">' + blox_localize_settings_scripts.no_hooks + '</div>' );
 			}
 
 			return false;

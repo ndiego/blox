@@ -224,36 +224,7 @@ ul.blox-columns li {
 }
 
 
-/* Custom styles for default hooks settings */
-.hook-section-title {
-	font-weight: 600;
-	margin: 30px 0 10px;
-}
-
-.custom-hooks {
-	-webkit-column-width: 400px;
-    -moz-column-width: 400px;
-    column-width: 400px;
-}
-.add-custom-button {
-	margin: 20px 0;
-}
-.hook-name {
-	width: 300px;
-}
-.delete-custom-hook {
-	color: #a00;
-	cursor: pointer;
-	display: inline-block;
-	margin-left: 5px;
-	font-size: 13px;
-}
-.no-hooks {
-	margin: 0 0 30px !important;
-	color: #777;
-	line-height: 1em;
-}
-
+/* Custom styles for the systen info table (Tools) */
 .system-info-table {
 	width: 100%;
 }
@@ -281,23 +252,19 @@ ul.blox-columns li {
 .system-info-table tbody:last-child tr:last-child td {
     border-bottom-width: 1px;
 }
-
 .system-info-textarea {
 	display: none;
 	margin-top: 2em;
 	width: 100%;
 }
-
 .system-info-textarea textarea {
 	width: 100%;
 	height: 300px;
 }
-
 .get-system-info {
     margin: 10px 0 20px;
     overflow: hidden;
 }
-
 .get-system-info p.submit {
 	margin-top: 10px;
 }
@@ -337,4 +304,66 @@ ul.blox-columns li {
 	#tab_container .header-container {
 		padding-top: 0;
 	}
+}
+
+.blox-hook-table {
+	background-color: #fff;
+	border: 1px solid #e5e5e5;
+	overflow: hidden;
+}
+
+.blox-hook-table * {
+	box-sizing: border-box;
+}
+.blox-hook-table .row {
+	clear: both;
+	overflow: hidden;
+	position: relative;
+}
+.blox-hook-table .row div {
+	float: left;
+	padding: 5px 10px;
+}
+.blox-hook-table .row div.fixed-col {
+	width: 70px;
+	position: absolute;
+	left: 0
+}
+.blox-hook-table .row div.fixed-col.right {
+	left: auto;
+	right: 0;
+}
+.blox-hook-table .row div.col-2 {
+	width: 20%;
+}
+.blox-hook-table .row div.col-3 {
+	width: 30%;
+}
+.blox-hook-table .row div.col-4 {
+	width: 40%
+}
+.blox-hook-table .row div.col-5 {
+	width: 50%
+}
+.blox-hook-table .row textarea,
+.blox-hook-table .row input[type=text] {
+	width: 100%;
+}
+
+.blox-custom-hook-delete:before { content: "\f182"; }
+.blox-custom-hook-delete:hover { color: #a00a00; }
+
+/* Custom styles for default hooks settings */
+.hook-section-title {
+	font-weight: 600;
+	margin: 30px 0 10px;
+}
+
+.add-custom-button {
+
+}
+
+.blox-no-custom-hooks {
+	color: #777;
+	padding: 20px;
 }

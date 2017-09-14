@@ -1449,6 +1449,53 @@ class Blox_Settings {
 			<input class="blox-force-hidden" type="text" name="<?php echo $custom_section_name; ?>" value="<?php echo $custom_section_value; ?>" />
 		</div>
 		<div id="default_custom_hook_settings">
+            <div class="blox-hook-table">
+                <div class="row title-row">
+                    <div class="fixed-col"><?php _e( 'Enable', 'blox' ); ?></div>
+                    <div class="col-2"><?php _e( 'Hook', 'blox' ); ?></div>
+                    <div class="col-3"><?php _e( 'Hook Name', 'blox' ); ?></div>
+                    <div class="col-3"><?php _e( 'Hook Description', 'blox' ); ?></div>
+                    <div class="fixed-col right"><?php _e( 'Delete', 'blox' ); ?></div>
+                </div>
+                <?php
+                $custom_hooks = isset( $value['available_hooks']['custom'] ) ? $value['available_hooks']['custom'] : array( 'hooks' => array() );
+
+                echo print_r($custom_hooks);
+
+                if ( ! empty( $custom_hooks['hooks'] ) ) {
+                    foreach ( $custom_hooks['hooks'] as $hooks => $hook ) {
+
+                        $enable_name      = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][enable]';
+						$enable_value     = isset( $hook['enable'] ) ? checked( 1, esc_attr( $hook['enable'] ), false ) : '';
+						$hook_name_name	  = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][name]';
+						$hook_name_value       = isset( $hook['name'] ) ? esc_attr( $hook['name'] ) : '';
+						$hook_title_name  = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][title]';
+						$hook_title_value = isset( $hook['title'] ) ? esc_attr( $hook['title'] ) : '';
+                        ?>
+                        <div class="row hook-row">
+                            <div class="fixed-col">
+                                <input type="checkbox" name="<?php echo $enable_name; ?>" value="1" <?php echo $enable_value; ?>/>
+                            </div>
+                            <div class="col-2">
+                                <span><?php echo $hooks; ?><span>
+                            </div>
+                            <div class="col-3">
+                                <input class="hook-name" type="text" name="<?php echo $hook_name_name; ?>"  placeholder="<?php echo $hooks; ?>" value="<?php echo $hook_name_value; ?>" />
+                            </div>
+                            <div class="col-3">
+                                <textarea class="hook-title" rows="1" name="<?php echo $hook_title_name; ?>" ><?php echo $hook_title_value; ?></textarea>
+                            </div>
+                            <div class="fixed-col right">
+                                <a class="blox-custom-hook-delete dashicons right" href="#" title="<?php _e( 'Delete Hook', 'blox' );?>"></a>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                } else {
+                    echo '<div class="blox-no-custom-hooks">' . __( 'Add a custom hook...', 'blox' ) . '</div>';
+                }
+                ?>
+            </div>
 			<div class="blox-checkbox-container">
 				<ul class="custom-hooks blox-columns">
 				<?php
@@ -1457,21 +1504,19 @@ class Blox_Settings {
 				if ( ! empty( $custom_hooks['hooks'] ) ) {
 					foreach ( $custom_hooks['hooks'] as $hooks => $hook ) {
 
-						$hook_name	  = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . ']';
-						$hook_value   = $hooks;
-						$enable_name  = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][enable]';
-						$enable_value = isset( $hook['enable'] ) ? checked( 1, esc_attr( $hook['enable'] ), false ) : '';
-						$name_name    = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][name]';
-						$name_value   = isset( $hook['name'] ) ? esc_attr( $hook['name'] ) : '';
-						$title_name   = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][title]';
-						$title_value  = isset( $hook['title'] ) ? esc_attr( $hook['title'] ) : '';
+						$enable_name     = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][enable]';
+						$enable_value    = isset( $hook['enable'] ) ? checked( 1, esc_attr( $hook['enable'] ), false ) : '';
+						$hook_name	     = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][name]';
+						$hook_name_value = isset( $hook['name'] ) ? esc_attr( $hook['name'] ) : '';
+						$title_name      = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][title]';
+						$title_value     = isset( $hook['title'] ) ? esc_attr( $hook['title'] ) : '';
 						?>
 						<li>
 							<span>
-								<input class="blox-force-hidden" disabled type="text" name="<?php echo $hook_name; ?>" placeholder="<?php _e( 'Hook slug (No spaces allowed)', 'blox' ); ?>" value="<?php echo $hook_value; ?>" />
+								<!--<input class="blox-force-hidden" disabled type="text" name="<?php echo $hook_name; ?>" placeholder="<?php _e( 'Hook slug (No spaces allowed)', 'blox' ); ?>" value="<?php echo $hook_value; ?>" />-->
 								<input type="checkbox" name="<?php echo $enable_name; ?>" value="1" <?php echo $enable_value; ?>/> <soan><?php _e( 'Enable', 'blox' ); ?></span>
 								<input class="hook-name" type="text" name="<?php echo $name_name; ?>" placeholder="<?php echo $hook_value; ?>" value="<?php echo $name_value; ?>" />
-								<input class="blox-force-hidden" type="text" name="<?php echo $title_name; ?>" value="<?php echo $title_value; ?>" />
+								<input class="" type="text" name="<?php echo $title_name; ?>" value="<?php echo $title_value; ?>" />
 								<a class="delete-custom-hook"><?php _e( 'Delete', 'blox' ); ?></a>
 							</span>
 						</li>
