@@ -324,27 +324,28 @@ ul.blox-columns li {
 	float: left;
 	padding: 5px 10px;
 }
-.blox-hook-table .row div.fixed-col {
+.blox-hook-table .row .hook-enable {
 	width: 70px;
 	position: absolute;
-	left: 0
+	left: 0;
 }
-.blox-hook-table .row div.fixed-col.right {
-	left: auto;
+.blox-hook-table .row .hook-delete {
+	width: 70px;
+	position: absolute;
 	right: 0;
 }
-.blox-hook-table .row div.col-2 {
-	width: 20%;
+.blox-hook-table .row .hook-slug {
+	width: 30%;
+	padding-left: 70px
 }
-.blox-hook-table .row div.col-3 {
+.blox-hook-table .row .hook-name {
 	width: 30%;
 }
-.blox-hook-table .row div.col-4 {
-	width: 40%
+.blox-hook-table .row .hook-desc {
+	width: 40%;
+	padding-right: 70px
 }
-.blox-hook-table .row div.col-5 {
-	width: 50%
-}
+
 .blox-hook-table .row textarea,
 .blox-hook-table .row input[type=text] {
 	width: 100%;
