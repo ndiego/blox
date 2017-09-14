@@ -695,7 +695,7 @@ class Blox_Settings {
                         'custom_hook_control_header' => array(
                             'id'   => 'hook_control_header',
                             'name' => '<span class="title">' . __( 'Custom Hook Control', 'blox' ) . '</span>',
-                            'desc' => __( 'By default, NEED MORE', 'blox' ),
+                            'desc' => __( 'The following settings allow you add your own custom hooks. Many themes and plugins have their own hooks. Enter them here so that Blox can target them.', 'blox' ),
                             'type' => 'header'
                         ),
                         'custom_hooks_disable' => array(
@@ -708,7 +708,7 @@ class Blox_Settings {
                         ),
                         'default_custom_hooks' => array(
                             'id'       => 'default_custom_hooks',
-                            'name'     => __( 'Create Custom Hooks', 'blox' ),
+                            'name'     => __( 'Add Custom Hooks', 'blox' ),
                             'desc'     => '',
                             'type'     => 'custom_hooks',
                             'sanitize' => 'default_hooks',
@@ -1428,14 +1428,7 @@ class Blox_Settings {
 			);
 		}
 
-        // REMOVE
 		?>
-		<!--<div id="default_custom_hook_enable">
-			<label><input type="checkbox" name="blox_settings[<?php echo $args['id']; ?>][enable]" value="1" <?php echo isset( $value['enable'] ) ? checked( 1, esc_attr( $value['enable'] ), false ) : '';?> /><?php _e( 'Enable Custom Hooks', 'blox' );?></label>
-		</div>
-		<p class="description"><?php _e( 'This setting allows you add your own custom hooks. Many themes and plugins have their own hooks. Enter them here so that Blox can target them.', 'blox' );?></p>
-        -->
-
 		<div class="add-custom-button">
 			<input type="text" class="custom-hook-entry" style="width:300px" placeholder="<?php _e( 'Enter hook slug', 'blox' ); ?>" value="" /><a class="button button-secondary"><?php _e( 'Add Custom Hook', 'blox' ); ?></a>
 			<p class="description"><?php _e( 'The hook slug can only be made up of letters, numbers, dashes and underscores.', 'blox' );?></p>
@@ -1449,7 +1442,7 @@ class Blox_Settings {
 			<input class="blox-force-hidden" type="text" name="<?php echo $custom_section_name; ?>" value="<?php echo $custom_section_value; ?>" />
 		</div>
 		<div id="default_custom_hook_settings">
-            <div class="blox-hook-table">
+            <div class="blox-hook-table custom">
                 <div class="row title-row">
                     <div class="hook-enable"><?php _e( 'Enable', 'blox' ); ?></div>
                     <div class="hook-slug"><?php _e( 'Hook', 'blox' ); ?></div>
@@ -1474,7 +1467,7 @@ class Blox_Settings {
                         ?>
                         <div class="row hook-row">
                             <div class="hook-enable"><input type="checkbox" name="<?php echo $enable_name; ?>" value="1" <?php echo $enable_value; ?>/></div>
-                            <div class="hook-slug"><span><?php echo $hooks; ?><span></div>
+                            <div class="hook-slug"><span><?php echo $hooks; ?></span></div>
                             <div class="hook-name"><input class="hook-name" type="text" name="<?php echo $hook_name_name; ?>"  placeholder="<?php echo $hooks; ?>" value="<?php echo $hook_name_value; ?>" /></div>
                             <div class="hook-desc"><textarea class="hook-title" rows="1" name="<?php echo $hook_title_name; ?>" ><?php echo $hook_title_value; ?></textarea></div>
                             <div class="hook-delete"><a class="blox-custom-hook-delete dashicons right" href="#" title="<?php _e( 'Delete Hook', 'blox' );?>"></a></div>

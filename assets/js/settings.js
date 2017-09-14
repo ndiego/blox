@@ -103,21 +103,22 @@ jQuery(document).ready(function($) {
 			title_name   = 'blox_settings[default_custom_hooks][available_hooks][custom][hooks][' + hook_slug + '][title]';
 
 
-			hook_fields = '<li><span>';
+			hook_fields = '<div class="row hook-row">';
 
 			//hook_fields += '<input class="blox-force-hidden" disabled type="text" name="' + hook_name + '" value="' + hook_slug + '" />';
-			hook_fields += '<input type="checkbox" name="' + enable_name + '" value="1" />';
-			hook_fields += '<input class="hook-name" type="text" name="' + name_name + '" placeholder="' + hook_slug + '" value="' + hook_slug + '" />';
-			hook_fields += '<input class="blox-force-hidden" type="text" name="' + title_name + '" value="" />';
-			hook_fields += '<a class="delete-custom-hook">' + blox_localize_settings_scripts.delete_hook + '</a>';
+			hook_fields += '<div class="hook-enable"><input type="checkbox" name="' + enable_name + '" value="1" /></div>';
+			hook_fields += '<div class="hook-slug"><span>' + hook_slug + '</span></div>';
+			hook_fields += '<div class="hook-name"><input class="hook-name" type="text" name="' + name_name + '" placeholder="' + hook_slug + '" value="' + hook_slug + '" /></div>';
+			hook_fields += '<div class="hook-desc"><textarea class="hook-title" rows="1" name="' + title_name + '"></textarea></div>';
+			hook_fields += '<div class="hook-delete"><a class="blox-custom-hook-delete dashicons right" href="#" title="' + blox_localize_settings_scripts.delete_hook + '"></a></div>';
 
 
-			hook_fields += '</span></li>';
+			hook_fields += '</div>';
 
 			$( '#default_custom_hook_settings' ).removeClass( 'blox-hidden' );
-			$( '.custom-hooks' ).append( hook_fields );
+			$( '.blox-hook-table.custom' ).append( hook_fields );
 
-			$( '.no-hooks' ).remove();
+			$( '.blox-no-custom-hooks' ).remove();
 			$( '.custom-hook-entry' ).val( '' );
 		}
 	});
@@ -140,6 +141,14 @@ jQuery(document).ready(function($) {
 			// Makes the browser not shoot to the top of the page on "cancel"
 			return false;
 		}
+	});
+
+	$( '.blox-hook-table.custom' ).sortable({
+		items: '.hook-row',
+		cursor: 'move',
+		forcePlaceholderSize: true,
+		placeholder: 'placeholder',
+		//handle: '.sort-handle',
 	});
 
 });
