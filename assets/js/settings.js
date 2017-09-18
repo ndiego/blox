@@ -148,7 +148,48 @@ jQuery(document).ready(function($) {
 		cursor: 'move',
 		forcePlaceholderSize: true,
 		placeholder: 'placeholder',
-		//handle: '.sort-handle',
 	});
+
+	// Enable all hooks
+	$( '.blox-hook-enable-all' ).click( function(e) {
+		e.preventDefault();
+
+		$(this).parent().siblings( '.blox-hook-table' ).find( 'input[type=checkbox]' ).prop('checked', true).trigger("change");
+	});
+
+	// Disable all hooks
+	$( '.blox-hook-disable-all' ).click( function(e) {
+		e.preventDefault();
+
+		$(this).parent().siblings( '.blox-hook-table' ).find( 'input[type=checkbox]' ).prop('checked', false).trigger("change");
+	});
+
+	// Disable all custom hooks (only available for custom hooks)
+	$( '.blox-hook-delete-all' ).click( function(e) {
+		e.preventDefault();
+
+		// If there are no custom hooks, do nothing
+		if ( $( '.blox-hook-table div.hook-row').length == 0 ) {
+			return;
+		}
+
+		// Need to have the "return" or won't work
+		var message = confirm( blox_localize_settings_scripts.confirm_delete_all_hooks );
+
+		if ( message == true ) {
+			$(this).parent().siblings( '.blox-hook-table' ).find( 'div.hook-row' ).remove();
+			// If we remove the slide and there are no more, show our filler slide
+			if ( $( '.blox-hook-table div.hook-row').length == 0 ) {
+				$( '.blox-hook-table' ).append( '<div class="blox-no-custom-hooks">' + blox_localize_settings_scripts.no_hooks + '</div>' );
+			}
+
+			return false;
+		} else {
+
+			// Makes the browser not shoot to the top of the page on "cancel"
+			return false;
+		}
+	});
+
 
 });

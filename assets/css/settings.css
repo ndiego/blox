@@ -396,6 +396,23 @@ ul.blox-columns li {
 	cursor: move;
 }
 
+.blox-hook-tools {
+	background-color: #fff;
+	border: 1px solid #e1e1e1;
+	border-top: 0;
+	padding: 10px 14px;
+}
+.blox-hook-tools a {
+	font-size: 13px;
+}
+.blox-hook-tools a.blox-hook-disable-all {
+	color: #a00;
+}
+.blox-hook-tools a.blox-hook-delete-all {
+	color: #a00;
+	float: right;
+}
+
 
 /* Custom styles for default hooks settings */
 .hook-section-title {
@@ -408,6 +425,8 @@ ul.blox-columns li {
 }
 
 .blox-no-custom-hooks {
+	background-color: #f9f9f9;
 	color: #777;
-	padding: 20px;
+	padding: 40px;
+	text-align: center;
 }

@@ -695,7 +695,7 @@ class Blox_Settings {
                         'custom_hook_control_header' => array(
                             'id'   => 'hook_control_header',
                             'name' => '<span class="title">' . __( 'Custom Hook Control', 'blox' ) . '</span>',
-                            'desc' => __( 'The following settings allow you add your own custom hooks. Many themes and plugins have their own hooks. Enter them here so that Blox can target them.', 'blox' ),
+                            'desc' => __( 'The following settings allow you add custom hooks that may not be natively supported by Blox. Many theme frameworks and plugins have their own hooks, or you might have a few of your own. Enter them here so that Blox can target them.', 'blox' ),
                             'type' => 'header'
                         ),
                         'custom_hooks_disable' => array(
@@ -1479,11 +1479,10 @@ class Blox_Settings {
                 }
                 ?>
             </div>
-
-			</div>
-			<div class="blox-checkbox-select-tools">
-				<a class="blox-checkbox-select-all" href="#"><?php _e( 'Enable All' ); ?></a> <a class="blox-checkbox-select-none" href="#"><?php _e( 'Disable All' ); ?></a>
-			</div>
+            <div class="blox-hook-tools">
+                <a class="blox-hook-enable-all" href="#"><?php _e( 'Enable All' ); ?></a> | <a class="blox-hook-disable-all" href="#"><?php _e( 'Disable All' ); ?></a>
+                <a class="blox-hook-delete-all" href="#"><?php _e( 'Delete All' ); ?></a>
+            </div>
 		</div>
 		<?php
 	}
@@ -1681,11 +1680,12 @@ class Blox_Settings {
 			$this->base->plugin_slug . '-settings-scripts',
 			'blox_localize_settings_scripts',
 			array(
-				'reset'               => __( 'Are you sure you want to reset these settings? This action cannot be undone.', 'blox' ),
-				'custom_hook_title'   => __( 'Enter a hook name', 'blox' ),
-				'delete_hook'         => __( 'Delete', 'blox' ),
-				'confirm_delete_hook' => __( 'Are you sure you want to delete this hook? This action cannot be undone.', 'blox' ),
-				'no_hooks'			  => __( 'Add a custom hook...', 'blox' ),
+				'reset'                    => __( 'Are you sure you want to reset these settings? This action cannot be undone.', 'blox' ),
+				'custom_hook_title'        => __( 'Enter a hook name', 'blox' ),
+				'delete_hook'              => __( 'Delete', 'blox' ),
+				'confirm_delete_hook'      => __( 'Are you sure you want to delete this custom hook? This action cannot be undone.', 'blox' ),
+                'confirm_delete_all_hooks' => __( 'Are you sure you want to delete all custom hooks? This action cannot be undone.', 'blox' ),
+				'no_hooks'			       => __( 'Add a custom hook...', 'blox' ),
 			)
 		);
 	}
