@@ -320,6 +320,7 @@ ul.blox-columns li {
 	overflow: hidden;
 	position: relative;
 	background-color: #fff;
+	min-height: 38px;
 }
 .blox-hook-table .row div {
 	float: left;
@@ -419,9 +420,8 @@ ul.blox-columns li {
 	font-weight: 600;
 	margin: 30px 0 10px;
 }
-
-.add-custom-button {
-
+.custom-hook-entry {
+	width: 300px;
 }
 
 .blox-no-custom-hooks {
@@ -429,4 +429,20 @@ ul.blox-columns li {
 	color: #777;
 	padding: 40px;
 	text-align: center;
+}
+
+
+@media only screen and (max-width: 960px) {
+	.blox-hook-table div.hook-name,
+	.blox-hook-table div.hook-desc {
+		display: none;
+	}
+	.blox-hook-table .row .hook-slug {
+		width: 100%;
+		padding-right: 70px;
+	}
+	.custom-hook-entry {
+		width: 100%;
+		margin-bottom:5px;
+	}
 }

@@ -140,26 +140,26 @@ class Blox_Position {
 
         $hook_types = array(
             'genesis' => array(
-                'enabled' => 1,
-                'active'  => 1,
+                'enabled' => 1, // Enabled in settings
+                'active'  => 1, // Do we have a Genesis Theme?
                 'title'   => __( 'Genesis Hooks', 'blox' ),
                 'alert'   => __( 'It appears that the Genesis Framework is not active on this website. Therefore, the hooks below will not work. If you are not planning on using Genesis, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
             ),
             'woocommerce' => array(
                 'enabled' => 1,
-                'active'  => 1,
+                'active'  => 1, // Is WooCommerce active?
                 'title'   => __( 'WooCommerce Hooks', 'blox' ),
                 'alert'   => __( 'It appears that the WooCommerce plugin is not active on this website. Therefore, the hooks below will not work. If you are not planning on using WooCommerce, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
             ),
             'custom' => array(
                 'enabled' => 1,
-                'active'  => 1,
+                'active'  => 1, // Always active (obviously)
                 'title'   => __( 'Custom Hooks', 'blox' ),
-                'alert'   => __( 'It appears that Blox has experienced an error, please reach out to.', 'blox' )
+                'alert'   => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
             ),
             'wordpress' => array(
                 'enabled' => 1,
-                'active'  => 1,
+                'active'  => 1, // Always active (obviously)
                 'title'   => __( 'WordPress Hooks', 'blox' ),
                 'alert'   => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
             ),
@@ -188,7 +188,8 @@ class Blox_Position {
 
         $hook_types = $this->get_hook_types();
 
-        echo print_r($get_prefix);
+        //echo print_r($get_prefix);
+        echo print_r($hook_types);
 		?>
 
                 <div class="blox-toggle blox-toggle-has-container">

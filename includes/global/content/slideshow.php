@@ -268,7 +268,6 @@ class Blox_Content_Slideshow {
 
 				// Load settings for any additional slideshows we might want to add
 				do_action( 'blox_additional_slideshow_options', $name_prefix, $get_prefix );
-
 				?>
 
 				<tr class="blox-slideshow-option blox-content-slideshow-shortcode blox-hidden">
@@ -286,6 +285,17 @@ class Blox_Content_Slideshow {
 	}
 
 
+    /**
+	 * Get the slideshow settings if they exist, or pull in the defaults
+     *
+     * @since 1.3.0
+     *
+     * @param string $prefix   The prefix for retrieving the saved values
+     * @param string $setting  Name of the setting
+     * @param string $default  Name of the default setting so it can be retrieved
+     *
+     * @return $value          Return the setting value, either the saved version or the default
+     */
     public function get_values( $prefix, $setting, $default, $type = null ) {
 
         if ( ! empty( $prefix ) ) {
@@ -295,6 +305,7 @@ class Blox_Content_Slideshow {
             return blox_get_option( $default, '' );
         }
     }
+
 
 	/**
 	 * Saves all of the slideshow ralated settings
