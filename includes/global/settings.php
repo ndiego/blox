@@ -181,7 +181,7 @@ class Blox_Settings {
 
 			<?php settings_errors( 'blox-notices' ); ?>
 
-            <?php //echo print_r(get_option( 'blox_settings' )) ; ?>
+            <?php echo print_r(get_option( 'blox_settings' )) ; ?>
 
 			<h2 class="nav-tab-wrapper">
 				<?php foreach( $this->get_settings_tabs() as $tab_id => $tab_name ) {
@@ -237,7 +237,6 @@ class Blox_Settings {
 					<table class="form-table">
 						<?php
 						settings_fields( 'blox_settings' );
-						//do_settings_fields( 'blox_settings_' . $active_tab, 'blox_settings_' . $active_tab ); NEED TO REMOVE
                         do_settings_sections( 'blox_settings_' . $active_tab . '_' . $section );
 						?>
 					</table>
@@ -388,7 +387,8 @@ class Blox_Settings {
             ) ),
             'content'    => apply_filters( 'blox_settings_sections_content', array(
                 'main'   => __( 'Content Settings', 'blox' ),
-                'slideshow' => __( 'Slideshow Settings', 'blox')
+                'raw' => __( 'Raw Content', 'blox'),
+                'slideshow' => __( 'Slideshow', 'blox'),
             ) ),
             'position'   => apply_filters( 'blox_settings_sections_position', array(
                 'main'              => __( 'Position Settings', 'blox' ),
@@ -442,7 +442,8 @@ class Blox_Settings {
     						'label' => __( 'Globally enable global content blocks', 'blox' ),
     						'desc'  => __( 'Turning off this setting will disable all global content blocks.', 'blox' ),
     						'type'  => 'checkbox',
-    						'default' => true
+    						'default' => true,
+                            'sanitize'  => 'checkbox',
     					),
     					'global_permissions' => array(
     						'id'   => 'global_permissions',
@@ -468,7 +469,7 @@ class Blox_Settings {
     						'label' => __( 'Globally enable local content blocks', 'blox' ),
     						'desc'  => __( 'Turning off this setting will disable local blocks on all post types.', 'blox' ),
     						'type'  => 'checkbox',
-    						'default' => true
+                            'sanitize'  => 'checkbox',
     					),
     					'local_enabled_pages' => array(
     						'id'    => 'local_enabled_pages',
@@ -489,6 +490,16 @@ class Blox_Settings {
     						),
     						'default' => 'manage_options'
     					),
+                        'local_metabox_title' => array(
+                            'id'   => 'local_metabox_title',
+                            'name' => __( 'Local Metabox Title', 'blox' ),
+                            'desc' => __( 'This is the metabox title that is displayed on pages/posts/custom post types when local blocks are activated.', 'blox' ),
+                            'type' => 'text',
+                            'size' => 'large',
+                            'placeholder' => __( 'e.g. Local Content Blocks', 'blox' ),
+                            'default' => __( 'Local Content Blocks', 'blox' ),
+                            'sanitize' => 'no_html',
+                        ),
                     ),
 				)
 			),
@@ -517,19 +528,46 @@ class Blox_Settings {
                             'default' => array(),
                         ),
                     ),
-                    'slideshow' => array(
-                        'defaults_content_slideshow' => array(
-                            'id'   => 'content_slidehsow_header',
-                            'name' => '<span class="title">' . __( 'Position Defaults', 'blox' ) . '</span>',
-                            'desc' => sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
+
+                    'raw' => array(
+                        'syntax_highlighting_header' => array(
+                            'id'   => 'syntax_highlighting_header',
+                            'name' => '<span class="title">' . __( 'Syntax Highlighting', 'blox' ) . '</span>',
+                            'desc' => '',
                             'type' => 'header'
                         ),
+                        'syntax_highlighting_disable' => array(
+                            'id'      => 'syntax_highlighting_disable',
+                            'name'    => __( 'Disable Highlighting', 'blox' ),
+                            'label'   => __( 'Disable all syntax highlighting', 'blox' ),
+                            'desc'    => __( 'Checking this setting will disable syntax highlighting in the raw content fullscreen modal.', 'blox' ),
+                            'type'    => 'checkbox',
+                            'default' => false
+                        ),
+                        'syntax_highlighting_theme' => array(
+                            'id'   => 'syntax_highlighting_theme',
+                            'name' => __( 'Visual Theme', 'blox' ),
+                            'desc' => __( 'Choose the visual theme for when syntax highlighting is enabled.', 'blox' ),
+                            'type' => 'select',
+                            'options' => array(
+                                'default'    => __( 'Default (Light)', 'blox' ),
+                                'monokai'    => __( 'Monokai (Dark)', 'blox' ),
+                                'spacegray'  => __( 'Spacegray (Dark)', 'blox' ),
+                            ),
+                            'default' => 'default'
+                        ),
+                    ),
 
-                        // All the settings in the group
+                    'slideshow' => array(
+                        'defaults_content_slideshow' => array(
+                            'id'   => 'content_slideshow_header',
+                            'name' => '<span class="title">' . __( 'Slideshow Defaults', 'blox' ) . '</span>',
+                            'desc' => __( 'The slideshow functionality that is natively included with Blox has many settings. Here you can set defualt slideshow settings to ensure consistency with each new slideshow that you create.', 'blox' ),
+                            'type' => 'header'
+                        ),
                         'builtin_slideshow_animation' => array(
                             'id'    => 'builtin_slideshow_animation',
-                            'grouped' => 'defaults_content_slideshow',
-                            'name'  => '',
+                            'name'  => __( 'Slideshow Animation', 'blox' ),
                             'label' => __( 'Slideshow Animation', 'blox' ),
                             'desc'  => '',
                             'type'  => 'select',
@@ -541,7 +579,7 @@ class Blox_Settings {
                         ),
                         'builtin_slideshow_slideshowSpeed' => array(
                             'id'    => 'builtin_slideshow_slideshowSpeed',
-                            'name'  => '',
+                            'name'  => __( 'Slideshow Speed', 'blox' ),
                             'label' => __( 'Slideshow Speed (milliseconds)', 'blox' ),
                             'desc'  => '',
                             'type'  => 'text',
@@ -551,7 +589,7 @@ class Blox_Settings {
                         ),
                         'builtin_slideshow_animationSpeed' => array(
                             'id'    => 'builtin_slideshow_animationSpeed',
-                            'name'  => '',
+                            'name'  => __( 'Animation Speed', 'blox' ),
                             'label' => __( 'Animation Speed (milliseconds)', 'blox' ),
                             'desc'  => '',
                             'type'  => 'text',
@@ -561,59 +599,66 @@ class Blox_Settings {
                         ),
                         'builtin_slideshow_slideshow' => array(
                             'id'    => 'builtin_slideshow_slideshow',
-                            'name'  => '',
+                            'name'  => __( 'Start Automatically', 'blox' ),
                             'label' => __( 'Start Slideshow Automatically', 'blox' ),
                             'desc'  => '',
                             'type'  => 'checkbox',
-                            'default' => false
+                            'default' => false,
+                            'sanitize' => 'checkbox',
                         ),
                         'builtin_slideshow_animationLoop' => array(
                             'id'    => 'builtin_slideshow_animationLoop',
-                            'name'  => '',
+                            'name'  => __( 'Loop Slideshow', 'blox' ),
                             'label' => __( 'Loop Slideshow', 'blox' ),
                             'desc'  => '',
                             'type'  => 'checkbox',
-                            'default' => false
+                            'default' => false,
+                            'sanitize' => 'checkbox',
                         ),
                         'builtin_slideshow_pauseOnHover' => array(
                             'id'    => 'builtin_slideshow_pauseOnHover',
-                            'name'  => '',
+                            'name'  => __( 'Pause On Hover', 'blox' ),
                             'label' => __( 'Enable Pause On Hover', 'blox' ),
                             'desc'  => '',
                             'type'  => 'checkbox',
-                            'default' => false
+                            'default' => false,
+                            'sanitize' => 'checkbox',
                         ),
                         'builtin_slideshow_smoothHeight' => array(
                             'id'    => 'builtin_slideshow_smoothHeight',
-                            'name'  => '',
+                            'name'  => __( 'Slideshow Height Resizing', 'blox' ),
                             'label' => __( 'Enable Slideshow Height Resizing', 'blox' ),
                             'desc'  => '',
                             'type'  => 'checkbox',
-                            'default' => false
+                            'default' => false,
+                            'sanitize' => 'checkbox',
                         ),
                         'builtin_slideshow_directionNav' => array(
                             'id'    => 'builtin_slideshow_directionNav',
-                            'name'  => '',
+                            'name'  => __( 'Directional Navigation', 'blox' ),
                             'label' => __( 'Disable Directional Navigation (i.e. arrows)', 'blox' ),
                             'desc'  => '',
                             'type'  => 'checkbox',
-                            'default' => false
+                            'default' => false,
+                            'sanitize' => 'checkbox',
                         ),
                         'builtin_slideshow_controlNav' => array(
                             'id'    => 'builtin_slideshow_controlNav',
-                            'name'  => '',
+                            'name'  => __( 'Control Navigation', 'blox' ),
                             'label' => __( 'Disable Control Navigation (i.e. dots)', 'blox' ),
                             'desc'  => '',
                             'type'  => 'checkbox',
-                            'default' => false
+                            'default' => false,
+                            'sanitize' => 'checkbox',
                         ),
                         'builtin_slideshow_caption' => array(
                             'id'    => 'builtin_slideshow_caption',
-                            'name'  => '',
+                            'name'  => __( 'Captions', 'blox' ),
                             'label' => __( 'Disable Captions', 'blox' ),
                             'desc'  => '',
                             'type'  => 'checkbox',
-                            'default' => false
+                            'default' => false,
+                            'sanitize' => 'checkbox',
                         ),
                     ),
                 )
@@ -688,25 +733,26 @@ class Blox_Settings {
                     ),
                     'custom_hooks' => array(
                         'custom_hook_control_header' => array(
-                            'id'   => 'hook_control_header',
+                            'id'   => 'custom_hook_control_header',
                             'name' => '<span class="title">' . __( 'Custom Hook Control', 'blox' ) . '</span>',
                             'desc' => __( 'The following settings allow you add Custom Hooks that may not be natively supported by Blox. Many theme frameworks and plugins have their own hooks, or you might have a few of your own. Enter them here so that Blox can target them.', 'blox' ),
                             'type' => 'header'
                         ),
                         'custom_hooks_disable' => array(
-                            'id'   => 'custom_hooks_disable',
-                            'name'  => __( 'Disable Custom Hooks', 'blox' ),
-                            'label' => __( 'Disable Custom Hooks for all block positioning', 'blox' ),
-                            'desc'  => __( 'When you disable Custom Hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for Custom Hooks, disabling them simplifies the hook selector for users.', 'blox' ),
-                            'type'  => 'checkbox',
-                            'default' => true
+                            'id'       => 'custom_hooks_disable',
+                            'name'     => __( 'Disable Custom Hooks', 'blox' ),
+                            'label'    => __( 'Disable Custom Hooks for all block positioning', 'blox' ),
+                            'desc'     => __( 'When you disable Custom Hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for Custom Hooks, disabling them simplifies the hook selector for users.', 'blox' ),
+                            'type'     => 'checkbox',
+                            'default'  => 0,
+                            'sanitize' => 'checkbox',
                         ),
                         'default_custom_hooks' => array(
                             'id'       => 'default_custom_hooks',
                             'name'     => __( 'Add Custom Hooks', 'blox' ),
                             'desc'     => '',
                             'type'     => 'custom_hooks',
-                            'sanitize' => 'default_hooks',
+                            'sanitize' => 'hooks',
                         ),
                     ),
                     'genesis_hooks' => array(
@@ -721,7 +767,7 @@ class Blox_Settings {
     						'name'     => __( 'Genesis Hooks', 'blox' ),
     						'desc'     => '',
     						'type'     => 'hooks',
-    						'sanitize' => 'default_hooks',
+    						'sanitize' => 'hooks',
     					),
                     ),
 				)
@@ -776,48 +822,12 @@ class Blox_Settings {
 			'misc' => apply_filters( 'blox_settings_misc',
 				array(
                     'main' => array(
-                        'syntax_highlighting_header' => array(
-                            'id'   => 'syntax_highlighting_header',
-                            'name' => '<span class="title">' . __( 'Syntax Highlighting', 'blox' ) . '</span>',
-                            'desc' => '',
-                            'type' => 'header'
-                        ),
-                        'syntax_highlighting_disable' => array(
-                            'id'      => 'syntax_highlighting_disable',
-                            'name'    => __( 'Disable Highlighting', 'blox' ),
-                            'label'   => __( 'Disable all syntax highlighting', 'blox' ),
-                            'desc'    => __( 'Checking this setting will disable syntax highlighting in the raw content fullscreen modal.', 'blox' ),
-                            'type'    => 'checkbox',
-                            'default' => false
-                        ),
-                        'syntax_highlighting_theme' => array(
-                            'id'   => 'syntax_highlighting_theme',
-                            'name' => __( 'Visual Theme', 'blox' ),
-                            'desc' => __( 'Choose the visual theme for when syntax highlighting is enabled.', 'blox' ),
-                            'type' => 'select',
-                            'options' => array(
-                                'default'    => __( 'Default (Light)', 'blox' ),
-                                'monokai'    => __( 'Monokai (Dark)', 'blox' ),
-                                'spacegray'  => __( 'Spacegray (Dark)', 'blox' ),
-                            ),
-                            'default' => 'default'
-                        ),
                         'other_header' => array(
                             'id'   => 'other_header',
                             'name' => '<span class="title">' . __( 'Additional Settings', 'blox' ) . '</span>',
                             'desc' => '',
                             'type' => 'header'
                         ),
-    					'local_metabox_title' => array(
-    						'id'   => 'local_metabox_title',
-    						'name' => __( 'Local Metabox Title', 'blox' ),
-    						'desc' => __( 'This is the metabox title that is displayed on pages/posts/custom post types when local blocks are activated.', 'blox' ),
-    						'type' => 'text',
-    						'size' => 'full',
-    						'placeholder' => __( 'e.g. Local Content Blocks', 'blox' ),
-    						'default' => __( 'Local Content Blocks', 'blox' ),
-    						'sanitize' => 'no_html',
-    					),
     					'uninstall_on_delete' => array(
     						'id'    => 'uninstall_on_delete',
     						'name'  => __( 'Remove Data on Uninstall', 'blox' ),
@@ -869,7 +879,7 @@ class Blox_Settings {
 
 
 	/**
-	 * Settings Sanitization NOT DONE!!!!
+	 * Settings Sanitization
 	 *
 	 * Adds a settings error (for the updated message)
 	 * At some point this will validate input
@@ -878,7 +888,7 @@ class Blox_Settings {
 	 *
 	 * @param array $input The value inputted in the field
 	 *
-	 * @return string $input Sanitizied value
+	 * @return string $output Sanitizied value
 	 */
 	public function settings_sanitize( $input = array() ) {
 
@@ -893,12 +903,8 @@ class Blox_Settings {
 			$blox_options = array();
 		}
 
-        $input = $input ? $input : array();
-
-        $settings = $this->get_registered_settings();
-        $settings = $this->get_registered_settings_degrouped( $settings );
-
-        echo '<pre>' + print_r($settings) + '</pre>';
+        $sanitization_types = $this->get_registered_settings_sanitization_types();
+        $input              = $input ? $input : array();
 
         if ( $doing_section ) {
 
@@ -906,67 +912,97 @@ class Blox_Settings {
             $tab      = isset( $referrer['tab'] ) ? $referrer['tab'] : 'general';
             $section  = isset( $referrer['section'] ) ? $referrer['section'] : 'main';
 
-            $setting_types = blox_get_registered_settings_types( $tab, $section );
+            $sanitization_types = $this->get_registered_settings_sanitization_types( $tab, $section );
 
             // Run a general sanitization for the tab for special fields
             $input = apply_filters( 'blox_settings_' . $tab . '_sanitize', $input );
 
             // Run a general sanitization for the section so custom tabs with sub-sections can save special data
             $input = apply_filters( 'blox_settings_' . $tab . '-' . $section . '_sanitize', $input );
-
-            //echo '<pre>' + print_r($input) + '</pre>';
-
-			// Loop through each setting being saved and pass it through a sanitization filter
-			foreach ( $input as $key => $value ) {
-
-				// Get the setting sanitization type (no_html, select, etc)
-				$sanitize_type = isset( $settings[$tab][$key]['sanitize'] ) ? $settings[$tab][$key]['sanitize'] : false;
-
-                //echo $key . ': ' . $sanitize_type;
-                //echo print_r($settings[$tab][$key]);
-
-				if ( $sanitize_type ) {
-					// If the setting has a sanitization filter, run it...
-					$input[$key] =  $this->$sanitize_type( $value );
-				}
-			}
-
-			// Loop through the whitelist and unset any that are empty for the tab being saved
-			if ( ! empty( $settings[$tab] ) ) {
-				foreach ( $settings[$tab] as $key => $value ) {
-					if ( empty( $input[$key] ) ) {
-						unset( $blox_options[$key] );
-					}
-				}
-			}
-
-			// Merge our new settings with the existing
-			$output = array_merge( $blox_options, $input );
-
-			add_settings_error( 'blox-notices', '', __( 'Settings updated.', 'blox' ), 'updated' );
-
-			return $output;
-
         }
 
+        // Merge our new settings with the existing
+        $output = array_merge( $blox_options, $input );
+
+        foreach ( $sanitization_types as $key => $sanitization_type ) {
+
+            if ( empty( $sanitization_type ) ) {
+                continue;
+            }
+
+            if ( array_key_exists( $key, $output ) ) {
+
+                // Check if santization method exists, if so, run sanitization.
+                // This is only for special/complicated sanitizations.
+                if ( method_exists( $this, $sanitization_type) ) {
+                    $output[ $key ] = $this->$sanitization_type( $output[ $key ] );
+                }
+            }
+
+            if ( $doing_section ) {
+                switch( $sanitization_type ) {
+                    case 'checkbox':
+                        if ( array_key_exists( $key, $input ) && empty( $input[ $key ] ) || ( array_key_exists( $key, $output ) && ! array_key_exists( $key, $input ) ) ) {
+                            unset( $output[ $key ] );
+                        }
+                        break;
+                    case 'safe_html':
+                		$output[ $key ] = wp_kses_post( $output[ $key ] );
+                	    break;
+                    case 'no_html':
+                        $output[ $key ] = strip_tags( $output[ $key ] );
+                        break;
+                    case 'absint':
+                        $output[ $key ] = absint( $output[ $key ] );
+                        break;
+                    default:
+                        // NEED NEW DEFAULT
+                        if ( array_key_exists( $key, $input ) && empty( $input[ $key ] ) || ( array_key_exists( $key, $output ) && ! array_key_exists( $key, $input ) ) ) {
+                            unset( $output[ $key ] );
+                        }
+                        break;
+                }
+            } else {
+                if ( empty( $input[ $key ] ) ) {
+                    unset( $output[ $key ] );
+                }
+            }
+        }
+
+        /*
+		// Loop through the whitelist and unset any that are empty for the tab being saved
+		if ( ! empty( $settings[$tab] ) ) {
+			foreach ( $settings[$tab] as $key => $value ) {
+				if ( empty( $input[$key] ) ) {
+					unset( $blox_options[$key] );
+				}
+			}
+		}
+        */
+
+
+        if ( $doing_section ) {
+            add_settings_error( 'blox-notices', '', __( 'Settings updated.', 'blox' ), 'updated' );
+        }
+
+        return $output;
 	}
 
 
-
     /**
-     * Flattens the set of registered settings and their type so we can easily sanitize all the settings
-     * in a much cleaner set of logic in edd_settings_sanitize
+     * Flattens the set of registered settings and their sanitization type so we can easily sanitize all the settings
+     * in a much cleaner set of logic
      *
-     * @since  2.6.5
-     * @since 2.8 - Added the ability to filter setting types by tab and section
+     * @since 2.0.0
      *
      * @param $filtered_tab bool|string     A tab to filter setting types by.
      * @param $filtered_section bool|string A section to filter setting types by.
-     * @return array Key is the setting ID, value is the type of setting it is registered as
+     * @return array Key is the setting ID, value is the type of sanitization that needs to be applied
      */
-    function blox_get_registered_settings_types( $filtered_tab = false, $filtered_section = false ) {
-    	$settings      = $this->get_registered_settings();
-    	$setting_types = array();
+    function get_registered_settings_sanitization_types( $filtered_tab = false, $filtered_section = false ) {
+
+        $settings           = $this->get_registered_settings();
+    	$sanitization_types = array();
 
     	foreach ( $settings as $tab_id => $tab ) {
 
@@ -977,8 +1013,8 @@ class Blox_Settings {
     		foreach ( $tab as $section_id => $section_or_setting ) {
 
     			// See if we have a setting registered at the tab level for backwards compatibility
-    			if ( is_array( $section_or_setting ) && array_key_exists( 'type', $section_or_setting ) ) {
-    				$setting_types[ $section_or_setting['id'] ] = $section_or_setting['type'];
+    			if ( is_array( $section_or_setting ) && array_key_exists( 'sanitize', $section_or_setting ) ) {
+    				$ssanitization_types[ $section_or_setting['id'] ] = $section_or_setting['sanitize'];
     				continue;
     			}
 
@@ -987,13 +1023,17 @@ class Blox_Settings {
     			}
 
     			foreach ( $section_or_setting as $section => $section_settings ) {
-    				$setting_types[ $section_settings['id'] ] = $section_settings['type'];
+
+                    // Check to make sure the setting has a sanitize parameter
+                    if ( is_array( $section_settings ) && array_key_exists( 'sanitize', $section_settings ) ) {
+    				    $sanitization_types[ $section_settings['id'] ] = $section_settings['sanitize'];
+                        continue;
+        			}
     			}
     		}
-
     	}
 
-    	return $setting_types;
+    	return $sanitization_types;
     }
 
 
@@ -1121,7 +1161,8 @@ class Blox_Settings {
         $size  = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
         $placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
 
-		if ( empty( $value ) ) {
+        // The second check is to correct for absint text boxes
+		if ( empty( $value ) && $value != 0 ) {
 			$value = isset( $args['default'] ) ? $args['default'] : '';
 		}
 
@@ -1360,8 +1401,8 @@ class Blox_Settings {
             $all_hooks = $this->get_hooks();
 			$hooks     = $all_hooks[ $hook_type ];
 		}
-        echo $args['id'];
-        echo print_r($hooks);
+        //echo $args['id'];
+        //echo print_r($hooks);
 		?>
 
     <!-- TO REMOVE
@@ -1380,17 +1421,21 @@ class Blox_Settings {
 
 				echo $section['name'];
 
-				$section_name  = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][name]';
-				$section_value = isset( $section['name'] ) ? esc_attr( $section['name'] ) : __( 'Missing Section Name', 'blox' );
+				$section_title_name    = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][name]';
+				$section_title_value   = isset( $section['name'] ) ? esc_attr( $section['name'] ) : __( 'Missing Section Name', 'blox' );
+                $section_disable_name  = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][disable]';
+    			$section_disable_value = isset( $section['disable'] ) ? checked( 1, esc_attr( $section['disable'] ), false ) : '';
 				?>
 
-				<input class="" type="text" name="<?php echo $section_name; ?>" placeholder="<?php _e( 'Enter a section name', 'blox' ); ?>" value="<?php echo $section_value; ?>" />
+				<input class="" type="text" name="<?php echo $section_title_name; ?>" placeholder="<?php _e( 'Enter a section name', 'blox' ); ?>" value="<?php echo $section_title_value; ?>" />
+                <input class="" type="checkbox" name="<?php echo $section_disable_name; ?>" value="1" <?php echo $section_disable_value; ?>/>
+
                 EDIT BUTTON HERE
 			</div>
 
             <div class="blox-hook-table">
                 <div class="row title-row">
-                    <div class="hook-enable"><?php _e( 'Enable', 'blox' ); ?></div>
+                    <div class="hook-disable"><?php _e( 'Disable', 'blox' ); ?></div>
                     <div class="hook-slug"><?php _e( 'Hook', 'blox' ); ?></div>
                     <div class="hook-name"><?php _e( 'Hook Name', 'blox' ); ?></div>
                     <div class="hook-desc"><?php _e( 'Hook Description', 'blox' ); ?></div>
@@ -1398,31 +1443,35 @@ class Blox_Settings {
 				<?php
 				foreach ( $section['hooks'] as $hooks => $hook ) {
 
-					$enable_name  = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][enable]';
-					$enable_value = isset( $section['hooks'][$hooks]['enable'] ) ? checked( 1, esc_attr( $section['hooks'][$hooks]['enable'] ), false ) : '';
-					$name_name    = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][name]';
-					$name_value   = isset( $section['hooks'][$hooks]['name'] ) ? esc_attr( $section['hooks'][$hooks]['name'] ) : '';
-					$title_name   = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][title]';
-					$title_value  = isset( $hook['title'] ) ? esc_attr( $hook['title'] ) : '';
-					?>
-					<div class="row hook-row">
-						<span>
-							<input type="checkbox" name="<?php echo $enable_name; ?>" value="1" <?php echo $enable_value; ?>/>
-							<input style="width:300px" type="text" name="<?php echo $name_name; ?>" placeholder="<?php echo $hooks; ?>" value="<?php echo $name_value; ?>" />
+                    $hook_disable_name  = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][disable]';
+					$hook_disable_value = isset( $hook['disable'] ) ? checked( 1, esc_attr( $hook['disable'] ), false ) : '';
+					$hook_name_name     = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][name]';
+					$hook_name_value    = isset( $hook['name'] ) ? esc_attr( $hook['name'] ) : '';
+					$hook_title_name    = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][title]';
+					$hook_title_value   = isset( $hook['title'] ) ? esc_attr( $hook['title'] ) : '';
 
-                            <?php echo $title_value; ?>
-                            <input class="blox-force-hidden" type="text" name="<?php echo $title_name; ?>" value="<?php echo $title_value; ?>" />
-						</span>
-					</div>
-					<?php
+
+                    ?>
+                    <div class="row hook-row">
+                        <div class="hook-disable"><input type="checkbox" name="<?php echo $hook_disable_name; ?>" value="1" <?php echo $hook_disable_value; ?>/></div>
+                        <div class="hook-slug"><span><?php echo $hooks; ?></span></div>
+                        <div class="hook-name"><input class="hook-name" type="text" name="<?php echo $hook_name_name; ?>"  placeholder="<?php echo $hooks; ?>" value="<?php echo $hook_name_value; ?>" /></div>
+                        <div class="hook-desc">
+                            <span><?php echo $hook_title_value; ?></span>
+                            <textarea class="hook-title blox-force-hidden" rows="1" name="<?php echo $hook_title_name; ?>" ><?php echo $hook_title_value; ?></textarea>
+                        </div>
+                    </div>
+                    <?php
 				}
 				?>
             </div>
 
-			<div class="blox-checkbox-select-tools">
-				<a class="blox-checkbox-select-all" href="#"><?php _e( 'Enable All' ); ?></a> <a class="blox-checkbox-select-none" href="#"><?php _e( 'Disable All' ); ?></a>
-			</div>
-			</div>
+            <div class="blox-hook-tools">
+                <a class="blox-hook-disable-all" href="#"><?php _e( 'Disable All', 'blox' ); ?></a> | <a class="blox-hook-enable-all" href="#"><?php _e( 'Enable All', 'blox' ); ?></a>
+            </div>
+            <p class="description">
+                <?php _e( 'Please note that the Hook Name cannot contain HTML.', 'blox' ); ?>
+            </p>
 		<?php } ?>
 		</div>
 		<?php
@@ -1446,12 +1495,8 @@ class Blox_Settings {
 			$value = $blox_options[ $args['id'] ];
 		} else {
 			// Defaults
-			$value = array(
-				'available_hooks' => array()
-			);
+			$value = array();
 		}
-
-        echo print_r($blox_options[ $args['id'] ]);
 
 		?>
 		<div class="add-custom-button">
@@ -1460,38 +1505,41 @@ class Blox_Settings {
 		</div>
 		<div class="hook-section-title">
 			<?php
-			$custom_section_name  = 'blox_settings['. $args['id'] . '][available_hooks][custom][name]';
-			$custom_section_value = __( 'Custom Hooks', 'blox' );
-			echo $custom_section_value;
+            // NEED TO UPDATE ONCE MULTI SECTION IS ENABLED
+            $section_title_name    = 'blox_settings['. $args['id'] . '][custom][name]';
+            $section_title_value   = __( 'Custom Hooks', 'blox' );
+			$section_disable_name  = 'blox_settings['. $args['id'] . '][custom][disable]';
+			$section_disable_value = isset( $value['custom']['disable'] ) ? checked( 1, esc_attr( $value['custom']['disable'] ), false ) : '';
+
+            echo $section_title_value;
 			?>
-			<input class="blox-force-hidden" type="text" name="<?php echo $custom_section_name; ?>" value="<?php echo $custom_section_value; ?>" />
+			<input class="blox-force-hidden" type="text" name="<?php echo $section_title_name; ?>" value="<?php echo $section_title_value; ?>" />
+            <input class="blox-force-hidden" type="checkbox" name="<?php echo $section_disable_name; ?>" value="1" <?php echo $section_disable_value; ?>/>
 		</div>
 		<div id="default_custom_hook_settings">
             <div class="blox-hook-table custom">
                 <div class="row title-row">
-                    <div class="hook-enable"><?php _e( 'Enable', 'blox' ); ?></div>
+                    <div class="hook-disable"><?php _e( 'Disable', 'blox' ); ?></div>
                     <div class="hook-slug"><?php _e( 'Hook', 'blox' ); ?></div>
                     <div class="hook-name"><?php _e( 'Hook Name', 'blox' ); ?></div>
                     <div class="hook-desc"><?php _e( 'Hook Description', 'blox' ); ?></div>
                     <div class="hook-delete"><?php _e( 'Delete', 'blox' ); ?></div>
                 </div>
                 <?php
-                $custom_hooks = isset( $value['available_hooks']['custom'] ) ? $value['available_hooks']['custom'] : array( 'hooks' => array() );
-
-                //echo print_r($custom_hooks);
+                $custom_hooks = isset( $value['custom'] ) ? $value['custom'] : array( 'hooks' => array() );
 
                 if ( ! empty( $custom_hooks['hooks'] ) ) {
                     foreach ( $custom_hooks['hooks'] as $hooks => $hook ) {
 
-                        $enable_name      = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][enable]';
-						$enable_value     = isset( $hook['enable'] ) ? checked( 1, esc_attr( $hook['enable'] ), false ) : '';
-						$hook_name_name	  = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][name]';
-						$hook_name_value       = isset( $hook['name'] ) ? esc_attr( $hook['name'] ) : '';
-						$hook_title_name  = 'blox_settings[' . $args['id'] . '][available_hooks][custom][hooks][' . $hooks . '][title]';
-						$hook_title_value = isset( $hook['title'] ) ? esc_attr( $hook['title'] ) : '';
+                        $hook_disable_name = 'blox_settings[' . $args['id'] . '][custom][hooks][' . $hooks . '][disable]';
+						$hook_disable_value = isset( $hook['disable'] ) ? checked( 1, esc_attr( $hook['disable'] ), false ) : '';
+						$hook_name_name	    = 'blox_settings[' . $args['id'] . '][custom][hooks][' . $hooks . '][name]';
+						$hook_name_value    = isset( $hook['name'] ) ? esc_attr( $hook['name'] ) : '';
+						$hook_title_name    = 'blox_settings[' . $args['id'] . '][custom][hooks][' . $hooks . '][title]';
+						$hook_title_value   = isset( $hook['title'] ) ? esc_attr( $hook['title'] ) : '';
                         ?>
                         <div class="row hook-row">
-                            <div class="hook-enable"><input type="checkbox" name="<?php echo $enable_name; ?>" value="1" <?php echo $enable_value; ?>/></div>
+                            <div class="hook-disable"><input type="checkbox" name="<?php echo $hook_disable_name; ?>" value="1" <?php echo $hook_disable_value; ?>/></div>
                             <div class="hook-slug"><span><?php echo $hooks; ?></span></div>
                             <div class="hook-name"><input class="hook-name" type="text" name="<?php echo $hook_name_name; ?>"  placeholder="<?php echo $hooks; ?>" value="<?php echo $hook_name_value; ?>" /></div>
                             <div class="hook-desc"><textarea class="hook-title" rows="1" name="<?php echo $hook_title_name; ?>" ><?php echo $hook_title_value; ?></textarea></div>
@@ -1505,11 +1553,11 @@ class Blox_Settings {
                 ?>
             </div>
             <div class="blox-hook-tools">
-                <a class="blox-hook-enable-all" href="#"><?php _e( 'Enable All', 'blox' ); ?></a> | <a class="blox-hook-disable-all" href="#"><?php _e( 'Disable All', 'blox' ); ?></a>
+                <a class="blox-hook-disable-all" href="#"><?php _e( 'Disable All', 'blox' ); ?></a> | <a class="blox-hook-enable-all" href="#"><?php _e( 'Enable All', 'blox' ); ?></a>
                 <a class="blox-hook-delete-all" href="#"><?php _e( 'Delete All', 'blox' ); ?></a>
             </div>
             <p class="description">
-                <?php _e( 'Please note that the Hook Name and Hook Description can not contain HTML.', 'blox' ); ?>
+                <?php _e( 'Please note that the Hook Name and Hook Description cannot contain HTML.', 'blox' ); ?>
             </p>
 		</div>
 		<?php
@@ -1533,32 +1581,6 @@ class Blox_Settings {
 	 */
 	function one_zero( $new_value ) {
 		return (int) (bool) $new_value;
-	}
-
-
-	/**
-	 * Returns a positive integer value.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param mixed $new_value Should ideally be a positive integer.
-	 * @return integer Positive integer.
-	 */
-	function absint( $new_value ) {
-		return absint( $new_value );
-	}
-
-
-	/**
-	 * Removes HTML tags from string.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $new_value String, possibly with HTML in it
-	 * @return string String without HTML in it.
-	 */
-	function no_html( $new_value ) {
-		return strip_tags( $new_value );
 	}
 
 
@@ -1587,40 +1609,6 @@ class Blox_Settings {
 		return sanitize_email( $new_value );
 	}
 
-
-	/**
-	 * Removes unsafe HTML tags, via wp_kses_post().
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $new_value String with potentially unsafe HTML in it
-	 * @return string String with only safe HTML in it
-	 */
-	function safe_html( $new_value ) {
-		return wp_kses_post( $new_value );
-	}
-
-
-	/**
-	 * Keeps the option from being updated if the user lacks unfiltered_html
-	 * capability.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $new_value New value
-	 * @param string $old_value Previous value
-	 * @return string New or previous value, depending if user has correct
-	 * capability or not.
-	 */
-	function requires_unfiltered_html( $new_value, $old_value ) {
-		if ( current_user_can( 'unfiltered_html' ) ) {
-			return $new_value;
-		} else {
-			return $old_value;
-		}
-	}
-
-
 	/**
 	 * Removes HTML tags from all custom hook names
 	 *
@@ -1629,34 +1617,39 @@ class Blox_Settings {
 	 * @param array $new_value Array of all custom hook data
 	 * @return array Array of all custom hook data without tags in it
 	 */
-	function default_hooks( $new_value ) {
+	function hooks( $new_value ) {
 
-		$available_hooks = isset( $new_value['available_hooks'] ) ? $new_value['available_hooks'] : false;
-        echo print_r($available_hooks);
-		if ( $available_hooks ) {
+		$available_hooks = isset( $new_value ) ? $new_value : false;
+        $sanitized_hooks = array();
+
+        if ( $available_hooks ) {
 			foreach ( $available_hooks as $sections => $section ) {
 
-				$enabled_hooks = array();
+                // Sanitize hook section slugs (only letters, number, dash, underscore)
+                $sections = preg_replace( '/[^ \w \-]/', '', $sections );
+
+                $sanitized_hooks[$sections] = array(
+                    'disable' => isset( $section['disable'] ) ? esc_attr( $hook['disable'] ) : false,
+                    'name'    => strip_tags( $section['name'] ),
+                    'hooks'   => array(),
+                );
 
 				if ( isset( $section['hooks'] ) ) {
 					foreach ( $section['hooks'] as $hooks => $hook ) {
 
-						// Sanatize custom hook entries (only letters, number, dash, underscore)
+						// Sanatize hook slugs (only letters, number, dash, underscore)
 						$hooks = preg_replace( '/[^ \w \-]/', '', $hooks );
 
-						$enabled_hooks[$hooks] = array(
-							'enable' => isset( $hook['enable'] ) ? esc_attr( $hook['enable'] ) : 0,
-							'name'   => strip_tags( $hook['name'] ),
-							'title'  => esc_attr( $hook['title'] ),
+						$sanitized_hooks[$sections]['hooks'][$hooks] = array(
+							'disable' => isset( $hook['disable'] ) ? esc_attr( $hook['disable'] ) : false,
+							'name'    => strip_tags( $hook['name'] ),
+							'title'   => esc_attr( $hook['title'] ),
 						);
 					}
 				}
-
-				$filtered_hooks[$sections]['name']  = strip_tags( $section['name'] );
-				$filtered_hooks[$sections]['hooks'] = $enabled_hooks;
 			}
 
-			$new_value['available_hooks'] = $filtered_hooks;
+			$new_value = $sanitized_hooks;
 		}
 
 		return $new_value;

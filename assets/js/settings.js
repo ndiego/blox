@@ -97,16 +97,15 @@ jQuery(document).ready(function($) {
 
 		if ( hook_slug != '' ) {
 
-			hook_name	  = 'blox_settings[default_custom_hooks][available_hooks][custom][hooks][' + hook_slug + ']';
-			enable_name  = 'blox_settings[default_custom_hooks][available_hooks][custom][hooks][' + hook_slug + '][enable]';
-			name_name    = 'blox_settings[default_custom_hooks][available_hooks][custom][hooks][' + hook_slug + '][name]';
-			title_name   = 'blox_settings[default_custom_hooks][available_hooks][custom][hooks][' + hook_slug + '][title]';
+			hook_name	  = 'blox_settings[default_custom_hooks][custom][hooks][' + hook_slug + ']';
+			disable_name  = 'blox_settings[default_custom_hooks][custom][hooks][' + hook_slug + '][disable]';
+			name_name    = 'blox_settings[default_custom_hooks][custom][hooks][' + hook_slug + '][name]';
+			title_name   = 'blox_settings[default_custom_hooks][custom][hooks][' + hook_slug + '][title]';
 
 
 			hook_fields = '<div class="row hook-row">';
 
-			//hook_fields += '<input class="blox-force-hidden" disabled type="text" name="' + hook_name + '" value="' + hook_slug + '" />';
-			hook_fields += '<div class="hook-enable"><input type="checkbox" name="' + enable_name + '" value="1" /></div>';
+			hook_fields += '<div class="hook-disable"><input type="checkbox" name="' + disable_name + '" value="1" /></div>';
 			hook_fields += '<div class="hook-slug"><span>' + hook_slug + '</span></div>';
 			hook_fields += '<div class="hook-name"><input class="hook-name" type="text" name="' + name_name + '" placeholder="' + hook_slug + '" value="' + hook_slug + '" /></div>';
 			hook_fields += '<div class="hook-desc"><textarea class="hook-title" rows="1" name="' + title_name + '"></textarea></div>';
@@ -150,18 +149,18 @@ jQuery(document).ready(function($) {
 		placeholder: 'placeholder',
 	});
 
-	// Enable all hooks
-	$( '.blox-hook-enable-all' ).click( function(e) {
-		e.preventDefault();
-
-		$(this).parent().siblings( '.blox-hook-table' ).find( 'input[type=checkbox]' ).prop('checked', true).trigger("change");
-	});
-
 	// Disable all hooks
 	$( '.blox-hook-disable-all' ).click( function(e) {
 		e.preventDefault();
 
-		$(this).parent().siblings( '.blox-hook-table' ).find( 'input[type=checkbox]' ).prop('checked', false).trigger("change");
+		$(this).parent().prev( '.blox-hook-table' ).find( 'input[type=checkbox]' ).prop('checked', true).trigger("change");
+	});
+
+	// Enable all hooks
+	$( '.blox-hook-enable-all' ).click( function(e) {
+		e.preventDefault();
+
+		$(this).parent().prev( '.blox-hook-table' ).find( 'input[type=checkbox]' ).prop('checked', false).trigger("change");
 	});
 
 	// Disable all custom hooks (only available for custom hooks)

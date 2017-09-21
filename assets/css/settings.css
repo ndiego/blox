@@ -326,7 +326,7 @@ ul.blox-columns li {
 	float: left;
 	padding: 10px;
 }
-.blox-hook-table .row .hook-enable,
+.blox-hook-table .row .hook-disable,
 .blox-hook-table .row .hook-delete {
 	width: 70px;
 	position: absolute;
@@ -338,7 +338,7 @@ ul.blox-columns li {
 	right: 0;
 }
 .blox-hook-table .row .hook-slug {
-	width: 30%;
+	width: 27%;
 	padding-left: 70px;
 }
 .blox-hook-table .row .hook-slug span {
@@ -347,10 +347,10 @@ ul.blox-columns li {
 	word-wrap: break-word;
 }
 .blox-hook-table .row .hook-name {
-	width: 30%;
+	width: 27%;
 }
 .blox-hook-table .row .hook-desc {
-	width: 40%;
+	width: 46%;
 }
 .blox-hook-table.custom .row .hook-desc {
 	padding-right: 70px /* Need to account for delete column in custom hooks */
@@ -370,20 +370,27 @@ ul.blox-columns li {
 .blox-hook-table .hook-row.ui-sortable-helper {
 	border: 1px solid #e5e5e5;
 }
-.blox-hook-table .hook-row .hook-enable,
+.blox-hook-table .hook-row .hook-disable,
 .blox-hook-table .hook-row .hook-delete {
 	padding: 11px 10px 6px;
 }
 .blox-hook-table .hook-row .hook-slug {
 	color: #666;
 	font-style: italic;
-	padding: 11px 10px 6px 70px;
+	padding: 11px 10px 10px 70px;
 }
 .blox-hook-table .hook-row div.hook-name {
 	padding: 7px 10px 6px;
 }
 .blox-hook-table .hook-row .hook-desc {
 	padding: 8px 10px 3px;
+}
+.blox-hook-table .hook-row .hook-desc span {
+	color: #666;
+    font-style: italic;
+    padding: 3px 0 7px;
+    display: inline-block;
+    font-size: 13px;
 }
 .blox-custom-hook-delete { color: #666; }
 .blox-custom-hook-delete:before { content: "\f182"; }
