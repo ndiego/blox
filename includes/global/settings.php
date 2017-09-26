@@ -742,7 +742,7 @@ class Blox_Settings {
                             'id'       => 'custom_hooks_disable',
                             'name'     => __( 'Disable Custom Hooks', 'blox' ),
                             'label'    => __( 'Disable Custom Hooks for all block positioning', 'blox' ),
-                            'desc'     => __( 'When you disable Custom Hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for Custom Hooks, disabling them simplifies the hook selector for users.', 'blox' ),
+                            'desc'     => __( 'When you disable Custom Hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for Custom Hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a Custom Hook will cease to display.', 'blox' ),
                             'type'     => 'checkbox',
                             'default'  => 0,
                             'sanitize' => 'checkbox',
@@ -756,16 +756,73 @@ class Blox_Settings {
                         ),
                     ),
                     'genesis_hooks' => array(
-                        'hook_control_header' => array(
-    						'id'   => 'hook_control_header',
-    						'name' => '<span class="title">' . __( 'Hook Control', 'blox' ) . '</span>',
-    						'desc' => __( 'By default, Blox allows you to choose from over 50 Genesis hooks. Here you can pick and choose the ones you want to use, rename the hooks, or even add your own custom hooks to use with a third-party Genesis theme or plugin.', 'blox' ),
+                        'genesis_hook_control_header' => array(
+    						'id'   => 'genesis_hook_control_header',
+    						'name' => '<span class="title">' . __( 'Genesis Hook Control', 'blox' ) . '</span>',
+    						'desc' => __( 'By default, Blox allows you to choose from over 50 Genesis hooks. Here you can pick and choose the ones you want to use and/or rename the hooks to make them more user friendly.', 'blox' ),
     						'type' => 'header'
     					),
+                        'genesis_hooks_disable' => array(
+                            'id'       => 'genesis_hooks_disable',
+                            'name'     => __( 'Disable Genesis Hooks', 'blox' ),
+                            'label'    => __( 'Disable Genesis Hooks for all block positioning', 'blox' ),
+                            'desc'     => __( 'When you disable Genesis Hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for Genesis Hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a Genesis Hook will cease to display.', 'blox' ),
+                            'type'     => 'checkbox',
+                            'default'  => 0,
+                            'sanitize' => 'checkbox',
+                        ),
     					'genesis_hooks' => array(
     						'id'       => 'genesis_hooks',
     						'name'     => __( 'Genesis Hooks', 'blox' ),
-    						'desc'     => '',
+    						'desc'     => __( 'EDIT WooCommerce Hooks', 'blox' ),
+    						'type'     => 'hooks',
+    						'sanitize' => 'hooks',
+    					),
+                    ),
+                    'woocommerce_hooks' => array(
+                        'woocommerce_hook_control_header' => array(
+    						'id'   => 'woocommerce_hook_control_header',
+    						'name' => '<span class="title">' . __( 'WooCommerce Hook Control', 'blox' ) . '</span>',
+    						'desc' => __( 'By default, Blox allows you to choose from over XXX WooCommerce hooks. Here you can pick and choose the ones you want to use and/or rename the hooks to make them more user friendly.', 'blox' ),
+    						'type' => 'header'
+    					),
+                        'woocommerce_hooks_disable' => array(
+                            'id'       => 'woocommerce_hooks_disable',
+                            'name'     => __( 'Disable WooCommerce Hooks', 'blox' ),
+                            'label'    => __( 'Disable WooCommerce Hooks for all block positioning', 'blox' ),
+                            'desc'     => __( 'When you disable WooCommerce Hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for WooCommerce Hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a WooCommerce Hook will cease to display.', 'blox' ),
+                            'type'     => 'checkbox',
+                            'default'  => 0,
+                            'sanitize' => 'checkbox',
+                        ),
+    					'woocommerce_hooks' => array(
+    						'id'       => 'woocommerce_hooks',
+    						'name'     => __( 'WooCommerce Hooks', 'blox' ),
+    						'desc'     => __( 'EDIT WooCommerce Hooks', 'blox' ),
+    						'type'     => 'hooks',
+    						'sanitize' => 'hooks',
+    					),
+                    ),
+                    'wordpress_hooks' => array(
+                        'wordpress_hook_control_header' => array(
+    						'id'   => 'wordpress_hook_control_header',
+    						'name' => '<span class="title">' . __( 'WordPress Hook Control', 'blox' ) . '</span>',
+    						'desc' => __( 'By default, Blox allows you to choose from over XXX WordPress hooks. Here you can pick and choose the ones you want to use and/or rename the hooks to make them more user friendly.', 'blox' ),
+    						'type' => 'header'
+    					),
+                        'wordpress_hooks_disable' => array(
+                            'id'       => 'wordpress_hooks_disable',
+                            'name'     => __( 'Disable WordPress Hooks', 'blox' ),
+                            'label'    => __( 'Disable WordPress Hooks for all block positioning', 'blox' ),
+                            'desc'     => __( 'When you disable WordPress Hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for WordPress Hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a WordPress Hook will cease to display.', 'blox' ),
+                            'type'     => 'checkbox',
+                            'default'  => 0,
+                            'sanitize' => 'checkbox',
+                        ),
+    					'wordpress_hooks' => array(
+    						'id'       => 'wordpress_hooks',
+    						'name'     => __( 'WordPress Hooks', 'blox' ),
+    						'desc'     => __( 'EDIT WordPress Hooks', 'blox' ),
     						'type'     => 'hooks',
     						'sanitize' => 'hooks',
     					),
@@ -1383,6 +1440,7 @@ class Blox_Settings {
 
 	/**
 	 * Hooks callback
+     * TODO - Merge with Custom Hooks Callback
 	 *
 	 * @since 1.1.0
 	 *
@@ -1401,16 +1459,9 @@ class Blox_Settings {
             $all_hooks = $this->get_hooks();
 			$hooks     = $all_hooks[ $hook_type ];
 		}
-        //echo $args['id'];
-        //echo print_r($hooks);
 		?>
 
-    <!-- TO REMOVE
-        <div id="default_hook_enable">
-			<label><input type="checkbox" name="blox_settings[<?php echo $args['id']; ?>][enable]" value="1" <?php echo isset( $value['enable'] ) ? checked( 1, esc_attr( $value['enable'] ), false ) : '';?> /><?php _e( 'Limit Available Genesis Hooks', 'blox' );?></label>
-		</div>
-		<p class="description"><?php printf( __( 'This setting allows you to limit the number of Genesis hooks that are available and also rename them to improve UI. When enabling this option, any existing blocks using hooks that are not enabled will cease to display on the frontend. %1$sCheck the hooks you want to enable%2$s.', 'blox' ), '<strong>', '</strong>' );?></p>
-    -->
+		<p class="description"><?php echo $args['desc'];?></p>
 
         <div id="default_hook_settings">
 		<?php
@@ -1418,19 +1469,16 @@ class Blox_Settings {
 			?>
 			<div class="hook-section-title">
 				<?php
-
-				echo $section['name'];
-
 				$section_title_name    = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][name]';
 				$section_title_value   = isset( $section['name'] ) ? esc_attr( $section['name'] ) : __( 'Missing Section Name', 'blox' );
                 $section_disable_name  = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][disable]';
     			$section_disable_value = isset( $section['disable'] ) ? checked( 1, esc_attr( $section['disable'] ), false ) : '';
-				?>
 
-				<input class="" type="text" name="<?php echo $section_title_name; ?>" placeholder="<?php _e( 'Enter a section name', 'blox' ); ?>" value="<?php echo $section_title_value; ?>" />
-                <input class="" type="checkbox" name="<?php echo $section_disable_name; ?>" value="1" <?php echo $section_disable_value; ?>/>
+                echo $section_title_value;
+                ?>
 
-                EDIT BUTTON HERE
+				<input class="blox-force-hidden" type="text" name="<?php echo $section_title_name; ?>" placeholder="<?php _e( 'Enter a section name', 'blox' ); ?>" value="<?php echo $section_title_value; ?>" />
+                <input class="blox-force-hidden" type="checkbox" name="<?php echo $section_disable_name; ?>" value="1" <?php echo $section_disable_value; ?>/>
 			</div>
 
             <div class="blox-hook-table">
@@ -1481,6 +1529,7 @@ class Blox_Settings {
 
 	/**
 	 * Custom Hooks callback
+     * TODO - Merge with Hooks Callback
 	 *
 	 * @since 1.1.0
 	 *
@@ -1642,7 +1691,7 @@ class Blox_Settings {
 
 						$sanitized_hooks[$sections]['hooks'][$hooks] = array(
 							'disable' => isset( $hook['disable'] ) ? esc_attr( $hook['disable'] ) : false,
-							'name'    => strip_tags( $hook['name'] ),
+							'name'    => empty( $hook['name'] ) ? $hooks : strip_tags( $hook['name'] ),
 							'title'   => esc_attr( $hook['title'] ),
 						);
 					}
