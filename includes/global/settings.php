@@ -233,15 +233,16 @@ class Blox_Settings {
 
 			<div id="tab_container">
 				<form method="post" action="options.php">
-					<?php do_action( 'blox_settings_form_top', $active_tab ); ?>
-					<table class="form-table">
-						<?php
-						settings_fields( 'blox_settings' );
-                        do_settings_sections( 'blox_settings_' . $active_tab . '_' . $section );
-						?>
-					</table>
-					<?php do_action( 'blox_settings_form_bottom', $active_tab ); ?>
-					<?php submit_button( __( 'Save Changes', 'blox' ) ); ?>
+					<?php
+                    do_action( 'blox_settings_form_top', $active_tab );
+
+					settings_fields( 'blox_settings' );
+                    do_settings_sections( 'blox_settings_' . $active_tab . '_' . $section );
+
+                    do_action( 'blox_settings_form_bottom', $active_tab );
+
+                    submit_button( __( 'Save Changes', 'blox' ) );
+                    ?>
 				</form>
 			</div>
 		</div>
@@ -1738,12 +1739,27 @@ class Blox_Settings {
      *
      * @since 2.0.0
      *
-     * @return array Array of all Genesis hooks.
+     * @return array Array of all content types.
      */
     public function get_content_types() {
 
         $instance = Blox_Common::get_instance();
         return $instance->get_content_types();
+
+    }
+
+
+    /**
+     * Helper method for retrieving all active hook types.
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all active hook types.
+     */
+    public function get_active_hook_types() {
+
+        $instance = Blox_Common::get_instance();
+        return $instance->get_active_hook_types();
 
     }
 

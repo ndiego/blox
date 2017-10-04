@@ -348,7 +348,7 @@ class Blox_Common {
 
 
     /**
-     * Helper function for retrieving all available hooks post filtering in flattened, 1-dim, array
+     * Helper function for retrieving all available hooks post filtering in flattened, 1-dim, array REMOVE????
      *
      * @since 1.1.0
      *
@@ -370,7 +370,7 @@ class Blox_Common {
 
 
     /**
-     * Helper method for retrieving all Genesis hooks.
+     * Helper method for retrieving all Genesis hooks. REMOVE????
      *
      * @since 1.1.0
      *
@@ -454,6 +454,57 @@ class Blox_Common {
     	$content_types = array();
 
     	return apply_filters( 'blox_content_type', $content_types );
+    }
+    
+
+    /**
+     * Helper function that returns array of all active hook types
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all active hook types
+     */
+    public function get_active_hook_types() {
+        $active_hook_types = array(
+            'wordpress'   => true, // Always active
+            'custom'      => true, // Always active
+            'genesis'     => $this->is_genesis_active_test(),
+            'woocommerce' => $this->is_woocommerce_active_test(),
+        );
+
+        return apply_filters( 'blox_get_active_hook_types', $active_hook_types );
+    }
+
+
+    /**
+     * Helper function that checks if the Genesis Framework is active
+     *
+     * @since 2.0.0
+     *
+     * @return bool True if Genesis is active
+     */
+    public function is_genesis_active_test() {
+        if ( function_exists( 'genesis_pre' ) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * Helper function that checks if WooCommerce is active
+     *
+     * @since 2.0.0
+     *
+     * @return bool True if WooCommerce is active
+     */
+    public function is_woocommerce_active_test() {
+        if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

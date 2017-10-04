@@ -93,7 +93,7 @@ class Blox_Main {
         do_action( 'blox_pre_init' );
 
         // Make sure that Genesis is active before enabling the plugin
-       	register_activation_hook( __FILE__ , array( $this, 'activation_check' ) );
+       	//register_activation_hook( __FILE__ , array( $this, 'activation_check' ) );
 
        	// Disable the plugin if Genesis is not the active theme
 		add_action( 'admin_init', array( $this, 'disable_check' ) );
