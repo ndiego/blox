@@ -90,8 +90,6 @@ class Blox_Frontend {
 				'suppress_filters' => false   // For WPML compatibility
 			) );
 
-			// echo print_r( $global_blocks );
-
 			if ( ! empty( $global_blocks ) ) {
 				foreach ( $global_blocks as $block ) {
 					$id     = $block->ID;
@@ -186,13 +184,13 @@ class Blox_Frontend {
         } else {
 
     		// Determine if we are using the default position or a custom position, and then set position and priority
-    		if ( empty( $position_data['position_type'] ) || $position_data['position_type'] == 'default' ) {
-    			$position = $global ? blox_get_option( 'global_default_position', 'genesis_after_header' ) : blox_get_option( 'local_default_position', 'genesis_after_header' );
-    			$priority = $global ? blox_get_option( 'global_default_priority', 15 ) : blox_get_option( 'local_default_priority', 15 );
-    		} else {
+    		//if ( empty( $position_data['position_type'] ) || $position_data['position_type'] == 'default' ) {
+    		//	$position = $global ? blox_get_option( 'global_default_position', 'genesis_after_header' ) : blox_get_option( 'local_default_position', 'genesis_after_header' );
+    			//$priority = $global ? blox_get_option( 'global_default_priority', 15 ) : blox_get_option( 'local_default_priority', 15 );
+    		//} else {
     			$position = ! empty( $position_data['custom']['position'] ) ? $position_data['custom']['position'] : 'genesis_after_header';
     			$priority = ! empty( $position_data['custom']['priority'] ) ? $position_data['custom']['priority'] : 1;
-    		}
+    		//}
 
     		// If hook defaults are enabled we need to make sure the block is set to a position that is one of the defaults
     		$default_hooks_enabled = blox_get_option( 'default_hooks', false );

@@ -298,7 +298,20 @@ class Blox_Common {
     }
 
 
+    /**
+     * Helper function for retrieving all available Custom hooks.
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all Custom hooks.
+     */
+    public function get_custom_hooks_unfiltered() {
 
+        // Pull custom hooks from settings, default to empty array
+        $hooks = blox_get_option( 'default_custom_hooks', array() );
+
+        return $hooks;
+    }
 
     /**
      * Helper function for retrieving all available Genesis hooks post filtering
@@ -336,11 +349,10 @@ class Blox_Common {
     public function get_hooks() {
 
         $hooks = array(
-            'woocommerce'   => $this->get_woocommerce_hooks_unfiltered(),
-            'genesis'       => $this->get_genesis_hooks_unfiltered(),
-
-            //'custom'        => $this->get_custom_hooks_unfiltered(),
-            'wordpress'     => $this->get_wordpress_hooks_unfiltered(),
+            'woocommerce'   => blox_get_option( 'woocommerce_hooks', $this->get_woocommerce_hooks_unfiltered() ),
+            'genesis'       => blox_get_option( 'genesis_hooks', $this->get_custom_hooks_unfiltered() ),
+            'custom'        => blox_get_option( 'default_custom_hooks', $this->get_custom_hooks_unfiltered() ),
+            'wordpress'     => blox_get_option( 'wordpress_hooks', $this->get_custom_hooks_unfiltered() ),
         );
 
         return apply_filters( 'blox_position_hooks', $hooks );
@@ -455,7 +467,7 @@ class Blox_Common {
 
     	return apply_filters( 'blox_content_type', $content_types );
     }
-    
+
 
     /**
      * Helper function that returns array of all active hook types

@@ -140,28 +140,28 @@ class Blox_Position {
 
         $hook_types = array(
             'genesis' => array(
-                'enabled' => 1, // Enabled in settings
-                'active'  => 1, // Do we have a Genesis Theme?
-                'title'   => __( 'Genesis Hooks', 'blox' ),
-                'alert'   => __( 'It appears that the Genesis Framework is not active on this website. Therefore, the hooks below will not work. If you are not planning on using Genesis, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
+                'disabled' => blox_get_option( 'genesis_hooks_disable', 0 ),
+                'active'   => 1, // Do we have a Genesis Theme?
+                'title'    => __( 'Genesis Hooks', 'blox' ),
+                'alert'    => __( 'It appears that the Genesis Framework is not active on this website. Therefore, the hooks below will not work. If you are not planning on using Genesis, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
             ),
             'woocommerce' => array(
-                'enabled' => 1,
-                'active'  => 1, // Is WooCommerce active?
-                'title'   => __( 'WooCommerce Hooks', 'blox' ),
-                'alert'   => __( 'It appears that the WooCommerce plugin is not active on this website. Therefore, the hooks below will not work. If you are not planning on using WooCommerce, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
+                'disabled' => blox_get_option( 'woocommerce_hooks_disable', 0 ),
+                'active'   => 1, // Is WooCommerce active?
+                'title'    => __( 'WooCommerce Hooks', 'blox' ),
+                'alert'    => __( 'It appears that the WooCommerce plugin is not active on this website. Therefore, the hooks below will not work. If you are not planning on using WooCommerce, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
             ),
             'custom' => array(
-                'enabled' => 1,
-                'active'  => 1, // Always active (obviously)
-                'title'   => __( 'Custom Hooks', 'blox' ),
-                'alert'   => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
+                'disabled' => blox_get_option( 'custom_hooks_disable', 0 ),
+                'active'   => 1, // Always active (obviously)
+                'title'    => __( 'Custom Hooks', 'blox' ),
+                'alert'    => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
             ),
             'wordpress' => array(
-                'enabled' => 1,
-                'active'  => 1, // Always active (obviously)
-                'title'   => __( 'WordPress Hooks', 'blox' ),
-                'alert'   => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
+                'disabled' => blox_get_option( 'wordpress_hooks_disable', 0 ),
+                'active'   => 1, // Always active (obviously)
+                'title'    => __( 'WordPress Hooks', 'blox' ),
+                'alert'    => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
             ),
         );
 
@@ -231,93 +231,11 @@ class Blox_Position {
 
                     <?php
 
+                    $this->print_hook_selector( $hook_types );
 
 
-
+                    // REVIEW COMMENT BELOW FOR REMOVAL
                     ?>
-                    <div class="blox-hook-selector">
-                        <div class="blox-hook-selector-menu">
-                            <ul class="blox-hook-type-list">
-                            <?php
-                                if ( ! empty( $hook_types ) ) {
-                                    $i = 0;
-                                    foreach ( $hook_types as $slug => $atts ) {
-
-                                        if ( $atts['enabled'] ) {
-                                            // Set the first type to current
-                                            $current = $i == 0 ? 'current' : '';
-                                            ?>
-                                            <li class="blox-hook-type <?php echo $current; ?>" data-hook-type="<? echo $slug; ?>">
-                                                <div class="blox-hook-dashicon blox-<?php echo $slug; ?>-dashicon dashicons-before"></div>
-                                                <span class="blox-hook-type-name"><?php echo $atts['title']; ?></span>
-                                                <?php
-                                                    if ( ! $atts['active'] ) {
-                                                        ?>
-                                                        <span class="blox-hooks-disabled dashicons dashicons-warning"></span>
-                                                        <?php
-                                                    }
-                                                ?>
-                                            </li>
-                                            <?php
-
-                                            // Only increment if the hook type is actually enabled
-                                            $i++;
-                                        }
-                                    }
-                                }
-                            ?>
-                            </ul>
-                            <div class="blox-show-hook-descriptions">
-                                <span class="blox-help-text-icon">
-                                    <a href="#" class="dashicons dashicons-editor-help"></a>
-                                    <span class="blox-show-hook-descriptions-text"><?php _e( 'Toggle Hook Descriptions', 'blox' ); ?></span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="blox-hook-selector-content">
-                            <?php
-
-                            // Get all available hooks
-                            $all_available_hooks = $this->get_hooks();
-
-                            if ( ! empty( $hook_types ) && ! empty( $all_available_hooks ) ) {
-                                $i = 0;
-                                foreach ( $hook_types as $slug => $atts ) {
-                                    if ( $atts['enabled'] ) {
-                                        ?>
-                                        <div class="blox-hooks <?php echo $slug; ?>">
-                                        <?php
-                                        if ( ! $atts['active'] ) {
-                                            ?>
-                                            <div class="blox-alert-box"><?php echo $atts['alert']; ?></div>
-                                            <?php
-                                        }
-                                        foreach ( $all_available_hooks[$slug] as $sections => $section ) { ?>
-                                            <div class="blox-hook-section">
-                                                <div class="blox-hook-section-title"><?php echo $section['name']; ?></div>
-                                                <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
-                                                    <div class="blox-hook-item" data-hook="<? echo $hooks; ?>">
-                                                        <div class="blox-hook-name"><?php echo $hook['name']; ?></div>
-                                                        <div class="blox-hook-description"><?php echo $hook['title']; ?></div>
-                                                    </div>
-                                                <?php } ?>
-                                            </div>
-                                        <?php } ?>
-                                        </div>
-                                        <?php
-
-                                        // Only increment if the hook type is actually enabled
-                                        $i++;
-                                    }
-                                }
-                            }
-                            ?>
-
-                        </div>
-                    </div>
-
-
-
                     <!--
                     <table class="form-table">
                         <tbody>
@@ -405,82 +323,222 @@ class Blox_Position {
                         </tbody>
                     </table>
                 -->
-
-
                 </div>
-
-
-                <div class="blox-toggle blox-toggle-has-container">
-                    <span class="blox-toggle-wrap">
-                        <input id="blox_position_shortcode_enable_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[shortcode][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['shortcode']['enable'] ) ? checked( $get_prefix['shortcode']['enable'], 1, false ) : ''; ?> />
-                        <label class="toggle" for="blox_position_shortcode_enable_<?php echo $id; ?>"></label>
-                    </span>
-                    <span class="title"><?php _e( 'Shortcode Positioning', 'blox' ); ?></span>
-                </div>
-
-                <div class="blox-toggle-container">
-                    <div class="blox-code">[blox id="<?php echo $scope . '_' . $id; ?>"]</div>
-                    <div class="blox-description">
-                        <?php
-                            _e( 'Copy and paste this above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox-shortcodes' );
-                            if ( ! $global ) {
-                                echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
-                            }
-                        ?>
-                    </div>
-
-                    <div class="blox-checkbox after">
-                        <label>
-                            <input type="checkbox" id="blox_position_shortcode_ignore_location_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[shortcode][ignore_location]" value="1" <?php echo isset( $get_prefix['shortcode']['ignore_location'] ) ? checked( $get_prefix['shortcode']['ignore_location'], 1, false ) : ''; ?> />
-                            <?php _e( 'Check to ignore location settings', 'blox' ); ?>
-                        </label>
-                        <span class="blox-help-text-icon">
-                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                        </span>
-                        <div class="blox-help-text">
-                            Test
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="blox-toggle blox-toggle-has-container">
-                    <span class="blox-toggle-wrap">
-                        <input id="blox_position_php_enable_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[php][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['php']['enable'] ) ? checked( $get_prefix['php']['enable'], 1, false ) : ''; ?> />
-                        <label class="toggle" for="blox_position_php_enable_<?php echo $id; ?>"></label>
-                    </span>
-                    <span class="title"><?php _e( 'PHP Function Positioning', 'blox' ); ?></span>
-                </div>
-
-                <div class="blox-toggle-container last">
-                    <div class="blox-code">blox_display_block( "<?php echo $scope . '_' . $id; ?>" );</div>
-                    <div class="blox-description">
-                        <?php
-                            _e( 'Copy and paste this above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox-shortcodes' );
-                            if ( ! $global ) {
-                                echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
-                            }
-                        ?>
-                    </div>
-
-                    <div class="blox-checkbox after">
-                        <label>
-                            <input type="checkbox" id="blox_position_php_ignore_location_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[php][ignore_location]" value="1" <?php echo isset( $get_prefix['php']['ignore_location'] ) ? checked( $get_prefix['php']['ignore_location'], 1, false ) : ''; ?> />
-                            <?php _e( 'Check to ignore location settings', 'blox' ); ?>
-                        </label>
-                        <span class="blox-help-text-icon">
-                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                        </span>
-                        <div class="blox-help-text">
-                            Test
-                        </div>
-                    </div>
-
-                </div>
-
-				<?php do_action( 'blox_position_settings', $id, $name_prefix, $get_prefix, $global ); ?>
-
 		<?php
+
+        $this->print_position_shortcode_settings( $id, $name_prefix, $get_prefix, $global, $scope );
+        $this->print_position_php_settings( $id, $name_prefix, $get_prefix, $global, $scope );
+
+        do_action( 'blox_position_settings', $id, $name_prefix, $get_prefix, $global );
+    }
+
+    /**
+     * Creates all of the fields for the position shortcode settings
+     *
+     * @since 2.0.0
+     *
+     * @param array $hook_types An array of all available hook types
+     */
+    public function print_hook_selector( $hook_types ) {
+        ?>
+        <div class="blox-hook-selector">
+            <div class="blox-hook-selector-menu">
+                <ul class="blox-hook-type-list">
+                <?php
+                    if ( ! empty( $hook_types ) ) {
+                        $i = 0;
+                        foreach ( $hook_types as $slug => $atts ) {
+
+                            if ( ! $atts['disabled'] ) {
+                                // Set the first type to current
+                                $current = $i == 0 ? 'current' : '';
+                                ?>
+                                <li class="blox-hook-type <?php echo $current; ?>" data-hook-type="<? echo $slug; ?>">
+                                    <div class="blox-hook-dashicon blox-<?php echo $slug; ?>-dashicon dashicons-before"></div>
+                                    <span class="blox-hook-type-name"><?php echo $atts['title']; ?></span>
+                                    <?php
+                                        // If hook type is not disabled, but the source is inactive (Genesis, WooComerce, etc), display warning
+                                        if ( ! $atts['active'] ) {
+                                            ?>
+                                            <span class="blox-hooks-disabled dashicons dashicons-warning"></span>
+                                            <?php
+                                        }
+                                    ?>
+                                </li>
+                                <?php
+
+                                // Only increment if the hook type is actually enabled
+                                $i++;
+                            }
+                        }
+                    }
+                ?>
+                </ul>
+                <div class="blox-show-hook-descriptions">
+                    <span class="blox-help-text-icon">
+                        <a href="#" class="dashicons dashicons-editor-help"></a>
+                        <span class="blox-show-hook-descriptions-text"><?php _e( 'Toggle Hook Descriptions', 'blox' ); ?></span>
+                    </span>
+                </div>
+            </div>
+            <div class="blox-hook-selector-content">
+                <?php
+
+                // Get all available hooks
+                $all_available_hooks = $this->get_hooks();
+
+                if ( ! empty( $hook_types ) && ! empty( $all_available_hooks ) ) {
+                    $i = 0;
+                    foreach ( $hook_types as $slug => $atts ) {
+                        if ( ! $atts['disabled'] ) {
+                            ?>
+                            <div class="blox-hooks <?php echo $slug; ?>">
+                                <?php
+                                // If hook type is not disabled, but the source is inactive (Genesis, WooComerce, etc), display alert
+                                if ( ! $atts['active'] ) {
+                                    ?>
+                                    <div class="blox-alert-box"><?php echo $atts['alert']; ?></div>
+                                    <?php
+                                } else {
+                                    // Start displaying hook sections if active
+                                    foreach ( $all_available_hooks[$slug] as $sections => $section ) {
+                                        // If the section is disabled continue to the next section
+                                        if ( isset( $section['disable'] ) && $section['disable'] ) {
+                                            continue;
+                                        } else {
+                                            ?>
+                                            <div class="blox-hook-section">
+                                                <div class="blox-hook-section-title"><?php echo $section['name']; ?></div>
+                                                <?php foreach ( $section['hooks'] as $hooks => $hook ) {
+                                                    if ( isset( $hook['disable'] ) && $hook['disable'] ) {
+                                                        continue;
+                                                    } else {
+                                                        ?>
+                                                        <div class="blox-hook-item" data-hook="<? echo $hooks; ?>">
+                                                            <div class="blox-hook-name"><?php echo $hook['name']; ?></div>
+                                                            <div class="blox-hook-description"><?php echo $hook['title']; ?></div>
+                                                        </div>
+                                                        <?php
+                                                    }
+                                                } ?>
+                                            </div>
+                                            <?php
+                                        }
+                                    }
+                                } ?>
+                            </div>
+                            <?php
+
+                            // Only increment if the hook type is actually enabled
+                            $i++;
+                        }
+                    }
+                }
+                ?>
+
+            </div>
+        </div>
+        <?php
+    }
+
+
+    /**
+     * Creates all of the fields for the position shortcode settings
+     *
+     * @since 2.0.0
+     *
+     * @param int $id             The id of the content block, either global or individual (attached to post/page/cpt)
+     * @param string $name_prefix The prefix for saving each setting
+     * @param string $get_prefix  The prefix for retrieving each setting
+     * @param bool $global	      Determines if the content being loaded for local or global blocks
+     * @param string $scope       Either Global or Local
+     */
+    public function print_position_shortcode_settings( $id, $name_prefix, $get_prefix, $global, $scope ) {
+        ?>
+        <div class="blox-toggle blox-toggle-has-container">
+            <span class="blox-toggle-wrap">
+                <input id="blox_position_shortcode_enable_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[shortcode][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['shortcode']['enable'] ) ? checked( $get_prefix['shortcode']['enable'], 1, false ) : ''; ?> />
+                <label class="toggle" for="blox_position_shortcode_enable_<?php echo $id; ?>"></label>
+            </span>
+            <span class="title"><?php _e( 'Shortcode Positioning', 'blox' ); ?></span>
+        </div>
+
+        <div class="blox-toggle-container">
+            <div class="blox-code">[blox id="<?php echo $scope . '_' . $id; ?>"]</div>
+            <div class="blox-description">
+                <?php
+                    _e( 'Copy and paste this above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox-shortcodes' );
+                    if ( ! $global ) {
+                        echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
+                    }
+                ?>
+            </div>
+
+            <div class="blox-checkbox after">
+                <label>
+                    <input type="checkbox" id="blox_position_shortcode_ignore_location_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[shortcode][ignore_location]" value="1" <?php echo isset( $get_prefix['shortcode']['ignore_location'] ) ? checked( $get_prefix['shortcode']['ignore_location'], 1, false ) : ''; ?> />
+                    <?php _e( 'Check to ignore location settings', 'blox' ); ?>
+                </label>
+                <span class="blox-help-text-icon">
+                    <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                </span>
+                <div class="blox-help-text">
+                    Test
+                </div>
+            </div>
+
+        </div>
+        <?php
+    }
+
+
+    /**
+     * Creates all of the fields for the position php settings
+     *
+     * @since 2.0.0
+     *
+     * @param int $id             The id of the content block, either global or individual (attached to post/page/cpt)
+     * @param string $name_prefix The prefix for saving each setting
+     * @param string $get_prefix  The prefix for retrieving each setting
+     * @param bool $global	      Determines if the content being loaded for local or global blocks
+     * @param string $scope       Either Global or Local
+     */
+    public function print_position_php_settings(  $id, $name_prefix, $get_prefix, $global, $scope ) {
+        ?>
+        <div class="blox-toggle blox-toggle-has-container">
+            <span class="blox-toggle-wrap">
+                <input id="blox_position_php_enable_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[php][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['php']['enable'] ) ? checked( $get_prefix['php']['enable'], 1, false ) : ''; ?> />
+                <label class="toggle" for="blox_position_php_enable_<?php echo $id; ?>"></label>
+            </span>
+            <span class="title"><?php _e( 'PHP Function Positioning', 'blox' ); ?></span>
+        </div>
+
+        <div class="blox-toggle-container last">
+            <div class="blox-code">blox_display_block( "<?php echo $scope . '_' . $id; ?>" );</div>
+            <div class="blox-description">
+                <?php
+                    _e( 'Copy and paste this above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox-shortcodes' );
+                    if ( ! $global ) {
+                        echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
+                    }
+                ?>
+            </div>
+
+            <div class="blox-checkbox after">
+                <label>
+                    <input type="checkbox" id="blox_position_php_ignore_location_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[php][ignore_location]" value="1" <?php echo isset( $get_prefix['php']['ignore_location'] ) ? checked( $get_prefix['php']['ignore_location'], 1, false ) : ''; ?> />
+                    <?php _e( 'Check to ignore location settings', 'blox' ); ?>
+                </label>
+                <span class="blox-help-text-icon">
+                    <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                </span>
+                <div class="blox-help-text">
+                    Test
+                </div>
+            </div>
+
+        </div>
+        <?php
     }
 
 
@@ -528,6 +586,8 @@ class Blox_Position {
 
 	/**
      * Add admin column for global blocks
+     *
+     * @since 1.0.0
      *
      * @param string $post_id
      * @param array $block_data

@@ -181,7 +181,7 @@ class Blox_Settings {
 
 			<?php settings_errors( 'blox-notices' ); ?>
 
-            <?php echo print_r(get_option( 'blox_settings' )) ; ?>
+            <?php //echo print_r(get_option( 'blox_settings' )) ; ?>
 
 			<h2 class="nav-tab-wrapper">
 				<?php foreach( $this->get_settings_tabs() as $tab_id => $tab_name ) {
@@ -775,7 +775,7 @@ class Blox_Settings {
     					'genesis_hooks' => array(
     						'id'       => 'genesis_hooks',
     						'name'     => __( 'Genesis Hooks', 'blox' ),
-    						'desc'     => __( 'EDIT WooCommerce Hooks', 'blox' ),
+    						'desc'     => __( 'EDIT Genesis Hooks', 'blox' ),
     						'type'     => 'hooks',
     						'sanitize' => 'hooks',
     					),
@@ -1607,7 +1607,7 @@ class Blox_Settings {
                 <a class="blox-hook-delete-all" href="#"><?php _e( 'Delete All', 'blox' ); ?></a>
             </div>
             <p class="description">
-                <?php _e( 'Please note that the Hook Name and Hook Description cannot contain HTML.', 'blox' ); ?>
+                <?php _e( 'Please note that the Hook Name cannot contain HTML.', 'blox' ); ?>
             </p>
 		</div>
 		<?php
