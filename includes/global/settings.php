@@ -1478,8 +1478,8 @@ class Blox_Settings {
                 echo $section_title_value;
                 ?>
 
-				<input class="blox-force-hidden" type="text" name="<?php echo $section_title_name; ?>" placeholder="<?php _e( 'Enter a section name', 'blox' ); ?>" value="<?php echo $section_title_value; ?>" />
-                <input class="blox-force-hidden" type="checkbox" name="<?php echo $section_disable_name; ?>" value="1" <?php echo $section_disable_value; ?>/>
+				<input class="" type="text" name="<?php echo $section_title_name; ?>" placeholder="<?php _e( 'Enter a section name', 'blox' ); ?>" value="<?php echo $section_title_value; ?>" />
+                <input class="" type="checkbox" name="<?php echo $section_disable_name; ?>" value="1" <?php echo $section_disable_value; ?>/>
 			</div>
 
             <div class="blox-hook-table">
@@ -1557,14 +1557,14 @@ class Blox_Settings {
 			<?php
             // NEED TO UPDATE ONCE MULTI SECTION IS ENABLED
             $section_title_name    = 'blox_settings['. $args['id'] . '][custom][name]';
-            $section_title_value   = __( 'Custom Hooks', 'blox' );
+            $section_title_value   = isset( $value['custom']['name'] ) ? esc_attr( $value['custom']['name'] ) : __( 'Missing Section Name', 'blox' );;
 			$section_disable_name  = 'blox_settings['. $args['id'] . '][custom][disable]';
 			$section_disable_value = isset( $value['custom']['disable'] ) ? checked( 1, esc_attr( $value['custom']['disable'] ), false ) : '';
 
             echo $section_title_value;
 			?>
-			<input class="blox-force-hidden" type="text" name="<?php echo $section_title_name; ?>" value="<?php echo $section_title_value; ?>" />
-            <input class="blox-force-hidden" type="checkbox" name="<?php echo $section_disable_name; ?>" value="1" <?php echo $section_disable_value; ?>/>
+			<input class="" type="text" name="<?php echo $section_title_name; ?>" value="<?php echo $section_title_value; ?>" />
+            <input class="" type="checkbox" name="<?php echo $section_disable_name; ?>" value="1" <?php echo $section_disable_value; ?>/>
 		</div>
 		<div id="default_custom_hook_settings">
             <div class="blox-hook-table custom">
@@ -1679,7 +1679,7 @@ class Blox_Settings {
                 $sections = preg_replace( '/[^ \w \-]/', '', $sections );
 
                 $sanitized_hooks[$sections] = array(
-                    'disable' => isset( $section['disable'] ) ? esc_attr( $hook['disable'] ) : false,
+                    'disable' => isset( $section['disable'] ) ? esc_attr( $section['disable'] ) : false,
                     'name'    => strip_tags( $section['name'] ),
                     'hooks'   => array(),
                 );

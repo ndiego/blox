@@ -294,7 +294,7 @@ class Blox_Position {
      * @param array $hook_types An array of all available hook types
      */
     public function print_hook_selector() {
-
+        echo print_r( $this->get_active_hooks());
         $hook_types = $this->get_hook_types();
         ?>
         <div class="blox-hook-selector">
@@ -305,7 +305,7 @@ class Blox_Position {
                         $i = 0;
                         foreach ( $hook_types as $slug => $atts ) {
 
-                            if ( ! $atts['disabled'] ) {
+                            if ( ! $atts['disable'] ) {
                                 // Set the first type to current
                                 $current = $i == 0 ? 'current' : '';
                                 ?>
@@ -341,12 +341,12 @@ class Blox_Position {
                 <?php
 
                 // Get all available hooks
-                $all_available_hooks = $this->get_hooks();
+                $all_available_hooks = $this->get_active_hooks();
 
                 if ( ! empty( $hook_types ) && ! empty( $all_available_hooks ) ) {
                     $i = 0;
                     foreach ( $hook_types as $slug => $atts ) {
-                        if ( ! $atts['disabled'] ) {
+                        if ( ! $atts['disable'] ) {
                             ?>
                             <div class="blox-hooks <?php echo $slug; ?>">
                                 <?php
@@ -358,29 +358,26 @@ class Blox_Position {
                                 } else {
                                     // Start displaying hook sections if active
                                     foreach ( $all_available_hooks[$slug] as $sections => $section ) {
-                                        // If the section is disabled continue to the next section
-                                        if ( isset( $section['disable'] ) && $section['disable'] ) {
-                                            continue;
-                                        } else {
-                                            ?>
-                                            <div class="blox-hook-section">
-                                                <div class="blox-hook-section-title"><?php echo $section['name']; ?></div>
-                                                <?php foreach ( $section['hooks'] as $hooks => $hook ) {
-                                                    if ( isset( $hook['disable'] ) && $hook['disable'] ) {
-                                                        continue;
-                                                    } else {
-                                                        ?>
-                                                        <div class="blox-hook-item" data-hook="<? echo $hooks; ?>">
-                                                            <div class="blox-hook-name"><?php echo $hook['name']; ?></div>
-                                                            <div class="blox-hook-description"><?php echo $hook['title']; ?></div>
-                                                        </div>
-                                                        <?php
-                                                    }
-                                                } ?>
-                                            </div>
+                                        ?>
+                                        <div class="blox-hook-section">
+                                            <div class="blox-hook-section-title"><?php echo $section['name']; ?></div>
                                             <?php
-                                        }
-                                    }
+                                            if ( empty( $section['hooks'] ) ) {
+                                                echo 'There are no hooks to display';
+                                            } else {
+                                                foreach ( $section['hooks'] as $hooks => $hook ) {
+                                                    ?>
+                                                    <div class="blox-hook-item" data-hook="<? echo $hooks; ?>">
+                                                        <div class="blox-hook-name"><?php echo $hook['name']; ?></div>
+                                                        <div class="blox-hook-description"><?php echo $hook['title']; ?></div>
+                                                    </div>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </div>
+                                        <?php
+                                }
                                 } ?>
                             </div>
                             <?php
@@ -805,6 +802,13 @@ class Blox_Position {
 
         $instance = Blox_Common::get_instance();
         return $instance->get_hook_types();
+
+    }
+
+    public function get_active_hooks() {
+
+        $instance = Blox_Common::get_instance();
+        return $instance->get_active_hooks();
 
     }
 
