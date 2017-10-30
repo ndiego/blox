@@ -352,10 +352,78 @@ class Blox_Common {
             'woocommerce'   => blox_get_option( 'woocommerce_hooks', $this->get_woocommerce_hooks_unfiltered() ),
             'genesis'       => blox_get_option( 'genesis_hooks', $this->get_custom_hooks_unfiltered() ),
             'custom'        => blox_get_option( 'default_custom_hooks', $this->get_custom_hooks_unfiltered() ),
-            'wordpress'     => blox_get_option( 'wordpress_hooks', $this->get_custom_hooks_unfiltered() ),
+            'wordpress'     => blox_get_option( 'wordpress_hooks', $this->get_wordpress_hooks_unfiltered() ),
         );
 
         return apply_filters( 'blox_position_hooks', $hooks );
+    }
+
+    public function get_active_hooks() {
+
+        $hooks = $this->get_hooks();
+        $hook_types = $this->get_hook_types();
+
+        foreach ( $hooks as $type_slug => $type_sections ) {
+            if ( $hook_types[$type_slug]['disabled'] || ! $hook_types[$type_slug]['active'] ) {
+                foreach ( $type_sections as $section_slug => $section_args ) {
+                    // TODO COMPLETE HERE
+                }
+            }
+        }
+    }
+
+
+    public function get_active_hooks_flattened() {
+
+        $unflattened = $this->get_hooks();
+
+        $flattened = array();
+
+        foreach( $unflattened as $sections => $section ) {
+            foreach ( $section['hooks'] as $hooks => $hook ) {
+                $flattened[$hooks] = $hook['name'];
+            }
+        }
+
+        return $flattened;
+    }
+
+
+    /**
+     * Returns list of all available hook types (filterable)
+     *
+     * @since 2.0.0
+     */
+    public function get_hook_types() {
+
+        $hook_types = array(
+            'genesis' => array(
+                'disabled' => blox_get_option( 'genesis_hooks_disable', 0 ),
+                'active'   => function_exists( 'genesis_pre' ) ? 1 : 0, // Do we have a Genesis Theme?
+                'title'    => __( 'Genesis Hooks', 'blox' ),
+                'alert'    => __( 'It appears that the Genesis Framework is not active on this website. Therefore, the hooks below will not work. If you are not planning on using Genesis, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
+            ),
+            'woocommerce' => array(
+                'disabled' => blox_get_option( 'woocommerce_hooks_disable', 0 ),
+                'active'   => class_exists( 'woocommerce' ) ? 1 : 0, // Is WooCommerce active?
+                'title'    => __( 'WooCommerce Hooks', 'blox' ),
+                'alert'    => __( 'It appears that the WooCommerce plugin is not active on this website. Therefore, the hooks below will not work. If you are not planning on using WooCommerce, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
+            ),
+            'custom' => array(
+                'disabled' => blox_get_option( 'custom_hooks_disable', 0 ),
+                'active'   => 1, // Always active (obviously)
+                'title'    => __( 'Custom Hooks', 'blox' ),
+                'alert'    => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
+            ),
+            'wordpress' => array(
+                'disabled' => blox_get_option( 'wordpress_hooks_disable', 0 ),
+                'active'   => 1, // Always active (obviously)
+                'title'    => __( 'WordPress Hooks', 'blox' ),
+                'alert'    => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
+            ),
+        );
+
+        return apply_filters( 'blox_hook_types', $hook_types );
     }
 
 
