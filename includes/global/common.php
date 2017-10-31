@@ -63,7 +63,7 @@ class Blox_Common {
      * @since 1.0.0
      *
      * @global array $_wp_additional_image_sizes Array of registered image sizes.
-     * @return array                             Array of slider size data.
+     * @return array $sizes                      Array of slider size data.
      */
     public function get_image_sizes() {
 
@@ -122,7 +122,7 @@ class Blox_Common {
      *
      * @since 2.0.0
      *
-     * @return array Array of all Core WordPress hooks.
+     * @return array $hooks Array of all Core WordPress hooks.
      */
     public function get_wordpress_hooks_unfiltered() {
 
@@ -146,7 +146,7 @@ class Blox_Common {
      *
      * @since 1.0.0
      *
-     * @return array Array of all Genesis hooks.
+     * @return array $hooks Array of all Genesis hooks.
      */
     public function get_genesis_hooks_unfiltered() {
 
@@ -236,7 +236,7 @@ class Blox_Common {
      *
      * @since 2.0.0
      *
-     * @return array Array of all WooCommerce hooks.
+     * @return array $hooks Array of all WooCommerce hooks.
      */
     public function get_woocommerce_hooks_unfiltered() {
 
@@ -303,7 +303,7 @@ class Blox_Common {
      *
      * @since 2.0.0
      *
-     * @return array Array of all Custom hooks.
+     * @return array $hooks Array of all Custom hooks.
      */
     public function get_custom_hooks_unfiltered() {
 
@@ -359,9 +359,16 @@ class Blox_Common {
     }
 
 
+    /**
+     * Helper function for retrieving all active hooks
+     *
+     * @since 2.0.0
+     *
+     * @return array $hooks Array of all active hooks.
+     */
     public function get_active_hooks() {
 
-        $hooks = $this->get_hooks();
+        $hooks      = $this->get_hooks();
         $hook_types = $this->get_hook_types();
 
         foreach ( $hooks as $type_slug => $type_sections ) {
@@ -370,12 +377,12 @@ class Blox_Common {
                 unset( $hooks[$type_slug] );
             } else {
                 foreach ( $type_sections as $section_slug => $section_args ) {
-                    if ( $section_args['disable'] ) {
+                    if ( isset( $section_args['disable'] ) && $section_args['disable'] ) {
                         // If the section is disabled, unset it
                         unset( $hooks[$type_slug][$section_slug] );
                     } else {
                         foreach ( $section_args['hooks'] as $hook_slug => $hook_args ) {
-                            if ( $hook_args['disable'] ) {
+                            if ( isset( $hook_args['disable'] ) && $hook_args['disable'] ) {
                                 // If the individual hook is disabled, unset it
                                 unset( $hooks[$type_slug][$section_slug]['hooks'][$hook_slug] );
                             }
@@ -389,11 +396,54 @@ class Blox_Common {
     }
 
 
+    /**
+     * Helper function for retrieving all hooks in a flattened array with disabled flags
+     *
+     * @since 2.0.0
+     *
+     * @return array $hooks Array of all hooks in a flattened array.
+     */
     public function get_active_hooks_flattened() {
 
-        $unflattened = $this->get_hooks();
+        $hooks = $this->get_hooks();
 
         $flattened = array();
+
+        $disable = 0;
+        $hook_type_active = 0;
+        $hook_type_disable = 0;
+        $hook_section_disable = 0;
+
+
+        foreach ( $hooks as $type_slug => $type_sections ) {
+            if ( $hook_types[$type_slug]['disable'] || ! $hook_types[$type_slug]['active'] ) {
+                // If the hook type is disabled or not active, unset it
+                unset( $hooks[$type_slug] );
+            } else {
+                foreach ( $type_sections as $section_slug => $section_args ) {
+                    if ( isset( $section_args['disable'] ) && $section_args['disable'] ) {
+                        // If the section is disabled, unset it
+                        unset( $hooks[$type_slug][$section_slug] );
+                    } else {
+                        foreach ( $section_args['hooks'] as $hook_slug => $hook_args ) {
+                            if ( isset( $hook_args['disable'] ) && $hook_args['disable'] ) {
+                                // If the individual hook is disabled, unset it
+                                unset( $hooks[$type_slug][$section_slug]['hooks'][$hook_slug] );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $test = array(
+            'hook_slug' =>  array(
+                'disable' => 1,
+                'hook_type_active' => 1,
+                'hook_type_disable' => 1,
+                'hook_section_disable' => 1,
+            )
+        );
 
         foreach( $unflattened as $sections => $section ) {
             foreach ( $section['hooks'] as $hooks => $hook ) {
