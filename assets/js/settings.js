@@ -114,7 +114,6 @@ jQuery(document).ready(function($) {
 
 			hook_fields += '</div>';
 
-			$( '#default_custom_hook_settings' ).removeClass( 'blox-hidden' );
 			$( '.blox-hook-table.custom' ).append( hook_fields );
 
 			$( '.blox-no-custom-hooks' ).remove();
@@ -122,7 +121,38 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	// Edit hook section title	// Updates our content block title field in real time
+	$(document).on( 'keyup', '.blox-hook-section-title .section-title input', function(e) {
+		titleText = e.target.value;
 
+		if ( titleText != '' ) {
+			// If a new title has been added, update the title div
+			$(this).siblings( '.current-section-title' ).text( titleText );
+		} else {
+			last_saved_title = $(this).siblings( '.current-section-title' ).attr( 'title' );
+			// If the title has been removed, add show the last saved title
+			$(this).siblings( '.current-section-title' ).text( last_saved_title );
+		}
+	});
+
+	// Display the section title editor on click
+	$(document).on( 'click', '.blox-hook-section-title .toggle-section-title-editor', function(){
+		$(this).toggleClass( 'editor-active' );
+		$(this).siblings( '.current-section-title' ).toggle();
+		$(this).siblings( '.section-title-editor' ).toggle();
+	});
+
+	$(document).on( 'change', '.section-disable-checkbox', function(){
+		if ( $(this).is( ':checked' ) ){
+			$(this).parents( '.blox-hook-section-title' ).addClass( 'section-disabled' );
+			$(this).parents( '.blox-hook-section-title' ).next( '.blox-hook-table-container' ).hide();
+		} else {
+			$(this).parents( '.blox-hook-section-title' ).removeClass( 'section-disabled' );
+			$(this).parents( '.blox-hook-section-title' ).next( '.blox-hook-table-container' ).show();
+		}
+	});
+
+	// Delete a custom hook on click
 	$(document).on( 'click', '.blox-custom-hook-delete', function(){
 
 		// Need to have the "return" or won't work

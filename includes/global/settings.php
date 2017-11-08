@@ -356,6 +356,7 @@ class Blox_Settings {
     						'default'     => isset( $option['default'] )     ? $option['default']     : '',
     						'sanitize'	  => isset( $option['sanitize'] )    ? $option['sanitize']    : '',
                             'settings'    => isset( $option['settings'] )    ? $option['settings']    : '',
+                            'sub_type'    => isset( $option['sub_type'] )    ? $option['sub_type']    : '', // Used for classifying a subtype of a callback
     					)
     				);
     			}
@@ -752,7 +753,8 @@ class Blox_Settings {
                             'id'       => 'default_custom_hooks',
                             'name'     => __( 'Add Custom Hooks', 'blox' ),
                             'desc'     => '',
-                            'type'     => 'custom_hooks',
+                            'type'     => 'hooks',
+                            'sub_type' => 'custom',
                             'sanitize' => 'hooks',
                         ),
                     ),
@@ -1440,11 +1442,11 @@ class Blox_Settings {
 
 
 	/**
-	 * Hooks callback
-     * TODO - Merge with Custom Hooks Callback
+	 * Custom Hooks callback
 	 *
-	 * @since 1.1.0
+	 * @since 2.0.0
 	 *
+     * @param array $args    Arguments passed by the setting
 	 * @global $blox_options Array of all the Blox settings
 	 * @return void
 	 */
@@ -1452,167 +1454,142 @@ class Blox_Settings {
 
 		global $blox_options;
 
+        // Check if we have a hook callback subtype, used primarily for custom hooks
+        $callback_type = isset( $args['sub_type'] ) ? $args['sub_type'] : 'default';
+
+        // Get the saved hook setting or use the defaults
 		if ( isset( $blox_options[ $args['id'] ] ) ) {
 			$hooks = $blox_options[ $args['id'] ];
 		} else {
-			// Defaults
-            $hook_type = strstr( $args['id'], '_', true );
-            $all_hooks = $this->get_hooks();
-			$hooks     = $all_hooks[ $hook_type ];
+            if ( $callback_type == 'custom' ) {
+                $hooks = array( 'custom' => array(
+                    'name'    => __( 'Custom Hooks', 'blox' ),
+                    'disable' => '',
+                    'hooks'   => array(),
+                ) );
+            } else {
+                $hook_type = strstr( $args['id'], '_', true );
+                $all_hooks = $this->get_hooks();
+                $hooks     = $all_hooks[ $hook_type ];
+            }
 		}
-		?>
 
-		<p class="description"><?php echo $args['desc'];?></p>
+        // Print the description text if provided
+        if ( isset( $args['desc'] ) && ! empty( $args['desc'] ) ) {
+            echo '<p class="description">' . $args['desc'] . '</p>';
+        }
 
-        <div id="default_hook_settings">
-		<?php
-		foreach ( $hooks as $section_slug => $section ) {
-			?>
-			<div class="hook-section-title">
-				<?php
-				$section_title_name    = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][name]';
-				$section_title_value   = isset( $section['name'] ) ? esc_attr( $section['name'] ) : __( 'Missing Section Name', 'blox' );
-                $section_disable_name  = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][disable]';
-    			$section_disable_value = isset( $section['disable'] ) ? checked( 1, esc_attr( $section['disable'] ), false ) : '';
+        // If displaying custom hooks, add the custom hook add button
+        if ( $callback_type == 'custom' ) {
+            $this->add_custom_hook_button();
+        }
 
-                echo $section_title_value;
-                ?>
-
-				<input class="" type="text" name="<?php echo $section_title_name; ?>" placeholder="<?php _e( 'Enter a section name', 'blox' ); ?>" value="<?php echo $section_title_value; ?>" />
-                <input class="" type="checkbox" name="<?php echo $section_disable_name; ?>" value="1" <?php echo $section_disable_value; ?>/>
-			</div>
-
-            <div class="blox-hook-table">
-                <div class="row title-row">
-                    <div class="hook-disable"><?php _e( 'Disable', 'blox' ); ?></div>
-                    <div class="hook-slug"><?php _e( 'Hook', 'blox' ); ?></div>
-                    <div class="hook-name"><?php _e( 'Hook Name', 'blox' ); ?></div>
-                    <div class="hook-desc"><?php _e( 'Hook Description', 'blox' ); ?></div>
-                </div>
-				<?php
-				foreach ( $section['hooks'] as $hooks => $hook ) {
-
-                    $hook_disable_name  = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][disable]';
-					$hook_disable_value = isset( $hook['disable'] ) ? checked( 1, esc_attr( $hook['disable'] ), false ) : '';
-					$hook_name_name     = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][name]';
-					$hook_name_value    = isset( $hook['name'] ) ? esc_attr( $hook['name'] ) : '';
-					$hook_title_name    = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][title]';
-					$hook_title_value   = isset( $hook['title'] ) ? esc_attr( $hook['title'] ) : '';
-
-
-                    ?>
-                    <div class="row hook-row">
-                        <div class="hook-disable"><input type="checkbox" name="<?php echo $hook_disable_name; ?>" value="1" <?php echo $hook_disable_value; ?>/></div>
-                        <div class="hook-slug"><span><?php echo $hooks; ?></span></div>
-                        <div class="hook-name"><input class="hook-name" type="text" name="<?php echo $hook_name_name; ?>"  placeholder="<?php echo $hooks; ?>" value="<?php echo $hook_name_value; ?>" /></div>
-                        <div class="hook-desc">
-                            <span><?php echo $hook_title_value; ?></span>
-                            <textarea class="hook-title blox-force-hidden" rows="1" name="<?php echo $hook_title_name; ?>" ><?php echo $hook_title_value; ?></textarea>
-                        </div>
-                    </div>
-                    <?php
-				}
-				?>
-            </div>
-
-            <div class="blox-hook-tools">
-                <a class="blox-hook-disable-all" href="#"><?php _e( 'Disable All', 'blox' ); ?></a> | <a class="blox-hook-enable-all" href="#"><?php _e( 'Enable All', 'blox' ); ?></a>
-            </div>
-            <p class="description">
-                <?php _e( 'Please note that the Hook Name cannot contain HTML.', 'blox' ); ?>
-            </p>
-		<?php } ?>
-		</div>
-		<?php
+        foreach ( $hooks as $section_slug => $section ) {
+            $this->add_hook_section_title( $args, $section_slug, $section, $callback_type );
+            $this->add_hook_section_table( $args, $section_slug, $section, $callback_type, $hooks );
+        }
 	}
 
 
+    public function add_custom_hook_button() {
+        ?>
+        <div class="add-custom-button">
+            <input type="text" class="custom-hook-entry" placeholder="<?php _e( 'Enter hook slug', 'blox' ); ?>" value="" /><a class="button button-secondary"><?php _e( 'Add Custom Hook', 'blox' ); ?></a>
+            <p class="description"><?php _e( 'The hook slug can only be made up of letters, numbers, dashes and underscores.', 'blox' );?></p>
+        </div>
+        <?php
+    }
 
-	/**
-	 * Custom Hooks callback
-     * TODO - Merge with Hooks Callback
-	 *
-	 * @since 1.1.0
-	 *
-	 * @global $blox_options Array of all the Blox settings
-	 * @return void
-	 */
-	public function custom_hooks_callback( $args ) {
+    public function add_hook_section_title( $args, $section_slug, $section, $callback_type ) {
 
-		global $blox_options;
+        // Begin by checking is the section is disabled and add the correct class to the container
+        $section_disabled = ( isset( $section['disable'] ) && ! empty( $section['disable'] ) ) ? 'section-disabled' : '';
+        ?>
+        <div class="blox-hook-section-title <?php echo $section_disabled;?>">
+            <?php
+            $section_title_name    = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][name]';
+            $section_title_value   = ( isset( $section['name'] ) && ! empty( $section['name'] ) ) ? esc_attr( $section['name'] ) : __( 'Missing Section Name', 'blox' );
+            $section_disable_name  = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][disable]';
+            $section_disable_value = isset( $section['disable'] ) ? checked( 1, esc_attr( $section['disable'] ), false ) : '';
+            ?>
+            <div class="section-title">
+                <span class="current-section-title" title="<?php echo $section_title_value; ?>"><?php echo $section_title_value; ?></span>
+                <input class="section-title-editor" type="text" name="<?php echo $section_title_name; ?>" placeholder="<?php _e( 'Enter a section name', 'blox' ); ?>" value="<?php echo $section_title_value; ?>" />
+                <span class="toggle-section-title-editor dashicons dashicons-edit"></span>
+            </div>
+            <div class="section-disable">
+                <span><?php _e( 'Disable Section', 'blox' );?></span>
+                <input class="section-disable-checkbox" type="checkbox" name="<?php echo $section_disable_name; ?>" value="1" <?php echo $section_disable_value; ?>/>
+            </div>
+        </div>
+        <?php
+    }
 
-		if ( isset( $blox_options[ $args['id'] ] ) ) {
-			$value = $blox_options[ $args['id'] ];
-		} else {
-			// Defaults
-			$value = array();
-		}
 
-		?>
-		<div class="add-custom-button">
-			<input type="text" class="custom-hook-entry" placeholder="<?php _e( 'Enter hook slug', 'blox' ); ?>" value="" /><a class="button button-secondary"><?php _e( 'Add Custom Hook', 'blox' ); ?></a>
-			<p class="description"><?php _e( 'The hook slug can only be made up of letters, numbers, dashes and underscores.', 'blox' );?></p>
-		</div>
-		<div class="hook-section-title">
-			<?php
-            // NEED TO UPDATE ONCE MULTI SECTION IS ENABLED
-            $section_title_name    = 'blox_settings['. $args['id'] . '][custom][name]';
-            $section_title_value   = isset( $value['custom']['name'] ) ? esc_attr( $value['custom']['name'] ) : __( 'Missing Section Name', 'blox' );;
-			$section_disable_name  = 'blox_settings['. $args['id'] . '][custom][disable]';
-			$section_disable_value = isset( $value['custom']['disable'] ) ? checked( 1, esc_attr( $value['custom']['disable'] ), false ) : '';
+    public function add_hook_section_table( $args, $section_slug, $section, $callback_type, $hooks ) {
 
-            echo $section_title_value;
-			?>
-			<input class="" type="text" name="<?php echo $section_title_name; ?>" value="<?php echo $section_title_value; ?>" />
-            <input class="" type="checkbox" name="<?php echo $section_disable_name; ?>" value="1" <?php echo $section_disable_value; ?>/>
-		</div>
-		<div id="default_custom_hook_settings">
-            <div class="blox-hook-table custom">
+        // Begin by checking is the section is disabled and add the correct class to the container
+        $section_disabled = ( isset( $section['disable'] ) && ! empty( $section['disable'] ) ) ? 'hidden' : '';
+        ?>
+        <div class="blox-hook-table-container <?php echo $section_disabled;?>">
+            <div class="blox-hook-table <?php echo $callback_type; ?>">
                 <div class="row title-row">
                     <div class="hook-disable"><?php _e( 'Disable', 'blox' ); ?></div>
                     <div class="hook-slug"><?php _e( 'Hook', 'blox' ); ?></div>
                     <div class="hook-name"><?php _e( 'Hook Name', 'blox' ); ?></div>
                     <div class="hook-desc"><?php _e( 'Hook Description', 'blox' ); ?></div>
-                    <div class="hook-delete"><?php _e( 'Delete', 'blox' ); ?></div>
+                    <?php if ( $callback_type == 'custom' ) { ?>
+                        <div class="hook-delete"><?php _e( 'Delete', 'blox' ); ?></div>
+                    <?php } ?>
                 </div>
                 <?php
-                $custom_hooks = isset( $value['custom'] ) ? $value['custom'] : array( 'hooks' => array() );
+                if ( ! empty( $section['hooks'] ) ) {
+                    foreach ( $section['hooks'] as $hooks => $hook ) {
 
-                if ( ! empty( $custom_hooks['hooks'] ) ) {
-                    foreach ( $custom_hooks['hooks'] as $hooks => $hook ) {
-
-                        $hook_disable_name = 'blox_settings[' . $args['id'] . '][custom][hooks][' . $hooks . '][disable]';
-						$hook_disable_value = isset( $hook['disable'] ) ? checked( 1, esc_attr( $hook['disable'] ), false ) : '';
-						$hook_name_name	    = 'blox_settings[' . $args['id'] . '][custom][hooks][' . $hooks . '][name]';
-						$hook_name_value    = isset( $hook['name'] ) ? esc_attr( $hook['name'] ) : '';
-						$hook_title_name    = 'blox_settings[' . $args['id'] . '][custom][hooks][' . $hooks . '][title]';
-						$hook_title_value   = isset( $hook['title'] ) ? esc_attr( $hook['title'] ) : '';
+                        $hook_disable_name = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][disable]';
+                        $hook_disable_value = isset( $hook['disable'] ) ? checked( 1, esc_attr( $hook['disable'] ), false ) : '';
+                        $hook_name_name	    = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][name]';
+                        $hook_name_value    = isset( $hook['name'] ) ? esc_attr( $hook['name'] ) : '';
+                        $hook_title_name    = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][hooks][' . $hooks . '][title]';
+                        $hook_title_value   = isset( $hook['title'] ) ? esc_attr( $hook['title'] ) : '';
                         ?>
                         <div class="row hook-row">
                             <div class="hook-disable"><input type="checkbox" name="<?php echo $hook_disable_name; ?>" value="1" <?php echo $hook_disable_value; ?>/></div>
                             <div class="hook-slug"><span><?php echo $hooks; ?></span></div>
                             <div class="hook-name"><input class="hook-name" type="text" name="<?php echo $hook_name_name; ?>"  placeholder="<?php echo $hooks; ?>" value="<?php echo $hook_name_value; ?>" /></div>
-                            <div class="hook-desc"><textarea class="hook-title" rows="1" name="<?php echo $hook_title_name; ?>" ><?php echo $hook_title_value; ?></textarea></div>
-                            <div class="hook-delete"><a class="blox-custom-hook-delete dashicons right" href="#" title="<?php _e( 'Delete Hook', 'blox' );?>"></a></div>
+                            <div class="hook-desc">
+                                <?php if ( $callback_type == 'custom' ) { ?>
+                                    <textarea class="hook-title" rows="1" name="<?php echo $hook_title_name; ?>" ><?php echo $hook_title_value; ?></textarea>
+                                <?php } else { ?>
+                                    <span><?php echo $hook_title_value; ?></span>
+                                    <textarea class="hook-title blox-force-hidden" rows="1" name="<?php echo $hook_title_name; ?>" ><?php echo $hook_title_value; ?></textarea>
+                                <?php } ?>
+                            </div>
+                            <?php if ( $callback_type == 'custom' ) { ?>
+                                <div class="hook-delete"><a class="blox-custom-hook-delete dashicons right" href="#" title="<?php _e( 'Delete Hook', 'blox' );?>"></a></div>
+                            <?php } ?>
                         </div>
                         <?php
                     }
                 } else {
-                    echo '<div class="blox-no-custom-hooks">' . __( 'Add a custom hook...', 'blox' ) . '</div>';
+                    $no_hooks_message = $callback_type == 'custom' ? __( 'Add a custom hook...', 'blox' ) : __( 'There are no hooks in this section.', 'blox' );
+                    echo '<div class="blox-no-custom-hooks">' . $no_hooks_message . '</div>';
                 }
                 ?>
             </div>
+
             <div class="blox-hook-tools">
                 <a class="blox-hook-disable-all" href="#"><?php _e( 'Disable All', 'blox' ); ?></a> | <a class="blox-hook-enable-all" href="#"><?php _e( 'Enable All', 'blox' ); ?></a>
-                <a class="blox-hook-delete-all" href="#"><?php _e( 'Delete All', 'blox' ); ?></a>
+                <?php if ( $callback_type == 'custom' ) { ?>
+                    <a class="blox-hook-delete-all" href="#"><?php _e( 'Delete All', 'blox' ); ?></a>
+                <?php } ?>
             </div>
             <p class="description">
                 <?php _e( 'Please note that the Hook Name cannot contain HTML.', 'blox' ); ?>
             </p>
-		</div>
-		<?php
-	}
-
+        </div>
+        <?php
+    }
 
 	/***********************************************
 	 * Sanitization type callbacks
@@ -1680,7 +1657,7 @@ class Blox_Settings {
 
                 $sanitized_hooks[$sections] = array(
                     'disable' => isset( $section['disable'] ) ? esc_attr( $section['disable'] ) : false,
-                    'name'    => strip_tags( $section['name'] ),
+                    'name'    => strip_tags( trim( $section['name'] ) ),
                     'hooks'   => array(),
                 );
 
@@ -1692,8 +1669,8 @@ class Blox_Settings {
 
 						$sanitized_hooks[$sections]['hooks'][$hooks] = array(
 							'disable' => isset( $hook['disable'] ) ? esc_attr( $hook['disable'] ) : false,
-							'name'    => empty( $hook['name'] ) ? $hooks : strip_tags( $hook['name'] ),
-							'title'   => esc_attr( $hook['title'] ),
+							'name'    => empty( $hook['name'] ) ? $hooks : strip_tags( trim( $hook['name'] ) ),
+							'title'   => trim( esc_attr( $hook['title'] ) ),
 						);
 					}
 				}
@@ -1784,6 +1761,7 @@ class Blox_Settings {
 				'confirm_delete_hook'      => __( 'Are you sure you want to delete this custom hook? This action cannot be undone.', 'blox' ),
                 'confirm_delete_all_hooks' => __( 'Are you sure you want to delete all custom hooks? This action cannot be undone.', 'blox' ),
 				'no_hooks'			       => __( 'Add a custom hook...', 'blox' ),
+                'no_section_title_text'    => __( 'No Section Title', 'blox' ),
 			)
 		);
 	}
