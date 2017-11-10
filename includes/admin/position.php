@@ -174,50 +174,56 @@ class Blox_Position {
      */
     public function print_position_hook_settings( $id, $name_prefix, $get_prefix, $global, $scope ) {
         ?>
-        <div class="blox-position-hook">
-            
-            <div class="blox-position-hook-disable">
-                <label class="blox-title"><?php _e( 'Hook Positioning', 'blox' ); ?></label>
-                <div class="blox-setting">
-                    <input type="checkbox" name="<?php echo $name_prefix; ?>[hook][disable]" id="blox_position_disable_hook_positioning_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['hook']['disable'] ) ? checked( $get_prefix['hook']['disable'] ) : ''; ?> />
-                    <?php _e( 'Disable hook positioning', 'blox' ); ?>
-                    <span class="blox-help-text-icon">
-                        <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                    </span>
-                    <div class="blox-help-text">
-                        <?php _e( 'When hook positioning is disabled, the content block will no longer display via the selected action hook.', 'blox' ); ?>
-                    </div>
-                </div>
-            </div>
+        <table class="form-table blox-table-border-bottom">
+            <tbody>
 
-            <div class="blox-position-hook-settings">
-                <div class="blox-position-selected-hook">
-                    <label><?php _e( 'Selected Hook', 'blox' ); ?></label>
-                    <input type="text" readonly class="blox-selected-hook-position" name="<?php echo $name_prefix; ?>[hook][position]" id="blox_position_hook_position_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['position'] ) ? esc_attr( $get_prefix['hook']['position'] )  : 'genesis_after_header'; ?>" />
-                    <span class="blox-help-text-icon">
-                        <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                    </span>
-                    <div class="blox-help-text top">
-                        <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
-                    </div>
-                </div>
-                <div class="blox-position-selected-hook-priority">
-                    <label><?php _e( 'Hook Priority', 'blox' ); ?></label>
-                    <input type="text" name="<?php echo $name_prefix; ?>[hook][priority]" id="blox_position_hook_priority_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['priority'] ) ? esc_attr( $get_prefix['hook']['priority'] )  : '15'; ?>" class="blox-small-text"/>
-                    <span class="blox-help-text-icon">
-                        <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                    </span>
-                    <div class="blox-help-text top">
-                        <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
-                    </div>
-                </div>
-                <?php
-                // Print hook selector
-                $this->print_hook_selector();
-                ?>
+            	<tr valign="top">
+            		<th scope="row"><label><?php _e( 'Hook Positioning', 'blox' ); ?></label></th>
+            		<td>
+                        <label>
+                            <input type="checkbox" name="<?php echo $name_prefix; ?>[hook][disable]" id="blox_position_disable_hook_positioning_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['hook']['disable'] ) ? checked( $get_prefix['hook']['disable'] ) : ''; ?> />
+                            <?php _e( 'Disable hook positioning', 'blox' ); ?>
+                        </label>
+                        <span class="blox-help-text-icon">
+                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                        </span>
+                        <div class="blox-help-text">
+                            <?php _e( 'When hook positioning is disabled, the content block will no longer display via the selected action hook.', 'blox' ); ?>
+                        </div>
+            		</td>
+            	</tr>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e( 'Selected Hook', 'blox' ); ?></label></th>
+                    <td>
+                        <input type="text" readonly class="blox-selected-hook-position blox-half-text" name="<?php echo $name_prefix; ?>[hook][position]" id="blox_position_hook_position_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['position'] ) ? esc_attr( $get_prefix['hook']['position'] )  : 'genesis_after_header'; ?>" />
+                        <span class="blox-help-text-icon">
+                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                        </span>
+                        <div class="blox-help-text top">
+                            <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
+                        </div>
 
-            </div>
-        </div>
+                        <?php
+                        // Print hook selector
+                        $this->print_hook_selector();
+                        ?>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e( 'Hook Priority', 'blox' ); ?></label></th>
+                    <td>
+                        <input type="text" name="<?php echo $name_prefix; ?>[hook][priority]" id="blox_position_hook_priority_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['priority'] ) ? esc_attr( $get_prefix['hook']['priority'] )  : '15'; ?>" class="blox-small-text"/>
+                        <span class="blox-help-text-icon">
+                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                        </span>
+                        <div class="blox-help-text top">
+                            <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
+                        </div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
 		<?php
     }
 
@@ -313,7 +319,7 @@ class Blox_Position {
                                             ?>
                                         </div>
                                         <?php
-                                }
+                                    }
                                 } ?>
                             </div>
                             <?php
@@ -344,39 +350,50 @@ class Blox_Position {
      */
     public function print_position_shortcode_settings( $id, $name_prefix, $get_prefix, $global, $scope ) {
         ?>
-        <div class="blox-toggle blox-toggle-has-container">
-            <span class="blox-toggle-wrap">
-                <input id="blox_position_shortcode_enable_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[shortcode][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['shortcode']['enable'] ) ? checked( $get_prefix['shortcode']['enable'], 1, false ) : ''; ?> />
-                <label class="toggle" for="blox_position_shortcode_enable_<?php echo $id; ?>"></label>
-            </span>
-            <span class="title"><?php _e( 'Shortcode Positioning', 'blox' ); ?></span>
-        </div>
+        <table class="form-table blox-table-border-bottom">
+            <tbody>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e( 'Shortcode Positioning', 'blox' ); ?></label></th>
+                    <td>
+                        <div class="blox-checkbox before">
+                            <label>
+                                <input type="checkbox" name="<?php echo $name_prefix; ?>[shortcode][disable]" id="blox_position_disable_shortcode_positioning_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['shortcode']['disable'] ) ? checked( $get_prefix['shortcode']['disable'] ) : ''; ?> />
+                                <?php _e( 'Disable shortcode positioning', 'blox' ); ?>
+                            </label>
+                            <span class="blox-help-text-icon">
+                                <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                            </span>
+                            <div class="blox-help-text">
+                                <?php _e( 'When shortcode positioning is disabled, any shortcodes that were placed for this block will cease to work.', 'blox' ); ?>
+                            </div>
+                        </div>
 
-        <div class="blox-toggle-container">
-            <div class="blox-code">[blox id="<?php echo $scope . '_' . $id; ?>"]</div>
-            <div class="blox-description">
-                <?php
-                    _e( 'Copy and paste this above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox-shortcodes' );
-                    if ( ! $global ) {
-                        echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
-                    }
-                ?>
-            </div>
+                        <div class="blox-code">[blox id="<?php echo $scope . '_' . $id; ?>"]</div>
+                        <div class="blox-description">
+                            <?php
+                                _e( 'Copy and paste the above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox' );
+                                if ( ! $global ) {
+                                    echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
+                                }
+                            ?>
+                        </div>
 
-            <div class="blox-checkbox after">
-                <label>
-                    <input type="checkbox" id="blox_position_shortcode_ignore_location_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[shortcode][ignore_location]" value="1" <?php echo isset( $get_prefix['shortcode']['ignore_location'] ) ? checked( $get_prefix['shortcode']['ignore_location'], 1, false ) : ''; ?> />
-                    <?php _e( 'Check to ignore location settings', 'blox' ); ?>
-                </label>
-                <span class="blox-help-text-icon">
-                    <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                </span>
-                <div class="blox-help-text">
-                    Test
-                </div>
-            </div>
-
-        </div>
+                        <div class="blox-checkbox after">
+                            <label>
+                                <input type="checkbox" id="blox_position_shortcode_ignore_location_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[shortcode][ignore_location]" value="1" <?php echo isset( $get_prefix['shortcode']['ignore_location'] ) ? checked( $get_prefix['shortcode']['ignore_location'], 1, false ) : ''; ?> />
+                                <?php _e( 'Check to ignore location settings', 'blox' ); ?>
+                            </label>
+                            <span class="blox-help-text-icon">
+                                <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                            </span>
+                            <div class="blox-help-text">
+                                <?php _e( 'This option can be helpful in certain circumstances, especially when creating copies of the content block. You may want to position the block via action hook, which uses the location settings, but then place a copy elsewhere on your site via shortcode. Often this additional placement will violate the location settings.', 'blox' ); ?>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <?php
     }
 
@@ -394,39 +411,50 @@ class Blox_Position {
      */
     public function print_position_php_settings(  $id, $name_prefix, $get_prefix, $global, $scope ) {
         ?>
-        <div class="blox-toggle blox-toggle-has-container">
-            <span class="blox-toggle-wrap">
-                <input id="blox_position_php_enable_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[php][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['php']['enable'] ) ? checked( $get_prefix['php']['enable'], 1, false ) : ''; ?> />
-                <label class="toggle" for="blox_position_php_enable_<?php echo $id; ?>"></label>
-            </span>
-            <span class="title"><?php _e( 'PHP Function Positioning', 'blox' ); ?></span>
-        </div>
+        <table class="form-table">
+            <tbody>
+                <tr valign="top">
+                    <th scope="row"><label><?php _e( 'PHP Positioning', 'blox' ); ?></label></th>
+                    <td>
+                        <div class="blox-checkbox before">
+                            <label>
+                                <input type="checkbox" name="<?php echo $name_prefix; ?>[php][disable]" id="blox_position_disable_php_positioning_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['php']['disable'] ) ? checked( $get_prefix['php']['disable'] ) : ''; ?> />
+                                <?php _e( 'Disable PHP positioning', 'blox' ); ?>
+                            </label>
+                            <span class="blox-help-text-icon">
+                                <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                            </span>
+                            <div class="blox-help-text">
+                                <?php _e( 'When PHP positioning is disabled, any PHP code that was placed to display this block will cease to work.', 'blox' ); ?>
+                            </div>
+                        </div>
 
-        <div class="blox-toggle-container last">
-            <div class="blox-code">blox_display_block( "<?php echo $scope . '_' . $id; ?>" );</div>
-            <div class="blox-description">
-                <?php
-                    _e( 'Copy and paste this above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox-shortcodes' );
-                    if ( ! $global ) {
-                        echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
-                    }
-                ?>
-            </div>
+                        <div class="blox-code">blox_display_block( "<?php echo $scope . '_' . $id; ?>" );</div>
+                        <div class="blox-description">
+                            <?php
+                                _e( 'Copy and paste the above PHP code into any of your theme files. Visibility and location settings are respected when using PHP positioning.', 'blox' );
+                                if ( ! $global ) {
+                                    echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
+                                }
+                            ?>
+                        </div>
 
-            <div class="blox-checkbox after">
-                <label>
-                    <input type="checkbox" id="blox_position_php_ignore_location_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[php][ignore_location]" value="1" <?php echo isset( $get_prefix['php']['ignore_location'] ) ? checked( $get_prefix['php']['ignore_location'], 1, false ) : ''; ?> />
-                    <?php _e( 'Check to ignore location settings', 'blox' ); ?>
-                </label>
-                <span class="blox-help-text-icon">
-                    <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                </span>
-                <div class="blox-help-text">
-                    Test
-                </div>
-            </div>
-
-        </div>
+                        <div class="blox-checkbox after">
+                            <label>
+                                <input type="checkbox" id="blox_position_php_ignore_location_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[php][ignore_location]" value="1" <?php echo isset( $get_prefix['php']['ignore_location'] ) ? checked( $get_prefix['php']['ignore_location'], 1, false ) : ''; ?> />
+                                <?php _e( 'Check to ignore location settings', 'blox' ); ?>
+                            </label>
+                            <span class="blox-help-text-icon">
+                                <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                            </span>
+                            <div class="blox-help-text">
+                                <?php _e( 'This option can be helpful in certain circumstances, especially when creating copies of the content block. You may want to position the block via action hook, which uses the location settings, but then place a copy elsewhere on your site via PHP. Often this additional placement will violate the location settings.', 'blox' ); ?>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <?php
     }
 

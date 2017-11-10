@@ -11,12 +11,15 @@
 
 /* Blox Defaults
 -------------------------------------------------------------- */
+.blox-checkbox.before {
+	margin-bottom: 10px;
+}
 .blox-checkbox.after {
 	margin-top: 15px;
 }
 .blox-checkbox label,
 .blox-checkbox .blox-help-text-icon {
-	margin-bottom: .5em;
+	margin-bottom: 5px;
 	display: inline-block;
 	vertical-align: middle;
 }
@@ -283,6 +286,14 @@ ul.blox-columns li {
 		padding: 8px 0 5px 0;
 		font-size: 14px;
 	}
+}
+
+.form-table.blox-table-border-bottom {
+	border-bottom: 1px solid #dfdfdf;
+	margin-bottom: 15px !important;
+}
+.form-table.blox-table-border-bottom tr:last-child td {
+	padding-bottom: 30px;
 }
 
 
@@ -1238,80 +1249,6 @@ body.blox-modal-open {
 
 
 
-
-/* Toggle styling, turns checkboxes into toggles */
-.blox-toggle * {
-  	box-sizing: border-box;
-}
-.blox-toggle *::selection,
-.blox-toggle *::-moz-selection{
-	background: none;
-}
-.blox-toggle input {
-	display: none;
-}
-.blox-toggle label {
-	background: #a2a2a2;
-	border-radius: 8px;
-	padding: 2px;
-	-webkit-transition: all .4s ease;
-	transition: all .4s ease;
-	outline: 0;
-	display: inline-block;
-	width: 24px;
-	height: 16px;
-	position: relative;
-	cursor: pointer;
-	-webkit-user-select: none;
-	 -moz-user-select: none;
-	  -ms-user-select: none;
-	      user-select: none;
-}
-.blox-toggle label:after,
-.blox-toggle label:before {
-	position: relative;
-	display: block;
-	content: "";
-	width: 50%;
-	height: 100%;
-}
-.blox-toggle label:after {
-	left: 0;
-	border-radius: 50%;
-	width: 12px;
-	height: 12px;
-	background: #fff;
-	-webkit-transition: all .2s ease;
-	transition: all .2s ease;
-}
-.blox-toggle label:before {
-	display: none;
-}
-.blox-toggle .title {
-	font-weight: 600;
-	padding-left: 3px;
-	vertical-align: middle;
-	-webkit-font-smoothing: subpixel-antialiased;
-}
-.blox-toggle-wrap > input:checked + label:after {
-	left: 8px;
-}
-.blox-toggle-wrap > input:checked + label {
-	background: #0073aa;
-}
-
-.blox-toggle.blox-toggle-has-container {
-	margin-bottom: 15px;
-}
-.blox-toggle-container {
-	border-bottom: 1px solid #dfdfdf;
-	margin-bottom: 20px;
-	padding: 10px 10px 25px;
-}
-.blox-toggle-container.last {
-	border-bottom: none;
-	padding: 10px 10px 0;
-}
 
 
 .blox-position-hook-settings {
