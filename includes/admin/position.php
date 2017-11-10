@@ -174,21 +174,25 @@ class Blox_Position {
      */
     public function print_position_hook_settings( $id, $name_prefix, $get_prefix, $global, $scope ) {
         ?>
-        <div class="blox-toggle blox-toggle-has-container">
-            <span class="blox-toggle-wrap">
-                <input id="blox_position_hook_enable_<?php echo $id; ?>" name="<?php echo $name_prefix; ?>[hook][enable]" type="checkbox" value="1" <?php echo isset( $get_prefix['hook']['enable'] ) ? checked( $get_prefix['hook']['enable'], 1, false ) : ' checked="checked"'; ?> />
-                <label class="toggle" for="blox_position_hook_enable_<?php echo $id; ?>"></label>
-            </span>
-            <span class="title"><?php _e( 'Hook Positioning', 'blox' ); ?></span>
-        </div>
-
-        <div class="blox-toggle-container">
+        <div class="blox-position-hook">
+            
+            <div class="blox-position-hook-disable">
+                <label class="blox-title"><?php _e( 'Hook Positioning', 'blox' ); ?></label>
+                <div class="blox-setting">
+                    <input type="checkbox" name="<?php echo $name_prefix; ?>[hook][disable]" id="blox_position_disable_hook_positioning_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['hook']['disable'] ) ? checked( $get_prefix['hook']['disable'] ) : ''; ?> />
+                    <?php _e( 'Disable hook positioning', 'blox' ); ?>
+                    <span class="blox-help-text-icon">
+                        <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                    </span>
+                    <div class="blox-help-text">
+                        <?php _e( 'When hook positioning is disabled, the content block will no longer display via the selected action hook.', 'blox' ); ?>
+                    </div>
+                </div>
+            </div>
 
             <div class="blox-position-hook-settings">
                 <div class="blox-position-selected-hook">
-                    <label>
-                        <span><?php _e( 'Selected Hook', 'blox' ); ?></span>
-                    </label>
+                    <label><?php _e( 'Selected Hook', 'blox' ); ?></label>
                     <input type="text" readonly class="blox-selected-hook-position" name="<?php echo $name_prefix; ?>[hook][position]" id="blox_position_hook_position_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['position'] ) ? esc_attr( $get_prefix['hook']['position'] )  : 'genesis_after_header'; ?>" />
                     <span class="blox-help-text-icon">
                         <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
@@ -198,9 +202,7 @@ class Blox_Position {
                     </div>
                 </div>
                 <div class="blox-position-selected-hook-priority">
-                    <label>
-                        <span><?php _e( 'Hook Priority', 'blox' ); ?></span>
-                    </label>
+                    <label><?php _e( 'Hook Priority', 'blox' ); ?></label>
                     <input type="text" name="<?php echo $name_prefix; ?>[hook][priority]" id="blox_position_hook_priority_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['priority'] ) ? esc_attr( $get_prefix['hook']['priority'] )  : '15'; ?>" class="blox-small-text"/>
                     <span class="blox-help-text-icon">
                         <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
@@ -214,21 +216,6 @@ class Blox_Position {
                 $this->print_hook_selector();
                 ?>
 
-            </div>
-
-
-            <div class="blox-position-disable-hook-positioning">
-                <label>
-                    <span><?php _e( 'Disable Hook Positioning', 'blox' ); ?></span>
-                </label>
-                <input type="checkbox" name="<?php echo $name_prefix; ?>[hook][disable]" id="blox_position_disable_hook_positioning_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['hook']['disable'] ) ? checked( $get_prefix['hook']['disable'] ) : ''; ?> />
-                <?php _e( 'Check to disable hook positioning', 'blox' ); ?>
-                <span class="blox-help-text-icon">
-                    <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                </span>
-                <div class="blox-help-text top">
-                    <?php _e( 'ADD TEXT HERE', 'blox' ); ?>
-                </div>
             </div>
         </div>
 		<?php
