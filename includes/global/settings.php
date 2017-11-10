@@ -544,7 +544,8 @@ class Blox_Settings {
                             'label'   => __( 'Disable all syntax highlighting', 'blox' ),
                             'desc'    => __( 'Checking this setting will disable syntax highlighting in the raw content fullscreen modal.', 'blox' ),
                             'type'    => 'checkbox',
-                            'default' => false
+                            'default' => false,
+                            'sanitize' => 'checkbox',
                         ),
                         'syntax_highlighting_theme' => array(
                             'id'   => 'syntax_highlighting_theme',
@@ -670,36 +671,68 @@ class Blox_Settings {
             'position' => apply_filters( 'blox_settings_position',
 				array(
                     'main' => array(
-    					'position_enable_hook_positioning' => array(
-    						'id'   => 'position_enable_hook_positioning',
-    						'name'  => __( 'Enable Hook Positioning', 'blox' ),
-    						'label' => __( 'Allow block to be positioned via action hook', 'blox' ),
-    						'desc'  => '',
-    						'type'  => 'checkbox',
-    						'default' => true
-    					),
-                        'position_enable_shortcode_positioning' => array(
-    						'id'   => 'position_enable_shortcode_positioning',
-    						'name'  => __( 'Enable Shortcode Positioning', 'blox' ),
-    						'label' => __( 'Allow block to be positioned via shortcode', 'blox' ),
-    						'desc'  => '',
-    						'type'  => 'checkbox',
-    						'default' => true
-    					),
-                        'position_enable_php_positioning' => array(
-                            'id'   => 'position_enable_php_positioning',
-                            'name'  => __( 'Enable PHP Positioning', 'blox' ),
-                            'label' => __( 'Allow block to be positioned via PHP function', 'blox' ),
-                            'desc'  => '',
-                            'type'  => 'checkbox',
-                            'default' => true
-                        ),
-                        'defaults_position_header' => array(
-                            'id'   => 'defaults_position_header',
-                            'name' => '<span class="title">' . __( 'Position Defaults', 'blox' ) . '</span>',
-                            'desc' => sprintf( __( 'Please refer to the %1$sBlox Documentation%2$s for hook reference. For priority, it is important to note that other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ), '<a href="https://www.bloxwp.com/documentation/position-hook-reference/?utm_source=blox&utm_medium=plugin&utm_content=settings-links&utm_campaign=Blox_Plugin_Links" title="' . __( 'Blox Documentation', 'blox' ) . '" target="_blank">', '</a>' ),
+                        'global_position_header' => array(
+                            'id'   => 'global_position_header',
+                            'name' => '<span class="title">' . __( 'Global Content Blocks', 'blox' ) . '</span>',
+                            'desc' => '',
                             'type' => 'header'
                         ),
+    					'global_disable_hook_positioning' => array(
+    						'id'   => 'global_disable_hook_positioning',
+    						'name'  => __( 'Hook Positioning', 'blox' ),
+    						'label' => __( 'Disable action hook positioning for global content blocks', 'blox' ),
+    						'desc'  => '',
+    						'type'  => 'checkbox',
+    						'default' => '',
+                            'sanitize' => 'checkbox',
+    					),
+                        'global_disable_shortcode_positioning' => array(
+    						'id'   => 'global_disable_shortcode_positioning',
+    						'name'  => __( 'Shortcode Positioning', 'blox' ),
+    						'label' => __( 'Disable shortcode positioning for global content blocks', 'blox' ),
+    						'desc'  => '',
+    						'type'  => 'checkbox',
+                            'sanitize' => 'checkbox',
+    					),
+                        'global_disable_php_positioning' => array(
+                            'id'   => 'global_disable_php_positioning',
+                            'name'  => __( 'PHP Positioning', 'blox' ),
+                            'label' => __( 'Disable PHP function positioning for global content blocks', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'sanitize' => 'checkbox',
+                        ),
+                        'local_position_header' => array(
+                            'id'   => 'local_position_header',
+                            'name' => '<span class="title">' . __( 'Local Content Blocks', 'blox' ) . '</span>',
+                            'desc' => '',
+                            'type' => 'header'
+                        ),
+                        'local_disable_hook_positioning' => array(
+                            'id'   => 'local_disable_hook_positioning',
+                            'name'  => __( 'Hook Positioning', 'blox' ),
+                            'label' => __( 'Disable action hook positioning for local content blocks', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'sanitize' => 'checkbox',
+                        ),
+                        'local_disable_shortcode_positioning' => array(
+                            'id'   => 'local_disable_shortcode_positioning',
+                            'name'  => __( 'Shortcode Positioning', 'blox' ),
+                            'label' => __( 'Disable shortcode positioning for local content blocks', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'sanitize' => 'checkbox',
+                        ),
+                        'local_disable_php_positioning' => array(
+                            'id'   => 'local_disable_php_positioning',
+                            'name'  => __( 'PHP Positioning', 'blox' ),
+                            'label' => __( 'Disable PHP function positioning for local content blocks', 'blox' ),
+                            'desc'  => '',
+                            'type'  => 'checkbox',
+                            'sanitize' => 'checkbox',
+                        ),
+/* TODO Remove
                         'global_default_position' => array(
                             'id'   => 'global_default_position',
                             'name' => __( 'Global Block Position', 'blox' ),
@@ -731,7 +764,7 @@ class Blox_Settings {
                             'size' => 'small',
                             'default' => '15',
                             'sanitize' => 'absint',
-                        ),
+                        ),*/
                     ),
                     'custom_hooks' => array(
                         'custom_hook_control_header' => array(
