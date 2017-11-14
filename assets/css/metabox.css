@@ -1310,8 +1310,14 @@ body.blox-modal-open {
 	background-color: #fff;
 	color: #23282d;
 }
+.blox-hook-type.current .blox-hooks-disabled,
+.blox-hook-type:hover .blox-hooks-disabled {
+	color: #dc3232;
+}
 .blox-hook-type span {
 	padding-left: 2px;
+	padding-top: 1px;
+	display: inline-block;
 }
 .blox-hook-dashicon {
 	float: left;
@@ -1320,11 +1326,11 @@ body.blox-modal-open {
     text-align: center;
 }
 .blox-genesis-dashicon:before {
-	font-family: genesis-icon!important;
+	font-family: genesis-icon !important;
 	content: "\e600";
 }
 .blox-woocommerce-dashicon:before {
-	font-family: WooCommerce!important;
+	font-family: WooCommerce !important;
     content: '\e03d';
 	width: 18px;
     height: 18px;
@@ -1337,12 +1343,6 @@ body.blox-modal-open {
 	content: "\f324";
 	width: 18px;
     height: 18px;
-    font-size: 18px;
-}
-.blox-hooks-disabled {
-	float: right;
-    margin-right: 5px;
-	color: #a2a2a2;
     font-size: 18px;
 }
 .blox-show-hook-descriptions {
@@ -1360,6 +1360,10 @@ body.blox-modal-open {
 	overflow: scroll;
 	float: right;
     width: 75%;
+}
+.blox-hook-selector-content .blox-alert-box {
+	margin-left: 15px;
+    margin-right: 15px;
 }
 .blox-hook-section-title-label {
 	border-bottom: 1px solid #dfdfdf;
@@ -1390,13 +1394,12 @@ body.blox-modal-open {
 /* Media Queries for content block styling
 -------------------------------------------------------------- */
 
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 1280px) {
 	.blox-hook-selector-menu {
 		position: absolute;
-		max-width: 44px;
+		max-width: 44px
 	}
 	.blox-hook-type-name,
-	.blox-hooks-disabled,
 	.blox-show-hook-descriptions-text {
 		display: none;
 	}

@@ -467,13 +467,24 @@ class Blox_Common {
                 'disable' => blox_get_option( 'genesis_hooks_disable', 0 ),
                 'active'  => function_exists( 'genesis_pre' ) ? 1 : 0, // Do we have a Genesis Theme?
                 'title'   => __( 'Genesis Hooks', 'blox' ),
-                'alert'   => __( 'It appears that the Genesis Framework is not active on this website. Therefore, the hooks below will not work. If you are not planning on using Genesis, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
+                'alert'   =>
+                    sprintf(
+                        __( 'It appears that the Genesis Framework is not active on this website. Therefore, there are no hooks to display. If you are not planning on using Genesis, this hook type option can be disabled in the Blox %1$sposition settings%3$s. For more information on hook positioning, visit the Blox %2$sdocumentation%3$s.', 'blox' ),
+                        '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">',
+                        '<a href="https://www.bloxwp.com/documentation" target="_blank">',
+                        '</a>' )
             ),
             'woocommerce' => array(
                 'disable' => blox_get_option( 'woocommerce_hooks_disable', 0 ),
                 'active'  => class_exists( 'woocommerce' ) ? 1 : 0, // Is WooCommerce active?
                 'title'   => __( 'WooCommerce Hooks', 'blox' ),
-                'alert'   => __( 'It appears that the WooCommerce plugin is not active on this website. Therefore, the hooks below will not work. If you are not planning on using WooCommerce, these hook options can be disabled in the Position settings. For more information on hook positioning, visit the Blox documentation.', 'blox' )
+                'alert'   =>
+                    sprintf(
+                        __( 'It appears that the WooCommerce plugin is not active on this website. Therefore, there are no hooks to display. If you are not planning on using WooCommerce, this hook type option can be disabled in the Blox %1$sposition settings%3$s. For more information on hook positioning, visit the Blox %2$sdocumentation%3$s.', 'blox' ), 
+                        '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">',
+                        '<a href="https://www.bloxwp.com/documentation" target="_blank">',
+                        '</a>'
+                    )
             ),
             'custom' => array(
                 'disable' => blox_get_option( 'custom_hooks_disable', 0 ),

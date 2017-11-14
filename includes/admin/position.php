@@ -192,7 +192,7 @@ class Blox_Position {
                         </div>
             		</td>
             	</tr>
-                
+
                 <tr valign="top">
                     <th scope="row"><label><?php _e( 'Selected Hook', 'blox' ); ?></label></th>
                     <td>
@@ -247,25 +247,22 @@ class Blox_Position {
                     if ( ! empty( $hook_types ) ) {
                         $i = 0;
                         foreach ( $hook_types as $slug => $atts ) {
-
                             if ( ! $atts['disable'] ) {
                                 // Set the first type to current
                                 $current = $i == 0 ? 'current' : '';
                                 ?>
                                 <li class="blox-hook-type <?php echo $current; ?>" data-hook-type="<? echo $slug; ?>">
-                                    <div class="blox-hook-dashicon blox-<?php echo $slug; ?>-dashicon dashicons-before"></div>
-                                    <span class="blox-hook-type-name"><?php echo $atts['title']; ?></span>
                                     <?php
                                         // If hook type is not disabled, but the source is inactive (Genesis, WooComerce, etc), display warning
                                         if ( ! $atts['active'] ) {
-                                            ?>
-                                            <span class="blox-hooks-disabled dashicons dashicons-warning"></span>
-                                            <?php
+                                            echo '<div class="blox-hook-dashicon blox-hooks-disabled dashicons dashicons-warning"></div>';
+                                        } else {
+                                            echo '<div class="blox-hook-dashicon blox-' . $slug .'-dashicon dashicons-before"></div>';
                                         }
                                     ?>
+                                    <span class="blox-hook-type-name"><?php echo $atts['title']; ?></span>
                                 </li>
                                 <?php
-
                                 // Only increment if the hook type is actually enabled
                                 $i++;
                             }
@@ -299,29 +296,31 @@ class Blox_Position {
                                     <div class="blox-alert-box"><?php echo $atts['alert']; ?></div>
                                     <?php
                                 } else {
-                                    // Start displaying hook sections if active
-                                    foreach ( $all_available_hooks[$slug] as $sections => $section ) {
-                                        ?>
-                                        <div class="blox-hook-section">
-                                            <div class="blox-hook-section-title-label"><?php echo $section['name']; ?></div>
-                                            <?php
-                                            if ( empty( $section['hooks'] ) ) {
-                                                ?>
-                                                <div class="blox-alert-box"><?php _e( 'There are no hooks to display. Check the Blox position settings.'); ?></div>
-                                                <?php
-                                            } else {
-                                                foreach ( $section['hooks'] as $hooks => $hook ) {
-                                                    ?>
-                                                    <div class="blox-hook-item" data-hook="<? echo $hooks; ?>">
-                                                        <div class="blox-hook-name"><?php echo $hook['name']; ?></div>
-                                                        <div class="blox-hook-description"><?php echo $hook['title']; ?></div>
-                                                    </div>
-                                                    <?php
-                                                }
-                                            }
+                                    if ( ! empty( $all_available_hooks[$slug] ) ) {
+                                        // Start displaying hook sections if active and there are actually sections
+                                        foreach ( $all_available_hooks[$slug] as $sections => $section ) {
                                             ?>
-                                        </div>
-                                        <?php
+                                            <div class="blox-hook-section">
+                                                <div class="blox-hook-section-title-label"><?php echo $section['name']; ?></div>
+                                                <?php
+                                                if ( empty( $section['hooks'] ) ) {
+                                                    echo '<div class="blox-alert-box">' . sprintf( __( 'There are no hooks to display. They have either all been disabled, or you need to create custom hooks for this section. Visit the Blox %1$sposition settings%2$s to enable or add hooks. You can also disable the section entirely to avoid this alert.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                                                } else {
+                                                    foreach ( $section['hooks'] as $hooks => $hook ) {
+                                                        ?>
+                                                        <div class="blox-hook-item" data-hook="<? echo $hooks; ?>">
+                                                            <div class="blox-hook-name"><?php echo $hook['name']; ?></div>
+                                                            <div class="blox-hook-description"><?php echo $hook['title']; ?></div>
+                                                        </div>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                            </div>
+                                            <?php
+                                        }
+                                    } else {
+                                        echo '<div class="blox-alert-box">' . sprintf( __( 'All hook sections for this hook type seem to have been disabled. Visit the Blox %1$sposition settings%2$s to enable hook sections.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
                                     }
                                 } ?>
                             </div>
@@ -376,7 +375,7 @@ class Blox_Position {
                             <?php
                                 _e( 'Copy and paste the above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox' );
                                 if ( ! $global ) {
-                                    echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
+                                    echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox' ), '<strong>', '</strong>' );
                                 }
                             ?>
                         </div>
@@ -437,7 +436,7 @@ class Blox_Position {
                             <?php
                                 _e( 'Copy and paste the above PHP code into any of your theme files. Visibility and location settings are respected when using PHP positioning.', 'blox' );
                                 if ( ! $global ) {
-                                    echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox-shortcodes' ), '<strong>', '</strong>' );
+                                    echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox' ), '<strong>', '</strong>' );
                                 }
                             ?>
                         </div>
