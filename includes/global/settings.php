@@ -231,7 +231,7 @@ class Blox_Settings {
     		}
             ?>
 
-			<div id="tab_container">
+			<div id="blox_tab_container">
 				<form method="post" action="options.php">
 					<?php
                     do_action( 'blox_settings_form_top', $active_tab );

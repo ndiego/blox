@@ -192,6 +192,7 @@ class Blox_Position {
                         </div>
             		</td>
             	</tr>
+                
                 <tr valign="top">
                     <th scope="row"><label><?php _e( 'Selected Hook', 'blox' ); ?></label></th>
                     <td>
@@ -200,15 +201,15 @@ class Blox_Position {
                             <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
                         </span>
                         <div class="blox-help-text top">
-                            <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
+                            <?php echo sprintf( __( 'Use the hook selector menu below to choose the appropriate hook for this content block. To enable/disable certain hook options, or add your own custom hooks, visit the Blox %1$sposition settings%2$s.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ); ?>
                         </div>
-
                         <?php
                         // Print hook selector
                         $this->print_hook_selector();
                         ?>
                     </td>
                 </tr>
+
                 <tr valign="top">
                     <th scope="row"><label><?php _e( 'Hook Priority', 'blox' ); ?></label></th>
                     <td>
@@ -217,7 +218,7 @@ class Blox_Position {
                             <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
                         </span>
                         <div class="blox-help-text top">
-                            <?php _e( 'Other plugins and themes can use Genesis Hooks to add content to a page. A low number tells Wordpress to try and add your custom content before all other content using the same Genesis Hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
+                            <?php _e( 'Other plugins and themes can use action hooks to add content to your website. A low number tells WordPress to try and add your custom content before all other content using the same action hook. A larger number will add the content later in the queue. (ex: Early=1, Medium=10, Late=100)', 'blox' ); ?>
                         </div>
                     </td>
                 </tr>
@@ -236,7 +237,7 @@ class Blox_Position {
      * @param array $hook_types An array of all available hook types
      */
     public function print_hook_selector() {
-        //echo print_r( $this->get_active_hooks());
+
         $hook_types = $this->get_hook_types();
         ?>
         <div class="blox-hook-selector">
@@ -302,10 +303,12 @@ class Blox_Position {
                                     foreach ( $all_available_hooks[$slug] as $sections => $section ) {
                                         ?>
                                         <div class="blox-hook-section">
-                                            <div class="blox-hook-section-title"><?php echo $section['name']; ?></div>
+                                            <div class="blox-hook-section-title-label"><?php echo $section['name']; ?></div>
                                             <?php
                                             if ( empty( $section['hooks'] ) ) {
-                                                echo 'There are no hooks to display';
+                                                ?>
+                                                <div class="blox-alert-box"><?php _e( 'There are no hooks to display. Check the Blox position settings.'); ?></div>
+                                                <?php
                                             } else {
                                                 foreach ( $section['hooks'] as $hooks => $hook ) {
                                                     ?>
@@ -364,7 +367,7 @@ class Blox_Position {
                                 <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
                             </span>
                             <div class="blox-help-text">
-                                <?php _e( 'When shortcode positioning is disabled, any shortcodes that were placed for this block will cease to work.', 'blox' ); ?>
+                                <?php _e( 'When shortcode positioning is disabled, any shortcodes that were placed for this content block will cease to work.', 'blox' ); ?>
                             </div>
                         </div>
 
