@@ -1142,11 +1142,15 @@ jQuery(document).ready(function($){
 		var hook 	 = $(this).data( 'hook' ),
 		    block_id = $(this).parents( '.blox-content-block' ).attr( 'id' ),
 
-			// If we are on a global block, the retrieved block id will be gibberish and not be a number. But if we are on a global block we don't need to worry about targeting...
-			target = ! isNaN( block_id ) ? ( '#blox_position_hook_position_' + block_id ) : '.blox-selected-hook-position';
+		// If we are on a global block, the retrieved block id will be gibberish and not be a number. But if we are on a global block we don't need to worry about targeting...
+		target = ! isNaN( block_id ) ? ( '#blox_position_hook_position_' + block_id ) : '.blox-selected-hook-position';
 
 		// Update setting with selected hook
 		$( target ).val( hook );
+
+		// Highlight the hook selected and deselect any that were previously selected
+		$(this).parents( '.blox-hook-selector' ).find( '.blox-hook-item' ).removeClass( 'blox-hook-item-selected' );
+		$(this).addClass( 'blox-hook-item-selected' );
 	});
 
 

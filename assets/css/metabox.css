@@ -1314,7 +1314,7 @@ body.blox-modal-open {
 .blox-hook-type:hover .blox-hooks-disabled {
 	color: #dc3232;
 }
-.blox-hook-type span {
+.blox-hook-type-name {
 	padding-left: 2px;
 	padding-top: 1px;
 	display: inline-block;
@@ -1387,7 +1387,9 @@ body.blox-modal-open {
 	background-color: #f1f1f1;
 	cursor: pointer
 }
-
+.blox-hook-item.blox-hook-item-selected {
+	background-color: #eee;
+}
 
 
 
