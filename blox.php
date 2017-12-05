@@ -188,6 +188,7 @@ class Blox_Main {
 		require plugin_dir_path( __FILE__ ) . 'includes/global/content/raw.php';
 		require plugin_dir_path( __FILE__ ) . 'includes/global/content/slideshow.php';
 		require plugin_dir_path( __FILE__ ) . 'includes/global/content/shortcodes.php';
+        require plugin_dir_path( __FILE__ ) . 'includes/global/content/widgets.php';
 
         // Load admin only components.
         if ( is_admin() ) {
