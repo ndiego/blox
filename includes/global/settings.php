@@ -767,17 +767,11 @@ class Blox_Settings {
                         ),*/
                     ),
                     'custom_hooks' => array(
-                        'custom_hook_control_header' => array(
-                            'id'   => 'custom_hook_control_header',
-                            'name' => '<span class="title">' . __( 'Custom Hook Control', 'blox' ) . '</span>',
-                            'desc' => __( 'The following settings allow you add Custom Hooks that may not be natively supported by Blox. Many theme frameworks and plugins have their own hooks, or you might have a few of your own. Enter them here so that Blox can target them.', 'blox' ),
-                            'type' => 'header'
-                        ),
                         'custom_hooks_disable' => array(
                             'id'       => 'custom_hooks_disable',
                             'name'     => __( 'Disable Custom Hooks', 'blox' ),
-                            'label'    => __( 'Disable Custom Hooks for all block positioning', 'blox' ),
-                            'desc'     => __( 'When you disable Custom Hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for Custom Hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a Custom Hook will cease to display.', 'blox' ),
+                            'label'    => __( 'Disable Custom hooks for all block positioning', 'blox' ),
+                            'desc'     => __( 'When you disable Custom hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for Custom hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a Custom hook will cease to display.', 'blox' ),
                             'type'     => 'checkbox',
                             'default'  => 0,
                             'sanitize' => 'checkbox',
@@ -785,24 +779,18 @@ class Blox_Settings {
                         'default_custom_hooks' => array(
                             'id'       => 'default_custom_hooks',
                             'name'     => __( 'Add Custom Hooks', 'blox' ),
-                            'desc'     => '',
+                            'desc'     => __( 'The following settings allow you add Custom Hooks that may not be natively supported by Blox. Many theme frameworks and plugins have their own hooks, or you might have a few of your own. Enter them here so that Blox can target them.', 'blox' ),
                             'type'     => 'hooks',
                             'sub_type' => 'custom',
                             'sanitize' => 'hooks',
                         ),
                     ),
                     'genesis_hooks' => array(
-                        'genesis_hook_control_header' => array(
-    						'id'   => 'genesis_hook_control_header',
-    						'name' => '<span class="title">' . __( 'Genesis Hook Control', 'blox' ) . '</span>',
-    						'desc' => __( 'By default, Blox allows you to choose from over 50 Genesis hooks. Here you can pick and choose the ones you want to use and/or rename the hooks to make them more user friendly.', 'blox' ),
-    						'type' => 'header'
-    					),
                         'genesis_hooks_disable' => array(
                             'id'       => 'genesis_hooks_disable',
                             'name'     => __( 'Disable Genesis Hooks', 'blox' ),
-                            'label'    => __( 'Disable Genesis Hooks for all block positioning', 'blox' ),
-                            'desc'     => __( 'When you disable Genesis Hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for Genesis Hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a Genesis Hook will cease to display.', 'blox' ),
+                            'label'    => __( 'Disable Genesis hooks for all block positioning', 'blox' ),
+                            'desc'     => __( 'When you disable Genesis hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for Genesis hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a Genesis hook will cease to display.', 'blox' ),
                             'type'     => 'checkbox',
                             'default'  => 0,
                             'sanitize' => 'checkbox',
@@ -810,23 +798,17 @@ class Blox_Settings {
     					'genesis_hooks' => array(
     						'id'       => 'genesis_hooks',
     						'name'     => __( 'Genesis Hooks', 'blox' ),
-    						'desc'     => __( 'EDIT Genesis Hooks', 'blox' ),
+    						'desc'     => __( 'By default, Blox allows you to choose from over 50 Genesis hooks. Here you can pick and choose the ones you want to use and/or rename the hooks to make them more user friendly.', 'blox' ),
     						'type'     => 'hooks',
     						'sanitize' => 'hooks',
     					),
                     ),
                     'woocommerce_hooks' => array(
-                        'woocommerce_hook_control_header' => array(
-    						'id'   => 'woocommerce_hook_control_header',
-    						'name' => '<span class="title">' . __( 'WooCommerce Hook Control', 'blox' ) . '</span>',
-    						'desc' => __( 'By default, Blox allows you to choose from over XXX WooCommerce hooks. Here you can pick and choose the ones you want to use and/or rename the hooks to make them more user friendly.', 'blox' ),
-    						'type' => 'header'
-    					),
                         'woocommerce_hooks_disable' => array(
                             'id'       => 'woocommerce_hooks_disable',
                             'name'     => __( 'Disable WooCommerce Hooks', 'blox' ),
-                            'label'    => __( 'Disable WooCommerce Hooks for all block positioning', 'blox' ),
-                            'desc'     => __( 'When you disable WooCommerce Hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for WooCommerce Hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a WooCommerce Hook will cease to display.', 'blox' ),
+                            'label'    => __( 'Disable WooCommerce hooks for all block positioning', 'blox' ),
+                            'desc'     => __( 'When you disable WooCommerce hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for WooCommerce hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a WooCommerce hook will cease to display.', 'blox' ),
                             'type'     => 'checkbox',
                             'default'  => 0,
                             'sanitize' => 'checkbox',
@@ -834,23 +816,17 @@ class Blox_Settings {
     					'woocommerce_hooks' => array(
     						'id'       => 'woocommerce_hooks',
     						'name'     => __( 'WooCommerce Hooks', 'blox' ),
-    						'desc'     => __( 'EDIT WooCommerce Hooks', 'blox' ),
+    						'desc'     => __( 'By default, Blox allows you to choose from over XXX WooCommerce hooks. Here you can pick and choose the ones you want to use and/or rename the hooks to make them more user friendly.', 'blox' ),
     						'type'     => 'hooks',
     						'sanitize' => 'hooks',
     					),
                     ),
                     'wordpress_hooks' => array(
-                        'wordpress_hook_control_header' => array(
-    						'id'   => 'wordpress_hook_control_header',
-    						'name' => '<span class="title">' . __( 'WordPress Hook Control', 'blox' ) . '</span>',
-    						'desc' => __( 'By default, Blox allows you to choose from over XXX WordPress hooks. Here you can pick and choose the ones you want to use and/or rename the hooks to make them more user friendly.', 'blox' ),
-    						'type' => 'header'
-    					),
                         'wordpress_hooks_disable' => array(
                             'id'       => 'wordpress_hooks_disable',
                             'name'     => __( 'Disable WordPress Hooks', 'blox' ),
-                            'label'    => __( 'Disable WordPress Hooks for all block positioning', 'blox' ),
-                            'desc'     => __( 'When you disable WordPress Hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for WordPress Hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a WordPress Hook will cease to display.', 'blox' ),
+                            'label'    => __( 'Disable WordPress hooks for all block positioning', 'blox' ),
+                            'desc'     => __( 'When you disable WordPress hooks, they will no longer appear in the hook selector on the Postion tab of each block. If you have no use for WordPress hooks, disabling them simplifies the hook selector for users. Note that any block that is currently using a WordPress hook will cease to display.', 'blox' ),
                             'type'     => 'checkbox',
                             'default'  => 0,
                             'sanitize' => 'checkbox',
@@ -858,7 +834,7 @@ class Blox_Settings {
     					'wordpress_hooks' => array(
     						'id'       => 'wordpress_hooks',
     						'name'     => __( 'WordPress Hooks', 'blox' ),
-    						'desc'     => __( 'EDIT WordPress Hooks', 'blox' ),
+    						'desc'     => __( 'By default, Blox allows you to choose from a handful of core WordPress hooks. Here you can pick and choose the ones you want to use and/or rename the hooks to make them more user friendly.', 'blox' ),
     						'type'     => 'hooks',
     						'sanitize' => 'hooks',
     					),
@@ -1345,7 +1321,8 @@ class Blox_Settings {
 
 	/**
 	 * Select Genesis Hooks Callback. Renders select fields.
-	 *
+	 * @TODO Remove
+     *
 	 * @since 1.0.0
 	 *
 	 * @param array $args    Arguments passed by the setting
@@ -1475,7 +1452,7 @@ class Blox_Settings {
 
 
 	/**
-	 * Custom Hooks callback
+	 * Hooks callback
 	 *
 	 * @since 2.0.0
 	 *
@@ -1490,21 +1467,17 @@ class Blox_Settings {
         // Check if we have a hook callback subtype, used primarily for custom hooks
         $callback_type = isset( $args['sub_type'] ) ? $args['sub_type'] : 'default';
 
+        // Set the default hooks
+        // The id for custom hooks is not consistent (default_custom_hooks vs. custom_hooks), but is needed for backwards compatibility
+        $hook_type         = $callback_type == 'default' ? strstr( $args['id'], '_', true ) : 'custom';
+        $all_default_hooks = $this->get_default_hooks();
+        $default_hooks     = $all_default_hooks[ $hook_type ];
+
         // Get the saved hook setting or use the defaults
 		if ( isset( $blox_options[ $args['id'] ] ) ) {
 			$hooks = $blox_options[ $args['id'] ];
 		} else {
-            if ( $callback_type == 'custom' ) {
-                $hooks = array( 'custom' => array(
-                    'name'    => __( 'Custom Hooks', 'blox' ),
-                    'disable' => '',
-                    'hooks'   => array(),
-                ) );
-            } else {
-                $hook_type = strstr( $args['id'], '_', true );
-                $all_hooks = $this->get_hooks();
-                $hooks     = $all_hooks[ $hook_type ];
-            }
+            $hooks = $default_hooks;
 		}
 
         // Print the description text if provided
@@ -1518,7 +1491,7 @@ class Blox_Settings {
         }
 
         foreach ( $hooks as $section_slug => $section ) {
-            $this->add_hook_section_title( $args, $section_slug, $section, $callback_type );
+            $this->add_hook_section_title( $args, $section_slug, $section, $callback_type, $default_hooks );
             $this->add_hook_section_table( $args, $section_slug, $section, $callback_type, $hooks );
         }
 	}
@@ -1533,7 +1506,7 @@ class Blox_Settings {
         <?php
     }
 
-    public function add_hook_section_title( $args, $section_slug, $section, $callback_type ) {
+    public function add_hook_section_title( $args, $section_slug, $section, $callback_type, $default_hooks ) {
 
         // Begin by checking is the section is disabled and add the correct class to the container
         $section_disabled = ( isset( $section['disable'] ) && ! empty( $section['disable'] ) ) ? 'section-disabled' : '';
@@ -1541,13 +1514,13 @@ class Blox_Settings {
         <div class="blox-hook-section-title <?php echo $section_disabled;?>">
             <?php
             $section_title_name    = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][name]';
-            $section_title_value   = ( isset( $section['name'] ) && ! empty( $section['name'] ) ) ? esc_attr( $section['name'] ) : __( 'Missing Section Name', 'blox' );
+            $section_title_value   = ( isset( $section['name'] ) && ! empty( $section['name'] ) ) ? esc_attr( $section['name'] ) : $default_hooks[ $section_slug ]['name'];
             $section_disable_name  = 'blox_settings[' . $args['id'] . '][' . $section_slug . '][disable]';
             $section_disable_value = isset( $section['disable'] ) ? checked( 1, esc_attr( $section['disable'] ), false ) : '';
             ?>
             <div class="section-title">
                 <span class="current-section-title" title="<?php echo $section_title_value; ?>"><?php echo $section_title_value; ?></span>
-                <input class="section-title-editor" type="text" name="<?php echo $section_title_name; ?>" placeholder="<?php _e( 'Enter a section name', 'blox' ); ?>" value="<?php echo $section_title_value; ?>" />
+                <input class="section-title-editor" type="text" name="<?php echo $section_title_name; ?>" data-default-name="<?php echo $default_hooks[$section_slug]['name']; ?>" placeholder="<?php _e( 'Enter a section name', 'blox' ); ?>" value="<?php echo $section_title_value; ?>" />
                 <span class="toggle-section-title-editor dashicons dashicons-edit"></span>
             </div>
             <div class="section-disable">
@@ -1727,6 +1700,20 @@ class Blox_Settings {
 
         $instance = Blox_Common::get_instance();
         return $instance->get_hooks();
+    }
+
+
+    /**
+     * Helper method for retrieving all available hooks with default settings.
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all default hooks settings.
+     */
+    public function get_default_hooks() {
+
+        $instance = Blox_Common::get_instance();
+        return $instance->get_default_hooks();
     }
 
 

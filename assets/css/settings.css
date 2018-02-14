@@ -25,6 +25,7 @@ h2.nav-tab-wrapper a {
 }
 #blox_tab_container table.form-table {
 	margin-top: 1em;
+	table-layout: fixed;
 }
 #blox_tab_container td label {
 	display: block;
@@ -463,7 +464,9 @@ ul.blox-columns li {
 	margin-top: 5px;
 }
 
-
+.add-custom-button {
+	margin-top: 25px;
+}
 .custom-hook-entry {
 	width: 300px;
 }
@@ -477,6 +480,9 @@ ul.blox-columns li {
 
 
 @media only screen and (max-width: 960px) {
+	.blox-hook-section-title .toggle-section-title-editor {
+		display: none;
+	}
 	.blox-hook-table div.hook-name,
 	.blox-hook-table div.hook-desc {
 		display: none;
@@ -488,5 +494,11 @@ ul.blox-columns li {
 	.custom-hook-entry {
 		width: 100%;
 		margin-bottom:5px;
+	}
+}
+
+@media only screen and (max-width: 782px) {
+	.form-table td .blox-hook-section-title input[type=text] {
+		display: none;
 	}
 }

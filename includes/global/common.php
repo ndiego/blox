@@ -307,8 +307,17 @@ class Blox_Common {
      */
     public function get_custom_hooks_unfiltered() {
 
-        // Pull custom hooks from settings, default to empty array
-        $hooks = blox_get_option( 'default_custom_hooks', array() );
+        // Default custom hooks section
+        $defualt_custom_hooks = array(
+            'custom' => array(
+                'name'    => __( 'Custom Hooks', 'blox' ),
+                'disable' => '',
+                'hooks'   => array(),
+            )
+        );
+
+        // Pull custom hooks from settings, default to custom section with no hooks
+        $hooks = blox_get_option( 'default_custom_hooks', $defualt_custom_hooks );
 
         return $hooks;
     }
@@ -340,7 +349,7 @@ class Blox_Common {
 
 
     /**
-     * Helper function for retrieving all available hooks
+     * Helper function for retrieving all available hooks.
      *
      * @since 2.0.0
      *
@@ -350,12 +359,36 @@ class Blox_Common {
 
         $hooks = array(
             'woocommerce'   => blox_get_option( 'woocommerce_hooks', $this->get_woocommerce_hooks_unfiltered() ),
-            'genesis'       => blox_get_option( 'genesis_hooks', $this->get_custom_hooks_unfiltered() ),
+            'genesis'       => blox_get_option( 'genesis_hooks', $this->get_genesis_hooks_unfiltered() ),
             'custom'        => blox_get_option( 'default_custom_hooks', $this->get_custom_hooks_unfiltered() ),
             'wordpress'     => blox_get_option( 'wordpress_hooks', $this->get_wordpress_hooks_unfiltered() ),
         );
 
         return apply_filters( 'blox_position_hooks', $hooks );
+    }
+
+
+    /**
+     * Helper function for retrieving all available hooks with default settings.
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all default hooks settings.
+     */
+    public function get_default_hooks() {
+
+        $hooks = array(
+            'woocommerce'   => $this->get_woocommerce_hooks_unfiltered(),
+            'genesis'       => $this->get_genesis_hooks_unfiltered(),
+            'wordpress'     => $this->get_wordpress_hooks_unfiltered(),
+            'custom'        => array(
+                'name'    => __( 'Custom Hooks', 'blox' ),
+                'disable' => '',
+                'hooks'   => array(),
+            )
+        );
+
+        return apply_filters( 'blox_default_position_hooks', $hooks );
     }
 
 
@@ -480,7 +513,7 @@ class Blox_Common {
                 'title'   => __( 'WooCommerce Hooks', 'blox' ),
                 'alert'   =>
                     sprintf(
-                        __( 'It appears that the WooCommerce plugin is not active on this website. Therefore, there are no hooks to display. If you are not planning on using WooCommerce, this hook type option can be disabled in the Blox %1$sposition settings%3$s. For more information on hook positioning, visit the Blox %2$sdocumentation%3$s.', 'blox' ), 
+                        __( 'It appears that the WooCommerce plugin is not active on this website. Therefore, there are no hooks to display. If you are not planning on using WooCommerce, this hook type option can be disabled in the Blox %1$sposition settings%3$s. For more information on hook positioning, visit the Blox %2$sdocumentation%3$s.', 'blox' ),
                         '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">',
                         '<a href="https://www.bloxwp.com/documentation" target="_blank">',
                         '</a>'

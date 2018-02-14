@@ -180,15 +180,17 @@ class Blox_Position {
             	<tr valign="top">
             		<th scope="row"><label><?php _e( 'Hook Positioning', 'blox' ); ?></label></th>
             		<td>
-                        <label>
-                            <input type="checkbox" name="<?php echo $name_prefix; ?>[hook][disable]" id="blox_position_disable_hook_positioning_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['hook']['disable'] ) ? checked( $get_prefix['hook']['disable'] ) : ''; ?> />
-                            <?php _e( 'Disable hook positioning', 'blox' ); ?>
-                        </label>
-                        <span class="blox-help-text-icon">
-                            <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
-                        </span>
-                        <div class="blox-help-text">
-                            <?php _e( 'When hook positioning is disabled, the content block will no longer display via the selected action hook.', 'blox' ); ?>
+                        <div class="blox-checkbox first">
+                            <label>
+                                <input type="checkbox" name="<?php echo $name_prefix; ?>[hook][disable]" id="blox_position_disable_hook_positioning_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['hook']['disable'] ) ? checked( $get_prefix['hook']['disable'] ) : ''; ?> />
+                                <?php _e( 'Disable hook positioning', 'blox' ); ?>
+                            </label>
+                            <span class="blox-help-text-icon">
+                                <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
+                            </span>
+                            <div class="blox-help-text">
+                                <?php _e( 'When hook positioning is disabled, the content block will no longer display via the selected action hook.', 'blox' ); ?>
+                            </div>
                         </div>
             		</td>
             	</tr>
@@ -357,7 +359,7 @@ class Blox_Position {
                 <tr valign="top">
                     <th scope="row"><label><?php _e( 'Shortcode Positioning', 'blox' ); ?></label></th>
                     <td>
-                        <div class="blox-checkbox before">
+                        <div class="blox-checkbox first before">
                             <label>
                                 <input type="checkbox" name="<?php echo $name_prefix; ?>[shortcode][disable]" id="blox_position_disable_shortcode_positioning_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['shortcode']['disable'] ) ? checked( $get_prefix['shortcode']['disable'] ) : ''; ?> />
                                 <?php _e( 'Disable shortcode positioning', 'blox' ); ?>
@@ -418,7 +420,7 @@ class Blox_Position {
                 <tr valign="top">
                     <th scope="row"><label><?php _e( 'PHP Positioning', 'blox' ); ?></label></th>
                     <td>
-                        <div class="blox-checkbox before">
+                        <div class="blox-checkbox first before">
                             <label>
                                 <input type="checkbox" name="<?php echo $name_prefix; ?>[php][disable]" id="blox_position_disable_php_positioning_<?php echo $id; ?>" value="1" <?php ! empty( $get_prefix['php']['disable'] ) ? checked( $get_prefix['php']['disable'] ) : ''; ?> />
                                 <?php _e( 'Disable PHP positioning', 'blox' ); ?>

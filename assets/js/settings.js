@@ -121,17 +121,21 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-	// Edit hook section title	// Updates our content block title field in real time
-	$(document).on( 'keyup', '.blox-hook-section-title .section-title input', function(e) {
+	// Edit hook section title
+	// Updates our content block title field in real time
+	$(document).on( 'focusout', '.blox-hook-section-title .section-title input', function(e) {
 		titleText = e.target.value;
 
 		if ( titleText != '' ) {
 			// If a new title has been added, update the title div
 			$(this).siblings( '.current-section-title' ).text( titleText );
 		} else {
-			last_saved_title = $(this).siblings( '.current-section-title' ).attr( 'title' );
-			// If the title has been removed, add show the last saved title
-			$(this).siblings( '.current-section-title' ).text( last_saved_title );
+			default_title = $(this).attr( 'data-default-name' );
+			// If the title has been removed, add show the default title
+			$(this).siblings( '.current-section-title' ).text( default_title );
+
+			// And add the default title to the input field
+			$(this).val( default_title );
 		}
 	});
 

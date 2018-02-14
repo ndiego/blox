@@ -11,8 +11,11 @@
 
 /* Blox Defaults
 -------------------------------------------------------------- */
+.blox-checkbox.first {
+	margin-top: 3px;
+}
 .blox-checkbox.before {
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 }
 .blox-checkbox.after {
 	margin-top: 15px;
@@ -255,7 +258,9 @@ ul.blox-columns li {
     padding: 10px 12px;
     border-left-color: #dc3232;
 }
-
+.blox-alert-box.no-margin {
+	margin: 0;
+}
 
 
 /* Metabox styles
@@ -552,9 +557,12 @@ ul.blox-columns li {
 	font-size: 13px;
 	margin: 0;
 }
+.blox-tab-content .form-table {
+	table-layout: fixed;
+}
 .blox-tab-content .form-table th {
 	padding: 15px 10px 15px 10px;
-	width: 160px;
+	width: 130px;
 }
 .blox-tab-content .form-table td {
 	padding: 12px 10px;
@@ -1273,6 +1281,7 @@ body.blox-modal-open {
 .blox-position-selected-hook-priority {
 	width: 30%;
 	float: left;
+	width: 225px
 }
 
 /* Position Hook Selector Box */
@@ -1280,20 +1289,20 @@ body.blox-modal-open {
 	border: 1px solid #dfdfdf;
 	overflow: hidden;
 	clear: both;
-	margin-top: 20px;
+	margin: 20px 0 5px;
 }
 .blox-hook-selector * {
 	box-sizing: border-box
 }
 .blox-hook-selector-menu {
 	float: left;
-	width: 25%;
+	width: 210px;
 	height: 400px;
 	background-color: #f9f9f9;
 	border-right: 1px solid #dfdfdf;
 	color: #666;
 	font-weight: 600;
-	position: relative;
+	position: absolute;
 }
 .blox-hook-type-list {
 	margin: 0;
@@ -1355,11 +1364,15 @@ body.blox-modal-open {
 	width: 100%;
 	cursor: pointer;
 }
+.blox-show-hook-descriptions-text {
+	display: inline-block;
+	margin-top: 2px;
+}
+
 .blox-hook-selector-content {
 	height: 400px;
 	overflow: scroll;
-	float: right;
-    width: 75%;
+	margin-left: 210px;
 }
 .blox-hook-selector-content .blox-alert-box {
 	margin-left: 15px;
@@ -1377,7 +1390,7 @@ body.blox-modal-open {
 	font-weight: 400;
 }
 .blox-hook-item .blox-hook-description {
-	color: #666;
+	color: #888;
 	display: none;
 	font-size: 13px;
 	font-style: italic;
@@ -1397,6 +1410,9 @@ body.blox-modal-open {
 -------------------------------------------------------------- */
 
 @media only screen and (max-width: 1280px) {
+	.blox-selected-hook-position {
+	    width: 80% !important;
+	}
 	.blox-hook-selector-menu {
 		position: absolute;
 		max-width: 44px
@@ -1408,6 +1424,7 @@ body.blox-modal-open {
 	.blox-hook-selector-content {
 		width: 100%;
 		padding-left: 44px;
+		margin-left: 0;
 	}
 }
 

@@ -168,7 +168,7 @@ class Blox_Content_Widgets {
 							<?php echo sprintf( __( 'To add more widgets, navigate to the admin %1$sWidgets%5$s page and place additional widgets in the %2$sBlox Widgets%3$s widget area. The order that selected widget are shown on the frontend is managed on the Widgets page. For more information, review the widgets %4$sdocumentation%5$s.', 'blox' ), '<a href="' . admin_url( 'widgets.php' ) . '">', '<strong>','</strong>', '<a href="https://www.bloxwp.com/documentation/widgets" target="_blank">', '</a>' );?>
 						</div>
 						<?php } else {
-							echo '<div class="blox-alert">' . sprintf( __( 'It doesn\'t look like you have added any widgets yet. Head on over to the %1$sWidgets%5$s page and add a few widgets to the %2$sBlox Widgets%3$s widget area. They will then show up here and you can choose the ones you want to use. For more information, check out the %4$sWidgets Documentation%5$s', 'blox' ), '<a href="' . admin_url( 'widgets.php' ) . '">', '<strong>','</strong>', '<a href="https://www.bloxwp.com/documentation/widgets" target="_blank">', '</a>' ) . '</div>';
+							echo '<div class="blox-alert-box no-margin">' . sprintf( __( 'It doesn\'t look like you have added any widgets yet. Head on over to the %1$sWidgets%5$s page and add a few widgets to the %2$sBlox Widgets%3$s widget area. They will then show up here and you can choose the ones you want to use. For more information, check out the %4$sWidgets Documentation%5$s.', 'blox' ), '<a href="' . admin_url( 'widgets.php' ) . '">', '<strong>','</strong>', '<a href="https://www.bloxwp.com/documentation/widgets" target="_blank">', '</a>' ) . '</div>';
 						} ?>
 					</td>
 				</tr>
