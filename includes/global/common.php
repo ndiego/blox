@@ -129,8 +129,9 @@ class Blox_Common {
         // All current standardized WordPress Hooks broken into their respective categories
         $hooks = array(
             'core' => array(
-                'name'  => __( 'Wordpress Core Hooks', 'blox' ),
-                'hooks' => array(
+                'name'    => __( 'Wordpress Core Hooks', 'blox' ),
+                'disable' => '',
+                'hooks'   => array(
                     'wp_head' 	=> array( 'disable' => '', 'name' => 'wp_head', 'title' => __( 'This hook executes within the <head></head> section of the document source.', 'blox' ) ),
                     'wp_footer' => array( 'disable' => '', 'name' => 'wp_footer', 'title' => __( 'This hook executes near the </body> tag of the document source.', 'blox' ) )
                 )
@@ -153,15 +154,17 @@ class Blox_Common {
     	// All current Genesis Hooks broken into their respective categories - http://my.studiopress.com/docs/hook-reference/
     	$hooks = array(
             'doc_head' => array(
-				'name'  => __( 'Document Head Action Hooks', 'blox' ),
-				'hooks' => array(
+				'name'    => __( 'Document Head Action Hooks', 'blox' ),
+                'disable' => '',
+				'hooks'   => array(
 					'genesis_title' => array( 'disable' => '', 'name'  => 'genesis_title', 'title' => __( 'This hook executes between tags and outputs the doctitle. You can find all doctitle related code in /lib/structure/header.php.', 'blox' ) ),
-					'genesis_meta' 	=> array( 'disable' => '', 'name'  => 'genesis_meta', 'title' => __( 'This hook executes in the <head></head> section of the document source. By default, things like META descriptions and keywords are output using this hook, along with the default stylesheet and the reference to the favicon. This hook is very similar to wp_head', 'blox' ) )
-				)
+					'genesis_meta' 	=> array( 'disable' => '', 'name'  => 'genesis_meta', 'title' => __( 'This hook executes in the <head></head> section of the document source. By default, things like META descriptions and keywords are output using this hook, along with the default stylesheet and the reference to the favicon. This hook is very similar to wp_head', 'blox' ) ),
+                )
 			),
 			'structural' => array(
-				'name'  => __( 'Structural Action Hooks', 'blox' ),
-				'hooks' => array(
+				'name'    => __( 'Structural Action Hooks', 'blox' ),
+                'disable' => '',
+				'hooks'   => array(
 					'genesis_before' 						 => array( 'disable' => '', 'name'  => 'genesis_before', 'title' => __( 'This hook executes immediately after the opening tag in the document source.', 'blox' ) ),
 					'genesis_before_header' 				 => array( 'disable' => '', 'name'  => 'genesis_before_header', 'title' => __( 'This hook executes immediately before the header (outside the #header div).', 'blox' ) ),
 					'genesis_header' 						 => array( 'disable' => '', 'name'  => 'genesis_header', 'title' => __( 'By default, this hook outputs the header code, including the title, description, and widget area (if necessary).', 'blox' ) ),
@@ -190,8 +193,9 @@ class Blox_Common {
                 )
 			),
 			'loop' => array(
-				'name'  => __( 'Loop Action Hooks', 'blox' ),
-				'hooks' => array(
+				'name'    => __( 'Loop Action Hooks', 'blox' ),
+                'disable' => '',
+				'hooks'   => array(
 					'genesis_before_loop' 			=> array( 'disable' => '', 'name'  => 'genesis_before_loop', 'title' => __( 'This hook executes immediately before all loop blocks. Therefore, this hook falls outside the loop, and cannot execute functions that require loop template tags or variables.', 'blox' ) ),
 					'genesis_loop' 					=> array( 'disable' => '', 'name'  => 'genesis_loop', 'title' => __( 'This hook outputs the actual loop. See lib/structure/loop.php and lib/structure/post.php for more details.', 'blox' ) ),
 					'genesis_after_loop' 			=> array( 'disable' => '', 'name'  => 'genesis_after_loop', 'title' => __( 'This hook executes immediately after all loop blocks. Therefore, this hook falls outside the loop, and cannot execute functions that require loop template tags or variables.', 'blox' ) ),
@@ -208,8 +212,9 @@ class Blox_Common {
 				)
 			),
 			'comment' => array(
-				'name'  => __( 'Comment Action Hooks', 'blox' ),
-				'hooks' => array(
+				'name'    => __( 'Comment Action Hooks', 'blox' ),
+                'disable' => '',
+				'hooks'   => array(
 					'genesis_before_comments' 		=> array( 'disable' => '', 'name'  => 'genesis_before_comments', 'title' => __( 'This hook executes immediately before the comments block (outside the #comments div).', 'blox' ) ),
 					'genesis_comments' 				=> array( 'disable' => '', 'name'  => 'genesis_comments', 'title' => __( 'This hook outputs the entire comments block, including the section title. It also executes the genesis_list_comments hook, which outputs the comment list.', 'blox' ) ),
 					'genesis_list_comments' 		=> array( 'disable' => '', 'name'  => 'genesis_list_comments', 'title' => __( 'This hook executes inside the comments block, inside the .comment-list OL. By default, it outputs a list of comments associated with a post via the genesis_default_list_comments() function.', 'blox' ) ),
@@ -241,10 +246,12 @@ class Blox_Common {
     public function get_woocommerce_hooks_unfiltered() {
 
         // All current WooCommerce Hooks broken into their respective categories
+        // https://businessbloomer.com/woocommerce-visual-hook-guide-single-product-page/#more-19252
         $hooks = array(
             'single-product' => array(
-                'name'  => __( 'Single Product Page', 'blox' ),
-                'hooks' => array(
+                'name'    => __( 'Single Product Page', 'blox' ),
+                'disable' => '',
+                'hooks'   => array(
                     'woocommerce_before_single_product' 	    => array( 'disable' => '', 'name' => 'woocommerce_before_single_product', 'title' => __( 'This hook executes before all of the single product information.', 'blox' ) ),
                     'woocommerce_before_single_product_summary' => array( 'disable' => '', 'name' => 'woocommerce_before_single_product_summary', 'title' => __( 'This hook executes before the summary portion of the single product page.', 'blox' ) ),
                     'woocommerce_single_product_summary' 	    => array( 'disable' => '', 'name' => 'woocommerce_single_product_summary', 'title' => __( 'NEED', 'blox' ) ),
@@ -260,14 +267,57 @@ class Blox_Common {
                     'woocommerce_product_meta_start' 	        => array( 'disable' => '', 'name' => 'woocommerce_product_meta_start', 'title' => __( 'NEED', 'blox' ) ),
                     'woocommerce_product_meta_end' 	            => array( 'disable' => '', 'name' => 'woocommerce_product_meta_end', 'title' => __( 'NEED', 'blox' ) ),
                     'woocommerce_share' 	                    => array( 'disable' => '', 'name' => 'woocommerce_share', 'title' => __( 'NEED', 'blox' ) ),
-                    'woocommerce_product_thumbnails' 	        => array( 'disable' => '', 'name' => 'woocommerce_product_thumbnails', 'title' => __( 'NEED', 'blox' ) ),
+                    // 'woocommerce_product_thumbnails' 	        => array( 'disable' => '', 'name' => 'woocommerce_product_thumbnails', 'title' => __( 'NEED', 'blox' ) ),
                     'woocommerce_after_single_product_summary'  => array( 'disable' => '', 'name' => 'woocommerce_after_single_product_summary', 'title' => __( 'This hook executes after the summary portion of the single product page.', 'blox' ) ),
                     'woocommerce_after_single_product' 	        => array( 'disable' => '', 'name' => 'woocommerce_after_single_product', 'title' => __( 'This hook executes after all of the single product information.', 'blox' ) ),
                 )
             ),
+            // https://businessbloomer.com/woocommerce-visual-hook-guide-archiveshopcat-page/#more-19370
+            'archive' => array(
+                'name'    => __( 'Archive Page', 'blox' ),
+                'disable' => '',
+                'hooks'   => array(
+                    'woocommerce_before_main_content' 	                 => array( 'disable' => '', 'name' => 'woocommerce_before_main_content', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_archive_description'              => array( 'disable' => '', 'name' => 'woocommerce_archive_description', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_shop_loop' 	         => array( 'disable' => '', 'name' => 'woocommerce_before_shop_loop', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_shop_loop_item' 	             => array( 'disable' => '', 'name' => 'woocommerce_before_shop_loop_item', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_shop_loop_item_title'                    => array( 'disable' => '', 'name' => 'woocommerce_before_shop_loop_item_title', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_shop_loop_item_title' 	         => array( 'disable' => '', 'name' => 'woocommerce_shop_loop_item_title', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_shop_loop_item_title' 	             => array( 'disable' => '', 'name' => 'woocommerce_after_shop_loop_item_title', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_shop_loop_item' 	             => array( 'disable' => '', 'name' => 'woocommerce_after_shop_loop_item', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_shop_loop'             => array( 'disable' => '', 'name' => 'woocommerce_after_shop_loop', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_main_content' 	 => array( 'disable' => '', 'name' => 'woocommerce_after_main_content', 'title' => __( 'NEED', 'blox' ) ),
+                )
+            ),
+            // https://businessbloomer.com/woocommerce-visual-hook-guide-cart-page/#more-19167
+            'cart' => array(
+                'name'    => __( 'Cart Page', 'blox' ),
+                'disable' => '',
+                'hooks'   => array(
+                    'woocommerce_before_cart' 	                 => array( 'disable' => '', 'name' => 'woocommerce_before_cart', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_cart_table'              => array( 'disable' => '', 'name' => 'woocommerce_before_cart_table', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_cart_contents' 	         => array( 'disable' => '', 'name' => 'woocommerce_before_cart_contents', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_cart_contents' 	             => array( 'disable' => '', 'name' => 'woocommerce_cart_contents', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_cart_coupon'                    => array( 'disable' => '', 'name' => 'woocommerce_cart_coupon', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_cart_contents' 	         => array( 'disable' => '', 'name' => 'woocommerce_after_cart_contents', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_cart_table' 	             => array( 'disable' => '', 'name' => 'woocommerce_after_cart_table', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_cart_collaterals' 	             => array( 'disable' => '', 'name' => 'woocommerce_cart_collaterals', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_cart_totals'             => array( 'disable' => '', 'name' => 'woocommerce_before_cart_totals', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_cart_totals_before_shipping' 	 => array( 'disable' => '', 'name' => 'woocommerce_cart_totals_before_shipping', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_before_shipping_calculator'     => array( 'disable' => '', 'name' => 'woocommerce_before_shipping_calculator', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_shipping_calculator' 	 => array( 'disable' => '', 'name' => 'woocommerce_after_shipping_calculator', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_cart_totals_after_shipping' 	 => array( 'disable' => '', 'name' => 'woocommerce_cart_totals_after_shipping', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_cart_totals_before_order_total' => array( 'disable' => '', 'name' => 'woocommerce_cart_totals_before_order_total', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_cart_totals_after_order_total'  => array( 'disable' => '', 'name' => 'woocommerce_cart_totals_after_order_total', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_proceed_to_checkout' 	         => array( 'disable' => '', 'name' => 'woocommerce_proceed_to_checkout', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_cart_totals' 	         => array( 'disable' => '', 'name' => 'woocommerce_after_cart_totals', 'title' => __( 'NEED', 'blox' ) ),
+                    'woocommerce_after_cart' 	                 => array( 'disable' => '', 'name' => 'woocommerce_after_cart', 'title' => __( 'NEED', 'blox' ) ),
+                )
+            ),
             'checkout' => array(
-                'name'  => __( 'Checkout Page', 'blox' ),
-                'hooks' => array(
+                'name'    => __( 'Checkout Page', 'blox' ),
+                'disable' => '',
+                'hooks'   => array(
                     'woocommerce_before_checkout_form' 	            => array( 'disable' => '', 'name' => 'woocommerce_before_checkout_form', 'title' => __( 'NEED', 'blox' ) ),
                     'woocommerce_checkout_before_customer_details'  => array( 'disable' => '', 'name' => 'woocommerce_checkout_before_customer_details', 'title' => __( 'NEED', 'blox' ) ),
                     'woocommerce_before_checkout_billing_form' 	    => array( 'disable' => '', 'name' => 'woocommerce_before_checkout_billing_form', 'title' => __( 'NEED', 'blox' ) ),
@@ -290,6 +340,38 @@ class Blox_Common {
                     'woocommerce_review_order_after_payment' 	    => array( 'disable' => '', 'name' => 'woocommerce_review_order_after_payment', 'title' => __( 'NEED', 'blox' ) ),
                     'woocommerce_checkout_after_order_review' 	    => array( 'disable' => '', 'name' => 'woocommerce_checkout_after_order_review', 'title' => __( 'NEED', 'blox' ) ),
                     'woocommerce_after_checkout_form' 	            => array( 'disable' => '', 'name' => 'woocommerce_after_checkout_form', 'title' => __( 'NEED', 'blox' ) ),
+                )
+            ),
+            'storefront' => array(
+                'name'    => __( 'WooCommerce Storefront Theme Hooks', 'blox' ),
+                'disable' => '',
+                'hooks'   => array(
+                    'storefront_before_header' 	                            => array( 'disable' => '', 'name' => 'storefront_before_header', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_header'                                     => array( 'disable' => '', 'name' => 'storefront_header', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_before_content' 	                        => array( 'disable' => '', 'name' => 'storefront_before_content', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_content_top'                        	    => array( 'disable' => '', 'name' => 'storefront_content_top', 'title' => __( 'NEED', 'blox' ) ),
+                    'homepage'                                              => array( 'disable' => '', 'name' => 'homepage', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_page' 	                                    => array( 'disable' => '', 'name' => 'storefront_page', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_before_product_categories' 	    => array( 'disable' => '', 'name' => 'storefront_homepage_before_product_categories', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_after_product_categories' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_after_product_categories', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_before_recent_products'            => array( 'disable' => '', 'name' => 'storefront_homepage_before_recent_products', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_after_recent_products_title' 	    => array( 'disable' => '', 'name' => 'storefront_homepage_after_recent_products_title', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_after_recent_products'             => array( 'disable' => '', 'name' => 'storefront_homepage_after_recent_products', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_before_featured_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_before_featured_products', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_after_featured_products_title'     => array( 'disable' => '', 'name' => 'storefront_homepage_after_featured_products_title', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_after_featured_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_after_featured_products', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_before_popular_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_before_popular_products', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_after_popular_products_title'    	=> array( 'disable' => '', 'name' => 'storefront_homepage_after_popular_products_title', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_after_popular_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_after_popular_products', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_before_on_sale_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_before_on_sale_products', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_after_on_sale_products_title' 	    => array( 'disable' => '', 'name' => 'storefront_homepage_after_on_sale_products_title', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_after_on_sale_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_after_on_sale_products', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_before_best_selling_products' 	    => array( 'disable' => '', 'name' => 'storefront_homepage_before_best_selling_products', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_after_best_selling_products_title' => array( 'disable' => '', 'name' => 'storefront_homepage_after_best_selling_products_title', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_homepage_after_best_selling_products' 	    => array( 'disable' => '', 'name' => 'storefront_homepage_after_best_selling_products', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_before_footer' 	                            => array( 'disable' => '', 'name' => 'storefront_before_footer', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_footer' 	                                => array( 'disable' => '', 'name' => 'storefront_footer', 'title' => __( 'NEED', 'blox' ) ),
+                    'storefront_after_footer' 	                            => array( 'disable' => '', 'name' => 'storefront_after_footer', 'title' => __( 'NEED', 'blox' ) ),
                 )
             ),
         );
@@ -358,8 +440,8 @@ class Blox_Common {
     public function get_hooks() {
 
         $hooks = array(
-            'woocommerce'   => blox_get_option( 'woocommerce_hooks', $this->get_woocommerce_hooks_unfiltered() ),
             'genesis'       => blox_get_option( 'genesis_hooks', $this->get_genesis_hooks_unfiltered() ),
+            'woocommerce'   => blox_get_option( 'woocommerce_hooks', $this->get_woocommerce_hooks_unfiltered() ),
             'custom'        => blox_get_option( 'default_custom_hooks', $this->get_custom_hooks_unfiltered() ),
             'wordpress'     => blox_get_option( 'wordpress_hooks', $this->get_wordpress_hooks_unfiltered() ),
         );
@@ -378,19 +460,22 @@ class Blox_Common {
     public function get_default_hooks() {
 
         $hooks = array(
-            'woocommerce'   => $this->get_woocommerce_hooks_unfiltered(),
             'genesis'       => $this->get_genesis_hooks_unfiltered(),
-            'wordpress'     => $this->get_wordpress_hooks_unfiltered(),
+            'woocommerce'   => $this->get_woocommerce_hooks_unfiltered(),
+
+            // Need to manually add in the defauly custom framework
             'custom'        => array(
-                'name'    => __( 'Custom Hooks', 'blox' ),
-                'disable' => '',
-                'hooks'   => array(),
-            )
+                                'custom' => array(
+                                    'name'    => __( 'Custom Hooks', 'blox' ),
+                                    'disable' => '',
+                                    'hooks'   => array(),
+                                )
+                            ),
+            'wordpress'     => $this->get_wordpress_hooks_unfiltered(),
         );
 
         return apply_filters( 'blox_default_position_hooks', $hooks );
     }
-
 
     /**
      * Helper function for retrieving all active hooks
@@ -401,21 +486,29 @@ class Blox_Common {
      */
     public function get_active_hooks() {
 
-        $hooks      = $this->get_hooks();
-        $hook_types = $this->get_hook_types();
+        $hook_types    = $this->get_hook_types();
+        $default_hooks = $this->get_default_hooks();
+        $saved_hooks   = $this->get_hooks();
 
+        // Merge our default hooks with the saved hooks
+        $hooks = $this->array_merge_recursive_distinct( $default_hooks, $saved_hooks );
+
+        // Loop through the hooks and unset any disabled on inactive hooks
         foreach ( $hooks as $type_slug => $type_sections ) {
             if ( $hook_types[$type_slug]['disable'] || ! $hook_types[$type_slug]['active'] ) {
+
                 // If the hook type is disabled or not active, unset it
                 unset( $hooks[$type_slug] );
             } else {
                 foreach ( $type_sections as $section_slug => $section_args ) {
                     if ( isset( $section_args['disable'] ) && $section_args['disable'] ) {
+
                         // If the section is disabled, unset it
                         unset( $hooks[$type_slug][$section_slug] );
                     } else {
                         foreach ( $section_args['hooks'] as $hook_slug => $hook_args ) {
                             if ( isset( $hook_args['disable'] ) && $hook_args['disable'] ) {
+
                                 // If the individual hook is disabled, unset it
                                 unset( $hooks[$type_slug][$section_slug]['hooks'][$hook_slug] );
                             }
@@ -505,7 +598,8 @@ class Blox_Common {
                         __( 'It appears that the Genesis Framework is not active on this website. Therefore, there are no hooks to display. If you are not planning on using Genesis, this hook type option can be disabled in the Blox %1$sposition settings%3$s. For more information on hook positioning, visit the Blox %2$sdocumentation%3$s.', 'blox' ),
                         '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">',
                         '<a href="https://www.bloxwp.com/documentation" target="_blank">',
-                        '</a>' )
+                        '</a>'
+                    )
             ),
             'woocommerce' => array(
                 'disable' => blox_get_option( 'woocommerce_hooks_disable', 0 ),
@@ -599,7 +693,6 @@ class Blox_Common {
 		} else {
 			$final_hooks = $this->get_genesis_hooks_unfiltered();
 		}
-
 
 		// Run our custom hooks through the same process, but only after the Genesis hooks
 		if ( ! empty( $default_custom_hooks ) && isset( $default_custom_hooks['enable'] ) && $default_custom_hooks['enable'] == 1 ) {
@@ -723,6 +816,30 @@ class Blox_Common {
         $clean = preg_replace( '/((?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:\/\/.*))/', '', $string );
         $clean = str_replace( array( "\r\n", "\r", "\t", "\n", '  ', '    ', '     ' ), '', $clean );
         return apply_filters( 'blox_minified_string', $clean, $string );
+    }
+
+
+    /**
+     * Helper function for merging multi dimensional arrays recursively
+     *
+     * @param array   $array1
+     * @param array   $array2
+     * @return array  Merged array
+     * @author        Daniel <daniel (at) danielsmedegaardbuus (dot) dk>
+     * @author        Gabriel Sobrinho <gabriel (dot) sobrinho (at) gmail (dot) com>
+     */
+    public function array_merge_recursive_distinct( array &$array1, array &$array2 ) {
+
+       $merged = $array1;
+
+       foreach ( $array2 as $key => &$value ) {
+           if ( is_array( $value ) && isset( $merged[$key] ) && is_array( $merged[$key] ) ) {
+               $merged[$key] = $this->array_merge_recursive_distinct($merged[$key], $value);
+           } else {
+               $merged[$key] = $value;
+           }
+       }
+       return $merged;
     }
 
 
