@@ -330,8 +330,8 @@ function blox_frontend_content( $args, $parameters ) {
 	$block_scope = $global ? 'global' : 'local';
 
 	// Get block settings
-	$content_data = $block['content'];
-	$style_data   = $block['style'];
+	$content_data = apply_filters( 'blox_frontend_content', $block['content'], $id, $block, $global );
+	$style_data   = apply_filters( 'blox_frontend_style', $block['style'], $id, $block, $global );
 
 	// Get access to some of our helper functions
 	$instance = Blox_Common::get_instance();

@@ -5,7 +5,7 @@
  * Description: Easily customize themes built on the Genesis Framework
  * Author:      Nick Diego
  * Author URI:  http://www.outermostdesign.com
- * Version:     1.4.5
+ * Version:     1.4.6
  * Text Domain: blox
  * Domain Path: languages
  *
