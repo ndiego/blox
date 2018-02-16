@@ -53,7 +53,11 @@ class Blox_Main {
      *
      * @var string
      */
+<<<<<<< HEAD
     public $version = '2.0.0';
+=======
+    public $version = '1.4.5';
+>>>>>>> master
 
     /**
      * The name of the plugin.

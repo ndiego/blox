@@ -17,6 +17,12 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 
 ### Changelog
 
+##### Version 1.4.6 – 2018-02-16
+* Added blox_frontend_content and blox_frontend_style filters so users can filter the frontend output of Blox
+
+##### Version 1.4.5 – 2017-09-06
+* Fixed Woocommerce conflict caused by quick edit save function
+
 ##### Version 1.4.4 – 2017-08-06
 * Fixed Jetpack conflict caused by jetpack_store_migration_data
 
