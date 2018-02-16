@@ -589,6 +589,18 @@ class Blox_Common {
     public function get_hook_types() {
 
         $hook_types = array(
+            'custom' => array(
+                'disable' => blox_get_option( 'custom_hooks_disable', 0 ),
+                'active'  => 1, // Always active (obviously)
+                'title'   => __( 'Custom Hooks', 'blox' ),
+                'alert'   => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
+            ),
+            'wordpress' => array(
+                'disable' => blox_get_option( 'wordpress_hooks_disable', 0 ),
+                'active'  => 1, // Always active (obviously)
+                'title'   => __( 'WordPress Hooks', 'blox' ),
+                'alert'   => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
+            ),
             'genesis' => array(
                 'disable' => blox_get_option( 'genesis_hooks_disable', 0 ),
                 'active'  => function_exists( 'genesis_pre' ) ? 1 : 0, // Do we have a Genesis Theme?
@@ -603,7 +615,7 @@ class Blox_Common {
             ),
             'woocommerce' => array(
                 'disable' => blox_get_option( 'woocommerce_hooks_disable', 0 ),
-                'active'  => class_exists( 'woocommerce' ) ? 1 : 0, // Is WooCommerce active?
+                'active'  => in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ? 1 : 0, // Is WooCommerce active?
                 'title'   => __( 'WooCommerce Hooks', 'blox' ),
                 'alert'   =>
                     sprintf(
@@ -612,18 +624,6 @@ class Blox_Common {
                         '<a href="https://www.bloxwp.com/documentation" target="_blank">',
                         '</a>'
                     )
-            ),
-            'custom' => array(
-                'disable' => blox_get_option( 'custom_hooks_disable', 0 ),
-                'active'  => 1, // Always active (obviously)
-                'title'   => __( 'Custom Hooks', 'blox' ),
-                'alert'   => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
-            ),
-            'wordpress' => array(
-                'disable' => blox_get_option( 'wordpress_hooks_disable', 0 ),
-                'active'  => 1, // Always active (obviously)
-                'title'   => __( 'WordPress Hooks', 'blox' ),
-                'alert'   => __( 'It appears that Blox has experienced an error, please reach out to support.', 'blox' )
             ),
         );
 
@@ -654,7 +654,8 @@ class Blox_Common {
 
 
     /**
-     * Helper method for retrieving all Genesis hooks. REMOVE????
+     * Helper method for retrieving all Genesis hooks.
+     * @TODO REMOVE????
      *
      * @since 1.1.0
      *

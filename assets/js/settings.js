@@ -122,7 +122,7 @@ jQuery(document).ready(function($) {
 	});
 
 	// Edit hook section title
-	// Updates our content block title field in real time
+	// Updates our content block title field when user clicks out of the input field
 	$(document).on( 'focusout', '.blox-hook-section-title .section-title input', function(e) {
 		titleText = e.target.value;
 

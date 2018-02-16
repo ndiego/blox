@@ -383,29 +383,37 @@ class Blox_Settings {
             return $sections;
         }
 
+
+
         $sections = array(
-            'general'    => apply_filters( 'blox_settings_sections_general', array(
-                'main'   => __( 'General Settings', 'blox' ),
+            'general' => apply_filters( 'blox_settings_sections_general', array(
+                'main' => __( 'General Settings', 'blox' ),
             ) ),
-            'content'    => apply_filters( 'blox_settings_sections_content', array(
-                'main'   => __( 'Content Settings', 'blox' ),
-                'raw' => __( 'Raw Content', 'blox'),
+            'content' => apply_filters( 'blox_settings_sections_content', array(
+                'main'      => __( 'Content Settings', 'blox' ),
+                'raw'       => __( 'Raw Content', 'blox'),
                 'slideshow' => __( 'Slideshow', 'blox'),
             ) ),
-            'position'   => apply_filters( 'blox_settings_sections_position', array(
+            'position' => apply_filters( 'blox_settings_sections_position', array(
                 'main'              => __( 'Position Settings', 'blox' ),
-                'custom_hooks'      => __( 'Custom Hooks', 'blox' ),
-                'genesis_hooks'     => __( 'Genesis Hooks', 'blox' ),
-                'woocommerce_hooks' => __( 'WooCommerce Hooks', 'blox' ),
-                'wordpress_hooks'   => __( 'WordPress Hooks', 'blox' ),
             ) ),
-            'style'      => apply_filters( 'blox_settings_sections_style', array(
-                'main'   => __( 'Style Settings', 'blox' ),
+            'style' => apply_filters( 'blox_settings_sections_style', array(
+                'main' => __( 'Style Settings', 'blox' ),
             ) ),
-            'misc'       => apply_filters( 'blox_settings_sections_misc', array(
-                'main'   => __( 'Misc Settings', 'blox' ),
+            'misc' => apply_filters( 'blox_settings_sections_misc', array(
+                'main' => __( 'Misc Settings', 'blox' ),
             ) ),
         );
+
+        // Add our hook types to the position tab
+        $hook_types = $this->get_hook_types();
+
+        foreach ( $hook_types as $hook_slug => $hook_args ) {
+            if ( $hook_args['active'] ){
+                $section_hook_slug = $hook_slug . '_hooks';
+                $sections['position'][$section_hook_slug] = $hook_args['title'];
+            }
+        }
 
         $sections = apply_filters( 'blox_registered_settings_sections', $sections );
 
@@ -1765,6 +1773,21 @@ class Blox_Settings {
 
         $instance = Blox_Common::get_instance();
         return $instance->get_content_types();
+
+    }
+
+
+    /**
+     * Helper method for retrieving all hook types.
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all active hook types.
+     */
+    public function get_hook_types() {
+
+        $instance = Blox_Common::get_instance();
+        return $instance->get_hook_types();
 
     }
 
