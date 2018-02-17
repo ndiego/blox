@@ -5,7 +5,11 @@
  * Description: Reusable content blocks for Genesis, Woocommerce and more...
  * Author:      Nick Diego
  * Author URI:  http://www.outermostdesign.com
+<<<<<<< HEAD
  * Version:     2.0.0
+=======
+ * Version:     1.4.7
+>>>>>>> master
  * Text Domain: blox
  * Domain Path: languages
  *
@@ -54,9 +58,13 @@ class Blox_Main {
      * @var string
      */
 <<<<<<< HEAD
+<<<<<<< HEAD
     public $version = '2.0.0';
 =======
     public $version = '1.4.5';
+>>>>>>> master
+=======
+    public $version = '1.4.7';
 >>>>>>> master
 
     /**

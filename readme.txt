@@ -8,6 +8,9 @@ Resources:
 
 Changelog:
 
+Version 1.4.7 – 2018-02-17
+* Fixed version bump error causing the plugin update message to keep displaying even after updating to the latest version
+
 Version 1.4.6 – 2018-02-16
 * Added blox_frontend_content and blox_frontend_style filters so users can filter the frontend output of Blox
 
