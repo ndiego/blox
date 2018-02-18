@@ -173,6 +173,7 @@ class Blox_Position {
      * @param string $scope       Either Global or Local
      */
     public function print_position_hook_settings( $id, $name_prefix, $get_prefix, $global, $scope ) {
+
         ?>
         <table class="form-table blox-table-border-bottom">
             <tbody>
@@ -198,7 +199,7 @@ class Blox_Position {
                 <tr valign="top">
                     <th scope="row"><label><?php _e( 'Selected Hook', 'blox' ); ?></label></th>
                     <td>
-                        <input type="text" readonly class="blox-selected-hook-position blox-half-text" name="<?php echo $name_prefix; ?>[hook][position]" id="blox_position_hook_position_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['position'] ) ? esc_attr( $get_prefix['hook']['position'] )  : 'genesis_after_header'; ?>" />
+                        <input type="text" readonly class="blox-selected-hook-position blox-half-text" name="<?php echo $name_prefix; ?>[hook][position]" id="blox_position_hook_position_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['position'] ) ? esc_attr( $get_prefix['hook']['position'] )  : ''; ?>" placeholder="<?php _e( 'Choose a hook from the table below...', 'blox' ); ?>"/>
                         <span class="blox-help-text-icon">
                             <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
                         </span>
@@ -206,6 +207,9 @@ class Blox_Position {
                             <?php echo sprintf( __( 'Use the hook selector menu below to choose the appropriate hook for this content block. To enable/disable certain hook options, or add your own custom hooks, visit the Blox %1$sposition settings%2$s.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ); ?>
                         </div>
                         <?php
+                        // Print hook availablity warning
+                        $this->print_hook_avialability_warning( $get_prefix['hook']['position'] );
+
                         // Print hook selector
                         $this->print_hook_selector();
                         ?>
@@ -228,6 +232,20 @@ class Blox_Position {
             </tbody>
         </table>
 		<?php
+    }
+
+
+    public function print_hook_avialability_warning( $saved_hook ) {
+        // Get an array of all active/available hooks
+        $active_hooks = $this->get_active_hooks_flattened();
+
+        //if ( isset( $saved_hook ) && ! empty( $saved_hook ) ) {
+            $warning = in_array( $saved_hook, $active_hooks ) ? 1 : 0;
+        //}
+
+        if ( ! $warning ) {
+            echo 'This hook is broken!!!';
+        }
     }
 
 
@@ -479,6 +497,7 @@ class Blox_Position {
 		$settings = array();
 
         /* Depracated settings as of v2.0
+        @TODO NEED to DELETE????
         $settings['position_format']    = isset( $name_prefix['position_format'] ) ? esc_attr( $name_prefix['position_format'] ) : 'hook';
 		$settings['position_type']      = esc_attr( $name_prefix['position_type'] );
 		$settings['custom']['position'] = isset( $name_prefix['custom']['position'] ) ? esc_attr( $name_prefix['custom']['position'] ) : '';
@@ -520,7 +539,8 @@ class Blox_Position {
 
 
     /**
-     * Print the admin column data for global blocks. NEED UPDATING
+     * Print the admin column data for global blocks.
+     * @TODO NEED UPDATING
      *
      * @param string $post_id
      * @param array $block_data
@@ -638,7 +658,8 @@ class Blox_Position {
 
 
     /**
-     * Add position settings to the quickedit screen for Blox NEED UPDATING!!!!!!!!!!!!!!
+     * Add position settings to the quickedit screen for Blox
+     * @TODO NEED UPDATING!!!!!!!!!!!!!!
      *
      * @since 1.3.0
      *
@@ -723,6 +744,7 @@ class Blox_Position {
 
     /**
      * Save quickedit position settings
+     * @TODO NEEDS UPDATING
      *
      * @since 1.3.0
      *
@@ -745,27 +767,27 @@ class Blox_Position {
 
     /**
      * Helper method for retrieving all Genesis hooks.
+     * @TODO REMOVE
      *
      * @since 1.0.0
      *
      * @return array Array of all Genesis hooks.
-     */
+     *//*
     public function get_genesis_hooks() {
 
         $instance = Blox_Common::get_instance();
         return $instance->get_genesis_hooks();
 
-    }
+    }*/
 
 
-    public function get_hooks() {
-
-        $instance = Blox_Common::get_instance();
-        return $instance->get_hooks();
-
-    }
-
-
+    /**
+     * Helper method for retrieving all available hook types.
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all hook types.
+     */
     public function get_hook_types() {
 
         $instance = Blox_Common::get_instance();
@@ -773,11 +795,32 @@ class Blox_Position {
 
     }
 
+
+    /**
+     * Helper method for retrieving all active hooks.
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all active hooks.
+     */
     public function get_active_hooks() {
 
         $instance = Blox_Common::get_instance();
         return $instance->get_active_hooks();
+    }
 
+
+    /**
+     * Helper method for retrieving all active hooks in a flattened array.
+     *
+     * @since 2.0.0
+     *
+     * @return array Array of all active hooks.
+     */
+    public function get_active_hooks_flattened() {
+
+        $instance = Blox_Common::get_instance();
+        return $instance->get_active_hooks_flattened();
     }
 
 

@@ -342,38 +342,6 @@ class Blox_Common {
                     'woocommerce_after_checkout_form' 	            => array( 'disable' => '', 'name' => 'woocommerce_after_checkout_form', 'title' => __( 'NEED', 'blox' ) ),
                 )
             ),
-            'storefront' => array(
-                'name'    => __( 'WooCommerce Storefront Theme Hooks', 'blox' ),
-                'disable' => '',
-                'hooks'   => array(
-                    'storefront_before_header' 	                            => array( 'disable' => '', 'name' => 'storefront_before_header', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_header'                                     => array( 'disable' => '', 'name' => 'storefront_header', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_before_content' 	                        => array( 'disable' => '', 'name' => 'storefront_before_content', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_content_top'                        	    => array( 'disable' => '', 'name' => 'storefront_content_top', 'title' => __( 'NEED', 'blox' ) ),
-                    'homepage'                                              => array( 'disable' => '', 'name' => 'homepage', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_page' 	                                    => array( 'disable' => '', 'name' => 'storefront_page', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_before_product_categories' 	    => array( 'disable' => '', 'name' => 'storefront_homepage_before_product_categories', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_after_product_categories' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_after_product_categories', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_before_recent_products'            => array( 'disable' => '', 'name' => 'storefront_homepage_before_recent_products', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_after_recent_products_title' 	    => array( 'disable' => '', 'name' => 'storefront_homepage_after_recent_products_title', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_after_recent_products'             => array( 'disable' => '', 'name' => 'storefront_homepage_after_recent_products', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_before_featured_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_before_featured_products', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_after_featured_products_title'     => array( 'disable' => '', 'name' => 'storefront_homepage_after_featured_products_title', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_after_featured_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_after_featured_products', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_before_popular_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_before_popular_products', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_after_popular_products_title'    	=> array( 'disable' => '', 'name' => 'storefront_homepage_after_popular_products_title', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_after_popular_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_after_popular_products', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_before_on_sale_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_before_on_sale_products', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_after_on_sale_products_title' 	    => array( 'disable' => '', 'name' => 'storefront_homepage_after_on_sale_products_title', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_after_on_sale_products' 	        => array( 'disable' => '', 'name' => 'storefront_homepage_after_on_sale_products', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_before_best_selling_products' 	    => array( 'disable' => '', 'name' => 'storefront_homepage_before_best_selling_products', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_after_best_selling_products_title' => array( 'disable' => '', 'name' => 'storefront_homepage_after_best_selling_products_title', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_homepage_after_best_selling_products' 	    => array( 'disable' => '', 'name' => 'storefront_homepage_after_best_selling_products', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_before_footer' 	                            => array( 'disable' => '', 'name' => 'storefront_before_footer', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_footer' 	                                => array( 'disable' => '', 'name' => 'storefront_footer', 'title' => __( 'NEED', 'blox' ) ),
-                    'storefront_after_footer' 	                            => array( 'disable' => '', 'name' => 'storefront_after_footer', 'title' => __( 'NEED', 'blox' ) ),
-                )
-            ),
         );
 
         return $hooks;
@@ -410,11 +378,11 @@ class Blox_Common {
      * @since 1.1.0
      *
      * @return array Array of all Genesis hooks after they have been filtered.
-     */
+     *//*
     public function get_genesis_hooks() {
 
     	return apply_filters( 'blox_genesis_hooks', $this->get_genesis_hooks_unfiltered() );
-    }
+    }*/
 
 
     /**
@@ -423,11 +391,11 @@ class Blox_Common {
      * @since 2.0.0
      *
      * @return array Array of all Core WordPress hooks after they have been filtered.
-     */
+     *//*
     public function get_wordpress_hooks() {
 
         return apply_filters( 'blox_wordpress_hooks', $this->get_wordpress_hooks_unfiltered() );
-    }
+    }*/
 
 
     /**
@@ -522,6 +490,25 @@ class Blox_Common {
     }
 
 
+    public function get_active_hooks_flattened() {
+
+        $unflattened_hooks = $this->get_active_hooks();
+
+        $flattened_hooks = array();
+        foreach( $unflattened_hooks as $hook_type => $hook_type_sections ) {
+            foreach ( $hook_type_sections as $sections => $section ) {
+                if ( isset( $section['hooks'] ) && ! empty( $section['hooks'] ) ) {
+                    foreach ( $section['hooks'] as $hooks => $hook ) {
+                        $flattened_hooks[] = $hooks;
+                    }
+                }
+            }
+        }
+
+        return $flattened_hooks;
+    }
+
+
     /**
      * Helper function for retrieving all hooks in a flattened array with disabled flags
      *
@@ -529,7 +516,7 @@ class Blox_Common {
      *
      * @return array $hooks Array of all hooks in a flattened array.
      */
-    public function get_active_hooks_flattened() {
+    public function get_active_hooks_flattened_old() {
 
         $hooks = $this->get_hooks();
 
@@ -633,6 +620,7 @@ class Blox_Common {
 
     /**
      * Helper function for retrieving all available hooks post filtering in flattened, 1-dim, array REMOVE????
+     * @TODO remove?
      *
      * @since 1.1.0
      *
