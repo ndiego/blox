@@ -490,7 +490,14 @@ class Blox_Common {
     }
 
 
-    public function get_active_hooks_flattened() {
+    /**
+     * Helper function for retrieving all hooks in a flattened array.
+     *
+     * @since 2.0.0
+     *
+     * @return array $hooks Array of all hooks in a flattened array.
+     */
+     public function get_active_hooks_flattened() {
 
         $unflattened_hooks = $this->get_active_hooks();
 
@@ -506,6 +513,24 @@ class Blox_Common {
         }
 
         return $flattened_hooks;
+    }
+
+
+    /**
+     * Helper function testing if the passed hook is available to Blox.
+     *
+     * @since 2.0.0
+     *
+     * @param string $hook  The hook we want to test.
+     *
+     * @return bool         Is the hook available or not.
+     */
+    public function is_hook_available( $hook ){
+
+        // Get an array of all active/available hooks
+        $active_hooks = $this->get_active_hooks_flattened();
+
+        return in_array( $hook, $active_hooks );
     }
 
 

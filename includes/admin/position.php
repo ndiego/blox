@@ -124,7 +124,6 @@ class Blox_Position {
 			} else {
 				$get_prefix = ! empty( $data[$get_id]['position'] ) ? $data[$get_id]['position'] : null;
 			}
-
 		}
 
 		// Get the content for the position tab
@@ -146,16 +145,27 @@ class Blox_Position {
 
         $scope = $global ? 'global' : 'local';
 
-        if ( ! blox_get_option( $scope . '_disable_hook_positioning', false ) ) {
+        $position_types_disabled = array(
+            'hook'      => blox_get_option( $scope . '_disable_hook_positioning', false ),
+            'shortcode' => blox_get_option( $scope . '_disable_shortcode_positioning', false ),
+            'php'       => blox_get_option( $scope . '_disable_php_positioning', false )
+        );
+
+        if ( ! $position_types_disabled['hook'] ) {
             $this->print_position_hook_settings( $id, $name_prefix, $get_prefix, $global, $scope );
         }
 
-        if ( ! blox_get_option( $scope . '_disable_shortcode_positioning', false ) ) {
+        if ( ! $position_types_disabled['shortcode']) {
             $this->print_position_shortcode_settings( $id, $name_prefix, $get_prefix, $global, $scope );
         }
 
-        if ( ! blox_get_option( $scope . '_disable_php_positioning', false ) ) {
+        if ( ! $position_types_disabled['php'] ) {
             $this->print_position_php_settings( $id, $name_prefix, $get_prefix, $global, $scope );
+        }
+
+        // Throw error message if the user disabled all of the positioning options.
+        if ( ! in_array( false, $position_types_disabled ) ) {
+            echo '<div class="blox-alert-box no-side-margin">' . sprintf( __( 'All block positioning options have been manually disabled. Visit the Blox %1$sposition settings%2$s to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
         }
 
         do_action( 'blox_position_settings', $id, $name_prefix, $get_prefix, $global );
@@ -174,8 +184,22 @@ class Blox_Position {
      */
     public function print_position_hook_settings( $id, $name_prefix, $get_prefix, $global, $scope ) {
 
+        $position = ! empty( $get_prefix['hook']['position'] ) ? esc_attr( $get_prefix['hook']['position'] )  : '';
+        $priority = ! empty( $get_prefix['hook']['priority'] ) ? esc_attr( $get_prefix['hook']['priority'] )  : 15;
+
+        // Handle settings from Blox v1.x
+        if ( isset( $get_prefix['position_type'] ) ) {
+            if ( $get_prefix['position_type'] == 'default' ) {
+              $position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
+              $priority = esc_attr( blox_get_option( 'global_default_priority', 15 ) );
+            } else {
+              $position = ! empty( $get_prefix['custom']['position'] ) ? esc_attr( $get_prefix['custom']['position'] ) : 'genesis_after_header';
+              $priority = ! empty( $get_prefix['custom']['priority'] ) ? esc_attr( $get_prefix['custom']['priority'] ) : 15;
+            }
+        }
+
         ?>
-        <table class="form-table blox-table-border-bottom">
+        <table class="form-table position">
             <tbody>
 
             	<tr valign="top">
@@ -199,7 +223,7 @@ class Blox_Position {
                 <tr valign="top">
                     <th scope="row"><label><?php _e( 'Selected Hook', 'blox' ); ?></label></th>
                     <td>
-                        <input type="text" readonly class="blox-selected-hook-position blox-half-text" name="<?php echo $name_prefix; ?>[hook][position]" id="blox_position_hook_position_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['position'] ) ? esc_attr( $get_prefix['hook']['position'] )  : ''; ?>" placeholder="<?php _e( 'Choose a hook from the table below...', 'blox' ); ?>"/>
+                        <input type="text" readonly class="blox-selected-hook-position blox-half-text" name="<?php echo $name_prefix; ?>[hook][position]" id="blox_position_hook_position_<?php echo $id; ?>" value="<?php echo $position; ?>" placeholder="<?php _e( 'Choose a hook from the table below...', 'blox' ); ?>"/>
                         <span class="blox-help-text-icon">
                             <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
                         </span>
@@ -208,8 +232,9 @@ class Blox_Position {
                         </div>
                         <?php
                         // Print hook availablity warning
-                        $this->print_hook_avialability_warning( $get_prefix['hook']['position'] );
-
+                        if ( ! $this->is_hook_available( $position ) ) {
+                            echo '<div class="blox-alert-box no-side-margin">' . sprintf( __( 'The current saved hook is no longer available. Choose a new one from the table below or check the Blox %1$sposition settings%2$s.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                        }
                         // Print hook selector
                         $this->print_hook_selector();
                         ?>
@@ -219,7 +244,7 @@ class Blox_Position {
                 <tr valign="top">
                     <th scope="row"><label><?php _e( 'Hook Priority', 'blox' ); ?></label></th>
                     <td>
-                        <input type="text" name="<?php echo $name_prefix; ?>[hook][priority]" id="blox_position_hook_priority_<?php echo $id; ?>" value="<?php echo ! empty( $get_prefix['hook']['priority'] ) ? esc_attr( $get_prefix['hook']['priority'] )  : '15'; ?>" class="blox-small-text"/>
+                        <input type="text" name="<?php echo $name_prefix; ?>[hook][priority]" id="blox_position_hook_priority_<?php echo $id; ?>" value="<?php echo $priority; ?>" class="blox-small-text"/>
                         <span class="blox-help-text-icon">
                             <a href="#" class="dashicons dashicons-editor-help" onclick="helpIcon.toggleHelp(this);return false;"></a>
                         </span>
@@ -232,20 +257,6 @@ class Blox_Position {
             </tbody>
         </table>
 		<?php
-    }
-
-
-    public function print_hook_avialability_warning( $saved_hook ) {
-        // Get an array of all active/available hooks
-        $active_hooks = $this->get_active_hooks_flattened();
-
-        //if ( isset( $saved_hook ) && ! empty( $saved_hook ) ) {
-            $warning = in_array( $saved_hook, $active_hooks ) ? 1 : 0;
-        //}
-
-        if ( ! $warning ) {
-            echo 'This hook is broken!!!';
-        }
     }
 
 
@@ -372,7 +383,7 @@ class Blox_Position {
      */
     public function print_position_shortcode_settings( $id, $name_prefix, $get_prefix, $global, $scope ) {
         ?>
-        <table class="form-table blox-table-border-bottom">
+        <table class="form-table position">
             <tbody>
                 <tr valign="top">
                     <th scope="row"><label><?php _e( 'Shortcode Positioning', 'blox' ); ?></label></th>
@@ -433,7 +444,7 @@ class Blox_Position {
      */
     public function print_position_php_settings(  $id, $name_prefix, $get_prefix, $global, $scope ) {
         ?>
-        <table class="form-table">
+        <table class="form-table position">
             <tbody>
                 <tr valign="top">
                     <th scope="row"><label><?php _e( 'PHP Positioning', 'blox' ); ?></label></th>
@@ -510,14 +521,14 @@ class Blox_Position {
 		}
         */
 
-        $settings['hook']['enable']                 = isset( $name_prefix['hook']['enable'] ) ? 1 : 0;
+        $settings['hook']['disable']                = isset( $name_prefix['hook']['disable'] ) ? 1 : 0;
         $settings['hook']['position']               = isset( $name_prefix['hook']['position'] ) ? esc_attr( $name_prefix['hook']['position'] ) : '';
         $settings['hook']['priority']               = absint( $name_prefix['hook']['priority'] );
 
-        $settings['shortcode']['enable']            = isset( $name_prefix['shortcode']['enable'] ) ? 1 : 0;
+        $settings['shortcode']['disable']           = isset( $name_prefix['shortcode']['disable'] ) ? 1 : 0;
         $settings['shortcode']['ignore_location']   = isset( $name_prefix['shortcode']['ignore_location'] ) ? 1 : 0;
 
-        $settings['php']['enable']                  = isset( $name_prefix['php']['enable'] ) ? 1 : 0;
+        $settings['php']['disable']                 = isset( $name_prefix['php']['disable'] ) ? 1 : 0;
         $settings['php']['ignore_location']         = isset( $name_prefix['php']['ignore_location'] ) ? 1 : 0;
 
 		return apply_filters( 'blox_save_position_settings', $settings, $post_id, $name_prefix, $global );
@@ -547,15 +558,89 @@ class Blox_Position {
      */
     public function admin_column_data( $post_id, $block_data ) {
 
-        $instance        = Blox_Common::get_instance();
-		$available_hooks = $instance->get_genesis_hooks_flattened(); // WRONG
 
-		//echo print_r( $available_hooks );
-        $position_format  = ! empty( $block_data['position']['position_format'] ) ? esc_attr( $block_data['position']['position_format'] ) : 'hook';
-        $position_type    = esc_attr( $block_data['position']['position_type'] );
-        $default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
-        $custom_position  = esc_attr( $block_data['position']['custom']['position'] );
-        $custom_priority  = esc_attr( $block_data['position']['custom']['priority'] );
+        // Hook type availability
+        $position_types_disabled = array(
+            'hook'      => blox_get_option( 'global_disable_hook_positioning', 0 ),
+            'shortcode' => blox_get_option( 'global_disable_shortcode_positioning', 0 ),
+            'php'       => blox_get_option( 'global_disable_php_positioning', 0 )
+        );
+
+        foreach ( $position_types_disabled as $position_type => $disabled ) {
+            if ( ! $disabled ) {
+                $position_types_disabled[$position_type] = isset( $block_data['position'][$position_type]['disable'] ) ? $block_data['position'][$position_type]['disable'] : 0;
+            }
+        }
+
+        //echo print_r($position_types_disabled);
+        //$instance        = Blox_Common::get_instance();
+		//$available_hooks = $instance->get_genesis_hooks_flattened(); // WRONG
+
+		//echo print_r( $block_data['position'] );
+        //$position_format  = ! empty( $block_data['position']['position_format'] ) ? esc_attr( $block_data['position']['position_format'] ) : 'hook';
+        //$position_type    = esc_attr( $block_data['position']['position_type'] );
+        //$default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
+        //$custom_position  = esc_attr( $block_data['position']['custom']['position'] );
+        //$custom_priority  = esc_attr( $block_data['position']['custom']['priority'] );
+
+        $position = ! empty( $block_data['position']['hook']['position'] ) ? esc_attr( $block_data['position']['hook']['position'] )  : '';
+        $priority = ! empty( $block_data['position']['hook']['priority'] ) ? esc_attr( $block_data['position']['hook']['priority'] )  : 15;
+
+        // Handle settings from Blox v1.x
+        if ( isset( $block_data['position']['position_type'] ) ) {
+            if ( $block_data['position']['position_type'] == 'default' ) {
+              $position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
+              $priority = esc_attr( blox_get_option( 'global_default_priority', 15 ) );
+            } else {
+              $position = ! empty( $block_data['position']['custom']['position'] ) ? esc_attr( $block_data['position']['custom']['position'] ) : 'genesis_after_header';
+              $priority = ! empty( $block_data['position']['custom']['priority'] ) ? esc_attr( $block_data['position']['custom']['priority'] ) : 15;
+            }
+        }
+
+        echo '<div class="position-column-data">';
+
+        echo '<div class="position-column-data-buttons">';
+
+        if ( ! $position_types_disabled['shortcode'] ){
+            ?>
+            <div class="position-shortcode position-button" aria-label="<?php _e( 'View block shortcode');?>">
+
+                <div class="position-shortcode-icon">
+                    <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
+                </div>
+
+                <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
+            </div>
+            <?php
+        }
+
+        if ( ! $position_types_disabled['php'] ){
+            ?>
+            <div class="position-php position-button" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
+                <span class="dashicons dashicons-editor-code"></span>
+                <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
+            </div>
+            <?php
+        }
+
+        echo '</div>';
+
+        if ( ! $position_types_disabled['hook'] ){
+            ?>
+            <div class="position-hook">
+                <span class="position-hook-slug"><?php echo $position;?></span>
+                <span class="position-hook-info-toggle dashicons dashicons-info"></span>
+            </div>
+            <?php
+        }
+
+        // Throw error message if the user disabled all of the positioning options.
+        if ( ! in_array( 0, $position_types_disabled ) ) {
+            echo '<div class="blox-alert-box no-side-margin">' . sprintf( __( 'All block positioning options have been manually disabled. Visit the Blox %1$sposition settings%2$s to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+        }
+
+        echo '</div>';
+
 
         $title = '';
 
@@ -613,8 +698,8 @@ class Blox_Position {
 
         $hidden = '<input type="hidden" name="position_format" value="' . $position_format . '">';
         $hidden .= '<input type="hidden" name="position_type" value="' . $position_type . '">';
-        $hidden .= '<input type="hidden" name="custom_position" value="' . $custom_position . '">';
-        $hidden .= '<input type="hidden" name="custom_priority" value="' . $custom_priority . '">';
+        $hidden .= '<input type="hidden" name="position" value="' . $position . '">';
+        $hidden .= '<input type="hidden" name="priority" value="' . $priority . '">';
 
         echo $hidden;
 		echo $position ? $position : $error;
@@ -715,13 +800,16 @@ class Blox_Position {
                         <div class="quickedit-position-hook-custom" style="display:none">
                             <select name="custom_position">
                                 <?php
+                                /*
                                 foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
                                     <optgroup label="<?php echo $section['name']; ?>">
                                         <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
                                             <option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>"><?php echo $hook['name']; ?></option>
                                         <?php } ?>
                                     </optgroup>
-                                <?php } ?>
+                                <?php } */
+                                ?>
+
                             </select>
 
                             <label>
@@ -811,16 +899,18 @@ class Blox_Position {
 
 
     /**
-     * Helper method for retrieving all active hooks in a flattened array.
+     * Helper function testing if the passed hook is available to Blox.
      *
      * @since 2.0.0
      *
-     * @return array Array of all active hooks.
+     * @param string $hook  The hook we want to test.
+     *
+     * @return bool         Is the hook available or not.
      */
-    public function get_active_hooks_flattened() {
+    public function is_hook_available( $hook ){
 
         $instance = Blox_Common::get_instance();
-        return $instance->get_active_hooks_flattened();
+        return $instance->is_hook_available( $hook );
     }
 
 

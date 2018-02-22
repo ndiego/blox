@@ -258,6 +258,11 @@ ul.blox-columns li {
     padding: 10px 12px;
     border-left-color: #dc3232;
 }
+
+.blox-alert-box.no-side-margin {
+	margin: 15px 0 10px;
+}
+
 .blox-alert-box.no-margin {
 	margin: 0;
 }
@@ -293,15 +298,25 @@ ul.blox-columns li {
 	}
 }
 
-.form-table.blox-table-border-bottom {
-	border-bottom: 1px solid #dfdfdf;
-	margin-bottom: 15px !important;
-}
-.form-table.blox-table-border-bottom tr:last-child td {
-	padding-bottom: 30px;
+.blox-tab-content .form-table.position {
+	border-top: 1px solid #dfdfdf;
+	margin-top: 15px !important;
 }
 
+.blox-tab-content .form-table.position tr:first-child td,
+.blox-tab-content .form-table.position tr:first-child th {
+	padding-top: 30px;
+}
 
+.blox-tab-content .form-table.position:first-child {
+	border-top: 0;
+	margin-top: 0 !important;
+}
+
+.blox-tab-content .form-table.position:first-child tr:first-child td,
+.blox-tab-content .form-table.position:first-child tr:first-child th {
+	padding-top: 15px;
+}
 
 /* Content Block Styles (Local and Global)
 -------------------------------------------------------------- */

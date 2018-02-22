@@ -106,3 +106,86 @@
 		margin: .4em 0;
 	}
 }
+
+.post-type-blox .position-column-data {
+}
+
+.post-type-blox .position-column-data-buttons {
+	width: 50px;
+    float: right;
+	position: relative;
+}
+
+.post-type-blox .position-hook {
+	display: block;
+	margin-right: 50px;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+.post-type-blox .position-hook .position-hook-slug {
+	max-width: 80%;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.post-type-blox .position-hook .position-hook-info-toggle {
+	color: #666666;
+	font-size: 18px;
+	margin: 1px 0 0 2px;
+
+}
+
+.post-type-blox .position-php,
+.post-type-blox .position-shortcode {
+	float: left;
+	margin: 0 4px;
+	cursor: pointer;
+	position: relative;
+}
+
+.post-type-blox .position-shortcode .position-shortcode-icon {
+	display: inline-block;
+	margin-top: 2px;
+}
+.post-type-blox .position-shortcode .position-shortcode-icon svg {
+	fill: #666666;
+}
+
+
+.post-type-blox .position-button {
+	display: inline-block;
+}
+.post-type-blox .position-button:hover {
+	opacity: .7;
+}
+
+/* Button Tooltip */
+.post-type-blox .position-button:hover:after {
+	color: #fff;
+    font-size: 12px;
+    background: #000;
+    content: attr(aria-label);
+    padding: 5px 8px;
+    white-space: nowrap;
+    display: block;
+    position: absolute;
+    left: -110%;
+    bottom: -35px;
+    z-index: 8;
+    border-radius: 4px;
+}
+.post-type-blox .position-button:hover:before {
+	border: solid;
+    border-color:rgba(0,0,0,1) transparent;
+    border-width: 0 6px 6px 6px;
+    content: "";
+    display: block;
+    position: absolute;
+	left: 10%;
+    bottom: -8px;
+    z-index: 9;
+}
+/* END - Button Tooltip */
