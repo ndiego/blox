@@ -603,22 +603,24 @@ class Blox_Position {
 
         if ( ! $position_types_disabled['shortcode'] ){
             ?>
-            <div class="position-shortcode position-button" aria-label="<?php _e( 'View block shortcode');?>">
-
-                <div class="position-shortcode-icon">
-                    <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
+            <div class="position-shortcode">
+                <div class="position-shortcode-toggle blox-has-tooltip" aria-label="<?php _e( 'View block shortcode');?>">
+                    <span class="blox-icon blox-icon-shortcode">
+                        <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
+                    </span>
+                    <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
                 </div>
-
-                <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
             </div>
             <?php
         }
 
         if ( ! $position_types_disabled['php'] ){
             ?>
-            <div class="position-php position-button" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
-                <span class="dashicons dashicons-editor-code"></span>
-                <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
+            <div class="position-php">
+                <div class="position-php-toggle blox-has-tooltip" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
+                    <span class="dashicons dashicons-editor-code"></span>
+                    <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
+                </div>
             </div>
             <?php
         }
@@ -628,8 +630,13 @@ class Blox_Position {
         if ( ! $position_types_disabled['hook'] ){
             ?>
             <div class="position-hook">
-                <span class="position-hook-slug"><?php echo $position;?></span>
-                <span class="position-hook-info-toggle dashicons dashicons-info"></span>
+                <div class="position-hook-slug">
+                    <?php echo $position;?>
+                </div>
+                <div class="position-hook-toggle blox-has-tooltip" aria-label="<?php _e( 'View hook details', 'blox' );?>">
+                    <span class="dashicons dashicons-info"></span>
+                    <span class="screen-reader-text"><?php _e( 'View hook details');?></span>
+                </div>
             </div>
             <?php
         }

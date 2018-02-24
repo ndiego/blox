@@ -107,21 +107,13 @@
 	}
 }
 
-.post-type-blox .position-column-data {
-}
 
-.post-type-blox .position-column-data-buttons {
-	width: 50px;
-    float: right;
-	position: relative;
-}
 
 .post-type-blox .position-hook {
 	display: block;
 	margin-right: 50px;
-	overflow: hidden;
-	box-sizing: border-box;
 }
+
 .post-type-blox .position-hook .position-hook-slug {
 	max-width: 80%;
     overflow: hidden;
@@ -131,11 +123,14 @@
     display: inline-block;
 }
 
-.post-type-blox .position-hook .position-hook-info-toggle {
-	color: #666666;
-	font-size: 18px;
-	margin: 1px 0 0 2px;
+.post-type-blox .position-hook .blox-has-tooltip {
+	vertical-align: top;
+}
 
+.post-type-blox .position-column-data-buttons {
+	width: 50px;
+    float: right;
+	position: relative;
 }
 
 .post-type-blox .position-php,
@@ -146,45 +141,60 @@
 	position: relative;
 }
 
-.post-type-blox .position-shortcode .position-shortcode-icon {
+.post-type-blox .position-shortcode .blox-icon-shortcode {
 	display: inline-block;
-	margin-top: 2px;
+	padding-top: 4px;
 }
-.post-type-blox .position-shortcode .position-shortcode-icon svg {
+.post-type-blox .position-shortcode .blox-icon-shortcode svg {
 	fill: #666666;
 }
 
 
-.post-type-blox .position-button {
+
+
+
+
+
+
+/* Begin - Button Tooltip */
+.blox-has-tooltip {
 	display: inline-block;
+	position: relative;
+	cursor: pointer;
 }
-.post-type-blox .position-button:hover {
+
+.blox-has-tooltip:hover .dashicons,
+.blox-has-tooltip:hover .blox-icon {
 	opacity: .7;
 }
 
-/* Button Tooltip */
-.post-type-blox .position-button:hover:after {
+.blox-has-tooltip:hover:after {
 	color: #fff;
     font-size: 12px;
     background: #000;
     content: attr(aria-label);
     padding: 5px 8px;
-    white-space: nowrap;
     display: block;
     position: absolute;
-    left: -110%;
-    bottom: -35px;
+    left: 50%;
+    bottom: -8px;
+	transform: translateX(-50%) translateY(100%);
     z-index: 8;
     border-radius: 4px;
+	min-width: 100px;
+	text-align: center;
+	white-space: nowrap;
 }
-.post-type-blox .position-button:hover:before {
+
+.blox-has-tooltip:hover:before {
 	border: solid;
     border-color:rgba(0,0,0,1) transparent;
     border-width: 0 6px 6px 6px;
     content: "";
     display: block;
     position: absolute;
-	left: 10%;
+	left: 50%;
+	transform: translateX(-50%);
     bottom: -8px;
     z-index: 9;
 }
