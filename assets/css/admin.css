@@ -109,6 +109,10 @@
 
 
 
+.post-type-blox .position-button {
+	float: right;
+}
+
 .post-type-blox .position-hook {
 	display: block;
 	margin-right: 50px;
@@ -127,15 +131,10 @@
 	vertical-align: top;
 }
 
-.post-type-blox .position-column-data-buttons {
-	width: 50px;
-    float: right;
-	position: relative;
-}
+
 
 .post-type-blox .position-php,
 .post-type-blox .position-shortcode {
-	float: left;
 	margin: 0 4px;
 	cursor: pointer;
 	position: relative;

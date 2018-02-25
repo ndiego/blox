@@ -596,57 +596,38 @@ class Blox_Position {
               $priority = ! empty( $block_data['position']['custom']['priority'] ) ? esc_attr( $block_data['position']['custom']['priority'] ) : 15;
             }
         }
+        ?>
+        <div class="position-column-data">
 
-        echo '<div class="position-column-data">';
-
-        echo '<div class="position-column-data-buttons">';
-
-        if ( ! $position_types_disabled['shortcode'] ){
-            ?>
-            <div class="position-shortcode">
-                <div class="position-shortcode-toggle blox-has-tooltip" aria-label="<?php _e( 'View block shortcode');?>">
-                    <span class="blox-icon blox-icon-shortcode">
-                        <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
-                    </span>
-                    <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
-                </div>
-            </div>
             <?php
-        }
-
-        if ( ! $position_types_disabled['php'] ){
+            // Throw error message if the user disabled all of the positioning options.
+            if ( ! in_array( 0, $position_types_disabled ) ) {
+                echo '<div class="blox-alert-box no-side-margin">' . sprintf( __( 'All block positioning options have been manually disabled. Visit the Blox %1$sposition settings%2$s to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+            }
             ?>
-            <div class="position-php">
-                <div class="position-php-toggle blox-has-tooltip" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
-                    <span class="dashicons dashicons-editor-code"></span>
-                    <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
-                </div>
-            </div>
+
+            <div class="position-column-data-controls">
             <?php
-        }
-
-        echo '</div>';
-
-        if ( ! $position_types_disabled['hook'] ){
+                $this->position_admin_column_php_control( $position_types_disabled['php'] );
+                $this->position_admin_column_shortcode_control( $position_types_disabled['shortcode'] );
+                $this->position_admin_column_hook_control( $position, $position_types_disabled['hook'] );
             ?>
-            <div class="position-hook">
-                <div class="position-hook-slug">
-                    <?php echo $position;?>
-                </div>
-                <div class="position-hook-toggle blox-has-tooltip" aria-label="<?php _e( 'View hook details', 'blox' );?>">
-                    <span class="dashicons dashicons-info"></span>
-                    <span class="screen-reader-text"><?php _e( 'View hook details');?></span>
-                </div>
             </div>
+            <div class="position-column-data-details">
             <?php
-        }
+                $this->position_admin_column_php_details( $post_id, $block_data, $position_types_disabled['php'] );
+                $this->position_admin_column_shortcode_details( $post_id, $block_data, $position_types_disabled['shortcode'] );
+                $this->position_admin_column_hook_details( $post_id, $block_data, $position, $position_types_disabled['hook'] );
+            ?>
+            </div>
+        </div>
+        <?php
 
-        // Throw error message if the user disabled all of the positioning options.
-        if ( ! in_array( 0, $position_types_disabled ) ) {
-            echo '<div class="blox-alert-box no-side-margin">' . sprintf( __( 'All block positioning options have been manually disabled. Visit the Blox %1$sposition settings%2$s to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
-        }
 
-        echo '</div>';
+
+
+
+
 
 
         $title = '';
@@ -715,6 +696,74 @@ class Blox_Position {
 		update_post_meta( $post_id, '_blox_content_blocks_position', $meta_data );
     }
 
+
+    public function position_admin_column_shortcode_control( $disabled ){
+        if ( ! $disabled ){
+            ?>
+            <div class="position-shortcode position-button">
+                <div class="position-shortcode-toggle blox-has-tooltip" aria-label="<?php _e( 'View block shortcode');?>">
+                    <span class="blox-icon blox-icon-shortcode">
+                        <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
+                    </span>
+                    <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+    public function position_admin_column_php_control( $disabled ){
+        if ( ! $disabled ){
+            ?>
+            <div class="position-php position-button">
+                <div class="position-php-toggle blox-has-tooltip" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
+                    <span class="dashicons dashicons-editor-code"></span>
+                    <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+    public function position_admin_column_hook_control( $position, $disabled ){
+        if ( ! $disabled ){
+            ?>
+            <div class="position-hook">
+                <div class="position-hook-slug">
+                    <?php echo $position;?>
+                </div>
+                <div class="position-hook-toggle blox-has-tooltip" aria-label="<?php _e( 'View hook details', 'blox' );?>">
+                    <span class="dashicons dashicons-info"></span>
+                    <span class="screen-reader-text"><?php _e( 'View hook details');?></span>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+    public function position_admin_column_shortcode_details( $id, $block_data, $disabled ) {
+
+    }
+
+    public function position_admin_column_php_details( $id, $block_data, $disabled ) {
+        if ( ! $disabled ){
+            ?>
+            <div class="blox-code">blox_display_block( "<?php echo 'global_' . $id; ?>" );</div>
+            <div class="blox-description">
+                <?php
+                    _e( 'Copy and paste the above PHP code into any of your theme files. Visibility and location settings are respected when using PHP positioning.', 'blox' );
+                    if ( ! $global ) {
+                        echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox' ), '<strong>', '</strong>' );
+                    }
+                ?>
+            </div>
+            <?php
+        }
+    }
+
+    public function position_admin_column_hook_details( $id, $block_data, $position, $disabled ) {
+
+    }
 
     /**
      * Tell Wordpress that the position column is sortable
