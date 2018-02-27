@@ -700,13 +700,11 @@ class Blox_Position {
     public function position_admin_column_shortcode_control( $disabled ){
         if ( ! $disabled ){
             ?>
-            <div class="position-shortcode position-button">
-                <div class="position-shortcode-toggle blox-has-tooltip" aria-label="<?php _e( 'View block shortcode');?>">
-                    <span class="blox-icon blox-icon-shortcode">
-                        <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
-                    </span>
-                    <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
-                </div>
+            <div class="position-control shortcode blox-has-tooltip" data-position-type="shortcode" aria-label="<?php _e( 'View block shortcode');?>">
+                <span class="blox-icon blox-icon-shortcode">
+                    <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
+                </span>
+                <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
             </div>
             <?php
         }
@@ -715,11 +713,9 @@ class Blox_Position {
     public function position_admin_column_php_control( $disabled ){
         if ( ! $disabled ){
             ?>
-            <div class="position-php position-button">
-                <div class="position-php-toggle blox-has-tooltip" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
-                    <span class="dashicons dashicons-editor-code"></span>
-                    <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
-                </div>
+            <div class="position-control php blox-has-tooltip" data-position-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
+                <span class="dashicons dashicons-editor-code"></span>
+                <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
             </div>
             <?php
         }
@@ -728,7 +724,7 @@ class Blox_Position {
     public function position_admin_column_hook_control( $position, $disabled ){
         if ( ! $disabled ){
             ?>
-            <div class="position-hook">
+            <div class="position-control hook">
                 <div class="position-hook-slug">
                     <?php echo $position;?>
                 </div>
@@ -742,27 +738,39 @@ class Blox_Position {
     }
 
     public function position_admin_column_shortcode_details( $id, $block_data, $disabled ) {
-
+        if ( ! $disabled ){
+            ?>
+            <div class="position-details shortcode">
+                <div class="blox-code">[blox id="<?php echo 'global_' . $id; ?>"]</div>
+                <div class="blox-description">
+                    <?php _e( 'Copy and paste the above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox' ); ?>
+                </div>
+            </div>
+            <?php
+        }
     }
 
     public function position_admin_column_php_details( $id, $block_data, $disabled ) {
         if ( ! $disabled ){
             ?>
-            <div class="blox-code">blox_display_block( "<?php echo 'global_' . $id; ?>" );</div>
-            <div class="blox-description">
-                <?php
-                    _e( 'Copy and paste the above PHP code into any of your theme files. Visibility and location settings are respected when using PHP positioning.', 'blox' );
-                    if ( ! $global ) {
-                        echo ' ' . sprintf( __( 'Also note that regardless of position type, local blocks will %1$sonly%2$s display on the page, post, or custom post type that they were created on.', 'blox' ), '<strong>', '</strong>' );
-                    }
-                ?>
+            <div class="position-details php">
+                <div class="blox-code">blox_display_block( "<?php echo 'global_' . $id; ?>" );</div>
+                <div class="blox-description">
+                    <?php _e( 'Copy and paste the above PHP code into any of your theme files. Visibility and location settings are respected when using PHP positioning.', 'blox' ); ?>
+                </div>
             </div>
             <?php
         }
     }
 
     public function position_admin_column_hook_details( $id, $block_data, $position, $disabled ) {
-
+        if ( ! $disabled ){
+            ?>
+            <div class="position-hook-details">
+                Testing
+            </div>
+            <?php
+        }
     }
 
     /**

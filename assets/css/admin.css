@@ -109,16 +109,14 @@
 
 
 
-.post-type-blox .position-button {
-	float: right;
-}
 
-.post-type-blox .position-hook {
+
+.post-type-blox .position-control.hook {
 	display: block;
 	margin-right: 50px;
 }
 
-.post-type-blox .position-hook .position-hook-slug {
+.post-type-blox .position-control.hook .position-hook-slug {
 	max-width: 80%;
     overflow: hidden;
     text-align: left;
@@ -127,28 +125,33 @@
     display: inline-block;
 }
 
-.post-type-blox .position-hook .blox-has-tooltip {
+.post-type-blox .position-control.hook .blox-has-tooltip {
 	vertical-align: top;
 }
 
 
 
-.post-type-blox .position-php,
-.post-type-blox .position-shortcode {
+.post-type-blox .position-control.php,
+.post-type-blox .position-control.shortcode {
+	float: right;
 	margin: 0 4px;
 	cursor: pointer;
 	position: relative;
 }
 
-.post-type-blox .position-shortcode .blox-icon-shortcode {
+.post-type-blox .position-control.shortcode .blox-icon-shortcode {
 	display: inline-block;
 	padding-top: 4px;
 }
-.post-type-blox .position-shortcode .blox-icon-shortcode svg {
+.post-type-blox .position-control.shortcode .blox-icon-shortcode svg {
 	fill: #666666;
 }
 
 
+
+.position-details {
+	display: none;
+}
 
 
 

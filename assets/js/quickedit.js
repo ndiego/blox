@@ -103,4 +103,13 @@ jQuery(document).ready(function($){
         // Save the data
         $.post( ajaxurl, data );
     });
+
+
+
+
+    $( document.body ).on( 'click', '.position-control', function() {
+        var type = $(this).attr('data-position-type');
+        $(this).parents( '.position-column-data-controls' ).siblings( '.position-column-data-details' ).children( '.position-details' ).hide();
+        $(this).parents( '.position-column-data-controls' ).siblings( '.position-column-data-details' ).children( '.position-details.' + type ).toggle();
+    });
 });
