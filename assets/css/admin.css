@@ -109,14 +109,26 @@
 
 
 
-
+.blox-alert-box {
+	background: #f9f9f9;
+	border-left: 4px solid #fff;
+	-webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+	margin: 0 0 10px;
+	padding: 10px 12px;
+	border-left-color: #dc3232;
+}
+/* Corrects for striped table styling */
+.striped>tbody>:nth-child(odd) .blox-alert-box {
+	background: #ffffff;
+}
 
 .post-type-blox .position-control.hook {
 	display: block;
 	margin-right: 50px;
 }
 
-.post-type-blox .position-control.hook .position-hook-slug {
+.post-type-blox .position-control .position-hook-slug {
 	max-width: 80%;
     overflow: hidden;
     text-align: left;
@@ -124,12 +136,20 @@
     white-space: nowrap;
     display: inline-block;
 }
+.post-type-blox .position-control.selected .position-hook-slug {
+    white-space: normal;
+}
+
+.post-type-blox .position-control .blox-has-tooltip {
+	color: #82878c;
+}
 
 .post-type-blox .position-control.hook .blox-has-tooltip {
 	vertical-align: top;
 }
-
-
+.post-type-blox .position-control.hook .dashicons-warning {
+	color: #a00;
+}
 
 .post-type-blox .position-control.php,
 .post-type-blox .position-control.shortcode {
@@ -144,15 +164,36 @@
 	padding-top: 4px;
 }
 .post-type-blox .position-control.shortcode .blox-icon-shortcode svg {
-	fill: #666666;
+	fill: #82878c;
 }
 
 
 
 .position-details {
 	display: none;
+	padding: 10px 0;
 }
-
+.position-details.selected {
+	display: block;
+}
+.position-details .blox-code {
+	width: 100%;
+    padding: 5px 8px;
+	margin: 0 0 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #dfdfdf;
+    box-sizing: border-box;
+    font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+}
+/* Corrects for striped table styling */
+.striped>tbody>:nth-child(odd) .position-details .blox-code {
+	background-color: #fff;
+}
+.position-details .blox-description {
+	font-size: 13px;
+	color: #666;
+	font-style: italic;
+}
 
 
 

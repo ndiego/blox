@@ -596,13 +596,14 @@ class Blox_Position {
               $priority = ! empty( $block_data['position']['custom']['priority'] ) ? esc_attr( $block_data['position']['custom']['priority'] ) : 15;
             }
         }
+
         ?>
         <div class="position-column-data">
 
             <?php
             // Throw error message if the user disabled all of the positioning options.
             if ( ! in_array( 0, $position_types_disabled ) ) {
-                echo '<div class="blox-alert-box no-side-margin">' . sprintf( __( 'All block positioning options have been manually disabled. Visit the Blox %1$sposition settings%2$s to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                echo '<div class="blox-alert-box">' . sprintf( __( 'All block positioning options have been manually disabled. Visit the Blox %1$sposition settings%2$s to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
             }
             ?>
 
@@ -617,7 +618,7 @@ class Blox_Position {
             <?php
                 $this->position_admin_column_php_details( $post_id, $block_data, $position_types_disabled['php'] );
                 $this->position_admin_column_shortcode_details( $post_id, $block_data, $position_types_disabled['shortcode'] );
-                $this->position_admin_column_hook_details( $post_id, $block_data, $position, $position_types_disabled['hook'] );
+                $this->position_admin_column_hook_details( $post_id, $block_data, $position, $priority, $position_types_disabled['hook'] );
             ?>
             </div>
         </div>
@@ -630,67 +631,15 @@ class Blox_Position {
 
 
 
-        $title = '';
 
-        if ( $position_format != 'hook' ) {
+        $title = sprintf( __( 'The position format on this block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), 'test' );
 
-            $postion_options = apply_filters( 'blox_position_formats', array() );
+    	$title = sprintf( __( 'This block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), 'test' );
+        $meta_data= '';
 
-            if ( array_key_exists( $position_format, $postion_options ) ) {
-
-                $output = '–';
-
-                $position  = apply_filters( 'blox_admin_column_output_position', $output, $position_format, $post_id, $block_data );
-                $meta_data = '_' . $position_format;
-            } else {
-                $position  = false;
-                $title     = sprintf( __( 'The position format on this block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), ucfirst($position_format) );
-                $meta_data = '';
-            }
-
-        } else {
-            if ( ! empty( $block_data['position']['position_type'] ) ) {
-
-    			if ( $block_data['position']['position_type'] == 'default' ) {
-
-    				$title = $default_position;
-
-    				if ( ! empty( $default_position ) && array_key_exists( $default_position, $available_hooks ) ){
-    					$position  = esc_attr( $available_hooks[$default_position] );
-    					$meta_data = $default_position;
-    				} else {
-    					$position  = false;
-    					$title     = sprintf( __( 'This block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), $default_position );
-    					$meta_data = '';
-    				}
-    			} else if ( ! empty( $block_data['position']['custom'] ) ) {
-
-    				$title = $custom_position;
-
-    				if( ! empty( $custom_position ) && array_key_exists( $block_data['position']['custom']['position'], $available_hooks ) ) {
-                        $position  = esc_attr( $available_hooks[$custom_position] );
-    					$meta_data = $custom_position;
-    				} else {
-    					$position  = false;
-                        $title     = sprintf( __( 'This block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), $custom_position );
-    					$meta_data = '';
-    				}
-    			}
-    		} else {
-    			$position  = false;
-    			$meta_data = '';
-    		}
-        }
-
-		$error = '<span style="color:#a00;font-style:italic;cursor: help" title="' . $title . '">' . __( 'Error', 'blox' ) . '</span>';
-
-        $hidden = '<input type="hidden" name="position_format" value="' . $position_format . '">';
-        $hidden .= '<input type="hidden" name="position_type" value="' . $position_type . '">';
-        $hidden .= '<input type="hidden" name="position" value="' . $position . '">';
-        $hidden .= '<input type="hidden" name="priority" value="' . $priority . '">';
+        $hidden = '<input type="hidden" name="position" value="' . $position . '">';
 
         echo $hidden;
-		echo $position ? $position : $error;
 
 		// Save our position meta values separately for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_position', $meta_data );
@@ -700,11 +649,13 @@ class Blox_Position {
     public function position_admin_column_shortcode_control( $disabled ){
         if ( ! $disabled ){
             ?>
-            <div class="position-control shortcode blox-has-tooltip" data-position-type="shortcode" aria-label="<?php _e( 'View block shortcode');?>">
-                <span class="blox-icon blox-icon-shortcode">
-                    <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
-                </span>
-                <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
+            <div class="position-control shortcode">
+                <div class="position-control-toggle blox-has-tooltip" data-position-type="shortcode" aria-label="<?php _e( 'View block shortcode');?>">
+                    <span class="blox-icon blox-icon-shortcode">
+                        <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
+                    </span>
+                    <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
+                </div>
             </div>
             <?php
         }
@@ -713,9 +664,11 @@ class Blox_Position {
     public function position_admin_column_php_control( $disabled ){
         if ( ! $disabled ){
             ?>
-            <div class="position-control php blox-has-tooltip" data-position-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
-                <span class="dashicons dashicons-editor-code"></span>
-                <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
+            <div class="position-control php">
+                <div class="position-control-toggle blox-has-tooltip" data-position-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
+                    <span class="dashicons dashicons-editor-code"></span>
+                    <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
+                </div>
             </div>
             <?php
         }
@@ -723,13 +676,17 @@ class Blox_Position {
 
     public function position_admin_column_hook_control( $position, $disabled ){
         if ( ! $disabled ){
+
+            // Show warning icon if hook is not available
+            $icon = $this->is_hook_available( $position ) ? 'dashicons-info' : 'dashicons-warning';
+
             ?>
             <div class="position-control hook">
                 <div class="position-hook-slug">
                     <?php echo $position;?>
                 </div>
-                <div class="position-hook-toggle blox-has-tooltip" aria-label="<?php _e( 'View hook details', 'blox' );?>">
-                    <span class="dashicons dashicons-info"></span>
+                <div class="position-control-toggle blox-has-tooltip" data-position-type="hook" aria-label="<?php _e( 'View hook details', 'blox' );?>">
+                    <span class="dashicons <?php echo $icon;?>"></span>
                     <span class="screen-reader-text"><?php _e( 'View hook details');?></span>
                 </div>
             </div>
@@ -763,11 +720,17 @@ class Blox_Position {
         }
     }
 
-    public function position_admin_column_hook_details( $id, $block_data, $position, $disabled ) {
+    public function position_admin_column_hook_details( $id, $block_data, $position, $priority,$disabled ) {
         if ( ! $disabled ){
             ?>
-            <div class="position-hook-details">
-                Testing
+            <div class="position-details hook">
+                <?php
+                // Print hook availablity warning
+                if ( ! $this->is_hook_available( $position ) ) {
+                    echo '<div class="blox-alert-box">' . sprintf( __( 'The current saved hook is no longer available. It was likely disabled via the Blox %1$sposition settings%2$s. Choose a new hook or reenable the saved one.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                }
+                ?>
+                <?php echo __( 'Hook Priority', 'blox' ) . ': ' . $priority;?>
             </div>
             <?php
         }

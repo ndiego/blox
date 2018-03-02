@@ -107,9 +107,27 @@ jQuery(document).ready(function($){
 
 
 
-    $( document.body ).on( 'click', '.position-control', function() {
-        var type = $(this).attr('data-position-type');
-        $(this).parents( '.position-column-data-controls' ).siblings( '.position-column-data-details' ).children( '.position-details' ).hide();
-        $(this).parents( '.position-column-data-controls' ).siblings( '.position-column-data-details' ).children( '.position-details.' + type ).toggle();
+    $( document.body ).on( 'click', '.position-control-toggle', function(e) {
+
+        var type = $(this).attr( 'data-position-type' );
+        var block_id = '#' + $(this).parents( 'tr' ).attr( 'id' );
+
+        if ( $(this).parents( '.position-control' ).hasClass( 'selected' ) ) {
+
+            // If the control is already selected, deselect
+            $(this).parents( '.position-control' ).removeClass( 'selected' );
+            $( block_id + ' .position-details' ).removeClass( 'selected' );
+        } else {
+
+            // If not, deselect all controls and then select the one clicked
+            $( block_id + ' .position-control' ).removeClass( 'selected' );
+            $( block_id + ' .position-details' ).removeClass( 'selected' );
+
+            $(this).parents( '.position-control' ).addClass( 'selected' );
+            $( block_id + ' .position-details.' + type ).addClass( 'selected' );
+        }
+
+        //$(this).parents( '.position-column-data-controls' ).siblings( '.position-column-data-details' ).children( '.position-details' ).removeClass( 'selected' );
+        //$(this).parents( '.position-column-data-controls' ).siblings( '.position-column-data-details' ).children( '.position-details.' + type ).toggle();
     });
 });
