@@ -65,13 +65,6 @@ class Blox_Position {
     	// Make admin column sortable
 		add_filter( 'manage_edit-blox_sortable_columns', array( $this, 'admin_column_sortable' ), 5 );
         add_filter( 'request', array( $this, 'admin_column_orderby' ) );
-
-        // Add quick edit & bulk edit settings
-        add_action( 'blox_quickedit_settings_position', array( $this, 'quickedit_bulkedit_settings' ), 10, 2 );
-        add_filter( 'blox_quickedit_save_settings', array( $this, 'quickedit_bulkedit_save_settings' ), 10, 3 );
-        // TODO investigate this
-        // add_action( 'blox_bulkedit_settings_position', array( $this, 'quickedit_bulkedit_settings' ), 10, 2 );
-        // add_filter( 'blox_bulkedit_save_settings', array( $this, 'quickedit_bulkedit_save_settings' ), 10, 3 );
     }
 
 
@@ -170,6 +163,7 @@ class Blox_Position {
 
         do_action( 'blox_position_settings', $id, $name_prefix, $get_prefix, $global );
     }
+
 
     /**
      * Creates all of the fields for the position hook settings
@@ -540,8 +534,9 @@ class Blox_Position {
      *
      * @since 1.0.0
      *
-     * @param string $post_id
-     * @param array $block_data
+     * @param array $columns   An array of all available admin columns
+     *
+     * @return array $columns  An updated array of all available admin columns with position added
      */
     public function admin_column_title( $columns ) {
     	$columns['position'] = __( 'Position', 'blox' );
@@ -551,10 +546,11 @@ class Blox_Position {
 
     /**
      * Print the admin column data for global blocks.
-     * @TODO NEED UPDATING
      *
-     * @param string $post_id
-     * @param array $block_data
+     * @since 1.0.0 (Heavily updated in 2.0.0)
+     *
+     * @param string $post_id    The block (post) id
+     * @param array $block_data  Array of all block data
      */
     public function admin_column_data( $post_id, $block_data ) {
 
@@ -566,23 +562,17 @@ class Blox_Position {
             'php'       => blox_get_option( 'global_disable_php_positioning', 0 )
         );
 
+        // Check if all positioning has been globally disabled
+        $globally_disabled = ! in_array( 0, $position_types_disabled ) ? 1 : 0;
+
+        // Check the position settings on the individual blocks
         foreach ( $position_types_disabled as $position_type => $disabled ) {
             if ( ! $disabled ) {
                 $position_types_disabled[$position_type] = isset( $block_data['position'][$position_type]['disable'] ) ? $block_data['position'][$position_type]['disable'] : 0;
             }
         }
 
-        //echo print_r($position_types_disabled);
-        //$instance        = Blox_Common::get_instance();
-		//$available_hooks = $instance->get_genesis_hooks_flattened(); // WRONG
-
-		//echo print_r( $block_data['position'] );
-        //$position_format  = ! empty( $block_data['position']['position_format'] ) ? esc_attr( $block_data['position']['position_format'] ) : 'hook';
-        //$position_type    = esc_attr( $block_data['position']['position_type'] );
-        //$default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
-        //$custom_position  = esc_attr( $block_data['position']['custom']['position'] );
-        //$custom_priority  = esc_attr( $block_data['position']['custom']['priority'] );
-
+        // Set the position and hook priority
         $position = ! empty( $block_data['position']['hook']['position'] ) ? esc_attr( $block_data['position']['hook']['position'] )  : '';
         $priority = ! empty( $block_data['position']['hook']['priority'] ) ? esc_attr( $block_data['position']['hook']['priority'] )  : 15;
 
@@ -596,89 +586,64 @@ class Blox_Position {
               $priority = ! empty( $block_data['position']['custom']['priority'] ) ? esc_attr( $block_data['position']['custom']['priority'] ) : 15;
             }
         }
-
         ?>
         <div class="position-column-data">
 
             <?php
             // Throw error message if the user disabled all of the positioning options.
-            if ( ! in_array( 0, $position_types_disabled ) ) {
-                echo '<div class="blox-alert-box">' . sprintf( __( 'All block positioning options have been manually disabled. Visit the Blox %1$sposition settings%2$s to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+            if ( $globally_disabled ) {
+                echo '<div class="blox-alert-box">' . sprintf( __( 'All positioning options have been globally disabled. Visit the Blox %1$sposition settings%2$s to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+            } else if ( ! in_array( 0, $position_types_disabled ) ) {
+                echo '<div class="blox-alert-box">' . sprintf( __( 'All positioning options have been disabled. Edit the position settings for this block to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
             }
             ?>
 
             <div class="position-column-data-controls">
             <?php
-                $this->position_admin_column_php_control( $position_types_disabled['php'] );
-                $this->position_admin_column_shortcode_control( $position_types_disabled['shortcode'] );
                 $this->position_admin_column_hook_control( $position, $position_types_disabled['hook'] );
+                $this->position_admin_column_shortcode_control( $position_types_disabled['shortcode'] );
+                $this->position_admin_column_php_control( $position_types_disabled['php'] );
             ?>
             </div>
             <div class="position-column-data-details">
             <?php
-                $this->position_admin_column_php_details( $post_id, $block_data, $position_types_disabled['php'] );
-                $this->position_admin_column_shortcode_details( $post_id, $block_data, $position_types_disabled['shortcode'] );
-                $this->position_admin_column_hook_details( $post_id, $block_data, $position, $priority, $position_types_disabled['hook'] );
+                $this->position_admin_column_hook_details( $position, $priority, $position_types_disabled['hook'] );
+                $this->position_admin_column_shortcode_details( $post_id, $position_types_disabled['shortcode'] );
+                $this->position_admin_column_php_details( $post_id, $position_types_disabled['php'] );
             ?>
             </div>
         </div>
         <?php
 
+        // Ensure that blocks without a hook position set are still shown
+        $position_meta = empty( $position ) ? '-' : $position;
 
-
-
-
-
-
-
-
-        $title = sprintf( __( 'The position format on this block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), 'test' );
-
-    	$title = sprintf( __( 'This block is currently set to %s, which has been disabled or is no longer available. Therefore, this block is not displaying. Edit the position to resolve this error.', 'blox' ), 'test' );
-        $meta_data= '';
-
-        $hidden = '<input type="hidden" name="position" value="' . $position . '">';
-
-        echo $hidden;
+        // Set a different meta for error messages so they all display together on sort
+        if ( $globally_disabled || ! in_array( 0, $position_types_disabled ) ) {
+            $position_meta = '-error';
+        }
 
 		// Save our position meta values separately for sorting
-		update_post_meta( $post_id, '_blox_content_blocks_position', $meta_data );
+		update_post_meta( $post_id, '_blox_content_blocks_position', $position_meta );
     }
 
 
-    public function position_admin_column_shortcode_control( $disabled ){
-        if ( ! $disabled ){
-            ?>
-            <div class="position-control shortcode">
-                <div class="position-control-toggle blox-has-tooltip" data-position-type="shortcode" aria-label="<?php _e( 'View block shortcode');?>">
-                    <span class="blox-icon blox-icon-shortcode">
-                        <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
-                    </span>
-                    <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
-                </div>
-            </div>
-            <?php
-        }
-    }
-
-    public function position_admin_column_php_control( $disabled ){
-        if ( ! $disabled ){
-            ?>
-            <div class="position-control php">
-                <div class="position-control-toggle blox-has-tooltip" data-position-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
-                    <span class="dashicons dashicons-editor-code"></span>
-                    <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
-                </div>
-            </div>
-            <?php
-        }
-    }
-
+    /**
+     * Print hook position option control in the admin column
+     *
+     * @since 2.0.0
+     *
+     * @param string $postion  The set hook position
+     * @param bool $disabled   Indicates if position option is disabled or not
+     */
     public function position_admin_column_hook_control( $position, $disabled ){
         if ( ! $disabled ){
 
             // Show warning icon if hook is not available
             $icon = $this->is_hook_available( $position ) ? 'dashicons-info' : 'dashicons-warning';
+
+            // If no hook is selected (i.e. new post), just show an mdash
+            $position = empty( $position ) ? '—' : $position;
 
             ?>
             <div class="position-control hook">
@@ -694,11 +659,99 @@ class Blox_Position {
         }
     }
 
-    public function position_admin_column_shortcode_details( $id, $block_data, $disabled ) {
+
+    /**
+     * Print shortcode position option control in the admin column
+     *
+     * @since 2.0.0
+     *
+     * @param bool $disabled  Indicates if position option is disabled or not
+     */
+    public function position_admin_column_shortcode_control( $disabled ){
+        if ( ! $disabled ){
+            ?>
+            <div class="position-control shortcode">
+                <div class="position-control-toggle blox-has-tooltip" data-position-type="shortcode" aria-label="<?php _e( 'View block shortcode');?>">
+                    <span class="blox-icon blox-icon-shortcode">
+                        <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
+                    </span>
+                    <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+
+    /**
+     * Print php position option control in the admin column
+     *
+     * @since 2.0.0
+     *
+     * @param bool $disabled  Indicates if position option is disabled or not
+     */
+    public function position_admin_column_php_control( $disabled ){
+        if ( ! $disabled ){
+            ?>
+            <div class="position-control php">
+                <div class="position-control-toggle blox-has-tooltip" data-position-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
+                    <span class="dashicons dashicons-editor-code"></span>
+                    <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+
+    /**
+     * Print hook position option details in the admin column
+     *
+     * @since 2.0.0
+     *
+     * @param string $postion  The set hook position
+     * @param string $priorty  The set hook priority
+     * @param bool $disabled   Indicates if position option is disabled or not
+     */
+    public function position_admin_column_hook_details( $position, $priority, $disabled ) {
+        if ( ! $disabled ){
+            ?>
+            <div class="position-details hook">
+                <?php
+                // Print hook availablity warning
+                if ( ! $this->is_hook_available( $position ) && ! empty( $position ) ) {
+                    echo '<div class="blox-alert-box">' . sprintf( __( 'The current saved hook is no longer available. It was likely disabled via the Blox %1$sposition settings%2$s. Choose a new hook or reenable the saved one.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                } else if ( empty( $position ) ) {
+                    echo '<div class="blox-alert-box">' . sprintf( __( 'It does not appear that a position hook as been set for this block. Edit the block and choose a hook, or simply disable hook positioning to avoid this error message.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                }
+                ?>
+                <div class="position-details-sub-container mobile-only">
+                    <div class="title"><?php echo __( 'Hook', 'blox' );?></div>
+                    <div class="meta"><?php echo $position;?></div>
+                </div>
+                <div class="position-details-sub-container">
+                    <div class="title"><?php echo __( 'Priority', 'blox' );?></div>
+                    <div class="meta"><?php echo $priority;?></div>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+
+    /**
+     * Print shortcode position option details in the admin column
+     *
+     * @since 2.0.0
+     *
+     * @param string $post_id  The block (post) id
+     * @param bool $disabled   Indicates if position option is disabled or not
+     */
+    public function position_admin_column_shortcode_details( $post_id, $disabled ) {
         if ( ! $disabled ){
             ?>
             <div class="position-details shortcode">
-                <div class="blox-code">[blox id="<?php echo 'global_' . $id; ?>"]</div>
+                <div class="blox-code">[blox id="<?php echo 'global_' . $post_id; ?>"]</div>
                 <div class="blox-description">
                     <?php _e( 'Copy and paste the above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox' ); ?>
                 </div>
@@ -707,11 +760,20 @@ class Blox_Position {
         }
     }
 
-    public function position_admin_column_php_details( $id, $block_data, $disabled ) {
+
+    /**
+     * Print php position option details in the admin column
+     *
+     * @since 2.0.0
+     *
+     * @param string $post_id  The block (post) id
+     * @param bool $disabled   Indicates if position option is disabled or not
+     */
+    public function position_admin_column_php_details( $post_id, $disabled ) {
         if ( ! $disabled ){
             ?>
             <div class="position-details php">
-                <div class="blox-code">blox_display_block( "<?php echo 'global_' . $id; ?>" );</div>
+                <div class="blox-code">blox_display_block( "<?php echo 'global_' . $post_id; ?>" );</div>
                 <div class="blox-description">
                     <?php _e( 'Copy and paste the above PHP code into any of your theme files. Visibility and location settings are respected when using PHP positioning.', 'blox' ); ?>
                 </div>
@@ -720,21 +782,6 @@ class Blox_Position {
         }
     }
 
-    public function position_admin_column_hook_details( $id, $block_data, $position, $priority,$disabled ) {
-        if ( ! $disabled ){
-            ?>
-            <div class="position-details hook">
-                <?php
-                // Print hook availablity warning
-                if ( ! $this->is_hook_available( $position ) ) {
-                    echo '<div class="blox-alert-box">' . sprintf( __( 'The current saved hook is no longer available. It was likely disabled via the Blox %1$sposition settings%2$s. Choose a new hook or reenable the saved one.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
-                }
-                ?>
-                <?php echo __( 'Hook Priority', 'blox' ) . ': ' . $priority;?>
-            </div>
-            <?php
-        }
-    }
 
     /**
      * Tell Wordpress that the position column is sortable
@@ -767,133 +814,6 @@ class Blox_Position {
 
 		return $vars;
 	}
-
-
-    /**
-     * Add position settings to the quickedit screen for Blox
-     * @TODO NEED UPDATING!!!!!!!!!!!!!!
-     *
-     * @since 1.3.0
-     *
-     * @param string $post_type  Current post type which will always be blox
-     * @param string $type       Either 'bulk' or 'quick'
-     */
-    function quickedit_bulkedit_settings( $post_type, $type ) {
-
-        $default_position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
-        $default_priority = esc_attr( blox_get_option( 'global_default_priority', 15 ) );
-
-        ?>
-        <fieldset class="inline-edit-col-left custom">
-            <div class="inline-edit-col column-position">
-
-                <span class="title"><?php _e( 'Position', 'blox' ); ?></span>
-
-                <div class="quickedit-settings">
-                    <div class="quickedit-position-format">
-                        <label>
-                            <select name="position_format">
-                                <option value="hook"><?php _e( 'Hook', 'blox' ); ?></option>
-                                <?php
-
-                                $postion_options = apply_filters( 'blox_position_formats', array() );
-
-                                if ( ! empty( $postion_options ) ) {
-                                    foreach ( $postion_options as $format => $title ) {
-                                        echo '<option value="' . $format . '">' . $title . '</option>';
-                                    }
-                                }
-                                ?>
-                            </select>
-                            <span><?php _e( 'Format', 'blox' ); ?></span>
-                        </label>
-                    </div>
-                    <div class="quickedit-position-format-type hook" style="display:none">
-
-                        <label>
-                            <select name="position_type">
-                                <option value="default"><?php _e( 'Default', 'blox' ); ?></option>
-                                <option value="custom"><?php _e( 'Custom', 'blox' ); ?></option>
-                            </select>
-                            <span><?php _e( 'Hook Type', 'blox' ); ?></span>
-                        </label>
-
-                        <div class="quickedit-position-hook-default" style="display:none">
-                            <p class="description">
-                                <?php echo sprintf( __( 'The default position is %1$s and the default priority is %2$s. Modify defaults by visiting the %3$sDefaults%4$s setting page.', 'blox' ), '<strong>' . $default_position . '</strong>', '<strong>' . $default_priority . '</strong>', '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=default' ) . '">', '</a>' ); ?>
-                            </p>
-                        </div>
-
-                        <div class="quickedit-position-hook-custom" style="display:none">
-                            <select name="custom_position">
-                                <?php
-                                /*
-                                foreach ( $this->get_genesis_hooks() as $sections => $section ) { ?>
-                                    <optgroup label="<?php echo $section['name']; ?>">
-                                        <?php foreach ( $section['hooks'] as $hooks => $hook ) { ?>
-                                            <option value="<?php echo $hooks; ?>" title="<?php echo $hook['title']; ?>"><?php echo $hook['name']; ?></option>
-                                        <?php } ?>
-                                    </optgroup>
-                                <?php } */
-                                ?>
-
-                            </select>
-
-                            <label>
-                                <input type="text" name="custom_priority" class="small" value="" />
-                                <span><?php _e( 'Priority', 'blox' ); ?></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <?php
-                    // Allow add-ons, or developers, to hook in additional settings
-                    do_action( 'blox_quickedit_add_settings_position', $post_type );
-                    ?>
-                </div>
-            </div>
-        </fieldset>
-        <?php
-    }
-
-
-    /**
-     * Save quickedit position settings
-     * @TODO NEEDS UPDATING
-     *
-     * @since 1.3.0
-     *
-     * @param array $settings  Array of all current block settings
-     * @param array $request   Array of all requested data ready for saving (uses $_REQUEST)
-     * @param string $type       Either 'bulk' or 'quick'
-     *
-     * @return array $settings Array of updated block settings
-     */
-    function quickedit_bulkedit_save_settings( $settings, $request, $type ) {
-
-        $settings['position']['position_format']    = esc_attr( $request['position_format'] );
-        $settings['position']['position_type']      = esc_attr( $request['position_type'] );
-		$settings['position']['custom']['position'] = isset( $request['custom_position'] ) ? esc_attr( $request['custom_position'] ) : 'genesis_after_header';
-		$settings['position']['custom']['priority'] = isset( $request['custom_position'] ) ? absint( $request['custom_priority'] ) : 15;
-
-        return $settings;
-    }
-
-
-    /**
-     * Helper method for retrieving all Genesis hooks.
-     * @TODO REMOVE
-     *
-     * @since 1.0.0
-     *
-     * @return array Array of all Genesis hooks.
-     *//*
-    public function get_genesis_hooks() {
-
-        $instance = Blox_Common::get_instance();
-        return $instance->get_genesis_hooks();
-
-    }*/
 
 
     /**

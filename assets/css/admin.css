@@ -122,12 +122,17 @@
 .striped>tbody>:nth-child(odd) .blox-alert-box {
 	background: #ffffff;
 }
-
-.post-type-blox .position-control.hook {
-	display: block;
-	margin-right: 50px;
+.position-column-data-controls {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-pack: justify;
+	justify-content: normal;
+	-ms-flex-align: center;
 }
-
+.post-type-blox .position-control.hook {
+	flex: 1;
+	min-width: 0;
+}
 .post-type-blox .position-control .position-hook-slug {
 	max-width: 80%;
     overflow: hidden;
@@ -143,9 +148,13 @@
 .post-type-blox .position-control .blox-has-tooltip {
 	color: #82878c;
 }
-
 .post-type-blox .position-control.hook .blox-has-tooltip {
 	vertical-align: top;
+	float: right;
+}
+.post-type-blox .position-control.hook .dashicons {
+	font-size: 18px;
+	margin-top: 1px;
 }
 .post-type-blox .position-control.hook .dashicons-warning {
 	color: #a00;
@@ -153,10 +162,10 @@
 
 .post-type-blox .position-control.php,
 .post-type-blox .position-control.shortcode {
-	float: right;
-	margin: 0 4px;
+    flex: 0 0 22px;
 	cursor: pointer;
 	position: relative;
+	text-align: center;
 }
 
 .post-type-blox .position-control.shortcode .blox-icon-shortcode {
@@ -195,8 +204,42 @@
 	font-style: italic;
 }
 
+.position-details-sub-container {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-ms-flex-align: center;
+	align-items: center;
+	width: 100%;
+	margin-bottom: 5px;
+}
+.position-details-sub-container.mobile-only {
+	display: none;
+}
+.position-details-sub-container .title {
+	font-weight: bold;
+}
+.position-details-sub-container .meta {
+	overflow: hidden;
+	padding: 0 5px 0 15px;
+	text-align: right
+}
 
-
+@media screen and (max-width: 1050px) {
+	.post-type-blox .position-control .position-hook-slug {
+		display: none;
+	}
+	.post-type-blox .position-column-data-controls {
+		width: 72px;
+	}
+	.post-type-blox .position-column-data-details {
+		padding-top: 20px;
+	}
+	.position-details-sub-container.mobile-only {
+		display: flex;
+	}
+}
 
 
 /* Begin - Button Tooltip */
