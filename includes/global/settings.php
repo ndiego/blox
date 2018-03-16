@@ -732,6 +732,8 @@ class Blox_Settings {
                             'type'  => 'checkbox',
                             'sanitize' => 'checkbox',
                         ),
+                        /*
+                         * As of v2.0.0 PHP positioning is not available for local blocks, but perhaps in the future...
                         'local_disable_php_positioning' => array(
                             'id'   => 'local_disable_php_positioning',
                             'name'  => __( 'PHP Positioning', 'blox' ),
@@ -740,6 +742,7 @@ class Blox_Settings {
                             'type'  => 'checkbox',
                             'sanitize' => 'checkbox',
                         ),
+                        */
 /* TODO Remove
                         'global_default_position' => array(
                             'id'   => 'global_default_position',

@@ -141,7 +141,7 @@ class Blox_Position {
         $position_types_disabled = array(
             'hook'      => blox_get_option( $scope . '_disable_hook_positioning', false ),
             'shortcode' => blox_get_option( $scope . '_disable_shortcode_positioning', false ),
-            'php'       => blox_get_option( $scope . '_disable_php_positioning', false )
+            'php'       => blox_get_option( $scope . '_disable_php_positioning', true ) // Defaults to true because as of v2.0.0 local blocks don't allow PHP positioning
         );
 
         if ( ! $position_types_disabled['hook'] ) {
@@ -152,7 +152,8 @@ class Blox_Position {
             $this->print_position_shortcode_settings( $id, $name_prefix, $get_prefix, $global, $scope );
         }
 
-        if ( ! $position_types_disabled['php'] ) {
+        // PHP positioning is only available for global blocks
+        if ( ! $position_types_disabled['php'] && $scope == 'global' ) {
             $this->print_position_php_settings( $id, $name_prefix, $get_prefix, $global, $scope );
         }
 

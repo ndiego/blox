@@ -82,7 +82,7 @@ class Blox_Shortcode {
             return;
         }
 
-        // Define the scope
+        // Define the scope. If no scope, not a valid id, so return
         if ( strpos( $id, 'global' ) !== false ) {
             $scope = 'global';
         } else if ( strpos( $id, 'local' ) !== false ) {
@@ -94,12 +94,18 @@ class Blox_Shortcode {
         // Trim the id to remove the scope
         $id = substr( $id, strlen( $scope ) + 1 );
 
-        // Get the global and local enable flags
-        $global_enable = blox_get_option( 'global_enable', false );
-        $local_enable  = blox_get_option( 'local_enable', false );
+        // If $scope blocks have been globally disabled, return
+        if ( ! blox_get_option( $scope . '_enable', false ) ) {
+            return;
+        }
+
+        // If shortcodes have been disabled for $scope blocks, return
+        if ( blox_get_option( $scope . '_disable_shortcode_positioning', false ) ) {
+            return;
+        }
 
         // Get the block data
-        if ( $scope == 'global' &&  $global_enable ) {
+        if ( $scope == 'global' ) {
 
             $block  = get_post_meta( $id, '_blox_content_blocks_data', true );
             $global = true;
@@ -109,9 +115,12 @@ class Blox_Shortcode {
                 return;
             }
 
-        } else if ( $scope == 'local' && $local_enable && is_singular() ) {
+        } else if ( $scope == 'local' ) {
 
             // Local blocks only run on singular pages, so make sure it is a singular page before proceding and also that local blocks are enabled
+            if ( ! is_singular() ) {
+                return;
+            }
 
             // Get the post type of the current page, and our array of enabled post types
             $post_type     = get_post_type( get_the_ID() );
@@ -119,27 +128,33 @@ class Blox_Shortcode {
             $global 	   = false;
 
             // Make sure local blocks are allowed on this post type
-            if ( ! empty( $enabled_pages ) && in_array( $post_type, $enabled_pages ) ) {
-
-                // Get all of the Local Content Blocks
-                $local_blocks = get_post_meta( get_the_ID(), '_blox_content_blocks_data', true );
-
-                // Get the block data, and if there is no local block with that id, bail
-                if ( ! empty( $local_blocks[$id] ) ) {
-                    $block = $local_blocks[$id];
-                } else {
-                    return;
-                }
+            if ( empty( $enabled_pages ) || ! in_array( $post_type, $enabled_pages ) ) {
+                return;
             }
+
+            // Get all of the Local Content Blocks
+            $local_blocks = get_post_meta( get_the_ID(), '_blox_content_blocks_data', true );
+
+            // Get the block data, and if there is no local block with that id, bail
+            if ( ! empty( $local_blocks[$id] ) ) {
+                $block = $local_blocks[$id];
+            } else {
+                return;
+            }
+
+            if ( $block['position']['shortcode']['disable'] ) {
+                return;
+            }
+
         } else {
             return;
         }
 
         // Check to make sure the position format it set to shortcode, and if not, don't show the content
-        $position_format = ! empty( $block['position']['position_format'] ) ? esc_attr( $block['position']['position_format'] ) : '';
+        /*$position_format = ! empty( $block['position']['position_format'] ) ? esc_attr( $block['position']['position_format'] ) : '';
         if ( $position_format != 'shortcode' ) {
             return;
-        }
+        }*/
 
         // The display test begins as true
         $display_test = true;
@@ -152,6 +167,7 @@ class Blox_Shortcode {
 
             // We need to use output buffering here to ensure the slider content is contained in the wrapper div
             ob_start();
+            echo print_r($block);
             blox_frontend_content( null, array( $id, $block, $global ) );
             $output = ob_get_clean();
 
