@@ -76,7 +76,7 @@ class Blox_Visibility {
 		add_action( 'blox_content_block_meta', array( $this, 'visibility_content_block_meta' ), 10, 1 );
 
 		// Run visibilty test on the frontend
-		add_filter( 'blox_display_test', array( $this, 'run_visibility_display_test' ), 5, 4 );
+		add_filter( 'blox_display_test', array( $this, 'run_visibility_display_test' ), 5, 5 );
     }
 
 
@@ -454,12 +454,13 @@ class Blox_Visibility {
 	 *
      * @since 1.0.0
 	 *
-	 * @param bool $display_test Test for determining whether the block should be displayed
-	 * @param int $id            The block id, if global, id = $post->ID otherwise it is a random local id
-	 * @param array $block       Contains all of our block settings data
-	 * @param bool $global       Tells whether our block is global or local
+	 * @param bool $display_test     Test for determining whether the block should be displayed
+	 * @param int $id                The block id, if global, id = $post->ID otherwise it is a random local id
+	 * @param array $block           Contains all of our block settings data
+	 * @param bool $global           Tells whether our block is global or local
+     * @param string $position_type  Identifies for what position type you are running this test for
 	 */
-	public function run_visibility_display_test( $display_test, $id, $block, $global ) {
+	public function run_visibility_display_test( $display_test, $id, $block, $global, $position_type ) {
 
 		// If the display test is already false, bail...
 		if ( $display_test == false ) {

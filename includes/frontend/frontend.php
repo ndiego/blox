@@ -100,7 +100,7 @@ class Blox_Frontend {
 					$display_test = true;
 
 					// Let all available tests filter the test parameter
-					$display_test = apply_filters( 'blox_display_test', $display_test, $id, $block, $global );
+					$display_test = apply_filters( 'blox_display_test', $display_test, $id, $block, $global, 'hook' );
 
 					// If the test parameter is still true, proceed with block positioning
 					if ( $display_test == true ) {
@@ -134,7 +134,7 @@ class Blox_Frontend {
 						$display_test = true;
 
 						// Let all available tests filter the test parameter
-						$display_test = apply_filters( 'blox_display_test', $display_test, $id, $block, $global );
+						$display_test = apply_filters( 'blox_display_test', $display_test, $id, $block, $global, 'hook' );
 
 						// If the test parameter is still true, proceed with block positioning
 						if ( $display_test == true ) {

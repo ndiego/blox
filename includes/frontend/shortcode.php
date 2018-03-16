@@ -110,7 +110,7 @@ class Blox_Shortcode {
             $block  = get_post_meta( $id, '_blox_content_blocks_data', true );
             $global = true;
 
-            // If there is no block associated with the id given, bail
+            // If there is no block associated with the id given, return
             if ( empty( $block ) ) {
                 return;
             }
@@ -135,14 +135,10 @@ class Blox_Shortcode {
             // Get all of the Local Content Blocks
             $local_blocks = get_post_meta( get_the_ID(), '_blox_content_blocks_data', true );
 
-            // Get the block data, and if there is no local block with that id, bail
+            // Get the block data, and if there is no local block with that id, return
             if ( ! empty( $local_blocks[$id] ) ) {
                 $block = $local_blocks[$id];
             } else {
-                return;
-            }
-
-            if ( $block['position']['shortcode']['disable'] ) {
                 return;
             }
 
@@ -150,24 +146,26 @@ class Blox_Shortcode {
             return;
         }
 
-        // Check to make sure the position format it set to shortcode, and if not, don't show the content
-        /*$position_format = ! empty( $block['position']['position_format'] ) ? esc_attr( $block['position']['position_format'] ) : '';
-        if ( $position_format != 'shortcode' ) {
+        // If the disable shortcode setting is set, return
+        if ( isset( $block['position']['shortcode']['disable'] ) && $block['position']['shortcode']['disable'] ) {
             return;
-        }*/
+        }
 
         // The display test begins as true
         $display_test = true;
 
         // Let all available tests filter the test parameter
-        $display_test = apply_filters( 'blox_display_test', $display_test, $id, $block, $global );
+        $display_test = apply_filters( 'blox_display_test', $display_test, $id, $block, $global, 'shortcode' );
 
         // If the test parameter is still true, proceed with block positioning
         if ( $display_test == true ) {
 
             // We need to use output buffering here to ensure the slider content is contained in the wrapper div
             ob_start();
-            echo print_r($block);
+
+            // @TODO remove
+            //echo print_r($block);
+
             blox_frontend_content( null, array( $id, $block, $global ) );
             $output = ob_get_clean();
 
