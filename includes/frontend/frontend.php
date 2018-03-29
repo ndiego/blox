@@ -136,6 +136,7 @@ class Blox_Frontend {
 			}
 		}
 
+        // @TODO remove
         //echo print_r( $this->display_test );
         //echo print_r( $this->active_content_types );
 
@@ -148,11 +149,9 @@ class Blox_Frontend {
    			// Also load our global custom CSS if there is any...
    			add_action( 'wp_head', array( $this, 'print_global_custom_css' ), 10 );
 		}
-
-
 	}
 
-    public function block_display_testing( $id, $block, $global  ) {
+    public function block_display_testing( $id, $block, $global ) {
 
         // If there is no block data associated with the id given, return
         if ( empty( $block ) ) return;
@@ -160,10 +159,10 @@ class Blox_Frontend {
         // Get display test results
         $test_results = apply_filters( 'blox_display_test', array(), $id, $block, $global );
 
-        $id_scope = $global ? 'global_' : 'local_';
+        $scope = $global ? 'global' : 'local';
 
         // Let all available tests filter the test parameter
-        $this->display_test[$id_scope . $id] = $test_results;
+        $this->display_test[$scope . '_' . $id] = $test_results;
 
         // PHP and shortcode blocks can override location tests, but not visibility, so use that to check for content types
         if ( $test_results['visibility'] ) {
@@ -183,58 +182,65 @@ class Blox_Frontend {
 	 */
 	public function position_content_block( $id, $block, $global ) {
 
+        $scope = $global ? 'global' : 'local';
+
+        // If hook positioning has been disabled for $scope blocks, return
+        if ( blox_get_option( $scope . '_disable_hook_positioning', false ) ) return;
+
+        // Make sure our block is represented in the test
+        if ( ! array_key_exists( $scope . '_' . $id, $this->display_test ) || empty( $this->display_test[$scope . '_' . $id] ) ) return;
+
+        // If there is no block data associated with the id given, return
+        if ( empty( $block ) ) return;
+
+        // If the disable hook positioning setting is set, return
+        if ( isset( $block['position']['hook']['disable'] ) && $block['position']['hook']['disable'] ) return;
+
+        // @TODO everything below, need to create fallbacks  
+
         // Get block position meta data
 		$position_data = $block['position'];
 
-        // Get the position format, default to 'hook' if nothing is set
-        $position_format = ! empty( $position_data['position_format'] ) ? esc_attr( $position_data['position_format'] ) : 'hook';
+		// Determine if we are using the default position or a custom position, and then set position and priority
+		//if ( empty( $position_data['position_type'] ) || $position_data['position_type'] == 'default' ) {
+		//	$position = $global ? blox_get_option( 'global_default_position', 'genesis_after_header' ) : blox_get_option( 'local_default_position', 'genesis_after_header' );
+			//$priority = $global ? blox_get_option( 'global_default_priority', 15 ) : blox_get_option( 'local_default_priority', 15 );
+		//} else {
+			$position = ! empty( $position_data['custom']['position'] ) ? $position_data['custom']['position'] : 'genesis_after_header';
+			$priority = ! empty( $position_data['custom']['priority'] ) ? $position_data['custom']['priority'] : 1;
+		//}
 
-        if ( $position_format != 'hook' ) {
+		// If hook defaults are enabled we need to make sure the block is set to a position that is one of the defaults
+		$default_hooks_enabled = blox_get_option( 'default_hooks', false );
 
-            // Do something for non-hook position formats. Most formats will take care of this themselves
+		// Make sure hook defaults are enabled, and if so, run test
+    	if ( isset( $default_hooks_enabled['enable'] ) && $default_hooks_enabled['enable'] == 1 ) {
 
-        } else {
+    		$hook_default_test = array();
 
-    		// Determine if we are using the default position or a custom position, and then set position and priority
-    		//if ( empty( $position_data['position_type'] ) || $position_data['position_type'] == 'default' ) {
-    		//	$position = $global ? blox_get_option( 'global_default_position', 'genesis_after_header' ) : blox_get_option( 'local_default_position', 'genesis_after_header' );
-    			//$priority = $global ? blox_get_option( 'global_default_priority', 15 ) : blox_get_option( 'local_default_priority', 15 );
-    		//} else {
-    			$position = ! empty( $position_data['custom']['position'] ) ? $position_data['custom']['position'] : 'genesis_after_header';
-    			$priority = ! empty( $position_data['custom']['priority'] ) ? $position_data['custom']['priority'] : 1;
-    		//}
-
-    		// If hook defaults are enabled we need to make sure the block is set to a position that is one of the defaults
-    		$default_hooks_enabled = blox_get_option( 'default_hooks', false );
-
-    		// Make sure hook defaults are enabled, and if so, run test
-        	if ( isset( $default_hooks_enabled['enable'] ) && $default_hooks_enabled['enable'] == 1 ) {
-
-        		$hook_default_test = array();
-
-        		foreach ( $this->get_genesis_hooks() as $sections => $section ) {
-    				if ( isset( $section['hooks'][$position] ) ) {
-    					$hook_default_test[] = 'true';
-    				}
-        		}
-
-        		// If the block is set to a postition that is not apart of the hook defaults, bail out
-        		if ( ! in_array( 'true', $hook_default_test ) ) {
-        			return;
-        		}
-        	}
-
-    		// Action hook for modifying/adding position settings
-    		do_action( 'blox_content_block_position', $id, $block, $global );
-
-    		// Allows you to disable blocks with code if location and visibility settings are not doing it for you
-    		$disable = apply_filters( 'blox_disable_content_blocks', false, $position, $id, $block, $global );
-
-    		if ( ! $disable ) {
-    			// Load the final "printing" function
-    			add_action( $position, array( new Blox_Action_Storage( array( $id, $block, $global ) ), 'blox_frontend_content' ), $priority, 1 );
+    		foreach ( $this->get_genesis_hooks() as $sections => $section ) {
+				if ( isset( $section['hooks'][$position] ) ) {
+					$hook_default_test[] = 'true';
+				}
     		}
-        }
+
+    		// If the block is set to a postition that is not apart of the hook defaults, bail out
+    		if ( ! in_array( 'true', $hook_default_test ) ) {
+    			return;
+    		}
+    	}
+
+		// Action hook for modifying/adding position settings
+		do_action( 'blox_content_block_position', $id, $block, $global );
+
+		// Allows you to disable blocks with code if location and visibility settings are not doing it for you
+		$disable = apply_filters( 'blox_disable_content_blocks', false, $position, $id, $block, $global );
+
+		if ( ! $disable ) {
+			// Load the final "printing" function
+			add_action( $position, array( new Blox_Action_Storage( array( $id, $block, $global ) ), 'blox_frontend_content' ), $priority, 1 );
+		}
+
 	}
 
 
