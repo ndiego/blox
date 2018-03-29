@@ -13,9 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function blox_display_block( $id ) {
 
-    // If PHP positioning have been disabled for global blocks, return
-    if ( blox_get_option( 'global_disable_php_positioning', false ) ) return;
-
     // Check if there is an id specified
     if ( empty( $id ) ) return;
 
@@ -24,6 +21,9 @@ function blox_display_block( $id ) {
 
     // Define the scope. make sure it is global since only global blocks can use PHP positioning. If no scope, not a valid id, so return
     if ( strpos( $id, 'global' ) === false ) return;
+
+    // If PHP positioning have been disabled for global blocks, return
+    if ( blox_get_option( 'global_disable_php_positioning', false ) ) return;
 
     // Get the display test results from the frontend file
     $display_test = Blox_Frontend::get_instance()->display_test;

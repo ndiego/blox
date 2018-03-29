@@ -91,36 +91,31 @@ class Blox_Shortcode_Positioning {
             return;
         }
 
-        // Trim the id to remove the scope
-        $id = substr( $id, strlen( $scope ) + 1 );
-
-        // If $scope blocks have been globally disabled, return
-        if ( ! blox_get_option( $scope . '_enable', false ) ) {
-            return;
-        }
-
         // If shortcodes have been disabled for $scope blocks, return
-        if ( blox_get_option( $scope . '_disable_shortcode_positioning', false ) ) {
-            return;
-        }
+        if ( blox_get_option( $scope . '_disable_shortcode_positioning', false ) ) return;
+
+        // Get the display test results from the frontend file
+        $display_test = Blox_Frontend::get_instance()->display_test;
+
+        // Make sure our block is represented in the test
+        if ( ! array_key_exists( $id, $display_test ) || empty( $display_test[$id] ) ) return;
+
+        // Trim the id to remove the scope
+        $true_id = substr( $id, strlen( $scope ) + 1 );
 
         // Get the block data
         if ( $scope == 'global' ) {
 
-            $block  = get_post_meta( $id, '_blox_content_blocks_data', true );
+            $block  = get_post_meta( $true_id, '_blox_content_blocks_data', true );
             $global = true;
 
             // If there is no block associated with the id given, return
-            if ( empty( $block ) ) {
-                return;
-            }
+            if ( empty( $block ) ) return;
 
         } else if ( $scope == 'local' ) {
 
             // Local blocks only run on singular pages, so make sure it is a singular page before proceding and also that local blocks are enabled
-            if ( ! is_singular() ) {
-                return;
-            }
+            if ( ! is_singular() ) return;
 
             // Get the post type of the current page, and our array of enabled post types
             $post_type     = get_post_type( get_the_ID() );
@@ -136,8 +131,8 @@ class Blox_Shortcode_Positioning {
             $local_blocks = get_post_meta( get_the_ID(), '_blox_content_blocks_data', true );
 
             // Get the block data, and if there is no local block with that id, return
-            if ( ! empty( $local_blocks[$id] ) ) {
-                $block = $local_blocks[$id];
+            if ( ! empty( $local_blocks[$true_id] ) ) {
+                $block = $local_blocks[$true_id];
             } else {
                 return;
             }
@@ -146,31 +141,39 @@ class Blox_Shortcode_Positioning {
             return;
         }
 
+        // If there is no block data associated with the id given, return
+        if ( empty( $block ) ) return;
+
         // If the disable shortcode setting is set, return
-        if ( isset( $block['position']['shortcode']['disable'] ) && $block['position']['shortcode']['disable'] ) {
-            return;
+        if ( isset( $block['position']['shortcode']['disable'] ) && $block['position']['shortcode']['disable'] ) return;
+
+        // Run our display test (we need this due to the ability of PHP blocks to ignore the location tests)
+        $display_test_results = array_count_values( $display_test[$id] );
+
+        if ( array_key_exists( 0, $display_test_results ) ) {
+
+            // Implies visibility or another test, other than location, has failed
+            if ( $display_test_results[0] > 1 ) return;
+
+            // If we only have one failure, check if it is a location failure, then see if we are ignoring the location test
+            if ( $display_test_results[0] == 1 ) {
+                if ( isset( $display_test[$id]['location'] ) && $display_test[$id]['location'] == 0 ) {
+                    $ignore_location = isset( $block['position']['shortcode']['ignore_location'] ) ? $block['position']['shortcode']['ignore_location'] : 0;
+                    if ( ! $ignore_location ) return;
+                }
+            } else {
+                return;
+            }
         }
 
-        // The display test begins as true
-        $display_test = true;
+        // Needed specifically for shortcodes
+        // We need to use output buffering here to ensure the slider content is contained in the wrapper div
+        ob_start();
 
-        // Let all available tests filter the test parameter
-        $display_test = apply_filters( 'blox_display_test', $display_test, $id, $block, $global, 'shortcode' );
+        blox_frontend_content( null, array( $id, $block, $global ) );
+        $output = ob_get_clean();
 
-        // If the test parameter is still true, proceed with block positioning
-        if ( $display_test == true ) {
-
-            // We need to use output buffering here to ensure the slider content is contained in the wrapper div
-            ob_start();
-
-            // @TODO remove
-            //echo print_r($block);
-
-            blox_frontend_content( null, array( $id, $block, $global ) );
-            $output = ob_get_clean();
-
-            return $output;
-        }
+        return $output;
     }
 
 
