@@ -219,15 +219,17 @@ class Blox_Main {
         // Load frontend only components.
         if ( ! is_admin() ) {
 
-        	// Class for generating all frontend markup
-			require plugin_dir_path( __FILE__ ) . 'includes/frontend/frontend.php';
+
 
             // Class for rendering blocks via shortcode
             require plugin_dir_path( __FILE__ ) . 'includes/frontend/shortcode.php';
 
-            // Class for rendering blocks via php
-            require plugin_dir_path( __FILE__ ) . 'includes/frontend/php.php';
+
         }
+        // Class for generating all frontend markup
+        require plugin_dir_path( __FILE__ ) . 'includes/frontend/frontend.php';
+        // Class for rendering blocks via php
+        require plugin_dir_path( __FILE__ ) . 'includes/frontend/php.php';
 
         // Setup the Blox license
     	if ( class_exists( 'Blox_License' ) ) {

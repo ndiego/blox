@@ -141,7 +141,7 @@ class Blox_Position {
         $position_types_disabled = array(
             'hook'      => blox_get_option( $scope . '_disable_hook_positioning', false ),
             'shortcode' => blox_get_option( $scope . '_disable_shortcode_positioning', false ),
-            'php'       => blox_get_option( $scope . '_disable_php_positioning', true ) // Defaults to true because as of v2.0.0 local blocks don't allow PHP positioning
+            'php'       => blox_get_option( $scope . '_disable_php_positioning', false ) 
         );
 
         if ( ! $position_types_disabled['hook'] ) {

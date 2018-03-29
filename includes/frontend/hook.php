@@ -3,15 +3,15 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Prints the content blocks to the frontend
+ * Prints the content blocks to the frontend via actiion hook
  *
- * @since 	1.0.0
+ * @since 	2.0.0
  *
  * @package	Blox
  * @author 	Nick Diego
  * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-class Blox_Frontend {
+class Blox_Hook_Positoning {
 
     /**
      * Holds the class object.
@@ -41,21 +41,6 @@ class Blox_Frontend {
      * @var object
      */
     public $base;
-
-
-    /**
-     * Holds an array of our active block content types
-     *
-     * @since 1.0.0
-     *
-     * @var object
-     */
-    public $active_content_types = array();
-
-
-
-
-    public $display_test = array();
 
 
     /**
@@ -101,9 +86,16 @@ class Blox_Frontend {
 					$block  = get_post_meta( $id, '_blox_content_blocks_data', true );
 					$global = true;
 
-                    $this->block_display_testing( $id, $block, $global );
+					// The display test begins as true
+					$display_test = true;
 
-					$this->position_content_block( $id, $block, $global );
+					// Let all available tests filter the test parameter
+					$display_test = apply_filters( 'blox_display_test', $display_test, $id, $block, $global, 'hook' );
+
+					// If the test parameter is still true, proceed with block positioning
+					if ( $display_test == true ) {
+						$this->position_content_block( $id, $block, $global );
+					}
 				}
 			}
 		}
@@ -128,16 +120,20 @@ class Blox_Frontend {
 				if ( ! empty( $local_blocks ) ) {
 					foreach ( $local_blocks as $id => $block ) {
 
-                    	$this->block_display_testing( $id, $block, $global );
+						// The display test begins as true
+						$display_test = true;
 
-						$this->position_content_block( $id, $block, $global );
+						// Let all available tests filter the test parameter
+						$display_test = apply_filters( 'blox_display_test', $display_test, $id, $block, $global, 'hook' );
+
+						// If the test parameter is still true, proceed with block positioning
+						if ( $display_test == true ) {
+							$this->position_content_block( $id, $block, $global );
+						}
 					}
 				}
 			}
 		}
-
-        //echo print_r( $this->display_test );
-        //echo print_r( $this->active_content_types );
 
 		// Now that our blocks have been added (maybe), check to see if we should run wp_enqueue_scripts
 		if ( ! empty( $this->active_content_types ) ) {
@@ -148,28 +144,7 @@ class Blox_Frontend {
    			// Also load our global custom CSS if there is any...
    			add_action( 'wp_head', array( $this, 'print_global_custom_css' ), 10 );
 		}
-
-
 	}
-
-    public function block_display_testing( $id, $block, $global  ) {
-
-        // If there is no block data associated with the id given, return
-        if ( empty( $block ) ) return;
-
-        // Get display test results
-        $test_results = apply_filters( 'blox_display_test', array(), $id, $block, $global );
-
-        $id_scope = $global ? 'global_' : 'local_';
-
-        // Let all available tests filter the test parameter
-        $this->display_test[$id_scope . $id] = $test_results;
-
-        // PHP and shortcode blocks can override location tests, but not visibility, so use that to check for content types
-        if ( $test_results['visibility'] ) {
-            array_push( $this->active_content_types, $block['content']['content_type'] );
-        }
-    }
 
 
 	/**
@@ -186,14 +161,10 @@ class Blox_Frontend {
         // Get block position meta data
 		$position_data = $block['position'];
 
-        // Get the position format, default to 'hook' if nothing is set
-        $position_format = ! empty( $position_data['position_format'] ) ? esc_attr( $position_data['position_format'] ) : 'hook';
+        // Since this block passed all previous tests, it is considered active so pass it's content type to $active_content_types
+        array_push( $this->active_content_types, $block['content']['content_type'] );
 
-        if ( $position_format != 'hook' ) {
 
-            // Do something for non-hook position formats. Most formats will take care of this themselves
-
-        } else {
 
     		// Determine if we are using the default position or a custom position, and then set position and priority
     		//if ( empty( $position_data['position_type'] ) || $position_data['position_type'] == 'default' ) {
@@ -234,7 +205,6 @@ class Blox_Frontend {
     			// Load the final "printing" function
     			add_action( $position, array( new Blox_Action_Storage( array( $id, $block, $global ) ), 'blox_frontend_content' ), $priority, 1 );
     		}
-        }
 	}
 
 
@@ -307,8 +277,8 @@ class Blox_Frontend {
      */
     public static function get_instance() {
 
-        if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Blox_Frontend ) ) {
-            self::$instance = new Blox_Frontend();
+        if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Blox_Hook_Positoning ) ) {
+            self::$instance = new Blox_Hook_Positoning();
         }
 
         return self::$instance;
@@ -316,84 +286,4 @@ class Blox_Frontend {
 }
 
 // Load the frontend class.
-$blox_frontend = Blox_Frontend::get_instance();
-
-
-/**
- * Helper function that get the content from the content block
- * Needs to remain outside the Blox_Frontend class due to Blox_Action_Storage ---> Possibly find work around...
- *
- * @since 1.0.0
- *
- * @param array $args       These are any args associated to the action hook by default
- * @param array $parameters Additional args that we are passing to the action hook (whole point of using Block_Action_Storage)
- */
-function blox_frontend_content( $args, $parameters ) {
-
-	// Reassign the parameters
-	$id 	= $parameters[0];
-	$block	= $parameters[1];
-	$global = $parameters[2];
-
-	// Get the type of block we are working with
-	$block_scope = $global ? 'global' : 'local';
-
-	// Get block settings
-	$content_data = apply_filters( 'blox_frontend_content', $block['content'], $id, $block, $global );
-	$style_data   = apply_filters( 'blox_frontend_style', $block['style'], $id, $block, $global );
-
-	// Get access to some of our helper functions
-	$instance = Blox_Common::get_instance();
-
-	// Get our style setting variables
-    $global_custom_classes      = blox_get_option( 'global_custom_classes', '' );
-    $local_custom_classes       = blox_get_option( 'local_custom_classes', '' );
-    $global_disable_default_css = blox_get_option( 'disable_default_css', '' );
-
-	// Start with no theme
-	$blox_theme = '';
-
-	// Should we include our default styles? If so, add the default theme
-	if ( empty( $global_disable_default_css ) ) {
-		if ( empty( $style_data['disable_default_css'] ) || ! $style_data['disable_default_css'] ) {
-			$blox_theme = 'blox-theme-default';
-		}
-	}
-
-	// If this block has its own custom css, add that before the block is displayed on the page
-	if ( ! empty( $style_data['custom_css'] ) ) {
-		echo '<style type="text/css">' . html_entity_decode( $style_data['custom_css'] ) . '</style>';
-	}
-
-	// Make sure a content type is selected and then print our content block
-	if ( ! empty( $content_data['content_type'] ) ) {
-
-        // Raw content block can be printed without the standard markup, so check for that
-		if ( $content_data['content_type'] == 'raw' && $content_data['raw']['disable_markup'] == 1 ) {
-
-			// Get the block content
-			do_action( 'blox_print_content_' . $content_data['content_type'], $content_data, $id, $block, $global );
-
-		} else {
-
-            $block_id = 'blox_' . $block_scope . '_' . esc_attr( $id );
-
-            $block_class  = 'blox-content-' . esc_attr( $content_data['content_type'] );
-            $block_class .= ' ' . $blox_theme;
-            $block_class .= ' ' . 'blox-scope-' . $block_scope;
-            $block_class .= ! empty( $style_data['custom_classes'] ) ? ( ' ' . $style_data['custom_classes'] ) : '';
-            $block_class .= $block_scope == 'global' ? ( ' ' . $global_custom_classes ) : ( ' ' . $local_custom_classes );
-
-            $enable_wrap = $style_data['enable_wrap'] == 1 ? 'wrap' : '';
-            ?>
-
-			<div id="<?php echo $block_id; ?>" class="blox-container <?php echo $block_class; ?>">
-				<div class="blox-wrap <?php echo $enable_wrap; ?>">
-					<?php do_action( 'blox_print_content_' . $content_data['content_type'], $content_data, $id, $block, $global ); ?>
-				</div>
-			</div>
-
-			<?php
-		}
-	}
-}
+$blox_frontend = Blox_Hook_Positoning::get_instance();

@@ -988,19 +988,13 @@ class Blox_Location {
 	 * @param int $id                The block id, if global, id = $post->ID otherwise it is a random local id
 	 * @param array $block           Contains all of our block settings data
 	 * @param bool $global           Tells whether our block is global or local
-     * @param string $position_type  Identifies for what position type you are running this test for
 	 */
-	public function run_location_display_test( $display_test, $id, $block, $global, $position_type ) {
-
-		// If the display test is already false, bail...
-		if ( $display_test == false ) {
-			return $display_test;
-		}
+	public function run_location_display_test( $display_test, $id, $block, $global ) {
 
 		if ( ! $global ) {
 
 			// This is a local block so no location testing is required, proceed to block positioning
-			return $display_test;
+			$test = true;
 
 		} else {
 
@@ -1012,20 +1006,25 @@ class Blox_Location {
 				if ( $location_data['location_type'] == 'show_selected' ) {
 
 					// Run our show on selected test
-					return $this->begin_location_test( $location_data, $id, $block, $global, 'show' );
+					$test = $this->begin_location_test( $location_data, $id, $block, $global, 'show' );
 
 				} else if ( $location_data['location_type'] == 'hide_selected' ) {
 
 					// Run our hide on selected test
-					return $this->begin_location_test( $location_data, $id, $block, $global, 'hide' );
+					$test = $this->begin_location_test( $location_data, $id, $block, $global, 'hide' );
 
 				} else {
 
 					// If no test is selected, proceed to block positioning
-					return $display_test;
+					$test = true;
 				}
 			}
 		}
+
+        // Set trues to 1 and falses to 0
+        $display_test['location'] = $test ? 1 : 0;
+
+        return $display_test;
 	}
 
 
@@ -1391,7 +1390,6 @@ class Blox_Location {
 
 			// Since we are running a show test, we only show the block if the location_test is true
 			if ( $location_test == true ) {
-				//echo 'hello';
 				return true;
 			} else {
 				return false;

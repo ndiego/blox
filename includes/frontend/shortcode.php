@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @author 	Nick Diego
  * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
-class Blox_Shortcode {
+class Blox_Shortcode_Positioning {
 
     /**
      * Holds the class object.
@@ -183,8 +183,8 @@ class Blox_Shortcode {
 	 */
 	public static function get_instance() {
 
-		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Blox_Shortcode ) ) {
-			self::$instance = new Blox_Shortcode();
+		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Blox_Shortcode_Positioning ) ) {
+			self::$instance = new Blox_Shortcode_Positioning();
 		}
 
 		return self::$instance;
@@ -192,4 +192,4 @@ class Blox_Shortcode {
 }
 
 // Load the main class.
-$blox_shortcode = Blox_Shortcode::get_instance();
+$blox_shortcode = Blox_Shortcode_Positioning::get_instance();

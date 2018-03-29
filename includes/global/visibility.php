@@ -458,14 +458,8 @@ class Blox_Visibility {
 	 * @param int $id                The block id, if global, id = $post->ID otherwise it is a random local id
 	 * @param array $block           Contains all of our block settings data
 	 * @param bool $global           Tells whether our block is global or local
-     * @param string $position_type  Identifies for what position type you are running this test for
 	 */
-	public function run_visibility_display_test( $display_test, $id, $block, $global, $position_type ) {
-
-		// If the display test is already false, bail...
-		if ( $display_test == false ) {
-			return $display_test;
-		}
+	public function run_visibility_display_test( $display_test, $id, $block, $global ) {
 
 		// Get the visibility data
 		$visibility_data = isset( $block['visibility'] ) ? $block['visibility'] : '';
@@ -530,15 +524,20 @@ class Blox_Visibility {
 
 			// If the block passes the visibility test, continue on. If not, the test fails.
 			if ( $visibility_test == true ) {
-				return true;
+			    $test = true;
 			} else {
-				return false;
+			    $test = false;
 			}
 		} else {
 
 			// The visibility data does not exist, so move on to another test
-			return true;
+			$test = true;
 		}
+
+        // Set trues to 1 and falses to 0
+        $display_test['visibility'] = $test ? 1 : 0;
+
+        return $display_test;
 	}
 
 
