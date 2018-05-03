@@ -196,47 +196,26 @@ class Blox_Frontend {
         // Get block position meta data
 		$position_data = $block['position'];
 
-        // @TODO everything below, need to create fallbacks
+        // Get the position and priority settings
+        $position = ! empty( $position_data['hook']['position'] ) ? esc_attr( $position_data['hook']['position'] )  : '';
+        $priority = ! empty( $position_data['hook']['priority'] ) ? esc_attr( $position_data['hook']['priority'] )  : 15;
 
-        // If the block does not have a hook position set, look for old hook settings from Blox v1
-        if ( ! isset( $position_data['hook']['position'] ) || ! empty( $block['position']['hook']['position'] ) ) {
-
-            // Determine if we are using the default position or a custom position, and then set position and priority
-            if ( empty( $position_data['position_type'] ) || $position_data['position_type'] == 'default' ) {
-            	$position = $global ? blox_get_option( 'global_default_position', 'genesis_after_header' ) : blox_get_option( 'local_default_position', 'genesis_after_header' );
-                $priority = $global ? blox_get_option( 'global_default_priority', 15 ) : blox_get_option( 'local_default_priority', 15 );
+        // Handle settings from Blox v1.x
+        if ( isset( $position_data['position_type'] ) ) {
+            if ( $position_data['position_type'] == 'default' ) {
+              $position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
+              $priority = esc_attr( blox_get_option( 'global_default_priority', 15 ) );
             } else {
-                $position = ! empty( $position_data['custom']['position'] ) ? $position_data['custom']['position'] : 'genesis_after_header';
-                $priority = ! empty( $position_data['custom']['priority'] ) ? $position_data['custom']['priority'] : 1;
+              $position = ! empty( $position_data['custom']['position'] ) ? esc_attr( $position_data['custom']['position'] ) : 'genesis_after_header';
+              $priority = ! empty( $position_data['custom']['priority'] ) ? esc_attr( $position_data['custom']['priority'] ) : 15;
             }
-        } else {
-            // There is no old settings, plus there is no new settings, so bail
-            return;
         }
 
-        // If the disable hook positioning setting is set, return
+        // If the disable hook positioning setting is set, bail
         if ( isset( $position_data['hook']['disable'] ) && $position_data['hook']['disable'] ) return;
 
-
-		// If hook defaults are enabled we need to make sure the block is set to a position that is one of the defaults
-		$default_hooks_enabled = blox_get_option( 'default_hooks', false );
-
-		// Make sure hook defaults are enabled, and if so, run test
-    	if ( isset( $default_hooks_enabled['enable'] ) && $default_hooks_enabled['enable'] == 1 ) {
-
-    		$hook_default_test = array();
-
-    		foreach ( $this->get_genesis_hooks() as $sections => $section ) {
-				if ( isset( $section['hooks'][$position] ) ) {
-					$hook_default_test[] = 'true';
-				}
-    		}
-
-    		// If the block is set to a postition that is not apart of the hook defaults, bail out
-    		if ( ! in_array( 'true', $hook_default_test ) ) {
-    			return;
-    		}
-    	}
+        // If no position is set or the selected hook is not available/active bail
+        if ( ! $position || ! $this->is_hook_available( $position ) ) return;
 
 		// Action hook for modifying/adding position settings
 		do_action( 'blox_content_block_position', $id, $block, $global );
@@ -248,7 +227,6 @@ class Blox_Frontend {
 			// Load the final "printing" function
 			add_action( $position, array( new Blox_Action_Storage( array( $id, $block, $global ) ), 'blox_frontend_content' ), $priority, 1 );
 		}
-
 	}
 
 
@@ -295,6 +273,22 @@ class Blox_Frontend {
 			echo '<style type="text/css">'. $custom_css . '</style>';
 		}
 	}
+
+
+    /**
+     * Helper function testing if the passed hook is available to Blox.
+     *
+     * @since 2.0.0
+     *
+     * @param string $hook  The hook we want to test.
+     *
+     * @return bool         Is the hook available or not.
+     */
+    public function is_hook_available( $hook ){
+
+        $instance = Blox_Common::get_instance();
+        return $instance->is_hook_available( $hook );
+    }
 
 
 	/**

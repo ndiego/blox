@@ -298,6 +298,10 @@ ul.blox-columns li {
 	}
 }
 
+.blox-tab-content * {
+	box-sizing: border-box !important;
+}
+
 .blox-tab-content .form-table.position {
 	border-top: 1px solid #dfdfdf;
 	margin-top: 15px !important;
