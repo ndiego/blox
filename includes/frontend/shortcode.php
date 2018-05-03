@@ -170,7 +170,7 @@ class Blox_Shortcode_Positioning {
         // We need to use output buffering here to ensure the slider content is contained in the wrapper div
         ob_start();
 
-        blox_frontend_content( null, array( $id, $block, $global ) );
+        blox_frontend_content( null, array( $true_id, $block, $global ) );
         $output = ob_get_clean();
 
         return $output;
