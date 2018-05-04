@@ -77,6 +77,18 @@ class Blox_Visibility {
 
 		// Run visibilty test on the frontend
 		add_filter( 'blox_display_test', array( $this, 'run_visibility_display_test' ), 5, 5 );
+
+
+
+        // Modify the frontend visibility test based on scheduler settings
+        add_filter( 'blox_content_block_visibility_test', array( $this, 'run_scheduler' ), 10, 4 );
+
+        // Add scheduler meta data to local and global blocks
+        add_filter( 'blox_visibility_meta_data', array( $this, 'scheduler_meta_data' ), 10, 3 );
+
+        // Add necessary scripts and styles
+        add_action( 'blox_metabox_scripts', array( $this, 'enqueue_scripts' ) );
+        add_action( 'blox_metabox_styles', array( $this, 'enqueue_styles' ) );
     }
 
 
@@ -204,6 +216,34 @@ class Blox_Visibility {
 					</td>
 				</tr>
 
+                <tr>
+    				<th scope="row"><?php _e( 'Scheduling', 'blox' ); ?></th>
+    				<td>
+    					<label>
+    						<input type="checkbox" name="<?php echo $name_prefix; ?>[scheduler][enable]" value="1" <?php ! empty( $get_prefix['scheduler']['enable'] ) ? checked( $get_prefix['scheduler']['enable'] ) : ''; ?> >
+    						<?php echo __( 'Check to enable block scheduling', 'blox' ); ?>
+    					</label>
+    				</td>
+    			</tr>
+    			<tr>
+    				<th scope="row"><?php _e( 'Begin Date/Time', 'blox' ); ?></th>
+    				<td>
+    					<input type="text" class="blox-half-text scheduler-date" name="<?php echo $name_prefix; ?>[scheduler][begin]" value="<?php echo ! empty( $get_prefix['scheduler']['begin'] ) ? esc_attr( $get_prefix['scheduler']['begin'] ) : ''; ?>" placeholder="<?php _e( 'Begin Now', 'blox-scheduler' );?>"/>
+    					<div class="blox-description">
+    						<?php echo sprintf( __( 'Enter the date and time (yyyy-mm-dd hh:mm am) you want the block to %1$sbegin%2$s showing. Leave blank to show now.', 'blox' ), '<strong>', '</strong>' ); ?>
+    					</div>
+    				</td>
+    			</tr>
+    			<tr>
+    				<th scope="row"><?php _e( 'End Date/Time', 'blox' ); ?></th>
+    				<td>
+    					<input type="text" class="blox-half-text scheduler-date" name="<?php echo $name_prefix; ?>[scheduler][end]" value="<?php echo ! empty( $get_prefix['scheduler']['end'] ) ? esc_attr( $get_prefix['scheduler']['end'] ) : ''; ?>" placeholder="<?php _e( 'Never End', 'blox-scheduler' );?>"/>
+    					<div class="blox-description">
+    						<?php echo sprintf( __( 'Enter the date and time (yyyy-mm-dd hh:mm am) you want the block to %1$sstop%2$s showing. Leave blank for never.', 'blox' ), '<strong>', '</strong>' ); ?>
+    					</div>
+    				</td>
+    			</tr>
+
 				<?php do_action( 'blox_visibility_settings', $id, $name_prefix, $get_prefix, $global ); ?>
 
 			</tbody>
@@ -237,6 +277,11 @@ class Blox_Visibility {
     			$settings['role']['restrictions'][$role_name] = isset( $name_prefix['role']['restrictions'][$role_name] ) ? 1 : 0;
     		}
         }
+
+        $settings['scheduler']['enable'] = isset( $name_prefix['scheduler']['enable'] ) ? 1 : 0;
+        $settings['scheduler']['begin']  = date( 'Y-m-d g:i a', strtotime( esc_attr( $name_prefix['scheduler']['begin'] ), current_time( 'timestamp' ) ) );
+        $settings['scheduler']['end']    = date( 'Y-m-d g:i a', strtotime( esc_attr( $name_prefix['scheduler']['end'] ), current_time( 'timestamp' ) ) );
+
 
 		return apply_filters( 'blox_save_visibility_settings', $settings, $post_id, $name_prefix, $global );
 	}
@@ -552,6 +597,115 @@ class Blox_Visibility {
      */
 	public function uppercase_first( $string ) {
     	return ucfirst( $string );
+    }
+
+
+    /**
+     * Run the scheduler to see if the block should be shown
+     *
+     * @since 2.0.0
+     *
+     * @param bool $visibility_test The current status of the visibility test
+     * @param int $id       		The block id, if global, id = $post->ID otherwise it is a random local id
+     * @param array $block  		Contains all of our block settings data
+     * @param bool $global  		Tells whether our block is global or local
+     */
+    function run_scheduler( $visibility_test, $id, $block, $global ) {
+
+        $scheduler_enabled = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
+
+        // If scheduling is enabled and the visibility test is already true, continue...
+        if ( $visibility_test == true ) {
+            if ( $scheduler_enabled ) {
+
+                /**
+                * current_time() will return an incorrect date/time if the server or another script sets a non-UTC timezone
+                * (e.g. if server timezone set to LA, current_time() will take another 8 hours off the already adjusted datetime)
+                * Therefore we force UTC time, then get current_time()
+                */
+                //$existing_timezone = date_default_timezone_get();
+                //date_default_timezone_set('UTC');
+
+                $current_time = current_time( 'timestamp' );
+                $begin 		  = strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
+                $end   	 	  = strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
+
+                // Put timezone back in case other scripts rely on it
+                //date_default_timezone_set( $existing_timezone );
+
+                if ( ( '' != $begin && $begin > $current_time ) || ( '' != $end && $end < $current_time ) ) {
+echo 'Current: ' . $current_time . ' Begin: ' . $begin . ' End: ' . $end;
+                    // The block should NOT be shown
+                    return false;
+                } else {
+                    return $visibility_test;
+                }
+            } else {
+                // The scheduler is not enabled so ignore...
+                return $visibility_test;
+            }
+        }
+    }
+
+
+    /**
+     * Add scheduler meta data to both local and global blocks
+     *
+     * @since 2.0.0
+     *
+     * @param bool $visibility_test The current status of the visibility test
+     * @param array $block  		Contains all of our block settings data
+     * @param bool $global  		Tells whether our block is global or local
+     */
+    public function scheduler_meta_data( $output, $block, $global ) {
+
+        $scheduler_enabled = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
+        $clock = '';
+        $separator = $global ? ' &nbsp;–&nbsp; ' : ' &nbsp;&middot&nbsp; ';
+
+        if ( $scheduler_enabled ) {
+
+            $current_time = current_time( 'timestamp' );
+            $begin 		  = strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
+            $end   	 	  = strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
+
+            $begin_text = empty( $block['visibility']['scheduler']['begin'] ) ? 'Now' : $block['visibility']['scheduler']['begin'];
+            $end_text = empty( $block['visibility']['scheduler']['end'] ) ? 'Never' : $block['visibility']['scheduler']['end'];
+
+            if ( ( '' != $begin && $begin > $current_time ) || ( '' != $end && $end < $current_time ) ) {
+                // The block should NOT currently being shown
+                $clock = $separator . '<span class="dashicons dashicons-clock" style="color:#a00;cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
+            } else {
+                $clock = $separator . '<span class="dashicons dashicons-clock" style="cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
+            }
+        }
+
+        $output = $output . $clock;
+
+        return $output;
+    }
+
+
+    /**
+     * Enqueue all necessary scripts
+     *
+     * @since 2.0.0
+     */
+    public function enqueue_scripts() {
+        wp_register_script( 'timepicker-scripts', plugins_url( 'assets/plugins/jqueryui/js/jquery-ui-timepicker-addon.min.js', $this->base->file ), array( 'jquery', 'jquery-ui-core', 'jquery-ui-slider', 'jquery-ui-datepicker' ) );
+        wp_enqueue_script( 'timepicker-scripts' );
+    }
+
+
+    /* Enqueue all necessary styles
+     *
+     * @since 2.0.0
+     */
+    public function enqueue_styles() {
+        wp_register_style( 'jquery-ui-styles', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' );
+        wp_register_style( 'jquery-ui-fresh-theme', plugins_url( 'assets/plugins/jqueryui/css/jquery-ui-fresh.min.css', $this->base->file ) );
+        wp_register_style( 'jquery-timepicker-styles', plugins_url( 'assets/plugins/jqueryui/css/jquery-ui-timepicker-addon.min.css', $this->base->file ), array( 'jquery-ui-styles', 'jquery-ui-fresh-theme' ) );
+        wp_enqueue_style( 'jquery-timepicker-styles' );
     }
 
 

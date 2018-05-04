@@ -193,6 +193,16 @@ class Blox_Frontend {
         // If there is no block data associated with the id given, return
         if ( empty( $block ) ) return;
 
+        // If the disable hook positioning setting is set, bail
+        if ( isset( $position_data['hook']['disable'] ) && $position_data['hook']['disable'] ) return;
+
+        // Run our display test
+        $display_test_results = array_count_values( $this->display_test[$scope . '_' . $id] );
+
+        if ( array_key_exists( 0, $display_test_results ) ) {
+            return;
+        }
+
         // Get block position meta data
 		$position_data = $block['position'];
 
@@ -210,9 +220,6 @@ class Blox_Frontend {
               $priority = ! empty( $position_data['custom']['priority'] ) ? esc_attr( $position_data['custom']['priority'] ) : 15;
             }
         }
-
-        // If the disable hook positioning setting is set, bail
-        if ( isset( $position_data['hook']['disable'] ) && $position_data['hook']['disable'] ) return;
 
         // If no position is set or the selected hook is not available/active bail
         if ( ! $position || ! $this->is_hook_available( $position ) ) return;
