@@ -84,7 +84,8 @@ class Blox_Visibility {
         add_filter( 'blox_content_block_visibility_test', array( $this, 'run_scheduler' ), 20, 4 );
 
         // Add scheduler meta data to local and global blocks
-        add_filter( 'blox_visibility_meta_data', array( $this, 'scheduler_meta_data' ), 10, 3 );
+        // @TODO remove
+        //dd_filter( 'blox_visibility_meta_data', array( $this, 'scheduler_meta_data' ), 10, 3 );
 
         // Add necessary scripts and styles
         add_action( 'blox_metabox_scripts', array( $this, 'enqueue_scripts' ) );
@@ -279,9 +280,8 @@ class Blox_Visibility {
         }
 
         $settings['scheduler']['enable'] = isset( $name_prefix['scheduler']['enable'] ) ? 1 : 0;
-        $settings['scheduler']['begin']  = date( 'Y-m-d g:i a', strtotime( esc_attr( $name_prefix['scheduler']['begin'] ), current_time( 'timestamp' ) ) );
-        $settings['scheduler']['end']    = date( 'Y-m-d g:i a', strtotime( esc_attr( $name_prefix['scheduler']['end'] ), current_time( 'timestamp' ) ) );
-
+        $settings['scheduler']['begin']  = ! empty( $name_prefix['scheduler']['begin'] ) ? date( 'Y-m-d g:i a', strtotime( esc_attr( $name_prefix['scheduler']['begin'] ), current_time( 'timestamp' ) ) ) : '';
+        $settings['scheduler']['end']    = ! empty( $name_prefix['scheduler']['end'] ) ? date( 'Y-m-d g:i a', strtotime( esc_attr( $name_prefix['scheduler']['end'] ), current_time( 'timestamp' ) ) ) : '';
 
 		return apply_filters( 'blox_save_visibility_settings', $settings, $post_id, $name_prefix, $global );
 	}
@@ -308,16 +308,16 @@ class Blox_Visibility {
      * @since 1.0.0
      *
      * @param string $post_id
-     * @param array $block_data
+     * @param array $block
      */
-    public function admin_column_data( $post_id, $block_data ) {
+    public function admin_column_data( $post_id, $block ) {
 
         // Check if global blocks are enabled
 		$global_enable = blox_get_option( 'global_enable', false );
 
 		if ( $global_enable ) {
 
-			if ( ! empty( $block_data['visibility']['global_disable'] ) && $block_data['visibility']['global_disable'] == 1 ) {
+			if ( ! empty( $block['visibility']['global_disable'] ) && $block['visibility']['global_disable'] == 1 ) {
                 $hidden    = '<input type="hidden" name="global_disable" value="1">';
                 $content   = '<span style="color:#a00;font-style:italic;">' . __( 'Disabled', 'blox' ) . '</span>';
                 $meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
@@ -325,7 +325,7 @@ class Blox_Visibility {
 
                 $hidden = '<input type="hidden" name="global_disable" value="0">';
 
-				$type = ! empty( $block_data['visibility']['role']['role_type'] ) ? $block_data['visibility']['role']['role_type'] : 'all';
+				$type = ! empty( $block['visibility']['role']['role_type'] ) ? $block['visibility']['role']['role_type'] : 'all';
 
 				switch ( $type ) {
 					case 'all' :
@@ -338,9 +338,9 @@ class Blox_Visibility {
 						$content = __( 'Private', 'blox' );
 						break;
 					case 'restrict' :
-						if ( ! empty( $block_data['visibility']['role']['restrictions'] ) ) {
+						if ( ! empty( $block['visibility']['role']['restrictions'] ) ) {
 							// Get all of the selected roles, make the first letter capitalized, then print to page
-							$content =  implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) );
+							$content =  implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block['visibility']['role']['restrictions'], 1 ) ) );
 						} else {
 							$content = __( 'No Roles Selected', 'blox' );
 						}
@@ -359,24 +359,29 @@ class Blox_Visibility {
 		}
 
         // Build the output, hidden fields + visible content
-        $output = $hidden . $content;
+        $output = $hidden . $content . $type;
 
         // Print the column output, but first allow add-ons to filter in additional content
-		//echo apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
+		//echo apply_filters( 'blox_visibility_meta_data', $output, $block, true );
+
+        $scheduler_enabled      = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
+        $visible_via_scheduler = $this->is_block_visible_via_scheduler( $block );
 
         ?>
         <div class="visibility-column-data">
         <?php
-            echo apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
+            echo $output;
         ?>
             <div class="visibility-column-data-controls">
             <?php
-
+                $this->visibility_admin_column_roles_control();
+                $this->visibility_admin_column_scheduler_control( $scheduler_enabled, $visible_via_scheduler );
             ?>
             </div>
             <div class="visibility-column-data-details">
             <?php
-
+                $this->visibility_admin_column_roles_details();
+                $this->visibility_admin_column_scheduler_details( $scheduler_enabled, $visible_via_scheduler, $block );
             ?>
             </div>
         </div>
@@ -387,6 +392,136 @@ class Blox_Visibility {
 		// Save our visibility meta values separately to allow for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_visibility', $meta_data );
     }
+
+    public function visibility_admin_column_roles_control() {
+
+    }
+
+    public function visibility_admin_column_roles_details() {
+
+    }
+
+    public function visibility_admin_column_scheduler_control( $scheduler_enabled, $visible_via_scheduler ) {
+
+        $disabled = $visible_via_scheduler ? '' : 'disabled';
+
+        if ( $scheduler_enabled ) {
+            ?>
+            <div class="blox-data-control scheduler <?php echo $disabled;?>">
+                <div class="blox-data-control-toggle blox-has-tooltip" data-details-type="scheduler" aria-label="<?php _e( 'View scheduling settings');?>">
+                    <span class="dashicons dashicons-clock"></span>
+                    <span class="screen-reader-text"><?php _e( 'View scheduling settings');?></span>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+
+    public function visibility_admin_column_scheduler_details( $scheduler_enabled, $visible_via_scheduler, $block ) {
+
+        $scheduler_enabled = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
+
+        if ( $scheduler_enabled ) {
+
+            $begin = empty( $block['visibility']['scheduler']['begin'] ) ? 'Now' : $block['visibility']['scheduler']['begin'];
+            $end   = empty( $block['visibility']['scheduler']['end'] ) ? 'Never' : $block['visibility']['scheduler']['end'];
+            ?>
+            <div class="blox-data-details scheduler">
+                <?php
+                if ( ! $visible_via_scheduler ) {
+                    echo '<div class="blox-alert-box">' . __( 'This block is no longer visible due to its scheduling settings.', 'blox' ) . '</div>';
+                }
+                ?>
+                <div class="blox-data-details-sub-container">
+                    <div class="title"><?php echo __( 'Begin', 'blox' );?></div>
+                    <div class="meta"><?php echo $begin;?></div>
+                </div>
+                <div class="blox-data-details-sub-container">
+                    <div class="title"><?php echo __( 'End', 'blox' );?></div>
+                    <div class="meta"><?php echo $end;?></div>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+
+    /**
+     * Helper function for determining if a block should be shown based on the scheduler
+     *
+     * @since 2.0.0
+     *
+     * @param array $block Contains all of our block settings data
+     *
+     * @return bool        Block is visibile or not
+     */
+    public function is_block_visible_via_scheduler( $block ) {
+
+        /**
+        * current_time() will return an incorrect date/time if the server or another script sets a non-UTC timezone
+        * (e.g. if server timezone set to LA, current_time() will take another 8 hours off the already adjusted datetime)
+        * Therefore we force UTC time, then get current_time()
+        */
+        $existing_timezone = date_default_timezone_get();
+        date_default_timezone_set('UTC');
+
+        $current_time = current_time( 'timestamp' );
+        $begin 		  = empty( $block['visibility']['scheduler']['begin'] ) ? 0 : strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
+        $end   	 	  = empty( $block['visibility']['scheduler']['end'] ) ? 0 : strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
+
+        // Put timezone back in case other scripts rely on it
+        date_default_timezone_set( $existing_timezone );
+
+        if ( $begin > $current_time || $end < $current_time ) {
+
+            // The block should NOT be shown
+            return false;
+        } else {
+
+            // The block visibility is not restricted by scheduler settings
+            return true;
+        }
+    }
+
+    /**
+    * @TODO Remove
+     * Add scheduler meta data to both local and global blocks
+     *
+     * @since 2.0.0
+     *
+     * @param bool $visibility_test The current status of the visibility test
+     * @param array $block  		Contains all of our block settings data
+     * @param bool $global  		Tells whether our block is global or local
+     */
+    /*public function scheduler_meta_data( $output, $block, $global ) {
+
+        $scheduler_enabled = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
+        $clock = '';
+        $separator = $global ? ' &nbsp;–&nbsp; ' : ' &nbsp;&middot&nbsp; ';
+
+        if ( $scheduler_enabled ) {
+
+            $current_time = current_time( 'timestamp' );
+            $begin 		  = strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
+            $end   	 	  = strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
+
+            $begin_text = empty( $block['visibility']['scheduler']['begin'] ) ? 'Now' : $block['visibility']['scheduler']['begin'];
+            $end_text = empty( $block['visibility']['scheduler']['end'] ) ? 'Never' : $block['visibility']['scheduler']['end'];
+
+            if ( ( '' != $begin && $begin > $current_time ) || ( '' != $end && $end < $current_time ) ) {
+                // The block should NOT currently being shown
+                $clock = $separator . '<span class="dashicons dashicons-clock" style="color:#a00;cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
+            } else {
+                $clock = $separator . '<span class="dashicons dashicons-clock" style="cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
+            }
+        }
+
+        $output = $output . $clock;
+
+        return $output;
+    }
+    */
 
 
     /**
@@ -496,7 +631,7 @@ class Blox_Visibility {
 				case 'restrict' :
 					if ( ! empty( $block['visibility']['role']['restrictions'] ) ) {
 						// Get all of the selected roles, make the first letter capitalized, then print to page
-						$visibility = implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block_data['visibility']['role']['restrictions'], 1 ) ) );
+						$visibility = implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block['visibility']['role']['restrictions'], 1 ) ) );
 					} else {
 						$visibility = __( 'No Roles Selected', 'blox' );
 					}
@@ -514,42 +649,7 @@ class Blox_Visibility {
 	}
 
 
-    /**
-     * Add scheduler meta data to both local and global blocks
-     *
-     * @since 2.0.0
-     *
-     * @param bool $visibility_test The current status of the visibility test
-     * @param array $block  		Contains all of our block settings data
-     * @param bool $global  		Tells whether our block is global or local
-     */
-    public function scheduler_meta_data( $output, $block, $global ) {
 
-        $scheduler_enabled = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
-        $clock = '';
-        $separator = $global ? ' &nbsp;–&nbsp; ' : ' &nbsp;&middot&nbsp; ';
-
-        if ( $scheduler_enabled ) {
-
-            $current_time = current_time( 'timestamp' );
-            $begin 		  = strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
-            $end   	 	  = strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
-
-            $begin_text = empty( $block['visibility']['scheduler']['begin'] ) ? 'Now' : $block['visibility']['scheduler']['begin'];
-            $end_text = empty( $block['visibility']['scheduler']['end'] ) ? 'Never' : $block['visibility']['scheduler']['end'];
-
-            if ( ( '' != $begin && $begin > $current_time ) || ( '' != $end && $end < $current_time ) ) {
-                // The block should NOT currently being shown
-                $clock = $separator . '<span class="dashicons dashicons-clock" style="color:#a00;cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
-            } else {
-                $clock = $separator . '<span class="dashicons dashicons-clock" style="cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
-            }
-        }
-
-        $output = $output . $clock;
-
-        return $output;
-    }
 
 
 	/**
@@ -675,32 +775,7 @@ class Blox_Visibility {
         // If scheduling is enabled and the visibility test is already true, continue...
         if ( $visibility_test == true ) {
             if ( $scheduler_enabled ) {
-
-                /**
-                * current_time() will return an incorrect date/time if the server or another script sets a non-UTC timezone
-                * (e.g. if server timezone set to LA, current_time() will take another 8 hours off the already adjusted datetime)
-                * Therefore we force UTC time, then get current_time()
-                */
-                $existing_timezone = date_default_timezone_get();
-                date_default_timezone_set('UTC');
-
-                $current_time = current_time( 'timestamp' );
-                $begin 		  = empty( $block['visibility']['scheduler']['begin'] ) ? 0 : strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
-                $end   	 	  = empty( $block['visibility']['scheduler']['end'] ) ? 0 : strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
-
-                // Put timezone back in case other scripts rely on it
-                date_default_timezone_set( $existing_timezone );
-
-                if ( $begin > $current_time || $end < $current_time ) {
-
-                    // The block should NOT be shown
-                    return false;
-                } else {
-                    return $visibility_test;
-                }
-            } else {
-                // The scheduler is not enabled so ignore...
-                return $visibility_test;
+                return $this->is_block_visible_via_scheduler( $block );
             }
         }
     }

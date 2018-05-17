@@ -662,6 +662,41 @@ class Blox_Position {
 
 
     /**
+     * Print hook position option details in the admin column
+     *
+     * @since 2.0.0
+     *
+     * @param string $postion  The set hook position
+     * @param string $priorty  The set hook priority
+     * @param bool $disabled   Indicates if position option is disabled or not
+     */
+    public function position_admin_column_hook_details( $position, $priority, $disabled ) {
+        if ( ! $disabled ){
+            ?>
+            <div class="blox-data-details hook">
+                <?php
+                // Print hook availablity warning
+                if ( ! $this->is_hook_available( $position ) && ! empty( $position ) ) {
+                    echo '<div class="blox-alert-box">' . sprintf( __( 'The current saved hook is no longer available. It was likely disabled via the Blox %1$sposition settings%2$s. Choose a new hook or reenable the saved one.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                } else if ( empty( $position ) ) {
+                    echo '<div class="blox-alert-box">' . sprintf( __( 'It does not appear that a position hook as been set for this block. Edit the block and choose a hook, or simply disable hook positioning to avoid this error message.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                }
+                ?>
+                <div class="blox-data-details-sub-container mobile-only">
+                    <div class="title"><?php echo __( 'Hook', 'blox' );?></div>
+                    <div class="meta"><?php echo $position;?></div>
+                </div>
+                <div class="blox-data-details-sub-container">
+                    <div class="title"><?php echo __( 'Priority', 'blox' );?></div>
+                    <div class="meta"><?php echo $priority;?></div>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+
+    /**
      * Print shortcode position option control in the admin column
      *
      * @since 2.0.0
@@ -685,62 +720,6 @@ class Blox_Position {
 
 
     /**
-     * Print php position option control in the admin column
-     *
-     * @since 2.0.0
-     *
-     * @param bool $disabled  Indicates if position option is disabled or not
-     */
-    public function position_admin_column_php_control( $disabled ){
-        if ( ! $disabled ){
-            ?>
-            <div class="blox-data-control php">
-                <div class="blox-data-control-toggle blox-has-tooltip" data-details-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
-                    <span class="dashicons dashicons-editor-code"></span>
-                    <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
-                </div>
-            </div>
-            <?php
-        }
-    }
-
-
-    /**
-     * Print hook position option details in the admin column
-     *
-     * @since 2.0.0
-     *
-     * @param string $postion  The set hook position
-     * @param string $priorty  The set hook priority
-     * @param bool $disabled   Indicates if position option is disabled or not
-     */
-    public function position_admin_column_hook_details( $position, $priority, $disabled ) {
-        if ( ! $disabled ){
-            ?>
-            <div class="blox-data-details hook">
-                <?php
-                // Print hook availablity warning
-                if ( ! $this->is_hook_available( $position ) && ! empty( $position ) ) {
-                    echo '<div class="blox-alert-box">' . sprintf( __( 'The current saved hook is no longer available. It was likely disabled via the Blox %1$sposition settings%2$s. Choose a new hook or reenable the saved one.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
-                } else if ( empty( $position ) ) {
-                    echo '<div class="blox-alert-box">' . sprintf( __( 'It does not appear that a position hook as been set for this block. Edit the block and choose a hook, or simply disable hook positioning to avoid this error message.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
-                }
-                ?>
-                <div class="position-details-sub-container mobile-only">
-                    <div class="title"><?php echo __( 'Hook', 'blox' );?></div>
-                    <div class="meta"><?php echo $position;?></div>
-                </div>
-                <div class="position-details-sub-container">
-                    <div class="title"><?php echo __( 'Priority', 'blox' );?></div>
-                    <div class="meta"><?php echo $priority;?></div>
-                </div>
-            </div>
-            <?php
-        }
-    }
-
-
-    /**
      * Print shortcode position option details in the admin column
      *
      * @since 2.0.0
@@ -755,6 +734,27 @@ class Blox_Position {
                 <div class="blox-code">[blox id="<?php echo 'global_' . $post_id; ?>"]</div>
                 <div class="blox-description">
                     <?php _e( 'Copy and paste the above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox' ); ?>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+
+    /**
+     * Print php position option control in the admin column
+     *
+     * @since 2.0.0
+     *
+     * @param bool $disabled  Indicates if position option is disabled or not
+     */
+    public function position_admin_column_php_control( $disabled ){
+        if ( ! $disabled ){
+            ?>
+            <div class="blox-data-control php">
+                <div class="blox-data-control-toggle blox-has-tooltip" data-details-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
+                    <span class="dashicons dashicons-editor-code"></span>
+                    <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
                 </div>
             </div>
             <?php
