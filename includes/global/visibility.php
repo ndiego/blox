@@ -81,7 +81,7 @@ class Blox_Visibility {
 
 
         // Modify the frontend visibility test based on scheduler settings
-        add_filter( 'blox_content_block_visibility_test', array( $this, 'run_scheduler' ), 10, 4 );
+        add_filter( 'blox_content_block_visibility_test', array( $this, 'run_scheduler' ), 20, 4 );
 
         // Add scheduler meta data to local and global blocks
         add_filter( 'blox_visibility_meta_data', array( $this, 'scheduler_meta_data' ), 10, 3 );
@@ -362,7 +362,27 @@ class Blox_Visibility {
         $output = $hidden . $content;
 
         // Print the column output, but first allow add-ons to filter in additional content
-		echo apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
+		//echo apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
+
+        ?>
+        <div class="visibility-column-data">
+        <?php
+            echo apply_filters( 'blox_visibility_meta_data', $output, $block_data, true );
+        ?>
+            <div class="visibility-column-data-controls">
+            <?php
+
+            ?>
+            </div>
+            <div class="visibility-column-data-details">
+            <?php
+
+            ?>
+            </div>
+        </div>
+
+
+        <?php
 
 		// Save our visibility meta values separately to allow for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_visibility', $meta_data );
@@ -494,6 +514,44 @@ class Blox_Visibility {
 	}
 
 
+    /**
+     * Add scheduler meta data to both local and global blocks
+     *
+     * @since 2.0.0
+     *
+     * @param bool $visibility_test The current status of the visibility test
+     * @param array $block  		Contains all of our block settings data
+     * @param bool $global  		Tells whether our block is global or local
+     */
+    public function scheduler_meta_data( $output, $block, $global ) {
+
+        $scheduler_enabled = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
+        $clock = '';
+        $separator = $global ? ' &nbsp;–&nbsp; ' : ' &nbsp;&middot&nbsp; ';
+
+        if ( $scheduler_enabled ) {
+
+            $current_time = current_time( 'timestamp' );
+            $begin 		  = strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
+            $end   	 	  = strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
+
+            $begin_text = empty( $block['visibility']['scheduler']['begin'] ) ? 'Now' : $block['visibility']['scheduler']['begin'];
+            $end_text = empty( $block['visibility']['scheduler']['end'] ) ? 'Never' : $block['visibility']['scheduler']['end'];
+
+            if ( ( '' != $begin && $begin > $current_time ) || ( '' != $end && $end < $current_time ) ) {
+                // The block should NOT currently being shown
+                $clock = $separator . '<span class="dashicons dashicons-clock" style="color:#a00;cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
+            } else {
+                $clock = $separator . '<span class="dashicons dashicons-clock" style="cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
+            }
+        }
+
+        $output = $output . $clock;
+
+        return $output;
+    }
+
+
 	/**
 	 * Run the visibility test
 	 *
@@ -623,18 +681,18 @@ class Blox_Visibility {
                 * (e.g. if server timezone set to LA, current_time() will take another 8 hours off the already adjusted datetime)
                 * Therefore we force UTC time, then get current_time()
                 */
-                //$existing_timezone = date_default_timezone_get();
-                //date_default_timezone_set('UTC');
+                $existing_timezone = date_default_timezone_get();
+                date_default_timezone_set('UTC');
 
                 $current_time = current_time( 'timestamp' );
-                $begin 		  = strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
-                $end   	 	  = strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
+                $begin 		  = empty( $block['visibility']['scheduler']['begin'] ) ? 0 : strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
+                $end   	 	  = empty( $block['visibility']['scheduler']['end'] ) ? 0 : strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
 
                 // Put timezone back in case other scripts rely on it
-                //date_default_timezone_set( $existing_timezone );
+                date_default_timezone_set( $existing_timezone );
 
-                if ( ( '' != $begin && $begin > $current_time ) || ( '' != $end && $end < $current_time ) ) {
-echo 'Current: ' . $current_time . ' Begin: ' . $begin . ' End: ' . $end;
+                if ( $begin > $current_time || $end < $current_time ) {
+
                     // The block should NOT be shown
                     return false;
                 } else {
@@ -645,44 +703,6 @@ echo 'Current: ' . $current_time . ' Begin: ' . $begin . ' End: ' . $end;
                 return $visibility_test;
             }
         }
-    }
-
-
-    /**
-     * Add scheduler meta data to both local and global blocks
-     *
-     * @since 2.0.0
-     *
-     * @param bool $visibility_test The current status of the visibility test
-     * @param array $block  		Contains all of our block settings data
-     * @param bool $global  		Tells whether our block is global or local
-     */
-    public function scheduler_meta_data( $output, $block, $global ) {
-
-        $scheduler_enabled = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
-        $clock = '';
-        $separator = $global ? ' &nbsp;–&nbsp; ' : ' &nbsp;&middot&nbsp; ';
-
-        if ( $scheduler_enabled ) {
-
-            $current_time = current_time( 'timestamp' );
-            $begin 		  = strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
-            $end   	 	  = strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
-
-            $begin_text = empty( $block['visibility']['scheduler']['begin'] ) ? 'Now' : $block['visibility']['scheduler']['begin'];
-            $end_text = empty( $block['visibility']['scheduler']['end'] ) ? 'Never' : $block['visibility']['scheduler']['end'];
-
-            if ( ( '' != $begin && $begin > $current_time ) || ( '' != $end && $end < $current_time ) ) {
-                // The block should NOT currently being shown
-                $clock = $separator . '<span class="dashicons dashicons-clock" style="color:#a00;cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
-            } else {
-                $clock = $separator . '<span class="dashicons dashicons-clock" style="cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
-            }
-        }
-
-        $output = $output . $clock;
-
-        return $output;
     }
 
 

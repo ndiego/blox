@@ -122,18 +122,19 @@
 .striped>tbody>:nth-child(odd) .blox-alert-box {
 	background: #ffffff;
 }
-.position-column-data-controls {
+
+.blox-column-data-controls {
 	display: -ms-flexbox;
 	display: flex;
 	-ms-flex-pack: justify;
 	justify-content: normal;
 	-ms-flex-align: center;
 }
-.post-type-blox .position-control.hook {
+.blox-data-control.hook {
 	flex: 1;
 	min-width: 0;
 }
-.post-type-blox .position-control .position-hook-slug {
+.blox-data-control .position-hook-slug {
 	max-width: 80%;
     overflow: hidden;
     text-align: left;
@@ -141,51 +142,48 @@
     white-space: nowrap;
     display: inline-block;
 }
-.post-type-blox .position-control.selected .position-hook-slug {
+.blox-data-control.selected .position-hook-slug {
     white-space: normal;
 }
-
-.post-type-blox .position-control .blox-has-tooltip {
+.blox-data-control .blox-has-tooltip {
 	color: #82878c;
 }
-.post-type-blox .position-control.hook .blox-has-tooltip {
+.blox-data-control.hook .blox-has-tooltip {
 	vertical-align: top;
 	float: right;
 }
-.post-type-blox .position-control.hook .dashicons {
+.blox-data-control.hook .dashicons {
 	font-size: 18px;
 	margin-top: 1px;
 }
-.post-type-blox .position-control.hook .dashicons-warning {
+.blox-data-control.hook .dashicons-warning {
 	color: #a00;
 }
-
-.post-type-blox .position-control.php,
-.post-type-blox .position-control.shortcode {
+.blox-data-control.php,
+.blox-data-control.shortcode {
     flex: 0 0 22px;
 	cursor: pointer;
 	position: relative;
 	text-align: center;
 }
-
-.post-type-blox .position-control.shortcode .blox-icon-shortcode {
+.blox-data-control.shortcode .blox-icon-shortcode {
 	display: inline-block;
 	padding-top: 4px;
 }
-.post-type-blox .position-control.shortcode .blox-icon-shortcode svg {
+.blox-data-control.shortcode .blox-icon-shortcode svg {
 	fill: #82878c;
 }
 
 
 
-.position-details {
+.blox-data-details {
 	display: none;
 	padding: 10px 0;
 }
-.position-details.selected {
+.blox-data-details.selected {
 	display: block;
 }
-.position-details .blox-code {
+.blox-data-details .blox-code {
 	width: 100%;
     padding: 5px 8px;
 	margin: 0 0 5px;
@@ -195,10 +193,10 @@
     font-family: Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 }
 /* Corrects for striped table styling */
-.striped>tbody>:nth-child(odd) .position-details .blox-code {
+.striped>tbody>:nth-child(odd) .blox-data-details .blox-code {
 	background-color: #fff;
 }
-.position-details .blox-description {
+.blox-data-details .blox-description {
 	font-size: 13px;
 	color: #666;
 	font-style: italic;
@@ -227,13 +225,13 @@
 }
 
 @media screen and (max-width: 1050px) {
-	.post-type-blox .position-control .position-hook-slug {
+	.blox-data-control .position-hook-slug {
 		display: none;
 	}
-	.post-type-blox .position-column-data-controls {
+	.blox-column-data-controls {
 		width: 72px;
 	}
-	.post-type-blox .position-column-data-details {
+	.blox-column-data-details {
 		padding-top: 20px;
 	}
 	.position-details-sub-container.mobile-only {

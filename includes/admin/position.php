@@ -141,7 +141,7 @@ class Blox_Position {
         $position_types_disabled = array(
             'hook'      => blox_get_option( $scope . '_disable_hook_positioning', false ),
             'shortcode' => blox_get_option( $scope . '_disable_shortcode_positioning', false ),
-            'php'       => blox_get_option( $scope . '_disable_php_positioning', false ) 
+            'php'       => blox_get_option( $scope . '_disable_php_positioning', false )
         );
 
         if ( ! $position_types_disabled['hook'] ) {
@@ -588,7 +588,7 @@ class Blox_Position {
             }
         }
         ?>
-        <div class="position-column-data">
+        <div class="blox-position-column-data">
 
             <?php
             // Throw error message if the user disabled all of the positioning options.
@@ -599,14 +599,14 @@ class Blox_Position {
             }
             ?>
 
-            <div class="position-column-data-controls">
+            <div class="blox-column-data-controls">
             <?php
                 $this->position_admin_column_hook_control( $position, $position_types_disabled['hook'] );
                 $this->position_admin_column_shortcode_control( $position_types_disabled['shortcode'] );
                 $this->position_admin_column_php_control( $position_types_disabled['php'] );
             ?>
             </div>
-            <div class="position-column-data-details">
+            <div class="blox-column-data-details">
             <?php
                 $this->position_admin_column_hook_details( $position, $priority, $position_types_disabled['hook'] );
                 $this->position_admin_column_shortcode_details( $post_id, $position_types_disabled['shortcode'] );
@@ -647,11 +647,11 @@ class Blox_Position {
             $position = empty( $position ) ? '—' : $position;
 
             ?>
-            <div class="position-control hook">
+            <div class="blox-data-control hook">
                 <div class="position-hook-slug">
                     <?php echo $position;?>
                 </div>
-                <div class="position-control-toggle blox-has-tooltip" data-position-type="hook" aria-label="<?php _e( 'View hook details', 'blox' );?>">
+                <div class="blox-data-control-toggle blox-has-tooltip" data-details-type="hook" aria-label="<?php _e( 'View hook details', 'blox' );?>">
                     <span class="dashicons <?php echo $icon;?>"></span>
                     <span class="screen-reader-text"><?php _e( 'View hook details');?></span>
                 </div>
@@ -671,8 +671,8 @@ class Blox_Position {
     public function position_admin_column_shortcode_control( $disabled ){
         if ( ! $disabled ){
             ?>
-            <div class="position-control shortcode">
-                <div class="position-control-toggle blox-has-tooltip" data-position-type="shortcode" aria-label="<?php _e( 'View block shortcode');?>">
+            <div class="blox-data-control shortcode">
+                <div class="blox-data-control-toggle blox-has-tooltip" data-details-type="shortcode" aria-label="<?php _e( 'View block shortcode');?>">
                     <span class="blox-icon blox-icon-shortcode">
                         <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
                     </span>
@@ -694,8 +694,8 @@ class Blox_Position {
     public function position_admin_column_php_control( $disabled ){
         if ( ! $disabled ){
             ?>
-            <div class="position-control php">
-                <div class="position-control-toggle blox-has-tooltip" data-position-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
+            <div class="blox-data-control php">
+                <div class="blox-data-control-toggle blox-has-tooltip" data-details-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
                     <span class="dashicons dashicons-editor-code"></span>
                     <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
                 </div>
@@ -717,7 +717,7 @@ class Blox_Position {
     public function position_admin_column_hook_details( $position, $priority, $disabled ) {
         if ( ! $disabled ){
             ?>
-            <div class="position-details hook">
+            <div class="blox-data-details hook">
                 <?php
                 // Print hook availablity warning
                 if ( ! $this->is_hook_available( $position ) && ! empty( $position ) ) {
@@ -751,7 +751,7 @@ class Blox_Position {
     public function position_admin_column_shortcode_details( $post_id, $disabled ) {
         if ( ! $disabled ){
             ?>
-            <div class="position-details shortcode">
+            <div class="blox-data-details shortcode">
                 <div class="blox-code">[blox id="<?php echo 'global_' . $post_id; ?>"]</div>
                 <div class="blox-description">
                     <?php _e( 'Copy and paste the above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox' ); ?>
@@ -773,7 +773,7 @@ class Blox_Position {
     public function position_admin_column_php_details( $post_id, $disabled ) {
         if ( ! $disabled ){
             ?>
-            <div class="position-details php">
+            <div class="blox-data-details php">
                 <div class="blox-code">blox_display_block( "<?php echo 'global_' . $post_id; ?>" );</div>
                 <div class="blox-description">
                     <?php _e( 'Copy and paste the above PHP code into any of your theme files. Visibility and location settings are respected when using PHP positioning.', 'blox' ); ?>
