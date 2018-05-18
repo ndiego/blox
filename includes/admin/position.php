@@ -159,7 +159,7 @@ class Blox_Position {
 
         // Throw error message if the user disabled all of the positioning options.
         if ( ! in_array( false, $position_types_disabled ) ) {
-            echo '<div class="blox-alert-box no-side-margin">' . sprintf( __( 'All block positioning options have been manually disabled. Visit the Blox %1$sposition settings%2$s to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+            echo '<div class="blox-alert-box no-side-margin">' . sprintf( __( 'All block positioning options are disabled. Visit the Blox %1$sposition settings%2$s to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
         }
 
         do_action( 'blox_position_settings', $id, $name_prefix, $get_prefix, $global );
@@ -346,7 +346,7 @@ class Blox_Position {
                                             <?php
                                         }
                                     } else {
-                                        echo '<div class="blox-alert-box">' . sprintf( __( 'All hook sections for this hook type seem to have been disabled. Visit the Blox %1$sposition settings%2$s to enable hook sections.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                                        echo '<div class="blox-alert-box">' . sprintf( __( 'All hook sections for this hook type are disabled. Visit the Blox %1$sposition settings%2$s to re-enable hook sections.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
                                     }
                                 } ?>
                             </div>
@@ -593,10 +593,10 @@ class Blox_Position {
             <?php
             // Throw error message if the user disabled all of the positioning options.
             if ( $globally_disabled ) {
-                echo '<div class="blox-alert-box">' . sprintf( __( 'All positioning options have been globally disabled. Visit the Blox %1$sposition settings%2$s to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                echo '<div class="blox-alert-box">' . sprintf( __( 'All positioning options are globally disabled. Visit the Blox %1$sposition settings%2$s to re-enable.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
             } else if ( ! in_array( 0, $position_types_disabled ) ) {
-                echo '<div class="blox-alert-box">' . sprintf( __( 'All positioning options have been disabled. Edit the position settings for this block to correct this.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
-            }
+                echo '<div class="blox-alert-box">' . sprintf( __( 'All positioning options are disabled. Edit the position settings for this block to re-enable.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+            } else {
             ?>
 
             <div class="blox-column-data-controls">
@@ -613,6 +613,8 @@ class Blox_Position {
                 $this->position_admin_column_php_details( $post_id, $position_types_disabled['php'] );
             ?>
             </div>
+            <?php
+            } ?>
         </div>
         <?php
 
@@ -638,26 +640,27 @@ class Blox_Position {
      * @param bool $disabled   Indicates if position option is disabled or not
      */
     public function position_admin_column_hook_control( $position, $disabled ){
-        if ( ! $disabled ){
+        //if ( ! $disabled ){
 
             // Show warning icon if hook is not available
-            $icon = $this->is_hook_available( $position ) ? 'dashicons-info' : 'dashicons-warning';
+            //$icon = $this->is_hook_available( $position ) ? 'dashicons-info' : 'dashicons-warning';
 
             // If no hook is selected (i.e. new post), just show an mdash
             $position = empty( $position ) ? '—' : $position;
+            $disabled = ( $disabled || ! $this->is_hook_available( $position ) ) ? 'disabled' : '';
 
             ?>
             <div class="blox-data-control hook">
-                <div class="position-hook-slug">
+                <div class="blox-position-hook-slug <?php echo $disabled;?>">
                     <?php echo $position;?>
                 </div>
-                <div class="blox-data-control-toggle blox-has-tooltip" data-details-type="hook" aria-label="<?php _e( 'View hook details', 'blox' );?>">
-                    <span class="dashicons <?php echo $icon;?>"></span>
+                <div class="blox-data-control-toggle blox-has-tooltip <?php echo $disabled;?>" data-details-type="hook" aria-label="<?php _e( 'View hook details', 'blox' );?>">
+                    <span class="dashicons dashicons-info"></span>
                     <span class="screen-reader-text"><?php _e( 'View hook details');?></span>
                 </div>
             </div>
             <?php
-        }
+        //}
     }
 
 
@@ -671,28 +674,36 @@ class Blox_Position {
      * @param bool $disabled   Indicates if position option is disabled or not
      */
     public function position_admin_column_hook_details( $position, $priority, $disabled ) {
-        if ( ! $disabled ){
+        //if ( ! $disabled ){
+
+            $disabled = $disabled ? 'disabled' : '';
             ?>
             <div class="blox-data-details hook">
-                <?php
-                // Print hook availablity warning
-                if ( ! $this->is_hook_available( $position ) && ! empty( $position ) ) {
-                    echo '<div class="blox-alert-box">' . sprintf( __( 'The current saved hook is no longer available. It was likely disabled via the Blox %1$sposition settings%2$s. Choose a new hook or reenable the saved one.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
-                } else if ( empty( $position ) ) {
-                    echo '<div class="blox-alert-box">' . sprintf( __( 'It does not appear that a position hook as been set for this block. Edit the block and choose a hook, or simply disable hook positioning to avoid this error message.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
-                }
-                ?>
-                <div class="blox-data-details-sub-container mobile-only">
-                    <div class="title"><?php echo __( 'Hook', 'blox' );?></div>
-                    <div class="meta"><?php echo $position;?></div>
-                </div>
-                <div class="blox-data-details-sub-container">
-                    <div class="title"><?php echo __( 'Priority', 'blox' );?></div>
-                    <div class="meta"><?php echo $priority;?></div>
-                </div>
+                <?php if ( $disabled ){ ?>
+                    <div class="blox-alert-box">
+                        <?php _e( 'Hook positioning is disabled. Edit this block to re-enable.', 'blox' );?>
+                    </div>
+                <?php } else {
+
+                    // Print hook availablity warning
+                    if ( ! $this->is_hook_available( $position ) && ! empty( $position ) ) {
+                        echo '<div class="blox-alert-box">' . sprintf( __( 'The current saved hook is no longer available. It was likely disabled via the Blox %1$sposition settings%2$s. Choose a new hook or re-enable the saved one.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                    } else if ( empty( $position ) ) {
+                        echo '<div class="blox-alert-box">' . sprintf( __( 'It does not appear that a position hook as been set for this block. Edit the block and choose a hook, or simply disable hook positioning to avoid this error message.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
+                    }
+                    ?>
+                    <div class="blox-data-details-sub-container mobile-only">
+                        <div class="title"><?php echo __( 'Hook', 'blox' );?></div>
+                        <div class="meta"><?php echo $position;?></div>
+                    </div>
+                    <div class="blox-data-details-sub-container">
+                        <div class="title"><?php echo __( 'Priority', 'blox' );?></div>
+                        <div class="meta"><?php echo $priority;?></div>
+                    </div>
+                <?php } ?>
             </div>
             <?php
-        }
+        //}
     }
 
 
@@ -704,18 +715,18 @@ class Blox_Position {
      * @param bool $disabled  Indicates if position option is disabled or not
      */
     public function position_admin_column_shortcode_control( $disabled ){
-        if ( ! $disabled ){
-            ?>
-            <div class="blox-data-control shortcode">
-                <div class="blox-data-control-toggle blox-has-tooltip" data-details-type="shortcode" aria-label="<?php _e( 'View block shortcode');?>">
-                    <span class="blox-icon blox-icon-shortcode">
-                        <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
-                    </span>
-                    <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
-                </div>
+
+        $disabled = $disabled ? 'disabled' : '';
+        ?>
+        <div class="blox-data-control shortcode">
+            <div class="blox-data-control-toggle blox-has-tooltip <?php echo $disabled;?>" data-details-type="shortcode" aria-label="<?php _e( 'View block shortcode');?>">
+                <span class="blox-icon blox-icon-shortcode">
+                    <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
+                </span>
+                <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
             </div>
-            <?php
-        }
+        </div>
+        <?php
     }
 
 
@@ -728,16 +739,20 @@ class Blox_Position {
      * @param bool $disabled   Indicates if position option is disabled or not
      */
     public function position_admin_column_shortcode_details( $post_id, $disabled ) {
-        if ( ! $disabled ){
-            ?>
-            <div class="blox-data-details shortcode">
+        ?>
+        <div class="blox-data-details shortcode">
+            <?php if ( $disabled ){ ?>
+                <div class="blox-alert-box">
+                    <?php _e( 'Shortcode positioning is disabled. Edit this block to re-enable.', 'blox' );?>
+                </div>
+            <?php } else { ?>
                 <div class="blox-code">[blox id="<?php echo 'global_' . $post_id; ?>"]</div>
                 <div class="blox-description">
                     <?php _e( 'Copy and paste the above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox' ); ?>
                 </div>
-            </div>
-            <?php
-        }
+            <?php } ?>
+        </div>
+        <?php
     }
 
 
@@ -749,16 +764,16 @@ class Blox_Position {
      * @param bool $disabled  Indicates if position option is disabled or not
      */
     public function position_admin_column_php_control( $disabled ){
-        if ( ! $disabled ){
-            ?>
-            <div class="blox-data-control php">
-                <div class="blox-data-control-toggle blox-has-tooltip" data-details-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
-                    <span class="dashicons dashicons-editor-code"></span>
-                    <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
-                </div>
+
+        $disabled = $disabled ? 'disabled' : '';
+        ?>
+        <div class="blox-data-control php">
+            <div class="blox-data-control-toggle blox-has-tooltip <?php echo $disabled;?>" data-details-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
+                <span class="dashicons dashicons-editor-code"></span>
+                <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
             </div>
-            <?php
-        }
+        </div>
+        <?php
     }
 
 
@@ -771,16 +786,20 @@ class Blox_Position {
      * @param bool $disabled   Indicates if position option is disabled or not
      */
     public function position_admin_column_php_details( $post_id, $disabled ) {
-        if ( ! $disabled ){
-            ?>
-            <div class="blox-data-details php">
+        ?>
+        <div class="blox-data-details php">
+            <?php if ( $disabled ){ ?>
+                <div class="blox-alert-box">
+                    <?php _e( 'PHP positioning is disabled. Edit this block to re-enable.', 'blox' );?>
+                </div>
+            <?php } else { ?>
                 <div class="blox-code">blox_display_block( "<?php echo 'global_' . $post_id; ?>" );</div>
                 <div class="blox-description">
                     <?php _e( 'Copy and paste the above PHP code into any of your theme files. Visibility and location settings are respected when using PHP positioning.', 'blox' ); ?>
                 </div>
-            </div>
-            <?php
-        }
+            <?php } ?>
+        </div>
+        <?php
     }
 
 

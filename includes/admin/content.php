@@ -392,7 +392,7 @@ class Blox_Content {
     		$content   = ucfirst( esc_attr( $block_data['content']['content_type'] ) );
     		$meta_data = esc_attr( $block_data['content']['content_type'] );
 		} else {
-			$content   = '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
+			$content   = '<div class="blox-alert-box">' . __( 'Error. No content type is set.', 'blox' ) . '</div>';
 			$meta_data = '';
 		}
 

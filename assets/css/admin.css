@@ -130,11 +130,13 @@
 	justify-content: normal;
 	-ms-flex-align: center;
 }
-.blox-data-control.hook {
+.blox-data-control.hook,
+.blox-data-control.roles {
 	flex: 1;
 	min-width: 0;
 }
-.blox-data-control .position-hook-slug {
+.blox-data-control .blox-position-hook-slug,
+.blox-data-control .blox-visibility-role {
 	max-width: 80%;
     overflow: hidden;
     text-align: left;
@@ -142,17 +144,23 @@
     white-space: nowrap;
     display: inline-block;
 }
-.blox-data-control.selected .position-hook-slug {
+.blox-data-control .blox-position-hook-slug.disabled {
+	color: #999;
+}
+.blox-data-control.selected .blox-position-hook-slug {
     white-space: normal;
 }
 .blox-data-control .blox-has-tooltip {
 	color: #82878c;
 }
-.blox-data-control.hook .blox-has-tooltip {
+.blox-data-control.hook .blox-has-tooltip,
+.blox-data-control.roles .blox-has-tooltip {
 	vertical-align: top;
 	float: right;
 }
-.blox-data-control.hook .dashicons {
+.blox-data-control.hook .dashicons,
+.blox-data-control.roles .dashicons,
+.blox-data-control.scheduler .dashicons {
 	font-size: 18px;
 	margin-top: 1px;
 }
@@ -224,12 +232,19 @@
 	text-align: right
 }
 
-.blox-data-control.scheduler.disabled .dashicons {
+/* Visibility Admin Columns */
+.blox-data-control .disabled .dashicons {
 	color: #a00;
 }
 
+.blox-data-control .disabled .blox-icon-shortcode svg {
+	fill: #a00;
+}
+
+
+
 @media screen and (max-width: 1050px) {
-	.blox-data-control .position-hook-slug {
+	.blox-data-control .blox-position-hook-slug {
 		display: none;
 	}
 	.blox-column-data-controls {

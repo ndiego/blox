@@ -176,12 +176,12 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-	$( '.blox-hook-table.custom' ).sortable({
+	/*$( '.blox-hook-table.custom' ).sortable({
 		items: '.hook-row',
 		cursor: 'move',
 		forcePlaceholderSize: true,
 		placeholder: 'placeholder',
-	});
+	});*/
 
 	// Disable all hooks
 	$( '.blox-hook-disable-all' ).click( function(e) {

@@ -315,100 +315,133 @@ class Blox_Visibility {
         // Check if global blocks are enabled
 		$global_enable = blox_get_option( 'global_enable', false );
 
-		if ( $global_enable ) {
-
-			if ( ! empty( $block['visibility']['global_disable'] ) && $block['visibility']['global_disable'] == 1 ) {
-                $hidden    = '<input type="hidden" name="global_disable" value="1">';
-                $content   = '<span style="color:#a00;font-style:italic;">' . __( 'Disabled', 'blox' ) . '</span>';
-                $meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
-			} else {
-
-                $hidden = '<input type="hidden" name="global_disable" value="0">';
-
-				$type = ! empty( $block['visibility']['role']['role_type'] ) ? $block['visibility']['role']['role_type'] : 'all';
-
-				switch ( $type ) {
-					case 'all' :
-						$content = __( 'All', 'blox' );
-						break;
-					case 'public' :
-						$content = __( 'Public', 'blox' );
-						break;
-					case 'private' :
-						$content = __( 'Private', 'blox' );
-						break;
-					case 'restrict' :
-						if ( ! empty( $block['visibility']['role']['restrictions'] ) ) {
-							// Get all of the selected roles, make the first letter capitalized, then print to page
-							$content =  implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $block['visibility']['role']['restrictions'], 1 ) ) );
-						} else {
-							$content = __( 'No Roles Selected', 'blox' );
-						}
-						break;
-					default :
-						$content = '<span style="color:#a00;font-style:italic;">' . __( 'Error', 'blox' ) . '</span>';
-						break;
-				}
-
-                $meta_data = $type;
-			}
-		} else {
-            $hidden    = '';
-			$content   = '<span style="color:#a00;font-style:italic;">' . __( 'Globally Disabled', 'blox' ) . '</span>';
-			$meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
-		}
-
-        // Build the output, hidden fields + visible content
-        $output = $hidden . $content . $type;
-
-        // Print the column output, but first allow add-ons to filter in additional content
-		//echo apply_filters( 'blox_visibility_meta_data', $output, $block, true );
-
-        $scheduler_enabled      = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
+        $block_disabled        = ! empty( $block['visibility']['global_disable'] ) ? true : false;
+        $role_type             = ! empty( $block['visibility']['role']['role_type'] ) ? $block['visibility']['role']['role_type'] : 'all';
+        $scheduler_enabled     = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
         $visible_via_scheduler = $this->is_block_visible_via_scheduler( $block );
 
         ?>
         <div class="visibility-column-data">
         <?php
-            echo $output;
+            if ( ! $global_enable ) {
+                echo '<div class="blox-alert-box">' . sprintf( __( 'All global blocks have been disabled. Visit the Blox %1$sgeneral settings%2$s to re-enable.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings' ) . '">', '</a>' ) . '</div>';
+
+                $meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
+            } else if ( $block_disabled ) {
+                echo '<input type="hidden" name="global_disable" value="1">';
+                echo '<div class="blox-alert-box">' . __( 'This block is globally disabled. Edit the visibility settings to re-enable.', 'blox' ) . '</div>';
+
+                $meta_data = '_disabled'; // Use _ to force disabled blocks to top or bottom on sort
+            } else {
+                echo '<input type="hidden" name="global_disable" value="0">';
+                ?>
+                <div class="blox-column-data-controls">
+                <?php
+                    $this->visibility_admin_column_roles_control( $role_type, $block );
+                    $this->visibility_admin_column_scheduler_control( $scheduler_enabled, $visible_via_scheduler );
+                ?>
+                </div>
+                <div class="visibility-column-data-details">
+                <?php
+                    $this->visibility_admin_column_roles_details( $role_type, $block );
+                    $this->visibility_admin_column_scheduler_details( $scheduler_enabled, $visible_via_scheduler, $block );
+                ?>
+                </div>
+                <?php
+
+                $meta_data = $role_type;
+            }
         ?>
-            <div class="visibility-column-data-controls">
-            <?php
-                $this->visibility_admin_column_roles_control();
-                $this->visibility_admin_column_scheduler_control( $scheduler_enabled, $visible_via_scheduler );
-            ?>
-            </div>
-            <div class="visibility-column-data-details">
-            <?php
-                $this->visibility_admin_column_roles_details();
-                $this->visibility_admin_column_scheduler_details( $scheduler_enabled, $visible_via_scheduler, $block );
-            ?>
-            </div>
         </div>
-
-
         <?php
 
 		// Save our visibility meta values separately to allow for sorting
 		update_post_meta( $post_id, '_blox_content_blocks_visibility', $meta_data );
     }
 
-    public function visibility_admin_column_roles_control() {
+    public function visibility_admin_column_roles_control( $role_type, $block) {
 
+        switch ( $role_type ) {
+            case 'public' :
+                $content = __( 'Public Facing', 'blox' );
+                break;
+            case 'private' :
+                $content = __( 'Private Facing', 'blox' );
+                break;
+            case 'restrict' :
+                $content = __( 'Restrict by User Role', 'blox' );
+                break;
+            default :
+                $content = __( 'Visible to All', 'blox' );
+                break;
+        }
+
+        ?>
+        <div class="blox-data-control roles">
+            <div class="blox-visibility-role">
+                <?php echo $content;?>
+            </div>
+
+            <?php if ( $role_type == "restrict" ) {
+
+                $restrictions = $block['visibility']['role']['restrictions'];
+                $disabled = ( ! is_array( $restrictions ) || empty( $restrictions ) || ! in_array( 1, $restrictions ) ) ? 'disabled' : '';
+                ?>
+
+                <div class="blox-data-control-toggle blox-has-tooltip <?php echo $disabled;?>" data-details-type="roles" aria-label="<?php _e( 'View selected roles');?>">
+                    <span class="dashicons dashicons-admin-users"></span>
+                    <span class="screen-reader-text"><?php _e( 'View selected roles');?></span>
+                </div>
+
+            <?php } ?>
+        </div>
+        <?php
     }
 
-    public function visibility_admin_column_roles_details() {
+    public function visibility_admin_column_roles_details( $role_type, $block ) {
 
+        if ( $role_type == "restrict" ) {
+
+            $restrictions = $block['visibility']['role']['restrictions'];
+            $error        = '<div class="blox-alert-box">' . __( 'This block is not visible. No user roles are selected.', 'blox' ) . '</div>';
+            ?>
+
+            <div class="blox-data-details roles">
+
+                <?php if ( ! is_array( $restrictions ) || empty( $restrictions ) || ! in_array( 1, $restrictions ) ) { ?>
+                    <div class="blox-alert-box">
+                        <?php _e( 'This block is not visible. No user roles are selected.', 'blox' );?>
+                    </div>
+                <?php } else { ?>
+                    <div class="blox-data-details-sub-container">
+                        <div class="title"><?php echo __( 'Selected Roles', 'blox' );?></div>
+                        <div class="meta">
+                            <?php echo implode( ", ", array_map( array( $this, 'uppercase_first' ), array_keys( $restrictions, 1 ) ) );?>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+            <?php
+        }
     }
 
+
+    /**
+     * Print visibility scheduler control in the admin column
+     *
+     * @since 2.0.0
+     *
+     * @param bool $scheduler_enabled     Is the scheduler enabled
+     * @param bool $visible_via_scheduler Is the block visible according to the scheduler settings
+     */
     public function visibility_admin_column_scheduler_control( $scheduler_enabled, $visible_via_scheduler ) {
 
-        $disabled = $visible_via_scheduler ? '' : 'disabled';
-
         if ( $scheduler_enabled ) {
+
+            $disabled = $visible_via_scheduler ? '' : 'disabled';
             ?>
-            <div class="blox-data-control scheduler <?php echo $disabled;?>">
-                <div class="blox-data-control-toggle blox-has-tooltip" data-details-type="scheduler" aria-label="<?php _e( 'View scheduling settings');?>">
+            <div class="blox-data-control scheduler">
+                <div class="blox-data-control-toggle blox-has-tooltip <?php echo $disabled;?>" data-details-type="scheduler" aria-label="<?php _e( 'View scheduling settings');?>">
                     <span class="dashicons dashicons-clock"></span>
                     <span class="screen-reader-text"><?php _e( 'View scheduling settings');?></span>
                 </div>
@@ -418,9 +451,16 @@ class Blox_Visibility {
     }
 
 
+    /**
+     * Print visibility scheduler details in the admin column
+     *
+     * @since 2.0.0
+     *
+     * @param bool $scheduler_enabled     Is the scheduler enabled
+     * @param bool $visible_via_scheduler Is the block visible according to the scheduler settings
+     * @param array $block                All the block data
+     */
     public function visibility_admin_column_scheduler_details( $scheduler_enabled, $visible_via_scheduler, $block ) {
-
-        $scheduler_enabled = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
 
         if ( $scheduler_enabled ) {
 
@@ -467,13 +507,13 @@ class Blox_Visibility {
         date_default_timezone_set('UTC');
 
         $current_time = current_time( 'timestamp' );
-        $begin 		  = empty( $block['visibility']['scheduler']['begin'] ) ? 0 : strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
-        $end   	 	  = empty( $block['visibility']['scheduler']['end'] ) ? 0 : strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
+        $begin 		  = ! empty( $block['visibility']['scheduler']['begin'] ) ? strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) ) : '';
+        $end   	 	  = ! empty( $block['visibility']['scheduler']['end'] ) ? strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) ) : '';
 
         // Put timezone back in case other scripts rely on it
         date_default_timezone_set( $existing_timezone );
 
-        if ( $begin > $current_time || $end < $current_time ) {
+        if ( ( $begin !== '' && $begin > $current_time ) || ( $end !== '' && $end < $current_time ) ) {
 
             // The block should NOT be shown
             return false;
