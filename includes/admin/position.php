@@ -551,40 +551,40 @@ class Blox_Position {
      * @since 1.0.0 (Heavily updated in 2.0.0)
      *
      * @param string $post_id    The block (post) id
-     * @param array $block_data  Array of all block data
+     * @param array $block       Array of all block data
      */
-    public function admin_column_data( $post_id, $block_data ) {
+    public function admin_column_data( $post_id, $block ) {
 
+        $position_types = array( 'hook', 'shortcode', 'php' );
 
         // Hook type availability
-        $position_types_disabled = array(
-            'hook'      => blox_get_option( 'global_disable_hook_positioning', 0 ),
-            'shortcode' => blox_get_option( 'global_disable_shortcode_positioning', 0 ),
-            'php'       => blox_get_option( 'global_disable_php_positioning', 0 )
-        );
-
-        // Check if all positioning has been globally disabled
-        $globally_disabled = ! in_array( 0, $position_types_disabled ) ? 1 : 0;
-
-        // Check the position settings on the individual blocks
-        foreach ( $position_types_disabled as $position_type => $disabled ) {
-            if ( ! $disabled ) {
-                $position_types_disabled[$position_type] = isset( $block_data['position'][$position_type]['disable'] ) ? $block_data['position'][$position_type]['disable'] : 0;
-            }
+        $position_types_globally_disabled = array();
+        foreach ( $position_types as $type ) {
+            $position_types_globally_disabled[$type] = blox_get_option( 'global_disable_' . $type . '_positioning', 0 );
         }
 
+        // Check if all positioning has been globally disabled
+        $globally_disabled = ! in_array( 0, $position_types_globally_disabled ) ? 1 : 0;
+
+        // Check the position settings on the individual blocks
+        $position_types_disabled = array();
+        foreach ( $position_types as $type ) {
+            $position_types_disabled[$type] = isset( $block['position'][$type]['disable'] ) ? $block['position'][$type]['disable'] : 0;
+        }
+        // Check the position settings on the individual blocks
+
         // Set the position and hook priority
-        $position = ! empty( $block_data['position']['hook']['position'] ) ? esc_attr( $block_data['position']['hook']['position'] )  : '';
-        $priority = ! empty( $block_data['position']['hook']['priority'] ) ? esc_attr( $block_data['position']['hook']['priority'] )  : 15;
+        $position = ! empty( $block['position']['hook']['position'] ) ? esc_attr( $block['position']['hook']['position'] )  : '';
+        $priority = ! empty( $block['position']['hook']['priority'] ) ? esc_attr( $block['position']['hook']['priority'] )  : 15;
 
         // Handle settings from Blox v1.x
-        if ( isset( $block_data['position']['position_type'] ) ) {
-            if ( $block_data['position']['position_type'] == 'default' ) {
+        if ( isset( $block['position']['position_type'] ) ) {
+            if ( $block['position']['position_type'] == 'default' ) {
               $position = esc_attr( blox_get_option( 'global_default_position', 'genesis_after_header' ) );
               $priority = esc_attr( blox_get_option( 'global_default_priority', 15 ) );
             } else {
-              $position = ! empty( $block_data['position']['custom']['position'] ) ? esc_attr( $block_data['position']['custom']['position'] ) : 'genesis_after_header';
-              $priority = ! empty( $block_data['position']['custom']['priority'] ) ? esc_attr( $block_data['position']['custom']['priority'] ) : 15;
+              $position = ! empty( $block['position']['custom']['position'] ) ? esc_attr( $block['position']['custom']['position'] ) : 'genesis_after_header';
+              $priority = ! empty( $block['position']['custom']['priority'] ) ? esc_attr( $block['position']['custom']['priority'] ) : 15;
             }
         }
         ?>
@@ -597,23 +597,22 @@ class Blox_Position {
             } else if ( ! in_array( 0, $position_types_disabled ) ) {
                 echo '<div class="blox-alert-box">' . sprintf( __( 'All positioning options are disabled. Edit the position settings for this block to re-enable.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
             } else {
-            ?>
-
-            <div class="blox-column-data-controls">
-            <?php
-                $this->position_admin_column_hook_control( $position, $position_types_disabled['hook'] );
-                $this->position_admin_column_shortcode_control( $position_types_disabled['shortcode'] );
-                $this->position_admin_column_php_control( $position_types_disabled['php'] );
-            ?>
-            </div>
-            <div class="blox-column-data-details">
-            <?php
-                $this->position_admin_column_hook_details( $position, $priority, $position_types_disabled['hook'] );
-                $this->position_admin_column_shortcode_details( $post_id, $position_types_disabled['shortcode'] );
-                $this->position_admin_column_php_details( $post_id, $position_types_disabled['php'] );
-            ?>
-            </div>
-            <?php
+                ?>
+                <div class="blox-column-data-controls">
+                <?php
+                    $this->position_admin_column_hook_control( $position, $position_types_globally_disabled['hook'], $position_types_disabled['hook'] );
+                    $this->position_admin_column_shortcode_control( $position_types_globally_disabled['shortcode'], $position_types_disabled['shortcode'] );
+                    $this->position_admin_column_php_control( $position_types_globally_disabled['php'], $position_types_disabled['php'] );
+                ?>
+                </div>
+                <div class="blox-column-data-details">
+                <?php
+                    $this->position_admin_column_hook_details( $position, $priority, $position_types_globally_disabled['hook'], $position_types_disabled['hook'] );
+                    $this->position_admin_column_shortcode_details( $post_id, $position_types_globally_disabled['shortcode'], $position_types_disabled['shortcode'] );
+                    $this->position_admin_column_php_details( $post_id, $position_types_globally_disabled['php'], $position_types_disabled['php'] );
+                ?>
+                </div>
+                <?php
             } ?>
         </div>
         <?php
@@ -636,14 +635,12 @@ class Blox_Position {
      *
      * @since 2.0.0
      *
-     * @param string $postion  The set hook position
-     * @param bool $disabled   Indicates if position option is disabled or not
+     * @param string $postion         The set hook position
+     * @param bool $globally_disabled Is this positioning option globally disabled
+     * @param bool $disabled          Indicates if position option is disabled or not
      */
-    public function position_admin_column_hook_control( $position, $disabled ){
-        //if ( ! $disabled ){
-
-            // Show warning icon if hook is not available
-            //$icon = $this->is_hook_available( $position ) ? 'dashicons-info' : 'dashicons-warning';
+    public function position_admin_column_hook_control( $position, $globally_disabled, $disabled ){
+        if ( ! $globally_disabled ){
 
             // If no hook is selected (i.e. new post), just show an mdash
             $position = empty( $position ) ? '—' : $position;
@@ -660,7 +657,7 @@ class Blox_Position {
                 </div>
             </div>
             <?php
-        //}
+        }
     }
 
 
@@ -669,12 +666,13 @@ class Blox_Position {
      *
      * @since 2.0.0
      *
-     * @param string $postion  The set hook position
-     * @param string $priorty  The set hook priority
-     * @param bool $disabled   Indicates if position option is disabled or not
+     * @param string $postion         The set hook position
+     * @param string $priorty         The set hook priority
+     * @param bool $globally_disabled Is this positioning option globally disabled
+     * @param bool $disabled          Indicates if position option is disabled or not
      */
-    public function position_admin_column_hook_details( $position, $priority, $disabled ) {
-        //if ( ! $disabled ){
+    public function position_admin_column_hook_details( $position, $priority, $globally_disabled, $disabled ) {
+        if ( ! $globally_disabled ){
 
             $disabled = $disabled ? 'disabled' : '';
             ?>
@@ -692,10 +690,6 @@ class Blox_Position {
                         echo '<div class="blox-alert-box">' . sprintf( __( 'It does not appear that a position hook as been set for this block. Edit the block and choose a hook, or simply disable hook positioning to avoid this error message.', 'blox' ), '<a href="' . admin_url( 'edit.php?post_type=blox&page=blox-settings&tab=position' ) . '">', '</a>' ) . '</div>';
                     }
                     ?>
-                    <div class="blox-data-details-sub-container mobile-only">
-                        <div class="title"><?php echo __( 'Hook', 'blox' );?></div>
-                        <div class="meta"><?php echo $position;?></div>
-                    </div>
                     <div class="blox-data-details-sub-container">
                         <div class="title"><?php echo __( 'Priority', 'blox' );?></div>
                         <div class="meta"><?php echo $priority;?></div>
@@ -703,7 +697,7 @@ class Blox_Position {
                 <?php } ?>
             </div>
             <?php
-        //}
+        }
     }
 
 
@@ -712,21 +706,24 @@ class Blox_Position {
      *
      * @since 2.0.0
      *
-     * @param bool $disabled  Indicates if position option is disabled or not
+     * @param bool $globally_disabled Is this positioning option globally disabled
+     * @param bool $disabled          Indicates if position option is disabled or not
      */
-    public function position_admin_column_shortcode_control( $disabled ){
+    public function position_admin_column_shortcode_control( $globally_disabled, $disabled ){
+        if ( ! $globally_disabled ){
 
-        $disabled = $disabled ? 'disabled' : '';
-        ?>
-        <div class="blox-data-control shortcode">
-            <div class="blox-data-control-toggle blox-has-tooltip <?php echo $disabled;?>" data-details-type="shortcode" aria-label="<?php _e( 'View block shortcode');?>">
-                <span class="blox-icon blox-icon-shortcode">
-                    <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
-                </span>
-                <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
+            $disabled = $disabled ? 'disabled' : '';
+            ?>
+            <div class="blox-data-control shortcode">
+                <div class="blox-data-control-toggle blox-has-tooltip <?php echo $disabled;?>" data-details-type="shortcode" aria-label="<?php _e( 'View block shortcode');?>">
+                    <span class="blox-icon blox-icon-shortcode">
+                        <?php echo file_get_contents( plugin_dir_url( __FILE__ ) . '../../assets/images/shortcode.svg' );?>
+                    </span>
+                    <span class="screen-reader-text"><?php _e( 'View block shortcode');?></span>
+                </div>
             </div>
-        </div>
-        <?php
+            <?php
+        }
     }
 
 
@@ -735,24 +732,27 @@ class Blox_Position {
      *
      * @since 2.0.0
      *
-     * @param string $post_id  The block (post) id
-     * @param bool $disabled   Indicates if position option is disabled or not
+     * @param string $post_id         The block (post) id
+     * @param bool $globally_disabled Is this positioning option globally disabled
+     * @param bool $disabled          Indicates if position option is disabled or not
      */
-    public function position_admin_column_shortcode_details( $post_id, $disabled ) {
-        ?>
-        <div class="blox-data-details shortcode">
-            <?php if ( $disabled ){ ?>
-                <div class="blox-alert-box">
-                    <?php _e( 'Shortcode positioning is disabled. Edit this block to re-enable.', 'blox' );?>
-                </div>
-            <?php } else { ?>
-                <div class="blox-code">[blox id="<?php echo 'global_' . $post_id; ?>"]</div>
-                <div class="blox-description">
-                    <?php _e( 'Copy and paste the above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox' ); ?>
-                </div>
-            <?php } ?>
-        </div>
-        <?php
+    public function position_admin_column_shortcode_details( $post_id, $globally_disabled, $disabled ) {
+        if ( ! $globally_disabled ){
+            ?>
+            <div class="blox-data-details shortcode">
+                <?php if ( $disabled ){ ?>
+                    <div class="blox-alert-box">
+                        <?php _e( 'Shortcode positioning is disabled. Edit this block to re-enable.', 'blox' );?>
+                    </div>
+                <?php } else { ?>
+                    <div class="blox-code">[blox id="<?php echo 'global_' . $post_id; ?>"]</div>
+                    <div class="blox-description">
+                        <?php _e( 'Copy and paste the above shortcode anywhere that accepts a shortcode. Visibility and location settings are respected when using shortcode positioning.', 'blox' ); ?>
+                    </div>
+                <?php } ?>
+            </div>
+            <?php
+        }
     }
 
 
@@ -761,19 +761,22 @@ class Blox_Position {
      *
      * @since 2.0.0
      *
-     * @param bool $disabled  Indicates if position option is disabled or not
+     * @param bool $globally_disabled Is this positioning option globally disabled
+     * @param bool $disabled          Indicates if position option is disabled or not
      */
-    public function position_admin_column_php_control( $disabled ){
+    public function position_admin_column_php_control( $globally_disabled, $disabled ){
+        if ( ! $globally_disabled ){
 
-        $disabled = $disabled ? 'disabled' : '';
-        ?>
-        <div class="blox-data-control php">
-            <div class="blox-data-control-toggle blox-has-tooltip <?php echo $disabled;?>" data-details-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
-                <span class="dashicons dashicons-editor-code"></span>
-                <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
+            $disabled = $disabled ? 'disabled' : '';
+            ?>
+            <div class="blox-data-control php">
+                <div class="blox-data-control-toggle blox-has-tooltip <?php echo $disabled;?>" data-details-type="php" aria-label="<?php _e( 'View block PHP insertion code', 'blox' );?>">
+                    <span class="dashicons dashicons-editor-code"></span>
+                    <span class="screen-reader-text"><?php _e( 'View block PHP insertion code');?></span>
+                </div>
             </div>
-        </div>
-        <?php
+            <?php
+        }
     }
 
 
@@ -782,24 +785,27 @@ class Blox_Position {
      *
      * @since 2.0.0
      *
-     * @param string $post_id  The block (post) id
-     * @param bool $disabled   Indicates if position option is disabled or not
+     * @param string $post_id         The block (post) id
+     * @param bool $globally_disabled Is this positioning option globally disabled
+     * @param bool $disabled          Indicates if position option is disabled or not
      */
-    public function position_admin_column_php_details( $post_id, $disabled ) {
-        ?>
-        <div class="blox-data-details php">
-            <?php if ( $disabled ){ ?>
-                <div class="blox-alert-box">
-                    <?php _e( 'PHP positioning is disabled. Edit this block to re-enable.', 'blox' );?>
-                </div>
-            <?php } else { ?>
-                <div class="blox-code">blox_display_block( "<?php echo 'global_' . $post_id; ?>" );</div>
-                <div class="blox-description">
-                    <?php _e( 'Copy and paste the above PHP code into any of your theme files. Visibility and location settings are respected when using PHP positioning.', 'blox' ); ?>
-                </div>
-            <?php } ?>
-        </div>
-        <?php
+    public function position_admin_column_php_details( $post_id, $globally_disabled, $disabled ) {
+        if ( ! $globally_disabled ){
+            ?>
+            <div class="blox-data-details php">
+                <?php if ( $disabled ){ ?>
+                    <div class="blox-alert-box">
+                        <?php _e( 'PHP positioning is disabled. Edit this block to re-enable.', 'blox' );?>
+                    </div>
+                <?php } else { ?>
+                    <div class="blox-code">blox_display_block( "<?php echo 'global_' . $post_id; ?>" );</div>
+                    <div class="blox-description">
+                        <?php _e( 'Copy and paste the above PHP code into any of your theme files. Visibility and location settings are respected when using PHP positioning.', 'blox' ); ?>
+                    </div>
+                <?php } ?>
+            </div>
+            <?php
+        }
     }
 
 

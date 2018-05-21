@@ -144,6 +144,51 @@
     white-space: nowrap;
     display: inline-block;
 }
+
+.blox-condensed-data {
+	background-color: red;
+}
+
+.blox-condensed-data .blox-data-control.php,
+.blox-condensed-data .blox-data-control.shortcode {
+	flex: none;
+	max-width: 22px;
+	display: inline-block;
+	float: right;
+	margin: 0 3px;
+}
+.blox-condensed-data .blox-data-control.scheduler {
+	float: right;
+}
+
+.blox-condensed-data .blox-column-data-controls {
+	display: block
+}
+
+.blox-condensed-data .blox-data-details {
+	margin-top: 20px;
+}
+
+.blox-condensed-data .blox-data-details-sub-container {
+	display: block;
+}
+
+.blox-condensed-data .blox-data-details-sub-container .meta {
+	text-align: left;
+	padding: 5px 0;
+}
+
+.is-expanded .blox-condensed-data {
+	background-color: inherit;
+}
+
+/* Mobile fix */
+@media screen and (max-width: 1060px) {
+	.blox-data-control .blox-position-hook-slug,
+	.blox-data-control .blox-visibility-role {
+		max-width: 70%;
+	}
+}
 .blox-data-control .blox-position-hook-slug.disabled {
 	color: #999;
 }
@@ -220,9 +265,6 @@
 	width: 100%;
 	margin-bottom: 5px;
 }
-.blox-data-details-sub-container.mobile-only {
-	display: none;
-}
 .blox-data-details-sub-container .title {
 	font-weight: bold;
 }
@@ -241,22 +283,6 @@
 	fill: #a00;
 }
 
-
-
-@media screen and (max-width: 1050px) {
-	.blox-data-control .blox-position-hook-slug {
-		display: none;
-	}
-	.blox-column-data-controls {
-		width: 72px;
-	}
-	.blox-column-data-details {
-		padding-top: 20px;
-	}
-	.blox-data-details-sub-container.mobile-only {
-		display: flex;
-	}
-}
 
 
 /* Begin - Button Tooltip */

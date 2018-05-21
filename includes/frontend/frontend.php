@@ -193,6 +193,9 @@ class Blox_Frontend {
         // If there is no block data associated with the id given, return
         if ( empty( $block ) ) return;
 
+        // Get block position meta data
+        $position_data = $block['position'];
+
         // If the disable hook positioning setting is set, bail
         if ( isset( $position_data['hook']['disable'] ) && $position_data['hook']['disable'] ) return;
 
@@ -202,9 +205,6 @@ class Blox_Frontend {
         if ( array_key_exists( 0, $display_test_results ) ) {
             return;
         }
-
-        // Get block position meta data
-		$position_data = $block['position'];
 
         // Get the position and priority settings
         $position = ! empty( $position_data['hook']['position'] ) ? esc_attr( $position_data['hook']['position'] )  : '';

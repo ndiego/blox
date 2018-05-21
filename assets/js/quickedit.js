@@ -104,9 +104,31 @@ jQuery(document).ready(function($){
         $.post( ajaxurl, data );
     });
 
+    /*---------ADMIN COLUMN JS---------*/
+
+    // Add a "condensed" class so we can conditionally style column data
+    function conditionally_condense_data(){
+        if ( $( '.column-visibility' ).width() < 165 || $( '.column-position' ).width() < 165 ) {
+            $( '.column-visibility' ).addClass( 'blox-condensed-data' );
+            $( '.column-position' ).addClass( 'blox-condensed-data' );
+        } else {
+            $( '.column-visibility' ).removeClass( 'blox-condensed-data' );
+            $( '.column-position' ).removeClass( 'blox-condensed-data' );
+        }
+    }
 
 
+    // Load condenser function on page load
+    conditionally_condense_data();
 
+
+    // Load condenser function on window resize
+    $( window ).on( 'resize', function(){
+        conditionally_condense_data();
+    } );
+
+
+    // Toggle column data
     $( document.body ).on( 'click', '.blox-data-control-toggle', function(e) {
 
         var type = $(this).attr( 'data-details-type' );
@@ -126,8 +148,5 @@ jQuery(document).ready(function($){
             $(this).parents( '.blox-data-control' ).addClass( 'selected' );
             $( block_id + ' .blox-data-details.' + type ).addClass( 'selected' );
         }
-
-        //$(this).parents( '.position-column-data-controls' ).siblings( '.position-column-data-details' ).children( '.position-details' ).removeClass( 'selected' );
-        //$(this).parents( '.position-column-data-controls' ).siblings( '.position-column-data-details' ).children( '.position-details.' + type ).toggle();
     });
 });
