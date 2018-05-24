@@ -104,17 +104,21 @@ jQuery(document).ready(function($){
         $.post( ajaxurl, data );
     });
 
+
+
     /*---------ADMIN COLUMN JS---------*/
 
     // Add a "condensed" class so we can conditionally style column data
     function conditionally_condense_data(){
-        if ( $( '.column-visibility' ).width() < 165 || $( '.column-position' ).width() < 165 ) {
-            $( '.column-visibility' ).addClass( 'blox-condensed-data' );
-            $( '.column-position' ).addClass( 'blox-condensed-data' );
+        if ( $( window ).width() > 782 ) {
+            if ( $( '.column-visibility' ).width() < 165 || $( '.column-position' ).width() < 165 ) {
+                $( '.wp-list-table' ).addClass( 'blox-condensed-data' );
+            } else {
+                $( '.wp-list-table' ).removeClass( 'blox-condensed-data' );
+            }
         } else {
-            $( '.column-visibility' ).removeClass( 'blox-condensed-data' );
-            $( '.column-position' ).removeClass( 'blox-condensed-data' );
-        }
+           $( '.wp-list-table' ).removeClass( 'blox-condensed-data' );
+       }
     }
 
 
