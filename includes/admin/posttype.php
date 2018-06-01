@@ -190,9 +190,7 @@ class Blox_Posttype_Admin {
 
         if ( $post->post_type == 'blox' ){
 
-            $link = sprintf( '<a href="#" class="editinline" aria-label="%s">%s</a>', esc_attr( sprintf( __( 'Quick edit &#8220;%s&#8221; inline' ), $post->post_title ) ), __( 'Quick&nbsp;Edit' ) );
-
-            //echo print_r( $post );
+            $link    = sprintf( '<a href="#" class="editinline" aria-label="%s">%s</a>', esc_attr( sprintf( __( 'Quick edit &#8220;%s&#8221; inline' ), $post->post_title ) ), __( 'Quick&nbsp;Edit' ) );
             $actions = array_slice( $actions, 0, 1, true) + array( 'inline hide-if-no-js' => $link ) + array_slice( $actions, 1, count( $actions ) - 1, true ) ;
         }
 
@@ -260,6 +258,7 @@ class Blox_Posttype_Admin {
         // Since this function is called via ajax we need to call wp_die()
     	wp_die();
     }
+
 
     /**
      * Print all of the quickedit settings

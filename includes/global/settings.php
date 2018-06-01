@@ -60,7 +60,7 @@ class Blox_Settings {
 		add_action( 'admin_init', array( $this, 'register_settings' ), 10 );
 
 		// Enqueue Setting scripts and styles
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'settings_enqueue_scripts' ) );
     }
 
 
@@ -1815,24 +1815,29 @@ class Blox_Settings {
 	 *
 	 * @since 1.0.0
 	 */
-	function admin_enqueue_scripts() {
-		wp_enqueue_style( $this->base->plugin_slug . '-settings-styles', plugins_url( 'assets/css/settings.css' , dirname( dirname( __FILE__ ) ) ) ); // Need to us dirname twice due to file format of parent plugin
+	function settings_enqueue_scripts( $hook ) {
 
-		wp_register_script( $this->base->plugin_slug . '-settings-scripts', plugins_url( 'assets/js/settings.js' , dirname( dirname( __FILE__ ) ) ) );
-		wp_enqueue_script( $this->base->plugin_slug . '-settings-scripts' );
+        // Only load our admin edit screen js on the edit pages for global blocks
+        if ( isset( $_GET['post_type'] ) && 'blox' === $_GET['post_type'] && isset( $_GET['page'] ) && 'blox-settings' === $_GET['page'] ) {
 
-		wp_localize_script(
-			$this->base->plugin_slug . '-settings-scripts',
-			'blox_localize_settings_scripts',
-			array(
-				'custom_hook_title'        => __( 'Enter a hook name', 'blox' ),
-				'delete_hook'              => __( 'Delete', 'blox' ),
-				'confirm_delete_hook'      => __( 'Are you sure you want to delete this custom hook? This action cannot be undone.', 'blox' ),
-                'confirm_delete_all_hooks' => __( 'Are you sure you want to delete all custom hooks? This action cannot be undone.', 'blox' ),
-				'no_hooks'			       => __( 'Add a custom hook...', 'blox' ),
-                'no_section_title_text'    => __( 'No Section Title', 'blox' ),
-			)
-		);
+            wp_enqueue_style( $this->base->plugin_slug . '-settings-styles', plugins_url( 'assets/css/settings.css' , dirname( dirname( __FILE__ ) ) ) ); // Need to us dirname twice due to file format of parent plugin
+
+    		wp_register_script( $this->base->plugin_slug . '-settings-scripts', plugins_url( 'assets/js/settings.js' , dirname( dirname( __FILE__ ) ) ), array( 'jquery-ui-sortable' ) );
+    		wp_enqueue_script( $this->base->plugin_slug . '-settings-scripts' );
+
+    		wp_localize_script(
+    			$this->base->plugin_slug . '-settings-scripts',
+    			'blox_localize_settings_scripts',
+    			array(
+    				'custom_hook_title'        => __( 'Enter a hook name', 'blox' ),
+    				'delete_hook'              => __( 'Delete', 'blox' ),
+    				'confirm_delete_hook'      => __( 'Are you sure you want to delete this custom hook? This action cannot be undone.', 'blox' ),
+                    'confirm_delete_all_hooks' => __( 'Are you sure you want to delete all custom hooks? This action cannot be undone.', 'blox' ),
+    				'no_hooks'			       => __( 'Add a custom hook...', 'blox' ),
+                    'no_section_title_text'    => __( 'No Section Title', 'blox' ),
+    			)
+    		);
+        };
 	}
 
 

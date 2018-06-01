@@ -1,5 +1,9 @@
 jQuery(document).ready(function($){
 
+
+    /* Admin quick edit and bulk edit scripts
+    -------------------------------------------------------------- */
+
     // Hide unneeded fields from Blox quickedit menu
     $( '.quick-edit-row.inline-edit-blox td fieldset:first-child .inline-edit-col' ).children().not(':first').css( "display" , "none");
 
@@ -26,54 +30,12 @@ jQuery(document).ready(function($){
 			var edit_row = $( '#edit-' + post_id ),
                 post_row = $( '#post-' + post_id );
 
-
 			// Get visibility data
 			var global_disable = $( '.column-visibility input[name="global_disable"]', post_row ).val();
             global_disable = ( global_disable == 1 ) ? 1 : 0;
 
             // Populate visibility data
             $( ':input[name="global_disable"]', edit_row ).prop('checked', global_disable );
-
-            // Get position data
-            var position_format = $( '.column-position input[name="position_format"]', post_row ).val(),
-                position_type   = $( '.column-position input[name="position_type"]', post_row ).val(),
-                custom_position = $( '.column-position input[name="custom_position"]', post_row ).val(),
-                custom_priority = $( '.column-position input[name="custom_priority"]', post_row ).val();
-
-            // Populate position data
-            $( 'select[name="position_format"]', edit_row ).val( position_format );
-            $( 'select[name="position_type"]', edit_row ).val( position_type );
-            $( 'select[name="custom_position"]', edit_row ).val( custom_position );
-            $( ':input[name="custom_priority"]', edit_row ).val( custom_priority );
-
-            // Show/hide the position hook containers based on hook type
-            $( '.quickedit-position-format-type.' + position_format, edit_row ).css( 'display', 'block' );
-
-            // Show/hide the position hook containers based on hook type
-            if ( position_type == 'default' ){
-                $( '.quickedit-position-hook-default', edit_row ).css( 'display', 'block' );
-            } else if ( position_type == 'custom' ) {
-                $( '.quickedit-position-hook-custom', edit_row ).css( 'display', 'block' );
-            }
-
-            // Shows and hides each format type on selection
-            $(document).on( 'change', 'select[name="position_format"]', function(){
-                $( '.quickedit-position-format-type', edit_row ).css( 'display', 'none' );
-                $( '.quickedit-position-format-type.' + $(this).val(), edit_row ).css( 'display', 'block' );
-            });
-
-            // Shows and hides each hook type on selection
-        	$(document).on( 'change', 'select[name="position_type"]', function(){
-        		if ( $(this).val() == 'custom' ) {
-        			$( '.quickedit-position-hook-default', edit_row ).css( 'display', 'none' );
-        			$( '.quickedit-position-hook-custom', edit_row ).css( 'display', 'block' );
-        		} else {
-                    $( '.quickedit-position-hook-default', edit_row ).css( 'display', 'block' );
-                    $( '.quickedit-position-hook-custom', edit_row ).css( 'display', 'none' );
-        		}
-        	});
-
-
 		}
 	};
 
@@ -86,12 +48,12 @@ jQuery(document).ready(function($){
 
         // Get the selected post ids that are being edited
         var post_ids = new Array();
-        $bulk_row.find( '#bulk-titles' ).children().each( function() {
-            $post_ids.push( $( this ).attr( 'id' ).replace( /^(ttle)/i, '' ) );
+        bulk_row.find( '#bulk-titles' ).children().each( function() {
+            post_ids.push( $( this ).attr( 'id' ).replace( /^(ttle)/i, '' ) );
         });
 
         // Get visibility data
-        var global_disable = $bulk_row.find( 'input[name="global_disable"]' ).is(':checked') ? 1 : 0;
+        var global_disable = bulk_row.find( 'input[name="global_disable"]' ).is(':checked') ? 1 : 0;
 
         var data = {
             action: 'blox_save_bulkedit_meta',
@@ -106,7 +68,8 @@ jQuery(document).ready(function($){
 
 
 
-    /*---------ADMIN COLUMN JS---------*/
+    /* Admin column scripts
+    -------------------------------------------------------------- */
 
     // Add a "condensed" class so we can conditionally style column data
     function conditionally_condense_data(){

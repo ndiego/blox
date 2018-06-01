@@ -126,11 +126,11 @@ class Blox_Posttype {
      */
     public function admin_scripts( $hook ) {
 
-        // Only load our quickedit js on the edit pages for global blocks
+        // Only load our admin edit screen js on the edit pages for global blocks
         if ( 'edit.php' === $hook && isset( $_GET['post_type'] ) && 'blox' === $_GET['post_type'] ) {
             // Load necessary admin scripts
-            wp_register_script( 'blox-quickedit-scripts', plugins_url( 'assets/js/quickedit.js', $this->base->file ), array(), $this->base->version );
-           	wp_enqueue_script( 'blox-quickedit-scripts' );
+            wp_register_script( 'blox-admin-edit-scripts', plugins_url( 'assets/js/admin-edit.js', $this->base->file ), array(), $this->base->version );
+           	wp_enqueue_script( 'blox-admin-edit-scripts' );
         }
 
         // Fire a hook to load scripts to the admin
