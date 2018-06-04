@@ -211,15 +211,17 @@ class Blox_Content_Raw {
      *
      * @since 1.0.0
      *
-     * @param int $id             The block id
-     * @param string $name_prefix The prefix for saving each setting
-     * @param string $get_prefix  The prefix for retrieving each setting
-     * @param string $global      The block state
+     * @param array $content_data  All the content data for the block
+     * @param int $id              The block id
+     * @param array $block         All the block data
+     * @param string $global       The block state, either "global" or "local"
      */
-	public function print_raw_content( $content_data, $block_id, $block, $global ) {
+	public function print_raw_content( $content_data, $id, $block, $global ) {
 
 		// Decode the content from the database so we can use scripts, php, etc.
 		$content = html_entity_decode( $content_data['raw']['content'], ENT_QUOTES, 'UTF-8' );
+
+
 
 		// The final output
 		$output  = $content_data['raw']['shortcodes'] ? do_shortcode( $content ) : $content;
@@ -239,6 +241,44 @@ class Blox_Content_Raw {
 		echo $content_data['raw']['disable_markup'] == 1 ? '' : '</div></div>';
 	}
 
+    /**
+	 * Checks to see if the block content contains a shortcode or php function for the same block, which would cause a site breaking loop
+     *
+     * @since 2.0.0
+     *
+     * @param string $content The content to be tested
+     * @param int $id         The block id
+     * @param string $global  The block state
+     *
+     * @return bool           The loop exists or not
+     */
+    public function check_for_shortcode_php_loop_existance( $content, $id, $global ) {
+
+        $scope = $global ? 'global' : 'local';
+
+        if ( empty( $content ) ) return false;
+
+        // Check for shortcode loop
+        $shortcode      = '[blox id="' . $scope . '_' . $block_id . '"]';
+        $shortcode_test = strpos( $content, $shortcode );
+
+        // Check for PHP loop
+        $php      = 'blox_display_block( "' . $scope . '_' . $id . '" );';
+        $php_test = $shortcode_test = strpos( $content, $php );
+
+        // Site breaking loop exists?
+        $result = ( $shortcode_test === true || $php_test === true ) ? true : false;
+
+        return $result;
+    }
+
+    public function shortcode_php_loop_existance_alert() {
+        ?>
+        <div class="blox-alert">
+            <p><?php _e( 'A potentially site breaking error has been detected. Please check this block\'s content to ensure it does not contain a shortcode or PHP function for the same block. Doing so creates a loop and would cause the site to break.', 'blox' );?></p>
+        </div>
+        <?php
+    }
 
     /**
      * Adds the fullscreen raw content modal to the page

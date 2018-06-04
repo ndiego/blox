@@ -313,12 +313,12 @@ class Blox_Content_Image {
      *
      * @since 1.0.0
      *
-     * @param int $id             The block id
-     * @param string $name_prefix The prefix for saving each setting
-     * @param string $get_prefix  The prefix for retrieving each setting
+     * @param array $content_data  All the content data for the block
+     * @param int $id              The block id
+     * @param array $block         All the block data
      * @param string $global       The block state, either "global" or "local"
      */
-	public function print_image_content( $content_data, $block_id, $block, $global ) {
+	public function print_image_content( $content_data, $id, $block, $global ) {
 
 		// If we have chosen to only show featured images on singular pages, run the test, otherwise try and see if there is a thumbnail somewhere on the page
 		if ( ! empty( $content_data['image']['featured_singular_only'] ) && $content_data['image']['featured_singular_only'] == 1 && ! is_singular() ) {

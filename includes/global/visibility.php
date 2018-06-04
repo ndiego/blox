@@ -78,14 +78,8 @@ class Blox_Visibility {
 		// Run visibilty test on the frontend
 		add_filter( 'blox_display_test', array( $this, 'run_visibility_display_test' ), 5, 5 );
 
-
-
         // Modify the frontend visibility test based on scheduler settings
         add_filter( 'blox_content_block_visibility_test', array( $this, 'run_scheduler' ), 20, 4 );
-
-        // Add scheduler meta data to local and global blocks
-        // @TODO remove
-        //dd_filter( 'blox_visibility_meta_data', array( $this, 'scheduler_meta_data' ), 10, 3 );
 
         // Add necessary scripts and styles
         add_action( 'blox_metabox_scripts', array( $this, 'enqueue_scripts' ) );
@@ -523,45 +517,6 @@ class Blox_Visibility {
             return true;
         }
     }
-
-    /**
-    * @TODO Remove
-     * Add scheduler meta data to both local and global blocks
-     *
-     * @since 2.0.0
-     *
-     * @param bool $visibility_test The current status of the visibility test
-     * @param array $block  		Contains all of our block settings data
-     * @param bool $global  		Tells whether our block is global or local
-     */
-    /*public function scheduler_meta_data( $output, $block, $global ) {
-
-        $scheduler_enabled = ! empty( $block['visibility']['scheduler']['enable'] ) ? true : false;
-        $clock = '';
-        $separator = $global ? ' &nbsp;–&nbsp; ' : ' &nbsp;&middot&nbsp; ';
-
-        if ( $scheduler_enabled ) {
-
-            $current_time = current_time( 'timestamp' );
-            $begin 		  = strtotime( esc_attr( $block['visibility']['scheduler']['begin'] ) );
-            $end   	 	  = strtotime( esc_attr( $block['visibility']['scheduler']['end'] ) );
-
-            $begin_text = empty( $block['visibility']['scheduler']['begin'] ) ? 'Now' : $block['visibility']['scheduler']['begin'];
-            $end_text = empty( $block['visibility']['scheduler']['end'] ) ? 'Never' : $block['visibility']['scheduler']['end'];
-
-            if ( ( '' != $begin && $begin > $current_time ) || ( '' != $end && $end < $current_time ) ) {
-                // The block should NOT currently being shown
-                $clock = $separator . '<span class="dashicons dashicons-clock" style="color:#a00;cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
-            } else {
-                $clock = $separator . '<span class="dashicons dashicons-clock" style="cursor:help" title="Begin: ' . $begin_text . ' End: ' . $end_text . '"></span>';
-            }
-        }
-
-        $output = $output . $clock;
-
-        return $output;
-    }
-    */
 
 
     /**
