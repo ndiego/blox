@@ -5,7 +5,7 @@
  * Description: Easily customize themes built on the Genesis Framework
  * Author:      Nick Diego
  * Author URI:  http://www.outermostdesign.com
- * Version:     1.4.7
+ * Version:     1.4.8
  * Text Domain: blox
  * Domain Path: languages
  *
@@ -53,7 +53,7 @@ class Blox_Main {
      *
      * @var string
      */
-    public $version = '1.4.7';
+    public $version = '1.4.8';
 
     /**
      * The name of the plugin.
@@ -121,7 +121,7 @@ class Blox_Main {
 		$latest = '2.0';
 		$theme_info = wp_get_theme( 'genesis' );
 
-		if ( ! function_exists( 'genesis_pre' ) ) {
+		if ( ! function_exists( 'genesis_load_framework' ) ) {
 			deactivate_plugins( plugin_basename( __FILE__ ) ); // Deactivate plugin
 			wp_die( sprintf( __( 'Sorry, you can\'t activate %1$sBlox%2$s unless you have installed the %3$sGenesis Framework%4$s. Go back to the %5$sPlugins Page%4$s.', 'blox' ), '<em>', '</em>', '<a href="http://www.studiopress.com/themes/genesis" target="_blank">', '</a>', '<a href="javascript:history.back()">' ) );
 		}
@@ -143,7 +143,7 @@ class Blox_Main {
 	 */
 	public function disable_check() {
 
-		if ( ! function_exists('genesis_pre') ) {
+		if ( ! function_exists('genesis_load_framework') ) {
 			return;
 		}
 	}

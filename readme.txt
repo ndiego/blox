@@ -8,6 +8,9 @@ Resources:
 
 Changelog:
 
+Version 1.4.8 – 2019-06-26
+* Fixed conflict with Genesis 3.x
+
 Version 1.4.7 – 2018-02-17
 * Fixed version bump error causing the plugin update message to keep displaying even after updating to the latest version
 
