@@ -417,6 +417,16 @@ class Blox_Settings {
 						'default' => '',
 						'sanitize' => 'no_html',
 					),
+					'local_custom_id' => array(
+						'id'   => 'local_custom_id',
+						'name' => __( 'Local Custom ID', 'blox' ),
+						'desc' => __( 'Enter unique ID to add to this local block.', 'blox' ),
+						'type' => 'text',
+						'size' => 'full',
+						'placeholder' => __( 'e.g. section-1', 'blox' ),
+						'default' => '',
+						'sanitize' => 'no_html',
+					),					
 					'local_custom_classes' => array(
 						'id'   => 'local_custom_classes',
 						'name' => __( 'Local Custom Classes', 'blox' ),

@@ -137,6 +137,16 @@ class Blox_Style {
 		<table class="form-table">
 			<tbody>
 				<tr>
+					<th scope="row"><?php _e( 'Custom ID', 'blox' ); ?></th>
+					<td>
+						<input type="text" class="blox-half-text" name="<?php echo $name_prefix; ?>[custom_id]" value="<?php echo ! empty( $get_prefix['custom_id'] ) ? esc_attr( $get_prefix['custom_id'] ) : ''; ?>" placeholder="e.g. Section1"/>
+						<div class="blox-description">
+							<?php _e( 'Enter a unique ID to add to this content block.', 'blox' ); ?>
+						</div>
+					</td>
+				</tr>
+				<tr>				
+				<tr>
 					<th scope="row"><?php _e( 'Custom Block Classes', 'blox' ); ?></th>
 					<td>
 						<input type="text" class="blox-half-text" name="<?php echo $name_prefix; ?>[custom_classes]" value="<?php echo ! empty( $get_prefix['custom_classes'] ) ? esc_attr( $get_prefix['custom_classes'] ) : ''; ?>" placeholder="e.g. class-one class-two"/>
@@ -208,6 +218,7 @@ class Blox_Style {
 		
 		$settings = array();
 		
+		$settings['custom_id']     	 	= isset( $name_prefix['custom_id'] ) ? trim( esc_html( $name_prefix['custom_id'] ) ) : '';		
 		$settings['custom_classes'] 	 = trim( strip_tags( $name_prefix['custom_classes'] ) );
 		$settings['custom_css']     	 = isset( $name_prefix['custom_css'] ) ? trim( esc_html( $name_prefix['custom_css'] ) ) : '';
 		$settings['enable_wrap']    	 = isset( $name_prefix['enable_wrap'] ) ? 1 : 0;

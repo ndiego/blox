@@ -338,6 +338,7 @@ function blox_frontend_content( $args, $parameters ) {
 
 	// Get our style setting variables
     $global_custom_classes      = blox_get_option( 'global_custom_classes', '' );
+    $local_custom_id            = blox_get_option( 'local_custom_id', '' );
     $local_custom_classes       = blox_get_option( 'local_custom_classes', '' );
     $global_disable_default_css = blox_get_option( 'disable_default_css', '' );
 
@@ -367,7 +368,7 @@ function blox_frontend_content( $args, $parameters ) {
 
 		} else {
 
-            $block_id = 'blox_' . $block_scope . '_' . esc_attr( $id );
+            $block_id = ! empty( $style_data['custom_id'] ) ? ( $style_data['custom_id'] ) : 'blox_' . $block_scope . '_' . esc_attr( $id );;
 
             $block_class  = 'blox-content-' . esc_attr( $content_data['content_type'] );
             $block_class .= ' ' . $blox_theme;
