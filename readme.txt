@@ -8,6 +8,9 @@ Resources:
 
 Changelog:
 
+Version 1.4.9 – 2021-12-07
+* Fixed bug in slidehow editor.
+
 Version 1.4.8 – 2019-06-26
 * Fixed conflict with Genesis 3.x
 

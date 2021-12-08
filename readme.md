@@ -1,5 +1,7 @@
 ## Welcome to Blox
 
+:bangbang: | Blox is still maintained for bugs, no new development will be done.
+
 Blox is a premium Wordpress plugin built for users of the [Genesis Framework](http://www.studiopress.com). Blox is a product of Outermost Design, LLC. We have no direct affiliation with the makers of Genesis.
 
 Blox allows you to easily add content to your Genesis theme through Genesis hooks. You are free to download and use this plugin, but understand that automatic updates and support require a paid Blox license. Blox licenses can be purchased on [www.bloxwp.com](https://www.bloxwp.com/pricing/?utm_source=blox&utm_medium=plugin&utm_content=github-readme-links&utm_campaign=Blox_Plugin_Links)
@@ -16,6 +18,9 @@ There are a number of ways you can get help with Blox:
 We would love to hear from you! If you find a bug or have a feature request, please send in a support ticket through [Your Account](https://www.bloxwp.com/your-account/?utm_source=blox&utm_medium=plugin&utm_content=github-readme-links&utm_campaign=Blox_Addon_Links). Or better yet, add it to the [issue tracker](https://github.com/ndiego/blox/issues) here on Github. Either way, please be clear and detailed in you communication. If submitting a bug, be sure to provide instructions on how to replicate the issue you are having. Also provide the theme name and PHP version if possible.
 
 ### Changelog
+
+##### Version 1.4.9 – 2021-12-07
+* Fixed bug in slidehow editor.
 
 ##### Version 1.4.8 – 2019-06-26
 * Fixed conflict with Genesis 3.x
