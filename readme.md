@@ -21,7 +21,7 @@ We would love to hear from you! If you find a bug or have a feature request, ple
 ### Changelog
 
 ##### Version 1.4.9 – 2021-12-07
-* Fixed bug in slidehow editor.
+* Fixed bug in slideshow editor.
 
 ##### Version 1.4.8 – 2019-06-26
 * Fixed conflict with Genesis 3.x
