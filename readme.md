@@ -1,6 +1,7 @@
 ## Welcome to Blox
 
 :bangbang: | Blox is still maintained for bugs, no new development will be done.
+:---: | :---
 
 Blox is a premium Wordpress plugin built for users of the [Genesis Framework](http://www.studiopress.com). Blox is a product of Outermost Design, LLC. We have no direct affiliation with the makers of Genesis.
 
