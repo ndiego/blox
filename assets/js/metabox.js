@@ -439,7 +439,7 @@ jQuery(document).ready(function($){
 	$(document).on( 'click', '#blox-slide-apply-settings', function() {
 
 		var slide_id = $( '.modal-slide-id' ).val();
-
+		console.log( slide_id );
 		blox_enable_disable_slide_visibility( slide_id );
 
 		$( '#' + slide_id + ' .slide-type' ).val( $( '.modal-slide-type' ).val() );
@@ -615,41 +615,41 @@ jQuery(document).ready(function($){
 
 		// Grab our existing slide details
 		var slide_id 			= slide_id,
-			slide_type			= $( '#' + slide_id + ' .slide-type' ).attr( 'value' ),
+			slide_type			= $( '#' + slide_id + ' .slide-type' ).val(),
 			visibility_disable 	= $( '#' + slide_id + ' .slide-visibility-disable' ).is( ':checked' ),
-			image_id 			= $( '#' + slide_id + ' .slide-image-id' ).attr( 'value' ),
-			image_url 			= $( '#' + slide_id + ' .slide-image-url' ).attr( 'value' ),
+			image_id 			= $( '#' + slide_id + ' .slide-image-id' ).val(),
+			image_url 			= $( '#' + slide_id + ' .slide-image-url' ).val(),
 			image_thumbnail 	= $( '#' + slide_id + ' .slide-image-thumbnail' ).attr( 'src' ),
-			image_title 		= $( '#' + slide_id + ' .slide-image-title' ).attr( 'value' ),
-			image_alt 			= $( '#' + slide_id + ' .slide-image-alt' ).attr( 'value' ),
-			image_size 			= $( '#' + slide_id + ' .slide-image-size' ).attr( 'value' ),
+			image_title 		= $( '#' + slide_id + ' .slide-image-title' ).val(),
+			image_alt 			= $( '#' + slide_id + ' .slide-image-alt' ).val(),
+			image_size 			= $( '#' + slide_id + ' .slide-image-size' ).val(),
 			link_enable 		= $( '#' + slide_id + ' .slide-image-link-enable' ).is( ':checked' ),
-			link_url 			= $( '#' + slide_id + ' .slide-image-link-url' ).attr( 'value' ),
-			link_title 			= $( '#' + slide_id + ' .slide-image-link-title' ).attr( 'value' ),
+			link_url 			= $( '#' + slide_id + ' .slide-image-link-url' ).val(),
+			link_title 			= $( '#' + slide_id + ' .slide-image-link-title' ).val(),
 			link_target 		= $( '#' + slide_id + ' .slide-image-link-target' ).is( ':checked' ),
-			caption 			= $( '#' + slide_id + ' .slide-image-caption' ).attr( 'value' ),
-			classes 			= $( '#' + slide_id + ' .slide-image-classes' ).attr( 'value' );
+			caption 			= $( '#' + slide_id + ' .slide-image-caption' ).val(),
+			classes 			= $( '#' + slide_id + ' .slide-image-classes' ).val(),
 
 		// In the case that no image size is set, default to full
 		image_size = image_size != '' ? image_size : 'full';
 
 		// Populate the modal with existing details on open
-		$( '.modal-slide-id' ).attr( 'value' , slide_id );
-		$( '.modal-slide-type' ).attr( 'value' , slide_type );
+		$( '.modal-slide-id' ).val( slide_id );
+		$( '.modal-slide-type' ).val( slide_type );
 		$( '.modal-slide-visibility-disable' ).prop( 'checked', visibility_disable );
-		$( '.modal-slide-image-preview' ).attr( 'src' , image_url );
-		$( '.modal-slide-image-id' ).attr( 'value' , image_id );
-		$( '.modal-slide-image-url' ).attr( 'value' , image_url );
-		$( '.modal-slide-image-thumbnail' ).attr( 'value' , image_thumbnail );
-		$( '.modal-slide-image-title' ).attr( 'value' , image_title );
-		$( '.modal-slide-image-alt' ).attr( 'value' , image_alt );
-		$( '.modal-slide-image-size' ).attr( 'value' , image_size );
+		$( '.modal-slide-image-preview' ).prop( 'src' , image_url );
+		$( '.modal-slide-image-id' ).val( image_id );
+		$( '.modal-slide-image-url' ).val( image_url );
+		$( '.modal-slide-image-thumbnail' ).val( image_thumbnail );
+		$( '.modal-slide-image-title' ).val( image_title );
+		$( '.modal-slide-image-alt' ).val( image_alt );
+		$( '.modal-slide-image-size' ).val( image_size );
 		$( '.modal-slide-image-link-enable' ).prop( 'checked', link_enable );
-		$( '.modal-slide-image-link-url' ).attr( 'value' , link_url );
-		$( '.modal-slide-image-link-title' ).attr( 'value' , link_title );
+		$( '.modal-slide-image-link-url' ).val( link_url );
+		$( '.modal-slide-image-link-title' ).val( link_title );
 		$( '.modal-slide-image-link-target' ).prop( 'checked', link_target );
-		$( '.modal-slide-image-caption' ).attr( 'value' , caption );
-		$( '.modal-slide-image-classes' ).attr( 'value' , classes );
+		$( '.modal-slide-image-caption' ).val( caption );
+		$( '.modal-slide-image-classes' ).val( classes );
 
 		var link_enable_checkbox    = $( '.modal-slide-image-link-enable' ),
 		    link_settings_container = link_enable_checkbox.parent().siblings( '.blox-modal-subsettings.image-link' );
