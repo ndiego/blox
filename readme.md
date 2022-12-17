@@ -1,6 +1,7 @@
 # Blox
 
 > **Warning**
+> 
 > Blox is no longer being actively maintained and there is no guarantee the plugin will continue to work with new versions of WordPress. Consider transitioning to a native WordPress blocks.
 
 Blox allows you to easily add content blocks to your Genesis theme through Genesis hooks.
